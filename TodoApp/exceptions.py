@@ -6,21 +6,14 @@ from sqlalchemy.exc import SQLAlchemyError
 
 
 class CustomBaseException(Exception):
-    """This is the base class for all bookly errors"""
-
+    """base class for all errors"""
     pass
 
 class StrategyNotFound(CustomBaseException):
-    """Strategy not found"""
-
     pass
 
 class AuthenticationFailed(CustomBaseException):
-    """Authentication failed"""
-
     pass
-
- 
 
 def create_exception_handler(
     status_code: int, initial_detail: Any
@@ -63,8 +56,8 @@ def register_all_errors(app: FastAPI):
 
         return JSONResponse(
             content={
-                "message": "Oops! Something went wrong",
-                "error_code": "server_error",
+                "message": "Something went wrong on the server ",
+                "error_code": "server_error_500",
             },
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
@@ -75,8 +68,8 @@ def register_all_errors(app: FastAPI):
         print(str(exc))
         return JSONResponse(
             content={
-                "message": "Oops! Something went wrong",
-                "error_code": "server_error",
+                "message": "Something went wrong with the database",
+                "error_code": "server_error_db_500",
             },
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
