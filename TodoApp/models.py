@@ -16,8 +16,8 @@ class Users(Base):
     phone_number = Column(String)
 
 
-class Todos(Base):
-    __tablename__ = 'todos'
+class Strategies(Base):
+    __tablename__ = 'strategies'
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String)

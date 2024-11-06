@@ -5,7 +5,7 @@ from ..database import Base
 from ..main import app
 from fastapi.testclient import TestClient
 import pytest
-from ..models import Todos, Users
+from ..models import Strategies, Users
 from ..routers.auth import bcrypt_context
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./testdb.db"
@@ -33,8 +33,8 @@ def override_get_current_user():
 client = TestClient(app)
 
 @pytest.fixture
-def test_todo():
-    todo = Todos(
+def test_strategy():
+    strategy = Strategies(
         title="Learn to code!",
         description="Need to learn everyday!",
         priority=5,
@@ -43,11 +43,11 @@ def test_todo():
     )
 
     db = TestingSessionLocal()
-    db.add(todo)
+    db.add(strategy)
     db.commit()
-    yield todo
+    yield strategy
     with engine.connect() as connection:
-        connection.execute(text("DELETE FROM todos;"))
+        connection.execute(text("DELETE FROM strategies;"))
         connection.commit()
 
 

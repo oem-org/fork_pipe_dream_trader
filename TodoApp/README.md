@@ -1,1 +1,1 @@
-uvicorn TodoApp.main:app --reload
+uvicorn StrategyApp.main:app --reload
