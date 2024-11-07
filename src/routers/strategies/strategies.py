@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 from fastapi import APIRouter, Depends, Path
 from starlette import status
 from ...models import Strategies
-from ...exceptions import StrategyNotFound 
+from ...exceptions import StrategyNotFound, AuthenticationFailed 
 from ...dependencies import user_dependency, db_dependency 
 
 print(user_dependency)
@@ -108,8 +108,8 @@ async def update_strategy(user: user_dependency, db: db_dependency,
 
 @router.delete("/strategy/{strategy_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_strategy(user: user_dependency, db: db_dependency, strategy_id: int = Path(gt=0)):
-    if user is None:
-        raise AutheticationFailed()
+    # if user is None:
+    #     raise AutheticationFailed()
 
     strategy_model = db.query(Strategies).filter(Strategies.id == strategy_id)\
         .filter(Strategies.owner_id == user.get('id')).first()

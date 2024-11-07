@@ -4,30 +4,17 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException, Path
 from starlette import status
 from ...models import Users
-from ...database import SessionLocal
-from ...services.auth import AuthenticationService
+from ...services.auth import PasswordService
 from passlib.context import CryptContext
+from ...dependencies import user_dependency, db_dependency 
 
 router = APIRouter(
     prefix='/user',
     tags=['user']
 )
 
- 
-auth_service = AuthenticationService.AuthService()
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-db_dependency = Annotated[Session, Depends(get_db)]
-user_dependency = Annotated[Dict, Depends(auth_service.get_current_user)]
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
-
 
 class UserVerification(BaseModel):
     password: str
@@ -48,9 +35,9 @@ async def change_password(user: user_dependency, db: db_dependency,
         raise AutheticationFailed()
     user_model = db.query(Users).filter(Users.id == user.get('id')).first()
 
-    if not bcrypt_context.verify(user_verification.password, user_model.hashed_password):
+    if not PasswordService.verify_password(user_verification.password, user_model.hashed_password):
         raise HTTPException(status_code=401, detail='Error on password change')
-    user_model.hashed_password = bcrypt_context.hash(user_verification.new_password)
+    user_model.hashed_password = PasswordService.hash_password(user_verification.new_password)
     db.add(user_model)
     db.commit()
 

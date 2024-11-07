@@ -1,32 +1,15 @@
-from typing import Annotated
-from pydantic import BaseModel, Field
-from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends, HTTPException, Path
+from fastapi import APIRouter, Path
 from starlette import status
 from ...models import Strategies
-from ...database import SessionLocal
-from ...services.auth import AuthenticationService 
 from ...exceptions import AuthenticationFailed, StrategyNotFound
+from ...dependencies import user_dependency, db_dependency 
 
-
-auth_service = AuthenticationService.AuthService()
+# auth_service = AuthenticationService.AuthService()
 
 router = APIRouter(
     prefix='/admin',
     tags=['admin']
 )
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-db_dependency = Annotated[Session, Depends(get_db)]
-user_dependency = Annotated[dict, Depends(auth_service.get_current_user)]
 
 
 @router.get("/strategy", status_code=status.HTTP_200_OK)
