@@ -24,7 +24,7 @@ bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 #tokenUrl is will be send from client to app and hit the auth/token endpoint
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl='auth/token')
 
-auth_service = AuthService()
+auth_service = AuthenticationService.AuthService()
 
 class CreateUserRequest(BaseModel):
     username: str

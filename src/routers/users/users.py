@@ -1,11 +1,11 @@
-from typing import Annotated
+from typing import Annotated, Dict
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException, Path
 from starlette import status
 from ...models import Users
 from ...database import SessionLocal
-from .auth import get_current_user
+from ...services.auth import AuthenticationService
 from passlib.context import CryptContext
 
 router = APIRouter(
@@ -13,6 +13,8 @@ router = APIRouter(
     tags=['user']
 )
 
+ 
+auth_service = AuthenticationService.AuthService()
 
 def get_db():
     db = SessionLocal()
@@ -23,7 +25,7 @@ def get_db():
 
 
 db_dependency = Annotated[Session, Depends(get_db)]
-user_dependency = Annotated[dict, Depends(get_current_user)]
+user_dependency = Annotated[Dict, Depends(auth_service.get_current_user)]
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 

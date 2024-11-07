@@ -1,26 +1,30 @@
-from typing import Annotated
+from passlib.context import CryptContext
+
 from pydantic import BaseModel, Field
-from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, Path
 from starlette import status
-from ..models import Strategies
-from ..database import SessionLocal
-from .auth import get_current_user
-from ..exceptions import StrategyNotFound 
+from ...models import Strategies
+from ...exceptions import StrategyNotFound 
+from ...dependencies import user_dependency, db_dependency 
 
+print(user_dependency)
 router = APIRouter(tags=['strategy'])
 
+class CreateUserRequest(BaseModel):
+    username: str
+    email: str
+    first_name: str
+    last_name: str
+    password: str
+    role: str
+    phone_number: str
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+class Token(BaseModel):
+    access_token: str
+    token_type: str
 
 
-db_dependency = Annotated[Session, Depends(get_db)]
-user_dependency = Annotated[dict, Depends(get_current_user)]
+
 
 
 class StrategyRequest(BaseModel):
@@ -114,10 +118,6 @@ async def delete_strategy(user: user_dependency, db: db_dependency, strategy_id:
     db.query(Strategies).filter(Strategies.id == strategy_id).filter(Strategies.owner_id == user.get('id')).delete()
 
     db.commit()
-
-
-
-
 
 
 

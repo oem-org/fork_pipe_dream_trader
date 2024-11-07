@@ -5,8 +5,11 @@ from fastapi import APIRouter, Depends, HTTPException, Path
 from starlette import status
 from ...models import Strategies
 from ...database import SessionLocal
-from .auth import get_current_user
-from ...exceptions import AuthenticationFailed
+from ...services.auth import AuthenticationService 
+from ...exceptions import AuthenticationFailed, StrategyNotFound
+
+
+auth_service = AuthenticationService.AuthService()
 
 router = APIRouter(
     prefix='/admin',
@@ -23,7 +26,7 @@ def get_db():
 
 
 db_dependency = Annotated[Session, Depends(get_db)]
-user_dependency = Annotated[dict, Depends(get_current_user)]
+user_dependency = Annotated[dict, Depends(auth_service.get_current_user)]
 
 
 @router.get("/strategy", status_code=status.HTTP_200_OK)
