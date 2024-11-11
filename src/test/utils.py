@@ -7,6 +7,10 @@ from fastapi.testclient import TestClient
 import pytest
 from ..models import Strategies, Users
 from ..routers.auth import bcrypt_context
+from passlib.context import CryptContext
+
+bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
+
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./testdb.db"
 
@@ -16,6 +20,7 @@ engine = create_engine(
     poolclass = StaticPool,
 )
 
+# create seperate database session for testing
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base.metadata.create_all(bind=engine)
@@ -34,7 +39,7 @@ client = TestClient(app)
 
 @pytest.fixture
 def test_strategy():
-    strategy = Strategies(
+    todo = Strategies(
         title="Learn to code!",
         description="Need to learn everyday!",
         priority=5,
@@ -43,11 +48,11 @@ def test_strategy():
     )
 
     db = TestingSessionLocal()
-    db.add(strategy)
+    db.add(todo)
     db.commit()
-    yield strategy
+    yield todo
     with engine.connect() as connection:
-        connection.execute(text("DELETE FROM strategies;"))
+        connection.execute(text("DELETE FROM todos;"))
         connection.commit()
 
 

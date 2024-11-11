@@ -13,6 +13,7 @@ router = APIRouter(
     tags=['auth']
 )
 
+password_service = PasswordService.PasswordService()
 auth_service = AuthenticationService.AuthService()
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
@@ -25,7 +26,7 @@ async def create_user(db: db_dependency,
         first_name=create_user_request.first_name,
         last_name=create_user_request.last_name,
         role=create_user_request.role,
-        hashed_password=PasswordService.hash_password(create_user_request.password),
+        hashed_password=password_service.hash_password(create_user_request.password),
         is_active=True,
         phone_number=create_user_request.phone_number
     )
@@ -40,7 +41,7 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
                                  db: db_dependency):
 
     user = auth_service.authenticate_user(form_data.username, form_data.password, db)
-    
+
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail='Could not validate user.')

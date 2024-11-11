@@ -22,7 +22,7 @@ services:
     volumes:
       - ".:/app"
     env_file:
-      - ".env-$RTE"
+      - ".env"
     depends_on:
       - db
     networks:
@@ -34,9 +34,40 @@ services:
     volumes:
       - "db-data:/var/lib/postgresql/data"
     env_file:
-      - ".env-$RTE"
+      - ".env"
     networks:
       - dbnet
+
+  redis:
+    container_name: redis
+    image: redis:6.2-alpine
+  # called the same as the file with the worker
+  # celery_worker:
+  #   container_name: celery_worker
+  #   build: .
+  #   command: celery -A celery_worker.celery worker --loglevel=info
+  #   volumes:
+  #     - .:/app
+  #   environment:
+  #     - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+  #     - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+  #   depends_on:
+  #     - app
+  #     - redis
+  #
+  # flower:
+  #   container_name: flower
+  #   build: .
+  #   command: celery -A celery_worker.celery flower --port=5555
+  #   ports:
+  #     - 5556:5555
+  #   environment:
+  #     - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+  #     - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+  #   depends_on:
+  #     - app
+  #     - redis
+  #     - celery_worker
 
 volumes:
   db-data:

@@ -14,5 +14,6 @@ pytest-asyncio
 aiofiles
 jinja2
 pydantic-settings
-celery
+celery[redis]
+redis
 alembic
