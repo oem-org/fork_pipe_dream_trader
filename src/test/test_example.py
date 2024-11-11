@@ -1,4 +1,20 @@
 import pytest
+from fastapi.testclient import TestClient
+from ..main import app
+
+def test_main():
+    assert app is not None
+
+from fastapi.testclient import TestClient
+from ..main import app
+from fastapi import status
+
+client = TestClient(app)
+
+def test_return_health_check():
+    response = client.get("/healthy")
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == {'status': 'Healthy'}
 
 
 def test_equal_or_not_equal():
@@ -20,6 +36,18 @@ def test_boolean():
 def test_type():
     assert type('Hello' is str)
     assert type('World' is not int)
+
+from fastapi.testclient import TestClient
+from ..main import app
+from fastapi import status
+
+client = TestClient(app)
+
+def test_return_health_check():
+    response = client.get("/healthy")
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == {'status': 'Healthy'}
+
 
 
 def test_greater_and_less_than():
