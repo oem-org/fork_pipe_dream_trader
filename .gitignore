@@ -7,4 +7,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+env
+env-test
+env-dev
+env-prod
 .env
+.env-test
+.env-dev
+.env-prod
