@@ -20,15 +20,47 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_HUB_NAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-      - name: Build Docker image with cache
-        run: |
-          docker buildx create --use
-          docker buildx build --cache-from=type=registry,ref=soma1337/pipe_dream:latest --cache-to=type=registry,ref=soma1337/pipe_dream:latest,mode=max --push -t soma1337/pipe_dream:latest ./backend/
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: soma1337/pipe_dream:latest
 
-      - name: Push Docker image
-        run: docker push soma1337/pipe_dream:latest
+  test:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+
+    services:
+      db:
+        image: postgres:13
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd="pg_isready -U testuser"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Pull and Run Tests
+        run: |
+          docker-compose -f docker-compose.yml up -d db  # Start DB service
+          docker run --rm \
+            --network="container:db" \
+            -e DATABASE_URL=postgresql://testuser:testpassword@localhost:5432/testdb \
+            soma1337/pipe_dream:latest pytest tests/  # Run tests inside the app container
