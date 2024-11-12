@@ -129,22 +129,5 @@ def test_disallowed_host():
     assert response.status_code == 400
 
 def test_read_all_authenticated():
-    # Make the GET request to the "/" route
     response = client.get("/", headers=headers)
-    print("################################")
-    print("################################")
-    print("################################")
-    print("################################")
-    # Print out the status code and the response body to help debug the issue
-    print(f"Status Code: {response.status_code}")
-    print(f"Response Body: {response.json()}")
-
-    print("################################")
-    print("################################")
-    print("################################")
-    print("################################")
-    print("################################")
-    print("################################")
-    print("################################")
-    # Now assert the status code and response
     assert response.status_code == status.HTTP_200_OK
