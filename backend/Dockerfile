@@ -5,6 +5,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 COPY . /app
 
 WORKDIR /app
+RUN ls -la
 
 RUN pip3 install --upgrade pip
 
