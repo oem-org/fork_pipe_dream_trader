@@ -30,6 +30,8 @@ jobs:
         with:
           push: true
           tags: soma1337/pipe_dream:latest
+          cache-from: type=registry,ref=soma1337/pipe_dream:latest
+          cache-to: type=inline
 
   test:
     runs-on: ubuntu-latest
