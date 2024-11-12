@@ -2,7 +2,7 @@ FROM python:3.13-slim-bullseye
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
-COPY . /app
+COPY ./backend /app
 
 WORKDIR /app
 RUN ls -la
