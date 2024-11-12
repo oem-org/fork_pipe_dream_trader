@@ -4,7 +4,6 @@ from ...models import Strategies
 from ...exceptions import AuthenticationFailed, StrategyNotFound
 from ...dependencies import user_dependency, db_dependency 
 
-# auth_service = AuthenticationService.AuthService()
 
 router = APIRouter(
     prefix='/admin',

@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from starlette import status
 from ...models import Users
 from fastapi.security import OAuth2PasswordRequestForm
-from ...services.auth import AuthenticationService, PasswordService
+from ...services.auth.auth_services import hash_password, authenticate_user, create_access_token
 from ...dependencies import db_dependency
 from .schemas import *
 
@@ -12,9 +12,6 @@ router = APIRouter(
     prefix='/auth',
     tags=['auth']
 )
-
-password_service = PasswordService.PasswordService()
-auth_service = AuthenticationService.AuthService()
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_user(db: db_dependency,
@@ -26,7 +23,7 @@ async def create_user(db: db_dependency,
         first_name=create_user_request.first_name,
         last_name=create_user_request.last_name,
         role=create_user_request.role,
-        hashed_password=password_service.hash_password(create_user_request.password),
+        hashed_password=hash_password(create_user_request.password),
         is_active=True,
         phone_number=create_user_request.phone_number
     )
@@ -40,13 +37,13 @@ async def create_user(db: db_dependency,
 async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
                                  db: db_dependency):
 
-    user = auth_service.authenticate_user(form_data.username, form_data.password, db)
+    user = authenticate_user(form_data.username, form_data.password, db)
 
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail='Could not validate user.')
 
-    token = auth_service.create_access_token(user.username, user.id, user.role, timedelta(minutes=20))
+    token = create_access_token(user.username, user.id, user.role, timedelta(minutes=20))
 
     return {'access_token': token, 'token_type': 'bearer'}
 

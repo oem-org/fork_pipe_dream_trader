@@ -1,20 +1,17 @@
-# from ..dependencies import get_db, user_dependency
-# from fastapi import status
-# from ..models import Strategies
-# from .utils import *
-#
-# app.dependency_overrides[get_db] = override_get_db
-# app.dependency_overrides[user_dependency] = override_get_current_user
-#
-#inserting fixture from utils
+from ..dependencies import db_dependency, user_dependency
+from fastapi import status
+from ..models import Strategies
+from .utils import *
+
+app.dependency_overrides[db_dependency] = override_get_db
+app.dependency_overrides[user_dependency] = override_get_current_user
+
+# inserting fixture from utils
 
 # def test_read_all_authenticated(test_strategy):
 #     assert test_strategy == test_strategy
-    # response = client.get("/strategies")
-    # assert response.status_code == status.HTTP_200_OK
-    # assert response.json() == [{'complete': False, 'title': 'Learn to code!',
-    #                             'description': 'Need to learn everyday!', 'id': 1,
-    #                             'priority': 5, 'owner_id': 1,'indicators':"gg"}]
+#     response = client.get("/strategies", headers=headers)
+#     assert response.status_code == status.HTTP_200_OK
 
 #
 # def test_read_one_authenticated(test_strategy):
