@@ -6,10 +6,10 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 import time
 import logging
 logger = logging.getLogger("uvicorn.access")
-# custom made logger below so disabled
+# custom made logger so disabled
 logger.disabled = True
 
-
+# beyond crud youtube
 def register_middleware(app: FastAPI):
 
     @app.middleware("http")
@@ -19,7 +19,7 @@ def register_middleware(app: FastAPI):
         response = await call_next(request)
         processing_time = time.time() - start_time
 
-        #custom logging to cli 
+        #custom logging to cli
         message = f"{request.client.host}:{request.client.port} - {request.method} - {request.url.path} - {response.status_code} completed after {processing_time}s"
 
         print(message)

@@ -13,16 +13,16 @@ services:
 
   app:
     build:
-      context: .
+      context: ./backend/.
       dockerfile: Dockerfile
 
     # build:
     #   context: .
     #   image: soma1337/cryptobackend:latest
     volumes:
-      - ".:/app"
+      - "./backend:/app"
     env_file:
-      - ".env"
+      - "./backend/testenv"
     depends_on:
       - db
     networks:
@@ -34,7 +34,7 @@ services:
     volumes:
       - "db-data:/var/lib/postgresql/data"
     env_file:
-      - ".env"
+      - "./backend/testenv"
     networks:
       - dbnet
 
