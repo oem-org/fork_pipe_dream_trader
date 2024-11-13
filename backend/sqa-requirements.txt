@@ -1,2 +1,5 @@
 pip-audit
 flake8
+black
+pylint
+mypy
