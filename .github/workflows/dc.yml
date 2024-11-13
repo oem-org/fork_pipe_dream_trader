@@ -32,3 +32,17 @@ jobs:
         run: |
           RTE=test docker-compose up --abort-on-container-exit --exit-code-from app
 
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_NAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: soma1337/pipe_dream:latest
+          cache-from: type=registry,ref=soma1337/pipe_dream:latest
+          cache-to: type=inline
+          file: ./backend/Dockerfile
