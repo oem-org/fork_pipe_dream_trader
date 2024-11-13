@@ -1,18 +1,16 @@
-from datetime import timedelta, datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Annotated
+
 from fastapi import Depends, HTTPException
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from jose import JWTError, jwt
+from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 from starlette import status
+
+from .config import Config
 from .database import SessionLocal
 from .models import Users
-from passlib.context import CryptContext
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
-from jose import jwt, JWTError
-from sqlalchemy.orm import Session
-from .database import SessionLocal
-from fastapi import Depends
-from typing import Annotated
-from .config import Config
 from .services.auth.auth_services import get_current_user
 
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')

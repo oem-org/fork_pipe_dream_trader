@@ -1,5 +1,6 @@
-from ..dependencies import db_dependency, user_dependency
 from fastapi import status
+
+from ..dependencies import db_dependency, user_dependency
 from ..models import Strategies
 from .utils import *
 

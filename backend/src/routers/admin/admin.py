@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Path
 from starlette import status
-from ...models import Strategies
-from ...exceptions import AuthenticationFailed, StrategyNotFound
-from ...dependencies import user_dependency, db_dependency
 
+from ...dependencies import db_dependency, user_dependency
+from ...exceptions import AuthenticationFailed, StrategyNotFound
+from ...models import Strategies
 
 router = APIRouter(prefix='/admin', tags=['admin'])
 

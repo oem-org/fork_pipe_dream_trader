@@ -1,5 +1,6 @@
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
+
 from .database import Base
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Text
 
 
 class Users(Base):

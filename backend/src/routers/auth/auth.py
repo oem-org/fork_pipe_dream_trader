@@ -1,15 +1,14 @@
-from datetime import timedelta, datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Annotated
+
 from fastapi import APIRouter, Depends, HTTPException
-from starlette import status
-from ...models import Users
 from fastapi.security import OAuth2PasswordRequestForm
-from ...services.auth.auth_services import (
-    hash_password,
-    authenticate_user,
-    create_access_token,
-)
+from starlette import status
+
 from ...dependencies import db_dependency
+from ...models import Users
+from ...services.auth.auth_services import (authenticate_user,
+                                            create_access_token, hash_password)
 from .schemas import *
 
 router = APIRouter(prefix='/auth', tags=['auth'])

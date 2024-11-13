@@ -1,7 +1,8 @@
 from typing import Any, Callable
+
+from fastapi import FastAPI, status
 from fastapi.requests import Request
 from fastapi.responses import JSONResponse
-from fastapi import FastAPI, status
 from sqlalchemy.exc import SQLAlchemyError
 
 

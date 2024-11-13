@@ -1,17 +1,17 @@
-from fastapi.testclient import TestClient
-from ..models import Strategies, Users
 import pytest
-from ..dependencies import get_db
-from ..main import app
 from fastapi import status
-from .utils import test_strategy
-from ..services.auth.auth_services import get_current_user
+from fastapi.testclient import TestClient
 from passlib.context import CryptContext
 from sqlalchemy import create_engine, text
+from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
-from sqlalchemy.orm import sessionmaker
+
 from ..database import Base
-from sqlalchemy.orm import Session
+from ..dependencies import get_db
+from ..main import app
+from ..models import Strategies, Users
+from ..services.auth.auth_services import get_current_user
+from .utils import test_strategy
 
 client = TestClient(app)
 

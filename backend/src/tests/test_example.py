@@ -1,5 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
+
 from ..main import app
 
 
@@ -7,9 +8,10 @@ def test_main():
     assert app is not None
 
 
-from fastapi.testclient import TestClient
-from ..main import app
 from fastapi import status
+from fastapi.testclient import TestClient
+
+from ..main import app
 
 client = TestClient(app)
 

@@ -1,12 +1,13 @@
 from fastapi import FastAPI
-from .models import Base
+
 from .database import engine
-from .routers.auth import auth
-from .routers.strategies import strategies
-from .routers.admin import admin
-from .routers.users import users
 from .exceptions import register_all_errors
 from .middleware.register_middleware import register_middleware
+from .models import Base
+from .routers.admin import admin
+from .routers.auth import auth
+from .routers.strategies import strategies
+from .routers.users import users
 
 app = FastAPI()
 

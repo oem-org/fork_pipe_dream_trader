@@ -1,12 +1,13 @@
+import pytest
+from fastapi.testclient import TestClient
+from passlib.context import CryptContext
 from sqlalchemy import create_engine, text
-from sqlalchemy.pool import StaticPool
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
+
 from ..database import Base
 from ..main import app
-from fastapi.testclient import TestClient
-import pytest
 from ..models import Strategies, Users
-from passlib.context import CryptContext
 
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 

@@ -1,11 +1,11 @@
-from passlib.context import CryptContext
-
-from pydantic import BaseModel, Field
 from fastapi import APIRouter, Depends, Path
+from passlib.context import CryptContext
+from pydantic import BaseModel, Field
 from starlette import status
+
+from ...dependencies import db_dependency, user_dependency
+from ...exceptions import AuthenticationFailed, StrategyNotFound
 from ...models import Strategies
-from ...exceptions import StrategyNotFound, AuthenticationFailed
-from ...dependencies import user_dependency, db_dependency
 
 print(user_dependency)
 router = APIRouter(tags=['strategy'])

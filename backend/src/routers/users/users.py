@@ -1,12 +1,14 @@
 from typing import Annotated, Dict
+
+from fastapi import APIRouter, Depends, HTTPException, Path
+from passlib.context import CryptContext
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends, HTTPException, Path
 from starlette import status
+
+from ...dependencies import db_dependency, user_dependency
 from ...models import Users
-from passlib.context import CryptContext
-from ...dependencies import user_dependency, db_dependency
-from ...services.auth.auth_services import verify_password, hash_password
+from ...services.auth.auth_services import hash_password, verify_password
 
 router = APIRouter(prefix='/user', tags=['user'])
 

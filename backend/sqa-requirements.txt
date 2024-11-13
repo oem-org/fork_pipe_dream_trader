@@ -4,3 +4,4 @@ black
 pylint
 pylint-quotes
 mypy
+isort
