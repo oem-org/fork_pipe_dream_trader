@@ -35,8 +35,6 @@ jobs:
 
       # Start services defined in docker-compose.yml
       - name: Start Docker Compose services
-        env:
-          RTE: test
         run: |
-          docker-compose up --abort-on-container-exit --exit-code-from app
+          RTE=test docker-compose up --abort-on-container-exit --exit-code-from app
 
