@@ -7,6 +7,23 @@ case "$RTE" in
         ;;
     test )
         echo "** Testing locally mode."
+        echo "** Testing locally mode."
+        echo "** Testing locally mode."
+        echo "** Testing locally mode."
+        echo "** Testing locally mode."
+        echo "** Testing locally mode."
+        echo "** Testing locally mode."
+        echo "** Testing locally mode."
+        echo "** Testing locally mode."
+        echo "** Testing locally mode."
+        echo "** Testing locally mode."
+        echo "** Testing locally mode."
+        echo "** Testing locally mode."
+        echo "** Testing locally mode."
+        echo "** Testing locally mode."
+        echo "** Testing locally mode."
+        echo "** Testing locally mode."
+        echo "** Testing locally mode."
         pytest
         pip-audit || exit 1
         ;;
