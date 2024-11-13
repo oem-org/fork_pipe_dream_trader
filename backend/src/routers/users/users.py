@@ -8,13 +8,11 @@ from passlib.context import CryptContext
 from ...dependencies import user_dependency, db_dependency
 from ...services.auth.auth_services import verify_password, hash_password
 
-router = APIRouter(
-    prefix='/user',
-    tags=['user']
-)
+router = APIRouter(prefix='/user', tags=['user'])
 
 
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
+
 
 class UserVerification(BaseModel):
     password: str
@@ -29,8 +27,9 @@ async def get_user(user: user_dependency, db: db_dependency):
 
 
 @router.put("/password", status_code=status.HTTP_204_NO_CONTENT)
-async def change_password(user: user_dependency, db: db_dependency,
-                          user_verification: UserVerification):
+async def change_password(
+    user: user_dependency, db: db_dependency, user_verification: UserVerification
+):
     if user is None:
         raise AutheticationFailed()
     user_model = db.query(Users).filter(Users.id == user.get('id')).first()
@@ -43,17 +42,12 @@ async def change_password(user: user_dependency, db: db_dependency,
 
 
 @router.put("/phonenumber/{phone_number}", status_code=status.HTTP_204_NO_CONTENT)
-async def change_phonenumber(user: user_dependency, db: db_dependency,
-                          phone_number: str):
+async def change_phonenumber(
+    user: user_dependency, db: db_dependency, phone_number: str
+):
     if user is None:
         raise AutheticationFailed()
     user_model = db.query(Users).filter(Users.id == user.get('id')).first()
     user_model.phone_number = phone_number
     db.add(user_model)
     db.commit()
-
-
-
-
-
-

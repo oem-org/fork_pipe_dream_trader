@@ -7,13 +7,17 @@ from sqlalchemy.exc import SQLAlchemyError
 
 class CustomBaseException(Exception):
     """base class for all errors"""
+
     pass
+
 
 class StrategyNotFound(CustomBaseException):
     pass
 
+
 class AuthenticationFailed(CustomBaseException):
     pass
+
 
 def create_exception_handler(
     status_code: int, initial_detail: Any
@@ -50,7 +54,6 @@ def register_all_errors(app: FastAPI):
         ),
     )
 
-
     @app.exception_handler(500)
     async def internal_server_error(request, exc):
 
@@ -61,7 +64,6 @@ def register_all_errors(app: FastAPI):
             },
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
-
 
     @app.exception_handler(SQLAlchemyError)
     async def database__error(request, exc):

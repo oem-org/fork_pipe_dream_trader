@@ -5,6 +5,7 @@ Revises:
 Create Date: 2024-11-11 16:57:13.326642
 
 """
+
 from typing import Sequence, Union
 
 from alembic import op
@@ -19,7 +20,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.add_column('strategies', sa.Column('indicators2', sa.String(),nullable=True))
+    op.add_column('strategies', sa.Column('indicators2', sa.String(), nullable=True))
 
 
 def downgrade() -> None:

@@ -5,9 +5,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 import time
 import logging
+
 logger = logging.getLogger("uvicorn.access")
 # custom made logger so disabled
 logger.disabled = True
+
 
 # beyond crud youtube
 def register_middleware(app: FastAPI):
@@ -19,7 +21,7 @@ def register_middleware(app: FastAPI):
         response = await call_next(request)
         processing_time = time.time() - start_time
 
-        #custom logging to cli
+        # custom logging to cli
         message = f"{request.client.host}:{request.client.port} - {request.method} - {request.url.path} - {response.status_code} completed after {processing_time}s"
 
         print(message)
@@ -35,5 +37,5 @@ def register_middleware(app: FastAPI):
 
     app.add_middleware(
         TrustedHostMiddleware,
-        allowed_hosts=["localhost", "127.0.0.1" ,"beyondapi.onrender.com","0.0.0.0"],
+        allowed_hosts=["localhost", "127.0.0.1", "beyondapi.onrender.com", "0.0.0.0"],
     )

@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class CreateUserRequest(BaseModel):
     username: str
     email: str
@@ -9,7 +10,7 @@ class CreateUserRequest(BaseModel):
     role: str
     phone_number: str
 
+
 class Token(BaseModel):
     access_token: str
     token_type: str
-

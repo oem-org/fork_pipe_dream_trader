@@ -2,8 +2,10 @@ import pytest
 from fastapi.testclient import TestClient
 from ..main import app
 
+
 def test_main():
     assert app is not None
+
 
 from fastapi.testclient import TestClient
 from ..main import app
@@ -31,7 +33,6 @@ def test_boolean():
 def test_type():
     assert type('Hello' is str)
     assert type('World' is not int)
-
 
 
 def test_greater_and_less_than():
@@ -66,8 +67,3 @@ def test_person_initialization(default_employee):
     assert default_employee.last_name == 'Doe', 'Last name should be Doe'
     assert default_employee.major == 'Computer Science'
     assert default_employee.years == 3
-
-
-
-
-

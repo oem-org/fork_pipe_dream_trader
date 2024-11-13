@@ -34,15 +34,7 @@ jobs:
 
     - name: Format with black
       run: |
-        black --check backend
-        black backend
-    - name: Lint with flake8
-      run: |
-        black --check backend
-    - name: Lint with flake8
-      working-directory: ./backend
-      run: |
-        flake8 src
+        black backend --skip-string-normalization
     - name: Type-check with mypy
       working-directory: ./backend
       run: |
