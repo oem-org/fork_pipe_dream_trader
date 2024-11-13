@@ -1,4 +1,4 @@
-RTE=dev
+RTE=test
 SECRET_KEY=dddddddddddddsss2
 ALGORITHM=HS256
 POSTGRES_HOST_AUTH_METHOD=trust
