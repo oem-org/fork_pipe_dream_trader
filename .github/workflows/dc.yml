@@ -39,7 +39,7 @@ jobs:
 
       - name: ls2
         run: |
-          ls -la
+          ls -la ./backend
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
