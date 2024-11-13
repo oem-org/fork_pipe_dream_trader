@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: dd
+      - name: ls
         run: |
           ls -la
       - name: Set up Docker Buildx
@@ -38,6 +38,9 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_NAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
+      - name: ls2
+        run: |
+          ls -la
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
