@@ -23,32 +23,28 @@ steps:
       pip install -r backend/requirements.txt
       pip install -r backend/sqa-requirements.txt
 
-  - name: Create empty linting report files
+  - name: Create report file
     run: |
-      touch isort_report.txt black_report.txt mypy_report.txt
+      touch touch report.txt
 
   - name: Format import with Isort
     working-directory: ./backend/src
     run: |
-      isort . > ../isort_report.txt
+      isort . >> ../linting_report.txt || true
     continue-on-error: true
 
   - name: Format with black
     working-directory: ./backend/src
     run: |
-      black . --skip-string-normalization > ../black_report.txt
+        black . --skip-string-normalization >> ../linting_report.txt || true
     continue-on-error: true
 
   - name: Type-check with mypy
     working-directory: ./backend/src
     run: |
-      mypy . > ../mypy_report.txt
+        mypy . >> ../linting_report.txt || true
     continue-on-error: true
-
-  - name: Combine linting reports
-    run: |
-      cat isort_report.txt black_report.txt mypy_report.txt > linting_report.txt
 
   - name: Output linting report
     run: |
-      cat linting_report.txt
+        cat linting_report.txt
