@@ -32,7 +32,22 @@ jobs:
         pip install -r backend/requirements.txt
         pip install -r backend/sqa-requirements.txt
 
-    - name: Lint with black
+    - name: Format with black
       run: |
-        black --check src
-        black src
+        black --check backend
+        black backend
+    - name: Lint with flake8
+      run: |
+        black --check backend
+    - name: Lint with flake8
+      working-directory: ./backend
+      run: |
+        flake8 src
+    - name: Type-check with mypy
+      working-directory: ./backend
+      run: |
+        mypy src
+    - name: Code analysis with pylint
+      working-directory: ./backend
+      run: |
+        pylint src
