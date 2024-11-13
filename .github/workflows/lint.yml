@@ -7,22 +7,11 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    services:
-      db:
-        image: postgres:13
-        env:
-          POSTGRES_USER: testuser
-          POSTGRES_PASSWORD: testpassword
-          POSTGRES_DB: testdb
-        options: >-
-          --health-cmd="pg_isready -U testuser"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-        ports:
-          - 5432:5432
 
     steps:
+      - name: Check out the code
+        uses: actions/checkout@v2
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -33,13 +22,26 @@ jobs:
         run: |
           docker pull soma1337/pipe_dream:latest  # Pull the image from Docker Hub
 
+      - name: Set up Docker Compose
+        run: |
+          docker-compose -f ./docker-compose.yml up -d  # Start all services defined in docker-compose
+
+      - name: Wait for Database to be ready
+        run: |
+          until docker-compose exec db pg_isready -U testuser; do
+            echo "Waiting for database...";
+            sleep 5;
+          done
+
       - name: Run tests with pytest inside the container
         run: |
-          docker run --rm \
-            --network="container:testdb" \
-            -e DATABASE_URL=postgresql://testuser:testpassword@localhost:5432/testdb \
-            soma1337/pipe_dream:latest pytest tests/  # Run pytest inside the container
+          docker-compose run \
+            -e DATABASE_URL=postgresql://testuser:testpassword@db:5432/testdb \
+            <service-name> pytest tests/  # Replace <service-name> with the name of the service in docker-compose.yml that runs your app
 
+      - name: Tear down Docker Compose
+        run: |
+          docker-compose down
   lint:
     runs-on: ubuntu-latest
     steps:
