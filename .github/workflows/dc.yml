@@ -48,4 +48,6 @@ jobs:
           tags: soma1337/pipe_dream:latest
           cache-from: type=registry,ref=soma1337/pipe_dream:latest
           cache-to: type=inline
-          file: ./backend/Dockerfile
+          file: Dockerfile
+        working-directory: ./backend
+
