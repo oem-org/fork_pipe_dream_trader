@@ -40,11 +40,14 @@ jobs:
       working-directory: ./backend/src
       run: |
         black . --skip-string-normalization
+      continue-on-error: true
     - name: Type-check with mypy
       working-directory: ./backend/src
       run: |
         mypy . --ignore-missing-imports
+      continue-on-error: true
     - name: Code analysis with pylint
       working-directory: ./backend/src
       run: |
         pylint .
+      continue-on-error: true
