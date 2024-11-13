@@ -1,23 +1,22 @@
-branches: [main]
+name: fastapi-github-actions-test
 
-# A workflow job running sequentially
+on:
+  push:
+    branches: [main]
+
 jobs:
   build:
-    # runs-on: defines The workflow runner
     runs-on: ubuntu-latest
-    # steps: defines a series of tasks executed by the Job
     steps:
     - uses: actions/checkout@v2
-    - run: |   # To fetch all history for all tags and branches
+    - run: |   
         git fetch --prune --unshallow
 
-    # Task for setting up Python 3.8 using actions/setup-python@v2 Github action
     - name: Set up Python 3.12
       uses: actions/setup-python@v2
       with:
-        python-version: 3.12 # Modify python version HERE
+        python-version: 3.12 
 
-    # Task for installing dependencies, multi-line command
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
