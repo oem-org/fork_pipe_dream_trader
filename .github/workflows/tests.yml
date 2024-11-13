@@ -30,21 +30,21 @@ jobs:
       - name: Format import with Isort
         working-directory: ./backend/src
         run: |
-          isort . >> ../linting_report.txt || true
+          isort . >> ../linting_report.txt
         continue-on-error: true
 
       - name: Format with black
         working-directory: ./backend/src
         run: |
-          black . --skip-string-normalization >> ../linting_report.txt || true
+          black . --skip-string-normalization >> ../linting_report.txt
         continue-on-error: true
 
       - name: Type-check with mypy
         working-directory: ./backend/src
         run: |
-          mypy . >> ../linting_report.txt || true
+          mypy . >> ../linting_report.txt
         continue-on-error: true
 
       - name: Output linting report
         run: |
-          cat linting_report.txt
+          ls -la
