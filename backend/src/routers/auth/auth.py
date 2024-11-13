@@ -7,8 +7,11 @@ from starlette import status
 
 from ...dependencies import db_dependency
 from ...models import Users
-from ...services.auth.auth_services import (authenticate_user,
-                                            create_access_token, hash_password)
+from ...services.auth.auth_services import (
+    authenticate_user,
+    create_access_token,
+    hash_password,
+)
 from .schemas import *
 
 router = APIRouter(prefix='/auth', tags=['auth'])

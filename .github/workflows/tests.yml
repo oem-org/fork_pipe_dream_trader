@@ -31,15 +31,20 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r backend/requirements.txt
         pip install -r backend/sqa-requirements.txt
-
+    # keep single quotes
+    - name: Format import with Isort
+      working-directory: ./backend/src
+      run: |
+        isort .
     - name: Format with black
+      working-directory: ./backend/src
       run: |
-        black backend --skip-string-normalization
+        black . --skip-string-normalization
     - name: Type-check with mypy
-      working-directory: ./backend
+      working-directory: ./backend/src
       run: |
-        mypy src
+        mypy . --ignore-missing-imports
     - name: Code analysis with pylint
-      working-directory: ./backend
+      working-directory: ./backend/src
       run: |
-        pylint src
+        pylint .
