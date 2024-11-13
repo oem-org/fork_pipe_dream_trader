@@ -30,7 +30,7 @@ jobs:
       - name: Format import with Isort
         working-directory: ./backend/src
         run: |
-          isort . >> ../linting_report.txt
+          isort . >> ../report.txt
         continue-on-error: true
 
       - name: Format with black
@@ -42,9 +42,9 @@ jobs:
       - name: Type-check with mypy
         working-directory: ./backend/src
         run: |
-          mypy . >> ../linting_report.txt
+          mypy . >> ../report.txt
         continue-on-error: true
 
       - name: Output linting report
         run: |
-          ls -la
+          cat report.txt
