@@ -44,10 +44,10 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
+          context: ./backend
           push: true
           tags: soma1337/pipe_dream:latest
           cache-from: type=registry,ref=soma1337/pipe_dream:latest
           cache-to: type=inline
           file: Dockerfile
-        working-directory: ./backend
 
