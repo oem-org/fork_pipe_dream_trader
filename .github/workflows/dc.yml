@@ -17,6 +17,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: dd
+        run: |
+          ls -la
       # Set up Docker
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
