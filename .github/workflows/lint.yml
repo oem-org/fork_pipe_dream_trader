@@ -7,7 +7,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    needs: build-and-push  # This makes the test job depend on the build-and-push job
     services:
       db:
         image: postgres:13
