@@ -10,6 +10,7 @@ RUN ls -la
 RUN pip3 install --upgrade pip
 
 RUN pip3 install -r requirements.txt
+RUN pip3 install -r sqa-requirements.txt
 RUN rm -rf /tmp
 # relative to workdir
 ENTRYPOINT ["sh", "entrypoint.sh"]
