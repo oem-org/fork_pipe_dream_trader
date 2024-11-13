@@ -2,7 +2,7 @@ FROM python:3.13-slim-bullseye
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 # relative to build context of docker compose
-COPY ./backend /app
+COPY . /app
 
 WORKDIR /app
 RUN ls -la
