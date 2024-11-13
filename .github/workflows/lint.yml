@@ -36,7 +36,7 @@ jobs:
       - name: Run tests with pytest inside the container
         run: |
           docker run --rm \
-            --network="container:db" \
+            --network="container:testdb" \
             -e DATABASE_URL=postgresql://testuser:testpassword@localhost:5432/testdb \
             soma1337/pipe_dream:latest pytest tests/  # Run pytest inside the container
 
