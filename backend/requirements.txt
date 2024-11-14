@@ -14,6 +14,7 @@ pytest-asyncio
 aiofiles
 jinja2
 pydantic-settings
-celery[redis]
 redis
 alembic
+ta-lib
+numpy==2.1.3

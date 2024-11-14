@@ -25,3 +25,13 @@ alembic downgrade -1
 ### Pytest
 
 Pytest needs RootFolder/App to work
+
+
+### TA-Lib
+install to usr directory and compile:
+```
+./configure --prefix=/usr
+make
+sudo make install
+pip install ta-lib
+```
