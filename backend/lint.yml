@@ -83,5 +83,10 @@ jobs:
           mypy . 
         continue-on-error: true
 
+      - name: Lint with Pylint
+        working-directory: ./backend/src
+        run: |
+          mypy . 
+        continue-on-error: true
 
 
