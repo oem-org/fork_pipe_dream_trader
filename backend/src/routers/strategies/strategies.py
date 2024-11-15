@@ -39,7 +39,7 @@ class StrategyRequest(BaseModel):
 async def read_all(user: user_dependency, db: db_dependency):
     # if user is None:
     #     raise AutheticationFailed()
-    return db.query(Strategies).filter(Strategies.owner_id == user.get('id')).all()
+    return db.query(Strategies).filter(Strategies.fk_user_id == user.get('id')).all()
 
 
 @router.get("/strategy/{strategy_id}", status_code=status.HTTP_200_OK)
@@ -52,7 +52,7 @@ async def read_strategy(
     strategy_model = (
         db.query(Strategies)
         .filter(Strategies.id == strategy_id)
-        .filter(Strategies.owner_id == user.get('id'))
+        .filter(Strategies.fk_user_id == user.get('id'))
         .first()
     )
     if strategy_model is not None:
@@ -68,7 +68,7 @@ async def create_strategy(
     # if user is None:
     #     raise AutheticationFailed()
     strategy_model = Strategies(
-        **strategy_request.model_dump(), owner_id=user.get('id')
+        **strategy_request.model_dump(), fk_user_id=user.get('id')
     )
 
     db.add(strategy_model)
@@ -86,7 +86,7 @@ async def update_strategy(
     strategy_model = (
         db.query(Strategies)
         .filter(Strategies.id == strategy_id)
-        .filter(Strategies.owner_id == user.get('id'))
+        .filter(Strategies.fk_user_id == user.get('id'))
         .first()
     )
     if strategy_model is None:
@@ -109,7 +109,7 @@ async def update_strategy(
 #     #     raise AutheticationFailed()
 #
 #     strategy_model = db.query(Strategies).filter(Strategies.id == strategy_id)\
-#         .filter(Strategies.owner_id == user.get('id')).first()
+#         .filter(Strategies.fk_user_id == user.get('id')).first()
 #     if strategy_model is None:
 #         raise StrategyNotFound()
 #
@@ -132,13 +132,13 @@ async def delete_strategy(
     strategy_model = (
         db.query(Strategies)
         .filter(Strategies.id == strategy_id)
-        .filter(Strategies.owner_id == user.get('id'))
+        .filter(Strategies.fk_user_id == user.get('id'))
         .first()
     )
     if strategy_model is None:
         raise StrategyNotFound()
     db.query(Strategies).filter(Strategies.id == strategy_id).filter(
-        Strategies.owner_id == user.get('id')
+        Strategies.fk_user_id == user.get('id')
     ).delete()
 
     db.commit()

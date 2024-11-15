@@ -8,6 +8,7 @@ WORKDIR /app
 # Install TA-Lib
 # Source: https://github.com/hotep-team/docker-python-ta-lib/blob/main/Dockerfile
 RUN pip3 install --upgrade pip
+
 RUN apk add --no-cache --virtual .build-deps \
         musl-dev \
         linux-headers \
@@ -15,12 +16,10 @@ RUN apk add --no-cache --virtual .build-deps \
         g++ \
         make \
         curl
-RUN cd ta-lib/ \
-    && ./configure --prefix=/usr \
-    && make \
-    && make install
-RUN pip3 install setuptools numpy \
-    && pip3 install ta-lib \
+
+RUN cd ta-lib/ && ./configure --prefix=/usr && make && make install
+
+RUN pip3 install setuptools numpy && pip3 install ta-lib \
     && apk del .build-deps \
     && rm -rf /root/.cache \
               /tmp/* \
@@ -28,6 +27,7 @@ RUN pip3 install setuptools numpy \
               /var/lib/apk/lists/*
 
 RUN pip3 install -r requirements.txt
-RUN pip3 install -r sqa-requirements.txt
+
+
 # relative to workdir
 ENTRYPOINT ["sh", "entrypoint.sh"]

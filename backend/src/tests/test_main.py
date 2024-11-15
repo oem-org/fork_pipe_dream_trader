@@ -11,7 +11,6 @@ from ..dependencies import get_db
 from ..main import app
 from ..models import Strategies, Users
 from ..services.auth.auth_services import get_current_user
-from .utils import test_strategy
 
 client = TestClient(app)
 
@@ -25,19 +24,16 @@ def mock_get_current_user():
 
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
+TEST_DB="postgresql://user:pass@db:5432/db"
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./testdb.db"
-
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False},
-    poolclass=StaticPool,
+testengine = create_engine(
+    TEST_DB
 )
 
 # create seperate database session for testing
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=testengine)
 
-Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=testengine)
 
 
 def mock_get_db():
@@ -59,9 +55,7 @@ def test_strategy():
     strategy = Strategies(
         title="Learn to code!",
         description="Need to learn everyday!",
-        priority=5,
-        complete=False,
-        owner_id=1,  # Link to test user
+        fk_user_id=1,  # Link to test user
     )
     # Use the testing session to add the strategy to the database
     db = TestingSessionLocal()
@@ -69,7 +63,7 @@ def test_strategy():
     db.commit()
     yield strategy  # Yield the strategy object for the test to use
     # Cleanup: delete the strategy after the test
-    with engine.connect() as connection:
+    with testengine.connect() as connection:
         connection.execute(text("DELETE FROM strategy;"))
         connection.commit()
 
@@ -78,13 +72,12 @@ def test_strategy():
 def test_user():
     # Create a test user for authentication testing
     user = Users(
-        username="codingwithrobytest",
-        email="codingwithrobytest@email.com",
-        first_name="Eric",
-        last_name="Roby",
+        username="jeppe",
+        email="jeppe@email.com",
+        first_name="jeppe",
+        last_name="jeppesen",
         hashed_password=bcrypt_context.hash("testpassword"),  # Hashed password
         role="admin",
-        phone_number="(111)-111-1111",
     )
     # Add the user to the database using the testing session
     db = TestingSessionLocal()
@@ -92,7 +85,7 @@ def test_user():
     db.commit()
     yield user  # Yield the user object for the test to use
     # Cleanup: delete the user after the test
-    with engine.connect() as connection:
+    with testengine.connect() as connection:
         connection.execute(text("DELETE FROM users;"))
         connection.commit()
 
@@ -101,35 +94,15 @@ def check_user_exists(db: Session, user_id: int) -> bool:
     return db.query(Users).filter(Users.id == user_id).first() is not None
 
 
-def test_check_user_exists2(test_user):
-    # Test whether the user exists in the test database
-    db = TestingSessionLocal()  # Create a new session
+def test_check_fixure_user_exists(test_user):
+    db = TestingSessionLocal()  
     user_exists = check_user_exists(
         db, test_user.id
-    )  # Use the function to check if user exists
-    db.close()  # Close the session after using it
+    )  
+    db.close()  
 
-    # Assert the user exists
     assert user_exists is True
-
-
-def test_check_user_exists(test_user):
-    # Test whether the user exists in the test database
-    db = TestingSessionLocal()  # Create a new session
-    user_exists = check_user_exists(
-        db, test_user.id
-    )  # Use the function to check if user exists
-    db.close()  # Close the session after using it
-
-    # Assert the user exists
-    assert user_exists is True
-
-
-def test_mock_get_current_user():
-    user = mock_get_current_user()  # This simulates the user being logged in
-    assert user["username"] == "codingwithrobytest"
-    assert user["id"] == 1
-    assert user["user_role"] == "admin"
+#
 
 
 def test_allowed_host():

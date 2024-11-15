@@ -1,7 +1,0 @@
-pip-audit
-flake8
-black
-pylint
-pylint-quotes
-mypy
-isort
