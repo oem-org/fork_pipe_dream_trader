@@ -17,4 +17,5 @@ pydantic-settings
 redis
 alembic
 ta-lib
+pandas_ta
 numpy==2.1.3
