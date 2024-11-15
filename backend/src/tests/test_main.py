@@ -17,17 +17,14 @@ client = TestClient(app)
 
 headers = {"Host": "localhost"}
 
-
 def mock_get_current_user():
     # Return a mock authenticated user
     return {'username': 'codingwithrobytest', 'id': 1, 'user_role': 'admin'}
 
-
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
-
 testengine = create_engine(
-    Config.DATABASE_URL
+    Config.DATABASE_URL,
 )
 
 # create seperate database session for testing
@@ -42,7 +39,6 @@ def mock_get_db():
         yield db
     finally:
         db.close()
-
 
 # Override the real dependency with the mock
 app.dependency_overrides[get_current_user] = mock_get_current_user
@@ -102,8 +98,6 @@ def test_check_fixure_user_exists(test_user):
     db.close()
 
     assert user_exists is True
-#
-
 
 def test_allowed_host():
     response = client.get("/healthy", headers={"Host": "localhost"})

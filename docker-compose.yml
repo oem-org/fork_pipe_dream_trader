@@ -18,7 +18,7 @@ services:
 
     # build:
     #   context: .
-      # image: soma1337/pipe_dream:latest
+    # image: soma1337/pipe_dream:latest
     volumes:
       - "./backend:/app"
     env_file:
@@ -29,6 +29,17 @@ services:
       - dbnet
       - webnet
 
+  postgres-test:
+    image: timescale/timescaledb-ha:pg16
+    environment:
+      POSTGRES_DB: testdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5433:5432
+    depends_on:
+      - db
+      - app
   db:
     image: timescale/timescaledb-ha:pg16
     volumes:
@@ -47,7 +58,7 @@ services:
 
 volumes:
   db-data:
-  
+
 networks:
   webnet:
     driver: bridge

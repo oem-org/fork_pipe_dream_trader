@@ -24,8 +24,6 @@ class Strategies(Base):
     description = Column(String)
     priority = Column(Integer)
     fk_user_id = Column(Integer, ForeignKey("users.id"))
-    indicators = Column(String)
-    
     indicators = relationship("Indicators", secondary="strategy_indicators", back_populates="strategies")
     pairs = relationship("Pairs", secondary="strategy_pairs", back_populates="strategies")
 
@@ -34,28 +32,25 @@ class Indicators(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
+    description = Column(String)
     config = Column(MutableDict.as_mutable(JSONB))
-    
     strategies = relationship("Strategies", secondary="strategy_indicators", back_populates="indicators")
 
 class Pairs(Base):
     __tablename__ = 'pairs'
-    
+
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
-    
     strategies = relationship("Strategies", secondary="strategy_pairs", back_populates="pairs")
-
 
 # Define the join table classes with the same syntax as other tables
 class StrategyIndicators(Base):
     __tablename__ = 'strategy_indicators'
-    
-    indicator_id = Column(Integer, ForeignKey('indicators.id'), primary_key=True)
-    strategy_id = Column(Integer, ForeignKey('strategies.id'), primary_key=True)
+    fk_indicator_id = Column(Integer, ForeignKey('indicators.id'), primary_key=True)
+    fk_strategy_id = Column(Integer, ForeignKey('strategies.id'), primary_key=True)
 
 class StrategyPairs(Base):
     __tablename__ = 'strategy_pairs'
-    
+
     pair_id = Column(Integer, ForeignKey('pairs.id'), primary_key=True)
-    strategy_id = Column(Integer, ForeignKey('strategies.id'), primary_key=True)
+    fk_strategy_id = Column(Integer, ForeignKey('strategies.id'), primary_key=True)

@@ -12,7 +12,6 @@ engine = create_engine(
 #     SQLALCHEMY_DATABASE_URL, connect_args={'check_same_thread': False}
 # )
 
-# SQLAlchemy will create the tables
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # any SQLAlchemy model will inherit from this base class
