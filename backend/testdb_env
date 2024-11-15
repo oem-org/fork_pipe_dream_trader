@@ -4,5 +4,6 @@ ALGORITHM=HS256
 POSTGRES_USER=user
 POSTGRES_PASSWORD=pass
 POSTGRES_DB=testdb
-POSTGRES_PORT=5433 
-    
+DATABASE_URL=postgresql://user:pass@testdb:5432/testdb
+
+

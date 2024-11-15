@@ -40,15 +40,6 @@ services:
       - "./backend/testenv"
     networks:
       - dbnet
-  
-  db_test:
-    image: timescale/timescaledb-ha:pg16
-    ports:
-      - "5439:5439"
-    env_file:
-      - "./backend/testdb_env"
-    networks:
-      - dbnet
 
   redis:
     container_name: redis

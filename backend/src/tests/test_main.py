@@ -11,6 +11,7 @@ from ..dependencies import get_db
 from ..main import app
 from ..models import Strategies, Users
 from ..services.auth.auth_services import get_current_user
+from ..config import Config
 
 client = TestClient(app)
 
@@ -24,10 +25,9 @@ def mock_get_current_user():
 
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
-TEST_DB="postgresql://user:pass@db:5432/db"
 
 testengine = create_engine(
-    TEST_DB
+    Config.DATABASE_URL
 )
 
 # create seperate database session for testing
@@ -95,11 +95,11 @@ def check_user_exists(db: Session, user_id: int) -> bool:
 
 
 def test_check_fixure_user_exists(test_user):
-    db = TestingSessionLocal()  
+    db = TestingSessionLocal()
     user_exists = check_user_exists(
         db, test_user.id
-    )  
-    db.close()  
+    )
+    db.close()
 
     assert user_exists is True
 #
