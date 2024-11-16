@@ -32,7 +32,7 @@ class Indicators(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
-    description = Column(String)
+    description = Column(String) 
     config = Column(MutableDict.as_mutable(JSONB))
     strategies = relationship("Strategies", secondary="strategy_indicators", back_populates="indicators")
 
