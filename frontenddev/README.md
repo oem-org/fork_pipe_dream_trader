@@ -71,3 +71,9 @@ Let's see how this works.
 (overview)
 will only do loading on dashboard page  
 https://nextjs.org/docs/app/building-your-application/routing/route-groups
+
+### Icons
+
+https://heroicons.com/
+
+
