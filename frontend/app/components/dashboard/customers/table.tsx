@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import { lusitana } from '@/app/ui/fonts';
-import Search from '@/app/ui/search';
+import Search from '@/app/components/search';
 import {
-  CustomersTableType,
+  // CustomersTableType,
   FormattedCustomersTable,
 } from '@/app/lib/definitions';
 

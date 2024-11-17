@@ -1,4 +1,4 @@
-import { generateYAxis } from '@/app/lib/utils';
+// import { generateYAxis } from '@/app/lib/utils';
 // import { CalendarIcon } from '@heroicons/react/24/outline';
 import { lusitana } from '@/app/ui/fonts';
 // import { Revenue } from '@/app/lib/definitions';
@@ -13,7 +13,7 @@ export default async function RevenueChart() {
   const revenue = await fetchRevenue(); // Fetch data inside the component
   const chartHeight = 350;
 
-  const { yAxisLabels, topLabel } = generateYAxis(revenue);
+  // const { yAxisLabels, topLabel } = generateYAxis(revenue);
 
   if (!revenue || revenue.length === 0) {
     return <p className="mt-4 text-gray-400">No data available.</p>;
@@ -31,9 +31,9 @@ export default async function RevenueChart() {
             className="mb-6 hidden flex-col justify-between text-sm text-gray-400 sm:flex"
             style={{ height: `${chartHeight}px` }}
           >
-            {yAxisLabels.map((label) => (
+            {/* {yAxisLabels.map((label) => (
               <p key={label}>{label}</p>
-            ))}
+            ))} */}
           </div>
 
           {/* {revenue.map((month) => (

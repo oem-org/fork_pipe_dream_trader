@@ -35,7 +35,7 @@ services:
       # dockerfile: Dockerfile
 
     ports:
-      - "5438:5432"
+      - "3000:3000"
     # build:
     #   context: .
     # image: soma1337/pipe_dream:latest

@@ -1,11 +1,11 @@
-import Pagination from '@/app/components/dashboard/invoices/pagination';
+// import Pagination from '@/app/components/dashboard/invoices/pagination';
 import Search from '@/app/components/search';
 import Table from '@/app/components/dashboard/invoices/table';
 import { CreateInvoice } from '@/app/components/dashboard/invoices/buttons';
 import { lusitana } from '@/app/ui/fonts';
 import { InvoicesTableSkeleton } from '@/app/components/skeletons';
 import { Suspense } from 'react';
-import { fetchInvoicesPages } from '@/app/lib/data';
+// import { fetchInvoicesPages } from '@/app/lib/data';
 
 
 //   When to use the useSearchParams() hook vs.the searchParams prop ?
@@ -48,9 +48,9 @@ export default async function Page(props: {
 			<Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
 				<Table query={query} currentPage={currentPage} />
 			</Suspense>
-			<div className="mt-5 flex w-full justify-center">
+			{/* <div className="mt-5 flex w-full justify-center">
 				<Pagination totalPages={totalPages} />
-			</div>
+			</div> */}
 		</div>
 	);
 }

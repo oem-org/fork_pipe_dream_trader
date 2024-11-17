@@ -4,7 +4,7 @@
 import { lusitana } from '@/app/ui/fonts';
 import { LatestInvoice } from '@/app/lib/definitions';
 export default async function LatestInvoices({
-  latestInvoices,
+  // latestInvoices,
 }: {
   latestInvoices: LatestInvoice[];
 }) {
