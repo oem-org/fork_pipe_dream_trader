@@ -1,10 +1,10 @@
 import { lusitana } from '@/app/ui/fonts';
-import {
-  AtSymbolIcon,
-  KeyIcon,
-  ExclamationCircleIcon,
-} from '@heroicons/react/24/outline';
-import { ArrowRightIcon } from '@heroicons/react/20/solid';
+// import {
+//   AtSymbolIcon,
+//   KeyIcon,
+//   ExclamationCircleIcon,
+// } from '@heroicons/react/24/outline';
+// import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from './button';
 
 export default function LoginForm() {
@@ -31,7 +31,7 @@ export default function LoginForm() {
                 placeholder="Enter your email address"
                 required
               />
-              <AtSymbolIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+              {/* <AtSymbolIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
             </div>
           </div>
           <div className="mt-4">

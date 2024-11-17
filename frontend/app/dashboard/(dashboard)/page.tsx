@@ -1,23 +1,23 @@
-
-import { Card } from '@/app/components/dashboard/cards';
-import RevenueChart from '@/app/components/dashboard/revenue-chart';
-import LatestInvoices from '@/app/components/dashboard/latest-invoices';
-import { lusitana } from '@/app/ui/fonts';
-import { fetchCardData } from '@/app/lib/data'; // Remove fetchLatestInvoices
-import { Suspense } from 'react';
-import {
-	RevenueChartSkeleton,
-	LatestInvoicesSkeleton,
-} from '@/app/components/skeletons';
+import CardWrapper from '@/app/components/dashboard/cards';
+// import { Card } from "@/app/components/dashboard/cards";
+// import RevenueChart from "@/app/components/dashboard/revenue-chart";
+// import LatestInvoices from "@/app/components/dashboard/latest-invoices";
+import { lusitana } from "@/app/ui/fonts";
+// import { fetchCardData } from '@/app/lib/data'; // Remove fetchLatestInvoices
+// import { Suspense } from "react";
+// import {
+//   RevenueChartSkeleton,
+//   LatestInvoicesSkeleton,
+// } from "@/app/components/skeletons";
 
 export default async function Page() {
 	// Remove `const latestInvoices = await fetchLatestInvoices()`
-	const {
-		numberOfInvoices,
-		numberOfCustomers,
-		totalPaidInvoices,
-		totalPendingInvoices,
-	} = await fetchCardData();
+	// const {
+	// 	numberOfInvoices,
+	// 	numberOfCustomers,
+	// 	totalPaidInvoices,
+	// 	totalPendingInvoices,
+	// } = await fetchCardData();
 
 	return (
 		<main>
@@ -25,26 +25,18 @@ export default async function Page() {
 				Dashboard
 			</h1>
 			<div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-				<Card title="Collected" value={totalPaidInvoices} type="collected" />
-				<Card title="Pending" value={totalPendingInvoices} type="pending" />
-				<Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
-				<Card
-					title="Total Customers"
-					value={numberOfCustomers}
-					type="customers"
-				/>
+				{/*<Suspense fallback={<CardsSkeleton />}>
+					<CardWrapper />
+				</Suspense> */}
 			</div>
 			<div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
-				<Suspense fallback={<RevenueChartSkeleton />}>
+				{/* <Suspense fallback={<RevenueChartSkeleton />}>
 					<RevenueChart />
 				</Suspense>
 				<Suspense fallback={<LatestInvoicesSkeleton />}>
 					<LatestInvoices />
-				</Suspense>
+				</Suspense> */}
 			</div>
 		</main>
 	);
 }
-
-
-

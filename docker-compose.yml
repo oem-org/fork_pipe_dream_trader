@@ -29,6 +29,23 @@ services:
       - dbnet
       - webnet
 
+  frontend:
+    build:
+      context: ./frontend
+      # dockerfile: Dockerfile
+
+    ports:
+      - "5438:5432"
+    # build:
+    #   context: .
+    # image: soma1337/pipe_dream:latest
+    env_file:
+      - "./backend/testenv"
+    depends_on:
+      - db
+    networks:
+      - dbnet
+      - webnet
   postgres-test:
     image: timescale/timescaledb-ha:pg16
     environment:
