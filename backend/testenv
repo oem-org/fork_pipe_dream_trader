@@ -4,4 +4,4 @@ ALGORITHM=HS256
 POSTGRES_USER=user
 POSTGRES_PASSWORD=pass
 POSTGRES_DB=db
-DATABASE_URL=postgresql://user:pass@db:5432/db
+DATABASE_URL=postgresql://user:pass@timescale:5432/db

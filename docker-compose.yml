@@ -9,9 +9,9 @@ services:
     networks:
       - webnet
     depends_on:
-      - app
+      - backend
 
-  app:
+  backend:
     build:
       context: ./backend
       # dockerfile: Dockerfile
@@ -24,7 +24,7 @@ services:
     env_file:
       - "./backend/testenv"
     depends_on:
-      - db
+      - timescale
     networks:
       - dbnet
       - webnet
@@ -42,22 +42,12 @@ services:
     env_file:
       - "./backend/testenv"
     depends_on:
-      - db
+      - timescale
+      - backend
     networks:
       - dbnet
       - webnet
-  postgres-test:
-    image: timescale/timescaledb-ha:pg16
-    environment:
-      POSTGRES_DB: testdb
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-    ports:
-      - 5433:5432
-    depends_on:
-      - db
-      - app
-  db:
+  timescale:
     image: timescale/timescaledb-ha:pg16
     volumes:
       - "db-data:/var/lib/postgresql/data"
