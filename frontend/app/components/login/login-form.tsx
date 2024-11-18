@@ -5,7 +5,7 @@ import { lusitana } from '@/app/ui/fonts';
 //   ExclamationCircleIcon,
 // } from '@heroicons/react/24/outline';
 // import { ArrowRightIcon } from '@heroicons/react/20/solid';
-import { Button } from './buttons/button';
+import { Button } from '@/app/components/shared/buttons/button';
 
 export default function LoginForm() {
   return (

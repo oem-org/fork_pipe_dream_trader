@@ -8,7 +8,7 @@ import { CustomerField, InvoiceForm } from '@/app/lib/definitions';
 //   UserCircleIcon,
 // } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { Button } from '@/app/components/buttons/button';
+import { Button } from '@/app/components/shared/buttons/button';
 
 export default function EditInvoiceForm({
   invoice,

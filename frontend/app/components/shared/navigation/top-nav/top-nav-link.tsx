@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import React from "react";
+import { ReactNode } from "react";
 
 interface TopNavLinkProps {
   href: string;
   name: string;
+  children?: ReactNode;
 }
 
 export function TopNavLink({ href, name }: TopNavLinkProps) {

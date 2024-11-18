@@ -1,5 +1,5 @@
 
-import SideNav from "@/app/components/shared/navigation/side-nav";
+//import SideNav from "@/app/components/shared/navigation/side-nav";
 import { TopNav } from "@/app/components/shared/navigation/top-nav/top-nav";
 
 export default function Layout({ children }: { children: React.ReactNode }) {

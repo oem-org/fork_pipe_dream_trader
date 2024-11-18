@@ -2,7 +2,7 @@
 import React from "react";
 import { TopNavLink } from "@/app/components/shared/navigation/top-nav/top-nav-link";
 import { Button } from "@/app/components/shared/navigation/top-nav/button";
-import { DropdownMenu } from "@/app/components/shared/navigation/dropdown-hover/dropdown-menu";
+//import { DropdownMenu } from "@/app/components/shared/navigation/dropdown-hover/dropdown-menu";
 import { DropdownMenuTrigger } from "@/app/components/shared/navigation/dropdown-hover/dropdown-menu-trigger";
 import { DropdownMenuContent } from "@/app/components/shared/navigation/dropdown-hover/dropdown-menu-content";
 import { DropdownMenuItem } from "@/app/components/shared/navigation/dropdown-hover/dropdown-menu-item";
@@ -20,20 +20,18 @@ export function TopNav() {
       </div>
 
       <div className="flex items-center">
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Button variant="ghost" size="icon">
-              <User className="h-5 w-5" />
-              <span className="sr-only">User menu</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuItem>Log out</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <DropdownMenuTrigger>
+          <Button variant="ghost" size="icon">
+            <User className="h-5 w-5" />
+            <span className="sr-only">User menu</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem>Profile</DropdownMenuItem>
+          <DropdownMenuItem>Settings</DropdownMenuItem>
+          <DropdownMenuItem>Billing</DropdownMenuItem>
+          <DropdownMenuItem>Log out</DropdownMenuItem>
+        </DropdownMenuContent>
       </div>
     </nav >
   );
