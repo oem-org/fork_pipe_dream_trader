@@ -35,6 +35,12 @@ class StrategyRequest(BaseModel):
     complete: bool
 
 
+# @router.get("/", status_code=status.HTTP_200_OK)
+# async def read_all(er_dependency, db: db_dependency):
+#     # if user is None:
+#     #     raise AutheticationFailed()
+#     return db.query(Strategies).filter(Strategies.fk_user_id == user.get('id')).all()
+#
 @router.get("/", status_code=status.HTTP_200_OK)
 async def read_all(user: user_dependency, db: db_dependency):
     # if user is None:
