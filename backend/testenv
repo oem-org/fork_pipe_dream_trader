@@ -1,4 +1,4 @@
-RTE=test
+RTE=dev
 SECRET_KEY=dddddddddddddsss2
 ALGORITHM=HS256
 POSTGRES_USER=user
