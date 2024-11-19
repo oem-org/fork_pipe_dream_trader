@@ -13,12 +13,20 @@ from ...services.auth.auth_services import (
     hash_password,
 )
 from .schemas import *
+from fastapi import Depends, Form
 
 router = APIRouter(prefix='/auth', tags=['auth'])
 
+def user_form(
+    email: str = Form(...),
+    username: str = Form(...),
+    password: str = Form(...)
+) -> CreateUserRequest:
+    return CreateUserRequest(email=email, username=username, password=password)
+
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def create_user(db: db_dependency, create_user_request: CreateUserRequest):
+async def create_user(db: db_dependency, create_user_request = Depends(user_form)):
 
     create_user_model = Users(
         email=create_user_request.email,

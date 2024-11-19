@@ -1,5 +1,7 @@
-from .services.auth.auth_services import hash_password
-
+from sqlalchemy import event
+from ..models.users import User
+from ..models.strategies import Strategies
+# Database initial data
 INITIAL_DATA = {
       'users': [
             {
@@ -22,31 +24,10 @@ def initialize_table(target, connection, **kw):
     tablename = str(target)
     if tablename in INITIAL_DATA and len(INITIAL_DATA[tablename]) > 0:
         connection.execute(target.insert(), INITIAL_DATA[tablename])
-from fastapi import FastAPI
 
-from .database import engine
-from .exceptions import register_all_errors
-from .middleware.register_middleware import register_middleware
-from .models import Base
-from .routers.admin import admin
-from .routers.auth import auth
-from .routers.strategies import strategies
-from .routers.users import users
+# In main.py
 
-app = FastAPI()
+# This method receives a table, a connection and inserts data to that table.
+event.listen(User.__table__, 'after_create', initialize_table)
+event.listen(SomeTable.__table__, 'after_create', initialize_table)
 
-
-Base.metadata.create_all(bind=engine)
-
-
-@app.get("/healthy")
-def health_check():
-    return {'status': 'Healthy'}
-
-
-register_all_errors(app)
-# register_middleware(app)
-
-app.include_router(auth.router)
-app.include_router(strategies.router)
-app.include_router(users.router)

@@ -2,6 +2,7 @@
 
 React query + server actions
 https://www.youtube.com/watch?v=OgVeQVXt7xU
+https://nextjs.org/docs/app/building-your-application/authentication
 
 ### Generics
 
