@@ -29,26 +29,26 @@ services:
       - dbnet
       - webnet
 
-  frontend:
-    build:
-      context: ./frontend
-      # dockerfile: Dockerfile
-
-    # volumes:
-    #   - ".:/app"
-    ports:
-      - "3000:3000"
-    # build:
-    #   context: .
-    # image: soma1337/pipe_dream:latest
-    env_file:
-      - "./backend/testenv"
-    depends_on:
-      - timescale
-      - backend
-    networks:
-      - dbnet
-      - webnet
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     # dockerfile: Dockerfile
+  #
+  #   # volumes:
+  #   #   - ".:/app"
+  #   ports:
+  #     - "3000:3000"
+  #   # build:
+  #   #   context: .
+  #   # image: soma1337/pipe_dream:latest
+  #   env_file:
+  #     - "./backend/testenv"
+  #   depends_on:
+  #     - timescale
+  #     - backend
+  #   networks:
+  #     - dbnet
+  #     - webnet
   timescale:
     image: timescale/timescaledb-ha:pg16
     volumes:
