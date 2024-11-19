@@ -19,7 +19,7 @@ headers = {"Host": "localhost"}
 
 def mock_get_current_user():
     # Return a mock authenticated user
-    return {'username': 'codingwithrobytest', 'id': 1, 'user_role': 'admin'}
+    return {'username': 'codingwithrobytest', 'id': 1}
 
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
@@ -73,7 +73,6 @@ def test_user():
         first_name="jeppe",
         last_name="jeppesen",
         hashed_password=bcrypt_context.hash("testpassword"),  # Hashed password
-        role="admin",
     )
     # Add the user to the database using the testing session
     db = TestingSessionLocal()

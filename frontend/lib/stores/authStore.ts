@@ -3,12 +3,11 @@ import axios from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
-async function _login(username: string, email: string, password: string) {
-  console.log(API_URL + "user/login/", "fucking token");
+async function _login(username: string, password: string) {
+  console.log(API_URL + "auth/token/", "fucking token");
   return axios
-    .post(API_URL + "user/login/", {
+    .post(API_URL + "auth/token/", {
       username,
-      email,
       password,
     })
     .then((response) => {
@@ -25,14 +24,15 @@ async function _login(username: string, email: string, password: string) {
 
 interface AuthStore {
   isAuthenticated: boolean;
-  login: (username: string, email: string, password: string) => Promise<boolean>;
+  login: (username: string, password: string) => Promise<boolean>;
+
   logout: () => void;
 }
 
 const useAuthStore = create<AuthStore>((set) => ({
   isAuthenticated: !!localStorage.getItem("user"), // !! converts value to a boolean
-  login: async (username: string, email: string, password: string) => {
-    const success = await _login(username, email, password);
+  login: async (username: string, password: string) => {
+    const success = await _login(username, password);
     if (success) {
       set({ isAuthenticated: true });
     }

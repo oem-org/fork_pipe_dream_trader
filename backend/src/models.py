@@ -10,11 +10,8 @@ class Users(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True)
     username = Column(String, unique=True)
-    first_name = Column(String)
-    last_name = Column(String)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
-    role = Column(String)
 
 class Strategies(Base):
     __tablename__ = 'strategies'
@@ -32,7 +29,7 @@ class Indicators(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
-    description = Column(String) 
+    description = Column(String)
     config = Column(MutableDict.as_mutable(JSONB))
     strategies = relationship("Strategies", secondary="strategy_indicators", back_populates="indicators")
 

@@ -14,17 +14,11 @@ router = APIRouter(tags=['strategy'])
 class CreateUserRequest(BaseModel):
     username: str
     email: str
-    first_name: str
-    last_name: str
     password: str
-    role: str
-    phone_number: str
-
 
 class Token(BaseModel):
     access_token: str
     token_type: str
-
 
 class StrategyRequest(BaseModel):
     # model_config allows for assigning directly to the ORM model without type errors
@@ -33,7 +27,6 @@ class StrategyRequest(BaseModel):
     description: str = Field(min_length=3, max_length=100)
     priority: int = Field(gt=0, lt=6)
     complete: bool
-
 
 # @router.get("/", status_code=status.HTTP_200_OK)
 # async def read_all(er_dependency, db: db_dependency):

@@ -21,6 +21,13 @@ export default function Page() {
           className="hidden md:block"
           alt="Screenshots of the dashboard project showing desktop version"
         /> */}
+        <p>TEST</p>
+        <p>TEST</p>
+        <p>TEST</p>
+        <p>TEST</p>
+        <p>TEST</p>
+        <p>TEST</p>
+        <p>TEST</p>
       </div>
     </main>
   );
