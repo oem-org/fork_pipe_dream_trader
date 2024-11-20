@@ -1,3 +1,4 @@
+'use client'
 import { lusitana } from '@/app/ui/fonts';
 import { Button } from '@/app/components/shared/buttons/button';
 import useAuthStore from '@/lib/stores/authStore';
@@ -48,6 +49,7 @@ export default function LoginForm() {
                 id="username"
                 type="text"
                 name="username"
+                defaultValue="testuser"
                 placeholder="Enter your username"
                 required
               />
@@ -66,9 +68,9 @@ export default function LoginForm() {
                 id="password"
                 type="password"
                 name="password"
+                defaultValue="Lilleged666!"
                 placeholder="Enter your password"
                 required
-                minLength={6}
               />
             </div>
           </div>

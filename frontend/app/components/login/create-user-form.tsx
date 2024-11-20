@@ -19,7 +19,7 @@ export default function CreateUserForm() {
     <form className="space-y-3" action={formAction}>
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`${lusitana.className} mb-3 text-2xl`}>
-          Create your account --..
+          Create your account
         </h1>
         <div className="w-full">
           <div>

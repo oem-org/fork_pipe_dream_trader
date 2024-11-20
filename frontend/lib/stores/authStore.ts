@@ -30,7 +30,8 @@ interface AuthStore {
 }
 
 const useAuthStore = create<AuthStore>((set) => ({
-  isAuthenticated: !!localStorage.getItem("user"), // !! converts value to a boolean
+  // !! converts value to a boolean
+  isAuthenticated: !!localStorage.getItem("user"),
   login: async (username: string, password: string) => {
     const success = await _login(username, password);
     if (success) {

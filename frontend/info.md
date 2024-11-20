@@ -1,5 +1,7 @@
 ### Inspiration
 
+https://supabase.com/blog/react-query-nextjs-app-router-cache-helpers
+
 React query + server actions
 https://www.youtube.com/watch?v=OgVeQVXt7xU
 https://nextjs.org/docs/app/building-your-application/authentication
@@ -18,7 +20,7 @@ https://nextjs.org/docs/app/building-your-application/routing/linking-and-naviga
 Splitting code by routes so
 if error is in one place whole site wont chrash
 
-### Waterfall
+### Waterfall loading
 will leed to performance gains,, can be issue if one is slower than others
 
 const {
@@ -96,3 +98,41 @@ Server Actions are also deeply integrated with Next.js caching
 ### use client/server
 
 Without the 'use client' directive, the framework might attempt to treat it as a Server Component. This would lead to runtime errors or a non-functional component when used in client-side interactive contexts.
+
+### Caching next.js
+
+use force cache to be able to safely call the same URL without fetching again.
+
+async function getPost(id: string) {
+  let res = await fetch(`https://api.vercel.app/blog/${id}`, {
+    cache: 'force-cache',
+  })
+  let post: Post = await res.json()
+  if (!post) notFound()
+  return post
+}
+
+f using an ORM or database directly wrap with cache function 
+
+import { cache } from 'react'
+import { db, posts, eq } from '@/lib/db' // Example with Drizzle ORM
+import { notFound } from 'next/navigation'
+ 
+export const getPost = cache(async (id) => {
+  const post = await db.query.posts.findFirst({
+    where: eq(posts.id, parseInt(id)),
+  })
+ 
+  if (!post) notFound()
+  return post
+})
+
+### Incremental Static Regeneration (ISR)
+
+
+Incremental Static Regeneration (ISR) enables you to:
+
+    Update static content without rebuilding the entire site
+    Reduce server load by serving prerendered, static pages for most requests
+    Ensure proper cache-control headers are automatically added to pages
+    Handle large amounts of content pages without long next build times
