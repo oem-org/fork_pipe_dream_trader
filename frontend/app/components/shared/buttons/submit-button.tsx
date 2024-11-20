@@ -9,7 +9,7 @@ export function SubmitButton() {
 
   return (
     <button disabled={pending} type="submit">
-      Sign Up...
+      Sign Up
     </button>
   )
 }

@@ -7,26 +7,15 @@ from starlette import status
 
 from ...dependencies import db_dependency
 from ...models import Users
-from ...services.auth.auth_services import (
-    authenticate_user,
-    create_access_token,
-    hash_password,
-)
-from .schemas import *
-from fastapi import Depends, Form
+from ...schemas import *
+from ...services.auth.auth_services import (authenticate_user,
+                                            create_access_token, hash_password)
 
 router = APIRouter(prefix='/auth', tags=['auth'])
 
-def user_form(
-    email: str = Form(...),
-    username: str = Form(...),
-    password: str = Form(...)
-) -> CreateUserRequest:
-    return CreateUserRequest(email=email, username=username, password=password)
-
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def create_user(db: db_dependency, create_user_request = Depends(user_form)):
+async def create_user(db: db_dependency, create_user_request: CreateUserRequest):
 
     create_user_model = Users(
         email=create_user_request.email,
@@ -61,7 +50,7 @@ async def login_for_access_token(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail='Could not validate user.'
         )
-
+    user = user.dump_model()
     token = create_access_token(
         user.username, user.id, timedelta(minutes=20)
     )

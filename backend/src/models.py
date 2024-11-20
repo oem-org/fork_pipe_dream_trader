@@ -30,6 +30,7 @@ class Indicators(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     description = Column(String)
+    # Mutable dict makes it possible to change the JSONB values in the Query and access the new values
     config = Column(MutableDict.as_mutable(JSONB))
     strategies = relationship("Strategies", secondary="strategy_indicators", back_populates="indicators")
 
