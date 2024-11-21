@@ -2,7 +2,7 @@
 import axios from "axios";
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
-const axiosInstance = axios.create({ API_URL })
+const axiosInstance = axios.create({ baseURL: API_URL })
 
 const storedToken = localStorage.getItem('user')
 const token = storedToken ? JSON.parse(storedToken) : null
@@ -10,7 +10,11 @@ const token = storedToken ? JSON.parse(storedToken) : null
 const getCsrfToken = () => {
   const value = ` ${document.cookie}`
   const parts = value.split(` csrftoken=`)
-  if (parts.length === 2) return parts.pop().split('').shift()
+  if (parts != undefined) {
+
+    if (parts.length === 2) return parts.pop().split('').shift()
+  }
+
 }
 
 const csrfToken = getCsrfToken()
@@ -31,35 +35,37 @@ class ApiClient<T> {
     this.endpoint = endpoint
   }
 
-  getAll = () => {
+  getAll = async () => {
     return axiosInstance.get<T[]>(this.endpoint, { headers }).then((res) => res.data)
   }
 
-
-  get = (id: number, params?: any) => {
+  get = async (id: number, params?: any) => {
     return axiosInstance
       .get<T>(`${this.endpoint}/${id}/`, { params, headers })
       .then((res) => res.data)
   }
-  getSingleParam = (id: any, queryString: string) => {
+
+  getSingleParam = async (id: any, queryString: string) => {
     return axiosInstance
       .get<T>(`${this.endpoint}/?${queryString}=${id}`, { headers })
       .then((res) => res.data)
   }
-  getNoneParam = (id: number) => {
+
+  getNoneParam = async (id: number) => {
     return axiosInstance
       .get<T>(`${this.endpoint}/${id}/`, { headers })
       .then((res) => res.data)
   }
-  post = (data: T) => {
+
+  post = async (data: T) => {
     return axiosInstance.post<T>(this.endpoint, data, { headers }).then((res) => res.data)
   }
 
-  delete = (id: number) => {
+  delete = async (id: number) => {
     return axiosInstance.delete(`${this.endpoint}${id}`, { headers })
   }
 
-  update = (id: number, data: T) => {
+  update = async (id: number, data: T) => {
     return axiosInstance
       .put(`${this.endpoint}${id}/`, data, { headers })
       .then((res) => res.data)
