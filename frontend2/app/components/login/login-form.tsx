@@ -1,4 +1,3 @@
-'use client'
 import { lusitana } from '@/app/ui/fonts';
 import { Button } from '@/app/components/shared/buttons/button';
 import useAuthStore from '@/lib/stores/authStore';
@@ -7,7 +6,7 @@ import React, { useState } from "react";
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const { isAuthenticated, login, logout } = useAuthStore();
+  //const { isAuthenticated, login, logout } = useAuthStore();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,7 +17,16 @@ export default function LoginForm() {
     const password = formData.get("password") as string;
 
     try {
-      await login(username, password);
+
+
+      const res = await fetch('http://localhost:8000/auth/', {
+        method: 'POST',
+        body: JSON.stringify({ username, password }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      //await login(username, password);
     } catch (error) {
       setError("Login failed. Please check your credentials.");
     } finally {
@@ -32,9 +40,6 @@ export default function LoginForm() {
         <h1 className={`${lusitana.className} mb-3 text-2xl`}>
           Please log in to continue.
         </h1>
-        {error && (
-          <div className="mb-4 text-sm text-red-600">{error}</div>
-        )}
         <div className="w-full">
           <div>
             <label
@@ -75,18 +80,8 @@ export default function LoginForm() {
             </div>
           </div>
         </div>
-        <Button className="mt-4 w-full" type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Log in"}
-        </Button>
-        {isAuthenticated && (
-          <div className="mt-4">
-            <Button className="w-full" onClick={logout} color="red">
-              Logout
-            </Button>
-          </div>
-        )}
         <div className="flex h-8 items-end space-x-1">
-          {error}
+          <button type="submit">sub</button>
         </div>
       </div>
     </form>

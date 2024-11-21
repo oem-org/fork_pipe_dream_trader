@@ -1,0 +1,1 @@
+{"result":[{"scriptId":"1033","url":"file:///home/mrqdt/code/crypto_dashboard/frontend/setupTests.js","functions":[{"functionName":"","ranges":[{"startOffset":0,"endOffset":635,"count":1}],"isBlockCoverage":true},{"functionName":"","ranges":[{"startOffset":13,"endOffset":635,"count":1},{"startOffset":299,"endOffset":634,"count":0}],"isBlockCoverage":true}]}]}
