@@ -22,6 +22,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    "baseUrl": "src",
     "types": [
       "vitest/globals"
     ] // enable the globals it, describe etc.
@@ -32,7 +33,7 @@
     "lib/services",
     "lib/hooks",
     "lib/utils",
-    "types"
+    "src/types"
   ],
   "references": [
     {
