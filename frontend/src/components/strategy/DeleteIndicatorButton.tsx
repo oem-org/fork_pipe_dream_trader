@@ -1,5 +1,5 @@
 import React from "react";
-import { useDeleteIndicator } from "../../../lib/hooks/useDeleteIndicator";
+import { useDeleteIndicator } from "../src/lib/hooks/useDeleteIndicator";
 import { Button } from "@chakra-ui/react";
 
 interface Props {

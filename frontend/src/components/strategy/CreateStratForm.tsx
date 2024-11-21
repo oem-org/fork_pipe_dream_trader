@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Stack, Input, Button, Text, Textarea } from "@chakra-ui/react";
-import useSignUp from "../../../lib/hooks/useSignUp";
+import useSignUp from "../src/lib/hooks/useSignUp";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Strategy from "../../../interfaces/Strategy";
-import { StrategiesClient } from "../../../lib/services/ApiClientInstances";
-import { useCreateStrategy } from "../../../lib/hooks/useCreateStrategy";
+import Strategy from "../src/interfaces/Strategy";
+import { StrategiesClient } from "../src/lib/services/ApiClientInstances";
+import { useCreateStrategy } from "../src/lib/hooks/useCreateStrategy";
 
 interface SignUpProps {
   onClose: () => void;

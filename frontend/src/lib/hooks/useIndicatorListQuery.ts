@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { IndicatorTypesClient } from "../../lib/services/ApiClientInstances";
-import IndicatorList from "../../interfaces/IndicatorList";
+import { IndicatorTypesClient } from "src/lib/services/ApiClientInstances";
+import IndicatorList from "src/interfaces/IndicatorList";
 
 const useIndicatorListQuery = () => {
   const fetchIndicators = async (): Promise<IndicatorList[]> => {

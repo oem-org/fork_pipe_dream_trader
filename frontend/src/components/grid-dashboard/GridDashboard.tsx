@@ -6,7 +6,7 @@ import {
   GridItem as ChakraGridItem,
 } from "@chakra-ui/react";
 
-import useGridQuery from "../../../lib/hooks/useGridQuery.ts";
+import useGridQuery from "../src/lib/hooks/useGridQuery.ts";
 
 import useGridStore from "./store.ts";
 

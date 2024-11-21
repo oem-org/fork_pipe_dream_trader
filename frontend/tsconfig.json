@@ -22,7 +22,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "baseUrl": "src",
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"]
+    },
     "types": [
       "vitest/globals"
     ] // enable the globals it, describe etc.

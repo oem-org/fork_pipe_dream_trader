@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
-import Indicator from "../../interfaces/Indicator";
-import { IndicatorsClient } from "../../lib/services/ApiClientInstances";
+import Indicator from "src/interfaces/Indicator";
+import { IndicatorsClient } from "src/lib/services/ApiClientInstances";
 
 interface IndicatorStore {
   indicators: Indicator[];

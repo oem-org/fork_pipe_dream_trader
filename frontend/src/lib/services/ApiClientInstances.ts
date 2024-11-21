@@ -1,10 +1,10 @@
-import Coin from "../../interfaces/Coin";
-import GridItem from "../../interfaces/GridItem";
-import Indicator from "../../interfaces/Indicator";
-import IndicatorList from "../../interfaces/IndicatorList";
-import { PriceResponse } from "../../interfaces/PriceResponse";
-import Strategy from "../../interfaces/Strategy";
-import User from "../../interfaces/User";
+import Coin from "src/interfaces/Coin";
+import GridItem from "src/interfaces/GridItem";
+import Indicator from "src/interfaces/Indicator";
+import IndicatorList from "src/interfaces/IndicatorList";
+import { PriceResponse } from "src/interfaces/PriceResponse";
+import Strategy from "src/interfaces/Strategy";
+import User from "src/interfaces/User";
 import ApiClient from "./ApiClient";
 
 export const GridItemClient = new ApiClient<GridItem>("grid/grids/");

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import { Price } from "../../interfaces/Price";
+import { Price } from "src/interfaces/Price";
 
 interface priceStore {
   prices: Price[];

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { GridItemClient } from "../../lib/services/ApiClientInstances";
-import type GridItem from "../../interfaces/GridItem";
+import { GridItemClient } from "src/lib/services/ApiClientInstances";
+import type GridItem from "src/interfaces/GridItem";
 // import {GridItemClass} from "../models/GridItem"
 
 const useGridQuery = () => {

@@ -1,8 +1,8 @@
-import { lusitana } from "@/app/ui/fonts";
-import { Button } from "@/app/components/shared/buttons/button";
-import useAuthStore from "@/lib/stores/authStore";
+import { Button } from "srcsrc/components/shared/buttons/button";
+import useAuthStore from "src/lib/src/lib/stores/authStore";
 import React from "react";
-import ApiClient from "../../../lib/services/ApiClient";
+import useCoinQuery from "src/lib/hooks/useCoinQuery";
+import ApiClient from "src/lib/services/apiClient";
 
 const LoginForm: React.FC = () => {
   const { login } = useAuthStore();
@@ -68,7 +68,9 @@ const LoginForm: React.FC = () => {
           </div>
         </div>
         <div className="flex h-8 items-end space-x-1">
-          <Button type="submit" disabled={false}>Login</Button>
+          <Button type="submit" disabled={false}>
+            Login
+          </Button>
         </div>
       </div>
     </form>

@@ -1,21 +1,20 @@
-import { InputGroup, InputLeftElement, Input } from "@chakra-ui/react"
-import { useRef } from "react"
-import { BsSearch } from "react-icons/bs"
+import { InputGroup, InputLeftElement, Input } from "@chakra-ui/react";
+import { useRef } from "react";
+import { BsSearch } from "react-icons/bs";
 
-import { useNavigate } from "react-router-dom"
-import coinSearchQuery from "../../stores/coinSearchQueryStore"
-
+import { useNavigate } from "react-router-dom";
+import coinSearchQuery from "src/lib/src/lib/stores/coinSearchQueryStore";
 
 const SearchCoin = () => {
-  const ref = useRef<HTMLInputElement>(null)
-  const {coinQuery, setSearchText} = coinSearchQuery()
+  const ref = useRef<HTMLInputElement>(null);
+  const { coinQuery, setSearchText } = coinSearchQuery();
   // const navigate = useNavigate()
 
   return (
     <form
       onSubmit={(event) => {
-        event.preventDefault()
-        setSearchText(ref.current?.value ?? "")
+        event.preventDefault();
+        setSearchText(ref.current?.value ?? "");
         // navigate("/")
       }}
     >
@@ -23,7 +22,8 @@ const SearchCoin = () => {
         <InputLeftElement pointerEvents="none">
           <BsSearch />
         </InputLeftElement>
-        <Input bg="grey.200"
+        <Input
+          bg="grey.200"
           ref={ref}
           borderRadius={20}
           borderColor="teal.500"
@@ -32,7 +32,7 @@ const SearchCoin = () => {
         />
       </InputGroup>
     </form>
-  )
-}
+  );
+};
 
-export default SearchCoin
+export default SearchCoin;

@@ -16,13 +16,13 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import CustomModal from "../common/layouts/CustomModal";
-import useIndicatorListQuery from "../../../lib/hooks/useIndicatorListQuery";
+import useIndicatorListQuery from "../src/lib/hooks/useIndicatorListQuery";
 import IndicatorDescription from "./IndicatorDescription";
-import { useAddIndicator } from "../../../lib/hooks/useAddIndicator";
+import { useAddIndicator } from "../src/lib/hooks/useAddIndicator";
 import { IoIosInformationCircleOutline } from "react-icons/io";
-import strategyStore from "../../stores/strategyStore";
-import Indicator from "../../../interfaces/Indicator";
-import indicatorStore from "../../stores/indicatorStore";
+import strategyStore from "src/lib/src/lib/stores/strategyStore";
+import Indicator from "../src/interfaces/Indicator";
+import indicatorStore from "src/lib/src/lib/stores/indicatorStore";
 
 export default function SelectIndicators() {
   const { isOpen, onOpen, onClose } = useDisclosure();

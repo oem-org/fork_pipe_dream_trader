@@ -9,42 +9,42 @@ import {
   VStack,
   Box,
   useBreakpointValue,
-} from "@chakra-ui/react"
-import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons"
-import logo from "../../assets/react.svg"
-import ColorModeSwitch from "../ColorModeSwitch"
-import { Link } from "react-router-dom"
-import CustomModal from "../common/layouts/CustomModal"
-import LoginForm from "../auth/LoginForm"
-import SignUpForm from "../auth/SignUpForm"
-import useAuthStore from "../../stores/authStore"
-import { useColorMode } from "@chakra-ui/react"
+} from "@chakra-ui/react";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import logo from "../../assets/react.svg";
+import ColorModeSwitch from "../ColorModeSwitch";
+import { Link } from "react-router-dom";
+import CustomModal from "../common/layouts/CustomModal";
+import LoginForm from "../auth/LoginForm";
+import SignUpForm from "../auth/SignUpForm";
+import useAuthStore from "src/lib/src/lib/stores/authStore";
+import { useColorMode } from "@chakra-ui/react";
 
 const NavBar = () => {
   const {
     isOpen: isLoginOpen,
     onOpen: onLoginOpen,
     onClose: onLoginClose,
-  } = useDisclosure()
+  } = useDisclosure();
   const {
     isOpen: isSignUpOpen,
     onOpen: onSignUpOpen,
     onClose: onSignUpClose,
-  } = useDisclosure()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { colorMode } = useColorMode()
-  const { isAuthenticated, logout } = useAuthStore()
-  const bg = useColorModeValue("teal.500", "gray.800")
+  const { colorMode } = useColorMode();
+  const { isAuthenticated, logout } = useAuthStore();
+  const bg = useColorModeValue("teal.500", "gray.800");
 
-  const showLogo = useBreakpointValue({ base: false, md: true })
+  const showLogo = useBreakpointValue({ base: false, md: true });
 
   // Function to close the menu when a link is clicked
   const handleLinkClick = () => {
     if (isOpen) {
-      onClose()
+      onClose();
     }
-  }
+  };
 
   return (
     <>
@@ -93,7 +93,6 @@ const NavBar = () => {
           <Link to="/coins" className="text-lg">
             Market Data
           </Link>
-
         </HStack>
 
         <Flex align="center">
@@ -143,7 +142,7 @@ const NavBar = () => {
         bg={bg}
         color="white"
         position="fixed"
-        top="3.5rem"  // Adjust as necessary to match the height of the navbar
+        top="3.5rem" // Adjust as necessary to match the height of the navbar
         left="0"
         right="0"
         zIndex="999"
@@ -156,10 +155,9 @@ const NavBar = () => {
         <Link to="/coins" className="text-lg" onClick={handleLinkClick}>
           Coin list
         </Link>
-
       </VStack>
     </>
-  )
-}
+  );
+};
 
-export default NavBar
+export default NavBar;

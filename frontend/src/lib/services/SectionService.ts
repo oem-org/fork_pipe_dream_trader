@@ -1,6 +1,6 @@
 import axios from "axios";
-import Section from "../../interfaces/Section";
-import GridItem from "../../interfaces/GridItem";
+import Section from "src/interfaces/Section";
+import GridItem from "src/interfaces/GridItem";
 
 class SectionService {
   http = axios.create({

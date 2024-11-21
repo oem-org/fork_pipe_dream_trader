@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import {
   CoinClient,
   StrategiesClient,
-} from "../../lib/services/ApiClientInstances";
-import Strategy from "../../interfaces/Strategy";
-import Coin from "../../interfaces/Coin";
+} from "src/lib/services/ApiClientInstances";
+import Strategy from "src/interfaces/Strategy";
+import Coin from "src/interfaces/Coin";
 // import {GridItemClass} from "../models/GridItem"
 
 const useCoinQuery = () => {

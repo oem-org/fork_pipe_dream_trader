@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { IndicatorClient } from "../../lib/services/ApiClientInstances";
-import Indicator from "../../interfaces/Indicator";
+import { IndicatorClient } from "src/lib/services/ApiClientInstances";
+import Indicator from "src/interfaces/Indicator";
 
 export const useDeleteIndicator = () => {
   const queryClient = useQueryClient();

@@ -1,61 +1,59 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
 // import AuthService from "../../services/auth/AuthService"
-import useAuthStore from "../../stores/authStore"
-import { Button } from "@chakra-ui/react"
+import useAuthStore from "src/lib/src/lib/stores/authStore";
+import { Button } from "@chakra-ui/react";
 
 const LoginForm: React.FC = () => {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-
-
-  const {isAuthenticated, login, logout} = useAuthStore()
+  const { isAuthenticated, login, logout } = useAuthStore();
   const handleLogin = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      await login(email, password)
+      await login(email, password);
       // If login successful, you can redirect to another page or update UI accordingly
-    //   window.location.reload()
+      //   window.location.reload()
     } catch (error) {
-      setError("Login failed. Please check your credentials.")
+      setError("Login failed. Please check your credentials.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div>
       {error && <div>{error}</div>}
 
       {!isAuthenticated && (
-      <div>
-        <input
-        type="text"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <div>
+          <input
+            type="text"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-      <button onClick={handleLogin} disabled={loading}>
-        {loading ? "Logging in..." : "Login"}
-      </button>
-      </div>
+          <button onClick={handleLogin} disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
+          </button>
+        </div>
       )}
-     {isAuthenticated && (
+      {isAuthenticated && (
         <Button colorScheme="red" onClick={() => logout()}>
           Logout
         </Button>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;

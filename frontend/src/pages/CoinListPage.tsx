@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import CoinList from "../components/coin-list/ListCoins";
+import CoinList from "src/components/coin-list/ListCoins";
 import {
   Box,
   Grid,
@@ -7,13 +7,13 @@ import {
   Spinner,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import useCoinSearchQueryStore from "../stores/coinSearchQueryStore";
-import SearchCoin from "../components/coin-list/SearchCoin";
-// import SortCoinSelector from "../components/coin-list/SortCoinSelector";
+import useCoinSearchQueryStore from "src/lib/stores/useCoinSearchQueryStore";
+import SearchCoin from "src/components/coin-list/SearchCoin";
+// import SortCoinSelector from "src/components/coin-list/SortCoinSelector";
 import { useEffect, useState } from "react";
 
-import useCoinQuery from "../../lib/hooks/useCoinQuery";
-import { splitPairName } from "../../lib/utils/splitPairName";
+import useCoinQuery from "src/lib/hooks/useCoinQuery";
+import { splitPairName } from "src/lib/utils/splitPairName";
 
 export default function CoinListPage() {
   const { data, error, isLoading } = useCoinQuery();

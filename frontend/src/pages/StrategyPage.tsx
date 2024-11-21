@@ -1,27 +1,21 @@
-import {
-  Box,
-  Button,
-  Grid,
-  GridItem,
-  useColorMode,
-} from "@chakra-ui/react";
-//import SideBar from "../components/navigationBars/SideBar"
-import IndicatorSection from "../components/strategy/IndicatorSection";
-import SelectStratgyPanel from "../components/strategy/SelectStrategyPanel";
-import SelectIndicators from "../components/strategy/SelectIndicators";
-import CryptoCoinList from "../components/strategy/CryptoCoinList";
-import strategyStore from "../stores/strategyStore";
-import StrategyName from "../components/strategy/StrategyName";
-import { ChartComponent } from "../components/charting/ChartComponent";
+import { Box, Button, Grid, GridItem, useColorMode } from "@chakra-ui/react";
+//import SideBar from "src/components/navigationBars/SideBar"
+import IndicatorSection from "src/components/strategy/IndicatorSection";
+import SelectStratgyPanel from "src/components/strategy/SelectStrategyPanel";
+import SelectIndicators from "src/components/strategy/SelectIndicators";
+import CryptoCoinList from "src/components/strategy/CryptoCoinList";
+import strategyStore from "src/lib/stores/strategyStore";
+import StrategyName from "src/components/strategy/StrategyName";
+import { ChartComponent } from "src/components/charting/ChartComponent";
 import { useEffect, useState } from "react";
-import priceStore from "../stores/priceStore";
-import usePriceQuery from "../../lib/hooks/usePriceQuery";
-import { useDeleteStrategy } from "../../lib/hooks/useDeleteStrategy";
-import { Price } from "../../interfaces/Price";
+import priceStore from "src/lib/stores/priceStore";
+import usePriceQuery from "src/lib/hooks/usePriceQuery";
+import { useDeleteStrategy } from "src/lib/hooks/useDeleteStrategy";
+import { Price } from "src/interfaces/Price";
 import { useQueryClient } from "@tanstack/react-query";
-import { darkModeColor } from "../components/charting/darkModeColor";
-import { lightModeColor } from "../components/charting/lightModeColor";
-// import strategyStore from "../stores/strategyStore"
+import { darkModeColor } from "src/components/charting/darkModeColor";
+import { lightModeColor } from "src/components/charting/lightModeColor";
+// import strategyStore from "../src/lib/stores/strategyStore"
 function StrategyPage() {
   const { prices, selectedCoinId, results, setNext, setPrevious, setResults } =
     priceStore();

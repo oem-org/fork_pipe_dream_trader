@@ -1,24 +1,23 @@
-import React, { useState } from "react"
-import { Stack, Input, Button, Box } from "@chakra-ui/react"
-import useAuthStore from "../../stores/authStore"
+import React, { useState } from "react";
+import { Stack, Input, Button, Box } from "@chakra-ui/react";
+import useAuthStore from "src/lib/src/lib/stores/authStore";
 interface LoginProps {
-  onClose: () => void
+  onClose: () => void;
 }
 
 const LoginForm: React.FC<LoginProps> = ({ onClose }) => {
-  const {login} = useAuthStore()
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
+  const { login } = useAuthStore();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleLogin = async () => {
     try {
-      return await login(email, password)
-
+      return await login(email, password);
     } catch (error) {
-      setError("Login failed. Please check your credentials.")
-    } 
-  }
+      setError("Login failed. Please check your credentials.");
+    }
+  };
 
   return (
     <Stack spacing={3}>
@@ -32,16 +31,16 @@ const LoginForm: React.FC<LoginProps> = ({ onClose }) => {
       <Button
         colorScheme="blue"
         onClick={async () => {
-          const success = await handleLogin()
+          const success = await handleLogin();
           if (success) {
-            onClose()
+            onClose();
           }
         }}
       >
         Login
       </Button>
     </Stack>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;

@@ -1,14 +1,14 @@
 import { Text } from "@chakra-ui/react";
 
 import { useEffect, useState } from "react";
-import strategyStore from "../../stores/strategyStore";
-import Strategy from "../../../interfaces/Strategy";
-import priceStore from "../../stores/priceStore";
-import Coin from "../../../interfaces/Coin";
-import { CoinClientNoParam } from "../../../lib/services/ApiClientInstances";
-import { splitPairName } from "../../../lib/utils/splitPairName";
+import strategyStore from "src/lib/src/lib/stores/strategyStore";
+import Strategy from "../src/interfaces/Strategy";
+import priceStore from "src/lib/src/lib/stores/priceStore";
+import Coin from "../src/interfaces/Coin";
+import { CoinClientNoParam } from "../src/lib/services/ApiClientInstances";
+import { splitPairName } from "../src/lib/utils/splitPairName";
 
-// import strategyStore from "../stores/strategyStore"
+// import strategyStore from "../src/lib/stores/strategyStore"
 function StrategyName() {
   const { selectedCoinId, getByCoinId } = priceStore();
   const { selectedId, getById } = strategyStore();
