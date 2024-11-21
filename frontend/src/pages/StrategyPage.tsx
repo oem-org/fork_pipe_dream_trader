@@ -15,7 +15,7 @@ import { Price } from "src/interfaces/Price";
 import { useQueryClient } from "@tanstack/react-query";
 import { darkModeColor } from "src/components/charting/darkModeColor";
 import { lightModeColor } from "src/components/charting/lightModeColor";
-// import strategyStore from "../src/lib/stores/strategyStore"
+// import strategyStore from "src/lib/stores/strategyStore"
 function StrategyPage() {
   const { prices, selectedCoinId, results, setNext, setPrevious, setResults } =
     priceStore();

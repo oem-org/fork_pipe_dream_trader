@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Stack, Input, Button, Box } from "@chakra-ui/react";
-import useAuthStore from "src/lib/src/lib/stores/authStore";
+import useAuthStore from "src/lib/stores/authStore";
 interface LoginProps {
   onClose: () => void;
 }

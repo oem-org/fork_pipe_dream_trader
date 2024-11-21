@@ -1,5 +1,5 @@
 import { Button } from "srcsrc/components/shared/buttons/button";
-import useAuthStore from "src/lib/src/lib/stores/authStore";
+import useAuthStore from "src/lib/stores/authStore";
 import React from "react";
 import useCoinQuery from "src/lib/hooks/useCoinQuery";
 import ApiClient from "src/lib/services/apiClient";

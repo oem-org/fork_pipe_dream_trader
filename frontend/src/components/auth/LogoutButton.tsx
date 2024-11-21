@@ -1,5 +1,5 @@
 import React from "react";
-import useAuthStore from "src/lib/src/lib/stores/authStore";
+import useAuthStore from "src/lib/stores/authStore";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface LogoutButtonProps {

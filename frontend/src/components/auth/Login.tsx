@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // import AuthService from "../../services/auth/AuthService"
-import useAuthStore from "src/lib/src/lib/stores/authStore";
+import useAuthStore from "src/lib/stores/authStore";
 import { Button } from "@chakra-ui/react";
 
 const LoginForm: React.FC = () => {

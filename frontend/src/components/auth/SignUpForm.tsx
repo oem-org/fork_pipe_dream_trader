@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Stack, Input, Button, Text } from "@chakra-ui/react";
-import useSignUp from "../src/lib/hooks/useSignUp";
+import useSignUp from "src/lib/hooks/useSignUp";
 
 interface SignUpProps {
   onClose: () => void;

@@ -12,14 +12,14 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import strategyStore from "src/lib/src/lib/stores/strategyStore";
-import useStrategyQuery from "../src/lib/hooks/useStrategyQuery";
+import strategyStore from "src/lib/stores/strategyStore";
+import useStrategyQuery from "src/lib/hooks/useStrategyQuery";
 
 import { useEffect, useState } from "react";
-import Strategy from "../src/interfaces/Strategy";
+import Strategy from "src/interfaces/Strategy";
 import { useMutation } from "@tanstack/react-query";
-import { StrategiesClient } from "../src/lib/services/ApiClientInstances";
-import CustomModal from "../common/layouts/CustomModal";
+import { StrategiesClient } from "src/lib/services/ApiClientInstances";
+import CustomModal from "../shared/layouts/CustomModal";
 import CreateStratForm from "./CreateStratForm";
 
 export default function SelectStrategyPanel() {
