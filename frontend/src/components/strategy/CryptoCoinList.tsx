@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
-import CoinList from "../coinList/ListCoins";
+import CoinList from "../coin-list/ListCoins";
 import {
   Box,
   Button,
@@ -14,8 +14,8 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import useCoinQuery from "../../../lib/hooks/useCoinQuery";
-import SearchCoin from "../coinList/SearchCoin";
-import SortCoinSelector from "../coinList/SortCoinSelector";
+import SearchCoin from "../coin-list/SearchCoin";
+import SortCoinSelector from "../coin-list/SortCoinSelector";
 import { useEffect, useState } from "react";
 import priceStore from "../../stores/priceStore";
 import useCoinSearchQueryStore from "../../stores/coinSearchQueryStore";

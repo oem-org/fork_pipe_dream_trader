@@ -1,16 +1,15 @@
-import { NavLink, Outlet } from "react-router-dom";
-import CoinList from "../components/coinList/ListCoins";
+import { NavLink } from "react-router-dom";
+import CoinList from "../components/coin-list/ListCoins";
 import {
   Box,
   Grid,
   GridItem,
   Spinner,
-  Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import useCoinSearchQueryStore from "../stores/coinSearchQueryStore";
-import SearchCoin from "../components/coinList/SearchCoin";
-import SortCoinSelector from "../components/coinList/SortCoinSelector";
+import SearchCoin from "../components/coin-list/SearchCoin";
+// import SortCoinSelector from "../components/coin-list/SortCoinSelector";
 import { useEffect, useState } from "react";
 
 import useCoinQuery from "../../lib/hooks/useCoinQuery";

@@ -1,4 +1,4 @@
-import { Box, Grid, List, ListItem, Spinner, Text } from "@chakra-ui/react";
+import { List, ListItem, Spinner } from "@chakra-ui/react";
 import useCoinQuery from "../../../lib/hooks/useCoinQuery";
 
 function CoinList() {
