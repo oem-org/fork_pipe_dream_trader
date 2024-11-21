@@ -1,11 +1,11 @@
-import Coin from "../models/Coin"
-import GridItem from "../models/GridItem"
-import Indicator from "../models/Indicator"
-import IndicatorList from "../models/IndicatorList"
-import { PriceResponse } from "../models/PriceResponse"
-import Strategy from "../models/Strategy"
-import User from "../models/User"
-import ApiClient from "./ApiClient"
+import Coin from "@/interfaces/Coin"
+import GridItem from "@/interfaces/GridItem"
+import Indicator from "@/interfaces/Indicator"
+import IndicatorList from "@/interfaces/IndicatorList"
+import { PriceResponse } from "@/interfaces/responses/PriceResponse"
+import Strategy from "@/interfaces/Strategy"
+import User from "@/interfaces/User"
+import ApiClient from "@/lib/services/ApiClientService"
 
 export const GridItemClient = new ApiClient<GridItem>('grid/grids/')
 export const CreateUserClient = new ApiClient<User>('users/create/')

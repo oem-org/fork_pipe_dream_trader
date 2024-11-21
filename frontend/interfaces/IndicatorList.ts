@@ -1,7 +1,8 @@
 export default interface Indicator {
-    id?: number | undefined   
+    id?: number    
     kind: string
     settings: string
-    strategy_fk?: number
     chart_style: string
+    description: string
+
 }
