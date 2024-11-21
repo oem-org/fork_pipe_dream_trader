@@ -2,31 +2,41 @@
 import axios from "axios";
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
-const axiosInstance = axios.create({ baseURL: API_URL })
+const axiosInstance = axios.create({
+  baseURL: API_URL,
+  withCredentials: true
+})
 
-const storedToken = localStorage.getItem('user')
-const token = storedToken ? JSON.parse(storedToken) : null
+//const storedToken = localStorage.getItem('user')
+//const token = storedToken ? JSON.parse(storedToken) : null
 
-const getCsrfToken = () => {
-  const value = ` ${document.cookie}`
-  const parts = value.split(` csrftoken=`)
-  if (parts != undefined) {
+//const getCsrfToken = () => {
+//  const value = ` ${document.cookie}`
+//  const parts = value.split(` csrftoken=`)
+//  if (parts != undefined) {
+//
+//    if (parts.length === 2) return parts.pop().split('').shift()
+//  }
+//
+//}
+axiosInstance.interceptors.request.use((config) => {
+  console.log("Request Headers:", config.headers);
+  return config;
+});
+//const csrfToken = getCsrfToken()
 
-    if (parts.length === 2) return parts.pop().split('').shift()
-  }
-
+const headers = {
+  'Content-Type': 'application/json'
 }
-
-const csrfToken = getCsrfToken()
 
 // Define headers based on the token
-const headers = token ? {
-  'Content-Type': 'application/json',
-  'Authorization': `Token ${token.token}`,
-} : {
-  'Content-Type': 'application/json',
-  'X-CSRFToken': csrfToken,
-}
+//const headers = token ? {
+//  'Content-Type': 'application/json',
+//  'Authorization': `Token ${token.token}`,
+//} : {
+//  'Content-Type': 'application/json',
+//  'X-CSRFToken': csrfToken,
+//}
 // res.data is json
 class ApiClient<T> {
   endpoint: string
