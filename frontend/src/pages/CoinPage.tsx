@@ -2,10 +2,19 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { splitPairName } from "../utils/splitPairName";
 import { useQueryClient } from "@tanstack/react-query";
-import { Box, Button, Heading, Text, VStack, HStack, Flex, Center } from "@chakra-ui/react";
-import Coin from "../models/Coin";
-import usePriceQuery from "../hooks/usePriceQuery";
-import useCoinQuery from "../hooks/useCoinQuery";
+import {
+  Box,
+  Button,
+  Heading,
+  Text,
+  VStack,
+  HStack,
+  Flex,
+  Center,
+} from "@chakra-ui/react";
+import Coin from "../../interfaces/Coin";
+import usePriceQuery from "../../lib/hooks/usePriceQuery";
+import useCoinQuery from "../../lib/hooks/useCoinQuery";
 
 export default function Coinpage() {
   const queryClient = useQueryClient();
@@ -17,7 +26,11 @@ export default function Coinpage() {
   const [currentPage, setCurrentPage] = useState(1);
   // Ensure usePriceQuery is always called regardless of coin being found
 
-  const { data, isError, isLoading } = usePriceQuery(coin?.id, true, currentPage);
+  const { data, isError, isLoading } = usePriceQuery(
+    coin?.id,
+    true,
+    currentPage
+  );
 
   if (!coin) {
     return <div>Coin not found</div>;
@@ -57,10 +70,13 @@ export default function Coinpage() {
           {data?.results.map((price, index) => (
             <Flex key={index}>
               <Flex shadow="md" borderWidth="1px" p={1}>
-              <Text fontWeight="bold">Price:</Text><Text>{price.price}$</Text>
+                <Text fontWeight="bold">Price:</Text>
+                <Text>{price.price}$</Text>
               </Flex>
               <Flex shadow="md" borderWidth="1px" p={1}>
-              <Text fontWeight="bold">Datetime:</Text><Text/><Text>{price.time}</Text>
+                <Text fontWeight="bold">Datetime:</Text>
+                <Text />
+                <Text>{price.time}</Text>
               </Flex>
             </Flex>
           ))}

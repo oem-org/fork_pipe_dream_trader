@@ -16,17 +16,21 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import CustomModal from "../common/layouts/CustomModal";
-import useIndicatorListQuery from "../../hooks/useIndicatorListQuery";
+import useIndicatorListQuery from "../../../lib/hooks/useIndicatorListQuery";
 import IndicatorDescription from "./IndicatorDescription";
-import { useAddIndicator } from "../../hooks/useAddIndicator";
+import { useAddIndicator } from "../../../lib/hooks/useAddIndicator";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import strategyStore from "../../stores/strategyStore";
-import Indicator from "../../models/Indicator";
+import Indicator from "../../../interfaces/Indicator";
 import indicatorStore from "../../stores/indicatorStore";
 
 export default function SelectIndicators() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isOpen: isOpenError, onOpen: onOpenError, onClose: onCloseError } = useDisclosure();
+  const {
+    isOpen: isOpenError,
+    onOpen: onOpenError,
+    onClose: onCloseError,
+  } = useDisclosure();
   const { data, error, isLoading } = useIndicatorListQuery();
   const mutateAsync = useAddIndicator();
   const { selectedStrategy, selectedId, setStrategyId } = strategyStore();
@@ -40,7 +44,10 @@ export default function SelectIndicators() {
   const listTextColor = useColorModeValue("black", "white");
   const listBorderColor = useColorModeValue("black", "white");
 
-  const addIndicator = async (indicator: Indicator, selectedId: number | null) => {
+  const addIndicator = async (
+    indicator: Indicator,
+    selectedId: number | null
+  ) => {
     console.log(indicator.id, selectedId);
     if (typeof indicator.id === "number" && selectedId !== null) {
       console.log(selectedId, indicator.kind, indicator.settings);
@@ -70,7 +77,11 @@ export default function SelectIndicators() {
 
   return (
     <>
-      <CustomModal isOpen={isOpenError} title="No strategy selected" onClose={onCloseError}>
+      <CustomModal
+        isOpen={isOpenError}
+        title="No strategy selected"
+        onClose={onCloseError}
+      >
         <Text>Select strategy to add an indicator</Text>
       </CustomModal>
       {isLoading && <Spinner />}
@@ -113,9 +124,15 @@ export default function SelectIndicators() {
               <ListItem
                 key={indicator.id}
                 paddingY="5px"
-                _hover={{ backgroundColor: useColorModeValue("gray.300", "gray.600") }}
+                _hover={{
+                  backgroundColor: useColorModeValue("gray.300", "gray.600"),
+                }}
               >
-                <Flex justifyContent="space-between" alignItems="center" width="100%">
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  width="100%"
+                >
                   <Button
                     whiteSpace="normal"
                     textAlign="left"
@@ -130,8 +147,15 @@ export default function SelectIndicators() {
                     <IoIosInformationCircleOutline size={24} />
                   </Button>
                 </Flex>
-                <CustomModal isOpen={isOpen} title="Indicator Description" onClose={onClose}>
-                  <IndicatorDescription onClose={onClose} description={indicator.description} />
+                <CustomModal
+                  isOpen={isOpen}
+                  title="Indicator Description"
+                  onClose={onClose}
+                >
+                  <IndicatorDescription
+                    onClose={onClose}
+                    description={indicator.description}
+                  />
                 </CustomModal>
               </ListItem>
             ))}

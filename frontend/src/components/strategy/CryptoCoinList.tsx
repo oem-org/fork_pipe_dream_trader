@@ -1,5 +1,5 @@
-import { NavLink, Outlet } from "react-router-dom"
-import CoinList from "../coinList/ListCoins"
+import { NavLink, Outlet } from "react-router-dom";
+import CoinList from "../coinList/ListCoins";
 import {
   Box,
   Button,
@@ -12,41 +12,46 @@ import {
   Text,
   useDisclosure,
   useColorModeValue,
-} from "@chakra-ui/react"
-import useCoinQuery from "../../hooks/useCoinQuery"
-import SearchCoin from "../coinList/SearchCoin"
-import SortCoinSelector from "../coinList/SortCoinSelector"
-import { useEffect, useState } from "react"
-import priceStore from "../../stores/priceStore"
-import useCoinSearchQueryStore from "../../stores/coinSearchQueryStore"
-import usePriceQuery from "../../hooks/usePriceQuery"
-import { splitPairName } from "../../utils/splitPairName"
+} from "@chakra-ui/react";
+import useCoinQuery from "../../../lib/hooks/useCoinQuery";
+import SearchCoin from "../coinList/SearchCoin";
+import SortCoinSelector from "../coinList/SortCoinSelector";
+import { useEffect, useState } from "react";
+import priceStore from "../../stores/priceStore";
+import useCoinSearchQueryStore from "../../stores/coinSearchQueryStore";
+import usePriceQuery from "../../../lib/hooks/usePriceQuery";
+import { splitPairName } from "../../utils/splitPairName";
 
 export default function CryptoCoinList() {
-  const { data: dataCoins, error: errorCoins, isLoading: isLoadingCoins } = useCoinQuery()
-  const { setCoinId } = priceStore()
-  const [isListVisible, setListVisible] = useState(true)
-  const borderColor = useColorModeValue('gray.500', 'white');
-  const buttonBackgroundColor = useColorModeValue('black', 'white');
-  const buttonTextColor = useColorModeValue('white', 'black' );
-  const listBgColor = useColorModeValue('gray.100', 'gray.700');
-  const listTextColor = useColorModeValue('black', 'white');
-  const listBorderColor = useColorModeValue('gray.300', 'gray.500');
-  const listItemHoverBgColor = useColorModeValue('gray.300', 'gray.600');
+  const {
+    data: dataCoins,
+    error: errorCoins,
+    isLoading: isLoadingCoins,
+  } = useCoinQuery();
+  const { setCoinId } = priceStore();
+  const [isListVisible, setListVisible] = useState(true);
+  const borderColor = useColorModeValue("gray.500", "white");
+  const buttonBackgroundColor = useColorModeValue("black", "white");
+  const buttonTextColor = useColorModeValue("white", "black");
+  const listBgColor = useColorModeValue("gray.100", "gray.700");
+  const listTextColor = useColorModeValue("black", "white");
+  const listBorderColor = useColorModeValue("gray.300", "gray.500");
+  const listItemHoverBgColor = useColorModeValue("gray.300", "gray.600");
   const { searchCoinQuery } = useCoinSearchQueryStore();
 
   const [filteredCoins, setFilteredCoins] = useState([]);
 
   useEffect(() => {
     if (searchCoinQuery.searchText) {
-      setFilteredCoins(dataCoins?.filter(coin => coin.name.includes(searchCoinQuery.searchText)));
+      setFilteredCoins(
+        dataCoins?.filter((coin) =>
+          coin.name.includes(searchCoinQuery.searchText)
+        )
+      );
     } else {
       setFilteredCoins(dataCoins);
     }
   }, [dataCoins, searchCoinQuery.searchText]);
-
-
-
 
   return (
     <>
@@ -59,8 +64,8 @@ export default function CryptoCoinList() {
         backgroundColor={buttonBackgroundColor}
         color={buttonTextColor}
         _hover={{
-          backgroundColor: useColorModeValue('white', 'black' ),
-          color: useColorModeValue('black', 'white')
+          backgroundColor: useColorModeValue("white", "black"),
+          color: useColorModeValue("black", "white"),
         }}
       >
         {isListVisible ? "Select Pair" : "Select Pair"}
@@ -111,12 +116,10 @@ export default function CryptoCoinList() {
             </List>
           </div>
           <div className="p-3">
-        <SearchCoin />
-      </div>
+            <SearchCoin />
+          </div>
         </div>
-        
       )}
-
     </>
-  )
+  );
 }

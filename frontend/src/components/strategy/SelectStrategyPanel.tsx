@@ -11,42 +11,42 @@ import {
   useColorMode,
   useColorModeValue,
   useDisclosure,
-} from "@chakra-ui/react"
-import strategyStore from "../../stores/strategyStore"
-import useStrategyQuery from "../../hooks/useStrategyQuery"
+} from "@chakra-ui/react";
+import strategyStore from "../../stores/strategyStore";
+import useStrategyQuery from "../../../lib/hooks/useStrategyQuery";
 
-import { useEffect, useState } from "react"
-import Strategy from "../../models/Strategy"
-import { useMutation } from "@tanstack/react-query"
-import { StrategiesClient } from "../../services/ApiClientInstances"
-import CustomModal from "../common/layouts/CustomModal"
-import CreateStratForm from "./CreateStratForm"
+import { useEffect, useState } from "react";
+import Strategy from "../../../interfaces/Strategy";
+import { useMutation } from "@tanstack/react-query";
+import { StrategiesClient } from "../../../lib/services/ApiClientInstances";
+import CustomModal from "../common/layouts/CustomModal";
+import CreateStratForm from "./CreateStratForm";
 
 export default function SelectStrategyPanel() {
   const {
     isOpen: isCreateStratOpen,
     onOpen: onCreateStratOpen,
     onClose: onCreateStratClose,
-  } = useDisclosure()
-  const {colorMode} = useColorMode
-  const { data, error, isLoading } = useStrategyQuery()
-  const listBorderColor = useColorModeValue('black', 'white');
-  const buttonBackgroundColor = useColorModeValue('black', 'white');
-  const buttonTextColor = useColorModeValue('white', 'black' );
-  const listColor = useColorModeValue('teal', 'grey');
-  const listBgColor = useColorModeValue('gray.100', 'gray.700');
-  const listTextColor = useColorModeValue('black', 'white');
+  } = useDisclosure();
+  const { colorMode } = useColorMode;
+  const { data, error, isLoading } = useStrategyQuery();
+  const listBorderColor = useColorModeValue("black", "white");
+  const buttonBackgroundColor = useColorModeValue("black", "white");
+  const buttonTextColor = useColorModeValue("white", "black");
+  const listColor = useColorModeValue("teal", "grey");
+  const listBgColor = useColorModeValue("gray.100", "gray.700");
+  const listTextColor = useColorModeValue("black", "white");
   const { strategies, selectedId, setStrategies, setStrategyId, getById } =
-    strategyStore()
+    strategyStore();
 
-  const [isListVisible, setListVisible] = useState(true)
+  const [isListVisible, setListVisible] = useState(true);
 
   // updates the client with new data everytime data changes
   useEffect(() => {
     if (data) {
-      setStrategies(data)
+      setStrategies(data);
     }
-  }, [data])
+  }, [data]);
 
   return (
     <>
@@ -54,14 +54,14 @@ export default function SelectStrategyPanel() {
 
       <Button
         onClick={onCreateStratOpen}
-                width="100%"
+        width="100%"
         backgroundColor={buttonBackgroundColor}
         color={buttonTextColor}
         mb={3}
         mt={3}
         _hover={{
-          backgroundColor: useColorModeValue('white', 'black' ),
-          color: useColorModeValue('black', 'white')
+          backgroundColor: useColorModeValue("white", "black"),
+          color: useColorModeValue("black", "white"),
         }}
       >
         Create strategy
@@ -69,15 +69,14 @@ export default function SelectStrategyPanel() {
       {isLoading && <Spinner />}
       <Button
         mb={3}
-    
         onClick={() => setListVisible(!isListVisible)}
         width="100%"
         border="none"
         backgroundColor={buttonBackgroundColor}
         color={buttonTextColor}
         _hover={{
-          backgroundColor: useColorModeValue('white', 'black' ),
-          color: useColorModeValue('black', 'white')
+          backgroundColor: useColorModeValue("white", "black"),
+          color: useColorModeValue("black", "white"),
         }}
       >
         {isListVisible ? "Strategy List" : "Strategy List"}
@@ -112,7 +111,8 @@ export default function SelectStrategyPanel() {
             mb={3}
           >
             {data?.map((strategy, index) => (
-              <ListItem className="hover:bg-gray-300"
+              <ListItem
+                className="hover:bg-gray-300"
                 key={strategy.id}
                 py={2}
                 px={3}
@@ -123,10 +123,10 @@ export default function SelectStrategyPanel() {
                     whiteSpace="normal"
                     textAlign="left"
                     onClick={() => {
-                      console.log(strategy.id)
+                      console.log(strategy.id);
                       if (typeof strategy.id === "number") {
-                        console.log(strategy.id)
-                        setStrategyId(strategy.id)
+                        console.log(strategy.id);
+                        setStrategyId(strategy.id);
                       }
                     }}
                     variant="link"
@@ -142,5 +142,5 @@ export default function SelectStrategyPanel() {
         </div>
       )}
     </>
-  )
+  );
 }

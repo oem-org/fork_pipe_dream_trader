@@ -1,8 +1,8 @@
 import React, { useState } from "react"
 // import AuthService from "../../services/auth/AuthService"
 import useAuthStore from "../../stores/authStore"
-import { Button, useDisclosure } from "@chakra-ui/react"
-import CustomModal from "../common/layouts/CustomModal"
+import { Button } from "@chakra-ui/react"
+
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -54,10 +54,6 @@ const LoginForm: React.FC = () => {
           Logout
         </Button>
       )}
-
-
-
-
     </div>
   )
 }

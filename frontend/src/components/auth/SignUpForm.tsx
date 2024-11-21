@@ -1,44 +1,46 @@
-import React, { useState } from 'react'
-import { Stack, Input, Button, Text } from '@chakra-ui/react'
-import useSignUp from '../../hooks/useSignUp'
+import React, { useState } from "react";
+import { Stack, Input, Button, Text } from "@chakra-ui/react";
+import useSignUp from "../../../lib/hooks/useSignUp";
 
 interface SignUpProps {
-  onClose: () => void
+  onClose: () => void;
 }
 
 const SignUpForm: React.FC<SignUpProps> = ({ onClose }) => {
-  const [password, setPassword] = useState('')
-  const [retypePassword, setRetypePassword] = useState('')
-  const [passwordsMatch, setPasswordsMatch] = useState(true)
+  const [password, setPassword] = useState("");
+  const [retypePassword, setRetypePassword] = useState("");
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value)
-    setPasswordsMatch(e.target.value === retypePassword)
-  }
+    setPassword(e.target.value);
+    setPasswordsMatch(e.target.value === retypePassword);
+  };
 
-  const handleRetypePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRetypePassword(e.target.value)
-    setPasswordsMatch(e.target.value === password)
-  }
+  const handleRetypePasswordChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRetypePassword(e.target.value);
+    setPasswordsMatch(e.target.value === password);
+  };
 
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value)
-  }
+    setName(e.target.value);
+  };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value)
-  }
+    setEmail(e.target.value);
+  };
 
   const handleSignUp = async () => {
-    const newUser = { name, email, password }
-    const signUpSuccess = await useSignUp(newUser)
+    const newUser = { name, email, password };
+    const signUpSuccess = await useSignUp(newUser);
     if (signUpSuccess) {
-      onClose()
+      onClose();
     }
-  }
+  };
 
   return (
     <Stack spacing={3}>
@@ -57,11 +59,15 @@ const SignUpForm: React.FC<SignUpProps> = ({ onClose }) => {
         onChange={handleRetypePasswordChange}
       />
       {!passwordsMatch && <Text color="red.500">Passwords do not match</Text>}
-      <Button colorScheme="blue" onClick={handleSignUp} isDisabled={!passwordsMatch}>
+      <Button
+        colorScheme="blue"
+        onClick={handleSignUp}
+        isDisabled={!passwordsMatch}
+      >
         Sign Up
       </Button>
     </Stack>
-  )
-}
+  );
+};
 
-export default SignUpForm
+export default SignUpForm;
