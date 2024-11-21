@@ -13,7 +13,7 @@ import SearchCoin from "../components/coin-list/SearchCoin";
 import { useEffect, useState } from "react";
 
 import useCoinQuery from "../../lib/hooks/useCoinQuery";
-import { splitPairName } from "../utils/splitPairName";
+import { splitPairName } from "../../lib/utils/splitPairName";
 
 export default function CoinListPage() {
   const { data, error, isLoading } = useCoinQuery();

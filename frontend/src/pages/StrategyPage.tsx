@@ -3,8 +3,6 @@ import {
   Button,
   Grid,
   GridItem,
-  Show,
-  Text,
   useColorMode,
 } from "@chakra-ui/react";
 //import SideBar from "../components/navigationBars/SideBar"

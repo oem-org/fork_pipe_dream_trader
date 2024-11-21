@@ -30,7 +30,9 @@
     "src",
     "interfaces",
     "lib/services",
-    "lib/hooks"
+    "lib/hooks",
+    "lib/utils",
+    "types"
   ],
   "references": [
     {

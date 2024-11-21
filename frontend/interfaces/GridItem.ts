@@ -1,4 +1,4 @@
-import { GridItemSize } from "../src/types/GridItemSize";
+import { GridItemSize } from "../types/GridItemSize";
 
 export default interface GridItem {
   id: number;

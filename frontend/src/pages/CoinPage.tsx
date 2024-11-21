@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { splitPairName } from "../utils/splitPairName";
+import { splitPairName } from "../../lib/utils/splitPairName";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   Box,

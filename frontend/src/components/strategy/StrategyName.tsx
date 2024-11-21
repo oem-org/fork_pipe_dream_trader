@@ -6,7 +6,7 @@ import Strategy from "../../../interfaces/Strategy";
 import priceStore from "../../stores/priceStore";
 import Coin from "../../../interfaces/Coin";
 import { CoinClientNoParam } from "../../../lib/services/ApiClientInstances";
-import { splitPairName } from "../../utils/splitPairName";
+import { splitPairName } from "../../../lib/utils/splitPairName";
 
 // import strategyStore from "../stores/strategyStore"
 function StrategyName() {

@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 import priceStore from "../../stores/priceStore";
 import useCoinSearchQueryStore from "../../stores/coinSearchQueryStore";
 import usePriceQuery from "../../../lib/hooks/usePriceQuery";
-import { splitPairName } from "../../utils/splitPairName";
+import { splitPairName } from "../../../lib/utils/splitPairName";
 
 export default function CryptoCoinList() {
   const {
