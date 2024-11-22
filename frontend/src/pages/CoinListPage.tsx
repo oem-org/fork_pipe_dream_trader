@@ -1,21 +1,21 @@
-// import { NavLink } from "react-router-dom";
-// import CoinList from "@/components/coin-list/ListCoins";
-// import {
-//   Box,
-//   Grid,
-//   GridItem,
-//   Spinner,
-//   useBreakpointValue,
-// } from "@chakra-ui/react";
-// import useCoinSearchQueryStore from "/stores/useCoinSearchQueryStore";
-// import SearchCoin from "/components/coin-list/SearchCoin";
-// // import SortCoinSelector from "../components/coin-list/SortCoinSelector";
-// import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
+import CoinList from "@/components/coin-list/ListCoins";
+import {
+  Box,
+  Grid,
+  GridItem,
+  Spinner,
+  useBreakpointValue,
+} from "@chakra-ui/react";
+// import useCoinSearchQueryStore from "@/lib/stores/useCoinSearchQueryStore";
+import SearchCoin from "@/components/coin-list/SearchCoin";
+// import SortCoinSelector from "../components/coin-list/SortCoinSelector";
+import { useEffect, useState } from "react";
 
-// import useCoinQuery from "../../lib/hooks/useCoinQuery";
-// import { splitPairName } from "../../lib/utils/splitPairName";
+import useCoinQuery from "@/lib/hooks/useCoinQuery";
+import { splitPairName } from "@/lib/utils/splitPairName";
 
-// export default function CoinListPage() {
+export default function CoinListPage() {
 //   const { data, error, isLoading } = useCoinQuery();
 
 //   const { searchCoinQuery } = useCoinSearchQueryStore();
@@ -36,36 +36,37 @@
 //     lg: "repeat(8, 1fr)",
 //   });
 
-//   return (
-//     <>
-//       {isLoading && <Spinner />}
+  return (
+    <>
+    </>
+  );
+}
 
-//       {error && <div>{error.message}</div>}
+    //   {isLoading && <Spinner />}
 
-//       <div className="pb-2 mt-5 ml-5 mr-5">
-//         <SearchCoin />
-//       </div>
+    //   {error && <div>{error.message}</div>}
 
-//       <Box>
-//         <Grid templateColumns={templateColumns} gap={5} mt={5} mr={5} ml={5}>
-//           {filteredCoins?.map((coin) => (
-//             <GridItem
-//               key={coin.id}
-//               colSpan={1}
-//               bg="blue.500"
-//               className="hover:bg-gray-300 rounded-lg"
-//             >
-//               <NavLink
-//                 className="block text-lg font-semibold text-black hover:text-blue-800 p-2"
-//                 to={`/coins/${coin.name}`}
-//                 replace
-//               >
-//                 {splitPairName(coin.name)}
-//               </NavLink>
-//             </GridItem>
-//           ))}
-//         </Grid>
-//       </Box>
-//     </>
-//   );
-// }
+    //   <div className="pb-2 mt-5 ml-5 mr-5">
+    //     <SearchCoin />
+    //   </div>
+
+    //   <Box>
+    //     <Grid templateColumns={templateColumns} gap={5} mt={5} mr={5} ml={5}>
+    //       {filteredCoins?.map((coin) => (
+    //         <GridItem
+    //           key={coin.id}
+    //           colSpan={1}
+    //           bg="blue.500"
+    //           className="hover:bg-gray-300 rounded-lg"
+    //         >
+    //           <NavLink
+    //             className="block text-lg font-semibold text-black hover:text-blue-800 p-2"
+    //             to={`/coins/${coin.name}`}
+    //             replace
+    //           >
+    //             {splitPairName(coin.name)}
+    //           </NavLink>
+    //         </GridItem>
+    //       ))}
+    //     </Grid>
+    //   </Box>
