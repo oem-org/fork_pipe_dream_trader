@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { StrategiesClient } from "src/lib/services/ApiClientInstances";
-import Strategy from "src/interfaces/Strategy";
+import { StrategiesClient } from "@/lib/services/ApiClientInstances";
+import Strategy from "@/interfaces/Strategy";
 
 export const useDeleteStrategy = () => {
   const queryClient = useQueryClient();

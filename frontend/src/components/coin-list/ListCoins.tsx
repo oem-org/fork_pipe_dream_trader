@@ -1,5 +1,5 @@
 import { List, ListItem, Spinner } from "@chakra-ui/react";
-import useCoinQuery from "src/lib/hooks/useCoinQuery";
+import useCoinQuery from "@/lib/hooks/useCoinQuery";
 
 function CoinList() {
   const { data, error, isLoading } = useCoinQuery();

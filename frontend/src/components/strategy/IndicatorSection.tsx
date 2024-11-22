@@ -3,12 +3,12 @@ import { Box, Button, List, Input } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
-import strategyStore from "src/lib/stores/strategyStore";
-import indicatorStore from "src/lib/stores/indicatorStore";
-import useStrategyIndicatorsQuery from "src/lib/hooks/useStrategyIndicatorsQuery";
-import { useUpdateIndicator } from "src/lib/hooks/useUpdateIndicator";
+import strategyStore from "@/lib/stores/strategyStore";
+import indicatorStore from "@/lib/stores/indicatorStore";
+import useStrategyIndicatorsQuery from "@/lib/hooks/useStrategyIndicatorsQuery";
+import { useUpdateIndicator } from "@/lib/hooks/useUpdateIndicator";
 import DeleteIndicatorButton from "./DeleteIndicatorButton";
-import Indicator from "src/interfaces/Indicator";
+import Indicator from "@/interfaces/Indicator";
 
 export default function IndicatorSection() {
   const { selectedId } = strategyStore();

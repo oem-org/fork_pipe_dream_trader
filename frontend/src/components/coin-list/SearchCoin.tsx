@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { BsSearch } from "react-icons/bs";
 
 import { useNavigate } from "react-router-dom";
-import coinSearchQuery from "src/lib/stores/coinSearchQueryStore";
+import coinSearchQuery from "@/lib/stores/coinSearchQueryStore";
 
 const SearchCoin = () => {
   const ref = useRef<HTMLInputElement>(null);

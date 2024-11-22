@@ -3,9 +3,9 @@ import {
   useQueryClient,
   keepPreviousData,
 } from "@tanstack/react-query";
-import { PricesClient } from "src/lib/services/ApiClientInstances";
-import { PriceResponse } from "src/interfaces/PriceResponse";
-import priceStore from "src/lib/stores/priceStore";
+import { PricesClient } from "@/lib/services/ApiClientInstances";
+import { PriceResponse } from "@/interfaces/PriceResponse";
+import priceStore from "@/lib/stores/priceStore";
 import { useState } from "react";
 
 const usePriceQuery = (

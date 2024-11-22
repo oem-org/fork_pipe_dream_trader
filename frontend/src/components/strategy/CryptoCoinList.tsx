@@ -13,14 +13,14 @@ import {
   useDisclosure,
   useColorModeValue,
 } from "@chakra-ui/react";
-import useCoinQuery from "src/lib/hooks/useCoinQuery";
+import useCoinQuery from "@/lib/hooks/useCoinQuery";
 import SearchCoin from "../coin-list/SearchCoin";
 import SortCoinSelector from "../coin-list/SortCoinSelector";
 import { useEffect, useState } from "react";
-import priceStore from "src/lib/stores/priceStore";
-import useCoinSearchQueryStore from "src/lib/stores/coinSearchQueryStore";
-import usePriceQuery from "src/lib/hooks/usePriceQuery";
-import { splitPairName } from "src/lib/utils/splitPairName";
+import priceStore from "@/lib/stores/priceStore";
+import useCoinSearchQueryStore from "@/lib/stores/coinSearchQueryStore";
+import usePriceQuery from "@/lib/hooks/usePriceQuery";
+import { splitPairName } from "@/lib/utils/splitPairName";
 
 export default function CryptoCoinList() {
   const {

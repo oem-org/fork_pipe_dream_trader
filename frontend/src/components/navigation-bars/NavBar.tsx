@@ -10,13 +10,13 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
-import logo from "src/assets/react.svg";
+import logo from "@/assets/react.svg";
 import ColorModeSwitch from "../ColorModeSwitch";
 import { Link } from "react-router-dom";
-import CustomModal from "src/components/shared/layouts/CustomModal";
-import LoginForm from "src/components/auth/LoginForm";
-import SignUpForm from "src/components/auth/SignUpForm";
-import useAuthStore from "src/lib/stores/authStore";
+import CustomModal from "@/components/shared/layouts/CustomModal";
+import LoginForm from "@/components/auth/LoginForm";
+import SignUpForm from "@/components/auth/SignUpForm";
+import useAuthStore from "@/lib/stores/authStore";
 import { useColorMode } from "@chakra-ui/react";
 
 const NavBar = () => {

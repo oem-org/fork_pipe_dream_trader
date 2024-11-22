@@ -1,5 +1,5 @@
-import User from "src/interfaces/User";
-import ApiClient from "src/lib/services/ApiClientJson";
+import User from "@/interfaces/User";
+import ApiClient from "@/lib/services/ApiClientJson";
 
 const userClient = new ApiClient<User>("user/create/");
 const useSignUp = async (newUser: User) => {

@@ -22,9 +22,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "baseUrl": ".",
+    "baseUrl": "src",  // Change this to 'src'
     "paths": {
-      "src/*": ["src/*"]
+      "@/*": ["*"]  // Update path alias to '@' instead of 'src/*'
     },
     "types": [
       "vitest/globals"

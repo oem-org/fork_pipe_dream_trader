@@ -1,6 +1,6 @@
 import { createChart, ColorType, IChartApi } from "lightweight-charts";
 import React, { useEffect, useRef, useState } from "react";
-import Timeseries from "src/interfaces/Timeseries";
+import Timeseries from "@/interfaces/Timeseries";
 import { lightModeColor } from "./lightModeColor";
 import { darkModeColor } from "./darkModeColor";
 import { useColorMode } from "@chakra-ui/react";

@@ -1,6 +1,6 @@
 // import React, { useEffect, useState } from "react";
 // import { useParams } from "react-router-dom";
-// import { splitPairName } from "src/lib/utils/splitPairName";
+// import { splitPairName } from "@/lib/utils/splitPairName";
 // import { useQueryClient } from "@tanstack/react-query";
 // import {
 //   Box,
@@ -13,8 +13,8 @@
 //   Center,
 // } from "@chakra-ui/react";
 // import Coin from "../../interfaces/Coin";
-// import usePriceQuery from "src/lib/hooks/usePriceQuery";
-// import useCoinQuery from "src/lib/hooks/useCoinQuery";
+// import usePriceQuery from "@/lib/hooks/usePriceQuery";
+// import useCoinQuery from "@/lib/hooks/useCoinQuery";
 
 // export default function Coinpage() {
 //   const queryClient = useQueryClient();

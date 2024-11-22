@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { IndicatorStrategyClient } from "src/lib/services/ApiClientInstances";
-import Indicator from "src/interfaces/Indicator";
+import { IndicatorStrategyClient } from "@/lib/services/ApiClientInstances";
+import Indicator from "@/interfaces/Indicator";
 
 const useStrategyIndicatorQuery = (strategy_fk: number | null) => {
   const fetchStrategyIndicators = async (): Promise<Indicator[]> => {

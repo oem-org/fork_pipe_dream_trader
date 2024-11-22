@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { StrategiesClient } from "src/lib/services/ApiClientInstances";
-import Strategy from "src/interfaces/Strategy";
+import { StrategiesClient } from "@/lib/services/ApiClientInstances";
+import Strategy from "@/interfaces/Strategy";
 
 const useStrategyQuery = () => {
   const fetchStrategies = async (): Promise<Strategy[]> => {

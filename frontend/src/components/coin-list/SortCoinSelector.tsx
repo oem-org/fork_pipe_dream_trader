@@ -1,7 +1,7 @@
 import { Menu, MenuButton, Button, MenuList, MenuItem } from "@chakra-ui/react";
 import { BsChevronDown } from "react-icons/bs";
 
-import coinQueryStore from "src/lib/stores/coinSearchQueryStore";
+import coinQueryStore from "@/lib/stores/coinSearchQueryStore";
 
 const SortSelector = () => {
   const sortOrder = coinQueryStore((state) => state.coinQuery.sortOrder);

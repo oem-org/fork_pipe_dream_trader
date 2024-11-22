@@ -1,5 +1,5 @@
 // import { NavLink } from "react-router-dom";
-// import CoinList from "src/components/coin-list/ListCoins";
+// import CoinList from "@/components/coin-list/ListCoins";
 // import {
 //   Box,
 //   Grid,

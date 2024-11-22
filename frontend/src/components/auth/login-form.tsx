@@ -1,8 +1,8 @@
-import { Button } from "srcsrc/components/shared/buttons/button";
-import useAuthStore from "src/lib/stores/authStore";
+import { Button } from "src@/components/shared/buttons/button";
+import useAuthStore from "@/lib/stores/authStore";
 import React from "react";
-import useCoinQuery from "src/lib/hooks/useCoinQuery";
-import ApiClient from "src/lib/services/apiClient";
+import useCoinQuery from "@/lib/hooks/useCoinQuery";
+import ApiClient from "@/lib/services/apiClient";
 
 const LoginForm: React.FC = () => {
   const { login } = useAuthStore();
