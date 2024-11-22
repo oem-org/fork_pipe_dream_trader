@@ -1,19 +1,19 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import Root from "./pages/Root.tsx"
-import "./index.css"
+import './index.css'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import StrategyPage from "@/pages/Strategy.tsx"
-import NotFoundPage from "@/pages/NotFoundPage.tsx"
+import StrategyPage from "./pages/strategy-page.tsx"
+import NotFoundPage from "./pages/not-found-page.tsx"
+import RootPage from "./pages/root-page.tsx"
 
 //
 const router = createBrowserRouter([
   {
 
     path: "/",
-    element: <Root />,
+    element: <RootPage />,
     errorElement: <NotFoundPage></NotFoundPage>,
     children: [
       {
@@ -29,10 +29,7 @@ const router = createBrowserRouter([
       //  element: <StrategyPage />,
       //},
     ],
-  }, {
-
-  }
-])
+  }])
 
 // when we pass this client we have access to cache 
 const queryClient = new QueryClient({
@@ -52,7 +49,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
 
-      <ReactQueryDevtools></ReactQueryDevtools>
     </QueryClientProvider>
   </React.StrictMode>
 )

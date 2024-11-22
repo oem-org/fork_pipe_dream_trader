@@ -1,9 +1,9 @@
-import Navbar from "@/components/shared/navigation/top-nav/top-nav";
+
 
 function StrategyPage() {
   return (
     <div>
-      <Navbar></Navbar>
+      <p className="p-10">GGGGGG</p>
     </div>
   );
 }

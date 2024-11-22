@@ -1,9 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",  // Change this to 'src'
-    "paths": {
-      "@/*": ["*"]  // Update path alias to '@' instead of 'src/*'
-    },
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2020",
     "useDefineForClassFields": true,
@@ -25,8 +21,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
-
-
   },
   "include": ["src"]
 }
