@@ -1,22 +1,34 @@
-//'use client'
-//
-//import React, { useState } from 'react'
-//
-//interface DropdownMenuProps {
-//  children: React.ReactNode
-//}
-//
-//export function DropdownMenu({ children }: DropdownMenuProps) {
-//  const [isOpen, setIsOpen] = useState(false)
-//
-//  return (
-//    <div className="relative" onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
-//      {React.Children.map(children, child => {
-//        if (React.isValidElement(child)) {
-//          return React.cloneElement(child, { isOpen, setIsOpen })
-//        }
-//        return child
-//      })}
-//    </div>
-//  )
-//}
+import { useState, ReactNode } from 'react';
+import { DropdownMenuTrigger } from "../dropdown-hover/dropdown-menu-trigger";
+import { DropdownMenuContent } from "../dropdown-hover/dropdown-menu-content";
+import { DropdownMenuItem } from "../dropdown-hover/dropdown-menu-item";
+import { UserIcon } from "@heroicons/react/24/outline";
+interface DropdownMenuProps {
+  children: ReactNode;
+}
+
+export function DropdownMenu({ children }: DropdownMenuProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setIsOpen(true)}   // Open on hover
+      onMouseLeave={() => setIsOpen(false)}  // Close on hover out
+    >
+      <div className={isOpen ? 'block' : 'hidden'}>
+        <DropdownMenuTrigger>
+          <UserIcon className="w-6" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <p>lool</p>
+          <DropdownMenuItem>Profile</DropdownMenuItem>
+          <DropdownMenuItem>Settings</DropdownMenuItem>
+          <DropdownMenuItem>Billing</DropdownMenuItem>
+          <DropdownMenuItem>Log out</DropdownMenuItem>
+        </DropdownMenuContent>
+
+      </div>
+    </div>
+  );
+}

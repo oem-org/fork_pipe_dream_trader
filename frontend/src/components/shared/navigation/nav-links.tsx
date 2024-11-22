@@ -9,7 +9,7 @@ const links = [
 ];
 
 export default function NavLinks() {
-  const location = useLocation(); // React Router hook
+  const location = useLocation();
   const { pathname } = location;
 
   return (
@@ -19,7 +19,7 @@ export default function NavLinks() {
         return (
           <Link
             key={link.name}
-            to={link.href} // React Router's `to` instead of `href`
+            to={link.href}
             className={clsx(
               'flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3',
               {
@@ -28,7 +28,7 @@ export default function NavLinks() {
             )}
           >
             <LinkIcon className="w-6" />
-            <p className="hidden md:block">{link.name}</p>
+            <p className="md:block">{link.name}</p>
           </Link>
         );
       })}

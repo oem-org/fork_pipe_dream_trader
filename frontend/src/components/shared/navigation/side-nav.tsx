@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import NavLinks from "@/components/shared/navigation/nav-links";
+import NavLinks from "./nav-links";
 import { PowerIcon } from '@heroicons/react/24/outline';
 
 export default function SideNav() {

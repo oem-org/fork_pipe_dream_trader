@@ -1,9 +1,6 @@
 import { TopNavLink } from "./top-nav-link";
 //import { DropdownMenu } from "@/app/components/shared/navigation/dropdown-hover/dropdown-menu";
-import { DropdownMenuTrigger } from "../dropdown-hover/dropdown-menu-trigger";
-import { DropdownMenuContent } from "../dropdown-hover/dropdown-menu-content";
-import { DropdownMenuItem } from "../dropdown-hover/dropdown-menu-item";
-import { UserIcon } from "@heroicons/react/24/outline";
+import { DropdownMenu } from "../dropdown-hover/dropdown-menu";
 
 export default function TopNav() {
   return (
@@ -13,20 +10,12 @@ export default function TopNav() {
       </div>
 
       <div className="flex items-center space-x-4">
-        <TopNavLink href="/lol" name="lol">Examples</TopNavLink>
+        <TopNavLink href="/strategy">Strategies</TopNavLink>
       </div>
 
+      <p>lool</p>
       <div className="flex items-center">
-        <DropdownMenuTrigger>
-          <UserIcon />
-          <span className="sr-only">User menu</span>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Settings</DropdownMenuItem>
-          <DropdownMenuItem>Billing</DropdownMenuItem>
-          <DropdownMenuItem>Log out</DropdownMenuItem>
-        </DropdownMenuContent>
+        <DropdownMenu />
       </div>
     </nav >
   );
