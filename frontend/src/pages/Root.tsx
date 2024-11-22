@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "@/components/shared/navigation/Navbar"
+import TopNav from "@/components/shared/navigation/top-nav/top-nav";
 
 function Root() {
   return (
     <div>
-      <Navbar></Navbar>
+      <TopNav></TopNav>
       <Outlet />
     </div>
   );

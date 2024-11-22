@@ -1,4 +1,4 @@
-import Navbar from "@/components/shared/navigation/Navbar"
+import Navbar from "@/components/shared/navigation/top-nav/top-nav";
 
 function StrategyPage() {
   return (
