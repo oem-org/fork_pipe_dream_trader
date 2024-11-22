@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { StrategiesClient } from "src/lib/services/ApiClientInstances";
 import Strategy from "src/interfaces/Strategy";
-// import {GridItemClass} from "../models/GridItem"
 
 const useStrategyQuery = () => {
   const fetchStrategies = async (): Promise<Strategy[]> => {

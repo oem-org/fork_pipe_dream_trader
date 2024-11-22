@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { GridItemSize } from "../../types/GridItemSize";
+import { GridItemSize } from "src/types/GridItemSize";
 import GridItem from "src/interfaces/GridItem";
 
 interface GridStore {
