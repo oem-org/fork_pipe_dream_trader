@@ -7,11 +7,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import StrategyPage from "./pages/strategy-page.tsx"
 import NotFoundPage from "./pages/not-found-page.tsx"
 import RootPage from "./pages/root-page.tsx"
+import LoginPage from "./pages/login-page.tsx"
 
 //
 const router = createBrowserRouter([
   {
-
     path: "/",
     element: <RootPage />,
     errorElement: <NotFoundPage></NotFoundPage>,
@@ -19,6 +19,10 @@ const router = createBrowserRouter([
       {
         path: "/strategy",
         element: <StrategyPage />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
       },
       //{
       //  path: "/coins/:id",
