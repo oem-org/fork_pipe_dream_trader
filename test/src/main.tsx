@@ -6,8 +6,8 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import StrategyPage from "@/pages/Strategy.tsx"
-import NotFoundPage from "@/pages/NotFoundPage.tsx"
+import LoginPage from "./pages/LoginPage.tsx"
+import NotFoundPage from "./pages/NotFoundPage.tsx"
 
 //
 const router = createBrowserRouter([
@@ -17,17 +17,13 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage></NotFoundPage>,
     children: [
       {
-        path: "/strategy",
-        element: <StrategyPage />,
-      },
-      //{
-      //  path: "/coins/:id",
-      //  element: <CoinPage />,
-      //},
-      //{
-      //  path: "/backtest",
-      //  element: <StrategyPage />,
-      //},
+        path: "/login",
+        element: <LoginPage/>
+      }
+      // {
+      //   path: "/coins/:id",
+      //   element: <CoinPage />,
+      // },
     ],
   },
 
@@ -36,7 +32,7 @@ const router = createBrowserRouter([
 
 ])
 
-// when we pass this client we have access to cache 
+// when we pass this client we have access to cache
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
