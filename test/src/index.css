@@ -1,8 +1,0 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-
-body {
-    padding-top: 4rem; /* Adjust this value to match the height of your navbar */
-  }

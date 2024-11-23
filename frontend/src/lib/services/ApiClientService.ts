@@ -22,6 +22,7 @@ class ApiClientService<T, R> {
 	async getAll(): Promise<R[]> {
 		try {
 			const response = await axiosInstance.get<R[]>(this.endpoint, { headers })
+
 			return response.data
 		} catch (error) {
 			throw error
@@ -31,6 +32,7 @@ class ApiClientService<T, R> {
 	async get(id: number, params?: T): Promise<R> {
 		try {
 			const response = await axiosInstance.get<R>(`${this.endpoint}/${id}/`, { params, headers })
+
 			return response.data
 		} catch (error) {
 			throw error
@@ -40,6 +42,7 @@ class ApiClientService<T, R> {
 	async getSingleParam(id: any, queryString: string): Promise<R> {
 		try {
 			const response = await axiosInstance.get<R>(`${this.endpoint}/?${queryString}=${id}`, { headers })
+
 			return response.data
 		} catch (error) {
 			throw error
@@ -49,6 +52,7 @@ class ApiClientService<T, R> {
 	async getNoneParam(id: number): Promise<R> {
 		try {
 			const response = await axiosInstance.get<R>(`${this.endpoint}/${id}/`, { headers })
+
 			return response.data
 		} catch (error) {
 			throw error
@@ -58,6 +62,7 @@ class ApiClientService<T, R> {
 	async post(data: T): Promise<R> {
 		try {
 			const response = await axiosInstance.post<R>(this.endpoint, data, { headers })
+
 			return response.data
 		} catch (error) {
 			throw error
@@ -75,6 +80,7 @@ class ApiClientService<T, R> {
 	async update(id: number, data: T): Promise<R> {
 		try {
 			const response = await axiosInstance.put<R>(`${this.endpoint}${id}/`, data, { headers })
+
 			return response.data
 		} catch (error) {
 			throw error
