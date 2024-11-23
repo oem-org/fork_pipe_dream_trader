@@ -7,14 +7,17 @@ from starlette import status
 
 from ...dependencies import db_dependency
 from ...models import Users
+from ...services.auth.auth_services import (
+    authenticate_user,
+    create_access_token,
+    hash_password,
+)
 from ...schemas import *
-from ...services.auth.auth_services import (authenticate_user,
-                                            create_access_token, hash_password)
 
 router = APIRouter(prefix='/auth', tags=['auth'])
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED)
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=CreateUserResponse)
 async def create_user(db: db_dependency, create_user_request: CreateUserRequest):
 
     create_user_model = Users(
@@ -31,14 +34,13 @@ async def create_user(db: db_dependency, create_user_request: CreateUserRequest)
 
     return {
         "id": create_user_model.id,
-        "hashed_password": "hashed",
         "email": create_user_model.email,
         "username": create_user_model.username,
-        "is_active": create_user_model.is_active,
     }
 
+
 # response_model vailidates
-@router.post("/token", response_model=Token)
+@router.post("/token", response_model=TokenResponse)
 # Dependency Injection of the OAuth2PasswordRequestForm
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: db_dependency
@@ -55,4 +57,9 @@ async def login_for_access_token(
         user.username, user.id, timedelta(minutes=20)
     )
 
-    return {'access_token': token, 'token_type': 'bearer'}
+    return {
+        'access_token': token,
+        'token_type': 'bearer',
+        'id': user.id,
+        'username': user.username,
+    }

@@ -10,7 +10,7 @@ interface CreateUserFormData {
 	password: string;
 }
 
-export default function LoginForm() {
+export default function CreateUserForm() {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
 	const { login } = useAuthStore();

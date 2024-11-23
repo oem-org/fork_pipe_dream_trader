@@ -1,7 +1,8 @@
-import User from "../interfaces/User"
-import AuthRequest from "../interfaces/User"
+import LoginFormRequest from "../interfaces/User"
 import Token from "../interfaces/Token"
-import ApiClient from "./services/ApiClientService"
+import ApiClientService from "./services/ApiClientService"
+import CreateUserResponse from "../interfaces/responses/CreateUserResponse"
+import CreateUserFormRequest from "../interfaces/requests/CreateUserFormRequest"
 
-export const authUserApi = new ApiClient<AuthRequest, Token>('auth/token/')
-export const creatUserApi = new ApiClient<User, Token>('auth/')
+export const authUserApi = new ApiClientService<LoginFormRequest, Token>('auth/token/')
+export const creatUserApi = new ApiClientService<CreateUserFormRequest, CreateUserResponse>('auth/')

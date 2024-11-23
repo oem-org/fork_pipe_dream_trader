@@ -1,19 +1,27 @@
 import { create } from "zustand";
 import AuthService from "../services/AuthService";
 import LoginFormRequest from "../../interfaces/requests/LoginFormRequest";
-
+import CreateUserResponse from "../../interfaces/responses/CreateUserResponse";
+import CreateUserFormRequest from "../../interfaces/requests/CreateUserFormRequest";
 const authService = AuthService.getInstance();
 
 
 interface AuthStore {
 	isAuthenticated: boolean;
 	login: (credentials: LoginFormRequest) => Promise<boolean>;
+	createUser: () => CreateUserResponse
 	logout: () => void;
 }
 
 const useAuthStore = create<AuthStore>((set) => ({
 	// Initialize the authentication state based on stored user data
 	isAuthenticated: !!authService.getCurrentUser(),
+
+	createUser: async (request: CreateUserFormRequest) => {
+
+		const userDetails = await authService.
+
+	}
 
 	login: async (credentials: LoginFormRequest) => {
 		try {
