@@ -1,47 +1,43 @@
-import { create }
-	from "zustand"
-import axios from "axios"
+import { create } from "zustand";
+import AuthService from "../services/AuthService";
+import LoginFormRequest from "../../interfaces/requests/LoginFormRequest";
 
-async function _login(email: string, password: string) {
-	console.log(import.meta.env.VITE_API_URL + "user/login/", "fucking token")
-	return axios
-		.post(import.meta.env.VITE_API_URL + "user/login/", {
-			email,
-			password,
-		})
-		.then((response) => {
-			if (response.data.token) {
-				localStorage.setItem("user", JSON.stringify(response.data))
-				return true
-			}
+const authService = AuthService.getInstance();
 
-			return false
-		})
-		.catch(() => {
-			return false
-		})
-}
 
 interface AuthStore {
-	isAuthenticated: boolean
-	login: (email: string, password: string) => Promise<boolean>
-	logout: () => void
+	isAuthenticated: boolean;
+	login: (credentials: LoginFormRequest) => Promise<boolean>;
+	logout: () => void;
 }
 
 const useAuthStore = create<AuthStore>((set) => ({
-	isAuthenticated: !!localStorage.getItem("user"), // !! converts value to a boolean
-	login: async (email: string, password: string) => {
-		const success: boolean = await _login(email, password)
-		if (success) {
-			set({ isAuthenticated: true })
+	// Initialize the authentication state based on stored user data
+	isAuthenticated: !!authService.getCurrentUser(),
+
+	login: async (credentials: LoginFormRequest) => {
+		try {
+
+			// Delegate login to AuthService
+			const user = await authService.login(credentials: LoginFormRequest);
+
+			if (user?.token) {
+				set({ isAuthenticated: true });
+				return true;
+			}
+
+			return false;
+		} catch (error) {
+			console.error("Login failed:", error);
+			return false;
 		}
-
-		return success
 	},
+
 	logout: () => {
-		localStorage.removeItem("user")
-		set({ isAuthenticated: false })
+		// Delegate logout to AuthService
+		authService.logout();
+		set({ isAuthenticated: false });
 	},
-}))
+}));
 
-export default useAuthStore
+export default useAuthStore;

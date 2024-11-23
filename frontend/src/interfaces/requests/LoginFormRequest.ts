@@ -1,4 +1,4 @@
-export default interface AuthRequest {
+export default interface LoginFormRequest {
     username: string
     password: string
 }
