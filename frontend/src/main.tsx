@@ -8,7 +8,7 @@ import StrategyPage from "./pages/strategy-page.tsx"
 import NotFoundPage from "./pages/not-found-page.tsx"
 import RootPage from "./pages/root-page.tsx"
 import LoginPage from "./pages/login-page.tsx"
-
+import CreateUserPage from "./pages/create-user-page.tsx"
 //
 const router = createBrowserRouter([
   {
@@ -23,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <LoginPage />,
+      },
+      {
+        path: "/create-user",
+        element: <CreateUserPage />,
       },
       //{
       //  path: "/coins/:id",

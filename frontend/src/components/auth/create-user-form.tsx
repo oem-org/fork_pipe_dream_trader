@@ -4,20 +4,18 @@ import useAuthStore from '../../lib/hooks/useAuthStore';
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import handleFormSubmit from '../../lib/utils/generics/handleFormSubmit';
+import CreateUserFormRequest from '../../interfaces/requests/CreateUserFormRequest';
 
-interface CreateUserFormData {
-	username: string;
-	password: string;
-}
+type FormReturnData = boolean;
 
 export default function CreateUserForm() {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
-	const { login } = useAuthStore();
+	const { createUser } = useAuthStore();
 	const navigate = useNavigate();
 
 	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-		const success = await handleFormSubmit<CreateUserFormData>(e, login, setError, setLoading);
+		const success = await handleFormSubmit<CreateUserFormRequest, FormReturnData>(e, createUser, setError, setLoading);
 
 		if (success) {
 			navigate('/strategy');
@@ -37,6 +35,7 @@ export default function CreateUserForm() {
 					<div className="mb-4 text-sm text-red-600">{error}</div>
 				)}
 				<div className="w-full">
+
 					<div>
 						<label
 							className="mb-3 mt-5 block text-xs font-medium text-gray-900"
@@ -55,6 +54,26 @@ export default function CreateUserForm() {
 							/>
 						</div>
 					</div>
+
+					<div className="mt-4">
+						<label
+							className="mb-3 mt-5 block text-xs font-medium text-gray-900"
+							htmlFor="password"
+						>
+							Email
+						</label>
+						<div className="relative">
+							<Input
+								id="email"
+								type="email"
+								name="email"
+								defaultValue="s@s.ss"
+								placeholder="Email"
+								required
+							/>
+						</div>
+					</div>
+
 					<div className="mt-4">
 						<label
 							className="mb-3 mt-5 block text-xs font-medium text-gray-900"

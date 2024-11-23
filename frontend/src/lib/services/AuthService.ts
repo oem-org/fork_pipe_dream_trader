@@ -1,9 +1,9 @@
-import axios from "axios"
 import LoginFormRequest from "../../interfaces/requests/LoginFormRequest";
 import CreateUserResponse from "../../interfaces/responses/CreateUserResponse";
 import Token from "../../interfaces/Token";
-import { creatUserApi } from "../apiClientInstances";
+import { createUserApi } from "../apiClientInstances";
 import { authUserApi } from "../apiClientInstances";
+import CreateUserFormRequest from "../../interfaces/requests/CreateUserFormRequest";
 
 export default class AuthService {
 	private static instance: AuthService
@@ -19,22 +19,7 @@ export default class AuthService {
 	}
 
 	async login(credentials: LoginFormRequest): Promise<Token> {
-
-		const response = authUserApi.post(credentials)
-
-
-		//return axios
-		//	.post(import.meta.env.VITE_API_URL + "auth/token/", {
-		//		username,
-		//		password
-		//	})
-		//	.then(response => {
-		//		if (response.data.token) {
-		//			localStorage.setItem("user", JSON.stringify(response.data))
-		//		}
-		//
-		//		return response.data
-		//	})
+		return await authUserApi.post(credentials)
 	}
 
 	async logout(): Promise<boolean> {
@@ -46,14 +31,8 @@ export default class AuthService {
 		}
 	}
 
-	async createUser(email: string, password: string): Promise<CreateUserResponse> {
-
-		const response = axios.post(import.meta.env.VITE_API_URL + "/auth/", {
-			email,
-			password
-		})
-
-		return response.data
+	async createUser(user: CreateUserFormRequest): Promise<CreateUserResponse> {
+		return await createUserApi.post(user)
 	}
 
 	async getCurrentUser() {

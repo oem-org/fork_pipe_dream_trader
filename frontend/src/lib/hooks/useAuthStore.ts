@@ -1,15 +1,15 @@
 import { create } from "zustand";
 import AuthService from "../services/AuthService";
 import LoginFormRequest from "../../interfaces/requests/LoginFormRequest";
-import CreateUserResponse from "../../interfaces/responses/CreateUserResponse";
 import CreateUserFormRequest from "../../interfaces/requests/CreateUserFormRequest";
-const authService = AuthService.getInstance();
 
+
+const authService = AuthService.getInstance();
 
 interface AuthStore {
 	isAuthenticated: boolean;
 	login: (credentials: LoginFormRequest) => Promise<boolean>;
-	createUser: () => CreateUserResponse
+	createUser: (user: CreateUserFormRequest) => Promise<boolean>
 	logout: () => void;
 }
 
@@ -17,28 +17,33 @@ const useAuthStore = create<AuthStore>((set) => ({
 	// Initialize the authentication state based on stored user data
 	isAuthenticated: !!authService.getCurrentUser(),
 
-	createUser: async (request: CreateUserFormRequest) => {
+	createUser: async (user: CreateUserFormRequest): Promise<boolean> => {
 
-		const userDetails = await authService.
+		const userDetail = await authService.createUser(user)
 
-	}
+		if (userDetail) {
+			set({ isAuthenticated: true });
 
-	login: async (credentials: LoginFormRequest) => {
-		try {
-
-			// Delegate login to AuthService
-			const user = await authService.login(credentials: LoginFormRequest);
-
-			if (user?.token) {
-				set({ isAuthenticated: true });
-				return true;
-			}
-
-			return false;
-		} catch (error) {
-			console.error("Login failed:", error);
-			return false;
+			return true;
 		}
+		else {
+			return false
+		}
+	},
+
+	login: async (credentials: LoginFormRequest): Promise<boolean> => {
+
+		const user = await authService.login(credentials);
+
+		if (user) {
+			set({ isAuthenticated: true });
+
+			return true;
+		}
+		else {
+			return false
+		}
+
 	},
 
 	logout: () => {
