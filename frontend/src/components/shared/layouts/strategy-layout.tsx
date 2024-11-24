@@ -11,15 +11,12 @@ export default function StrategyLayout({ children }: StrategyLayoutProps) {
 	return (
 		<div className="flex flex-col min-h-screen">
 			<TopNav />
-			<div className='flex flex-row'>
+			<div className="flex flex-row flex-grow">
 				<SideNav />
-				<div className="pt-16">
-
+				<div className="flex-grow">
 					{children}
 				</div>
-
 			</div>
-		</div >
+		</div>
 	);
-};
-
+}

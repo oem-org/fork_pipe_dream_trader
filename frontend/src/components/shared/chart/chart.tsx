@@ -1,5 +1,6 @@
 // Source: https://github.com/JeppeOEM/dashboard_frontend_exam/blob/main/src/components/charting/ChartComponent.tsx
 
+
 import { createChart, ColorType, IChartApi } from 'lightweight-charts'
 import { useEffect, useRef } from 'react'
 import React from 'react'
@@ -53,6 +54,7 @@ export default function Chart(props: ChartProps): React.ReactElement {
 		chartRef.current.timeScale().fitContent()
 
 		const newSeries = chartRef.current.addAreaSeries({ lineColor, topColor: areaTopColor, bottomColor: areaBottomColor })
+		console.log(newSeries)
 		newSeries.setData(data)
 
 		window.addEventListener('resize', handleResize)

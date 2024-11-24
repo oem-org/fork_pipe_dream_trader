@@ -1,6 +1,10 @@
 import StrategyLayout from "../components/shared/layouts/strategy-layout";
+import { App } from "../components/shared/test";
 import Chart from "../components/shared/chart/chart";
+import ChartComponent from "../components/shared/chart/chart";
 import { darkColors } from "../components/shared/chart/dark-colors";
+import Timeseries from "../interfaces/Timeseries";
+import { initialData } from "../components/shared/chart/initialData";
 //import usePriceStore from "../lib/hooks/usePriceStore";
 import { useEffect, useState } from "react";
 //import useStrategyStore from '../lib/hooks/useStrategyStore.ts'
@@ -17,40 +21,9 @@ export default function StrategyPage() {
   //const mutateAsync = useDeleteStrategy();
   //const { data: dataPrices, error: errorPrices, isLoading: isLoadingPrices } = usePriceQuery(selectedCoinId)
 
-  const [windowSize, setWindowSize] = useState({
-    width: typeof window !== 'undefined' ? window.innerWidth : 0,
-    height: typeof window !== 'undefined' ? window.innerHeight : 0,
-  })
 
-  //console.log(prices)
-  useEffect(() => {
-    function handleResize() {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    }
 
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  const initialData = [
-    { time: '2018-12-22', value: 32.51 },
-    { time: '2018-12-23', value: 31.11 },
-    { time: '2018-12-24', value: 27.02 },
-    { time: '2018-12-25', value: 27.32 },
-    { time: '2018-12-26', value: 25.17 },
-    { time: '2018-12-27', value: 28.89 },
-    { time: '2018-12-28', value: 25.46 },
-    { time: '2018-12-29', value: 23.92 },
-    { time: '2018-12-30', value: 22.68 },
-    { time: '2018-12-31', value: 22.67 },
-  ]
-  const [chartData, setChartData] = useState(initialData);
+  const [chartData, setChartData] = useState<Timeseries[]>(initialData);
 
   //function formatPriceData(rawData: Price[] | null) {
   //  return rawData.map(item => ({
@@ -80,10 +53,12 @@ export default function StrategyPage() {
   //}, [selectedCoinId, dataPrices])
 
 
+
   return (
     <StrategyLayout>
-      <Chart windowSize={windowSize.width} data={chartData} colors={colors} />
+      <App />
     </StrategyLayout>
   );
 }
 
+//<Chart windowSize={windowSize.width} data={chartData} colors={colors} />

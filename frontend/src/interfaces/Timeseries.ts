@@ -1,4 +1,5 @@
+// fixed naming convention for lightweight chart
 export default interface Timeseries {
     time: string
-    price: number
+    value: number
 }
