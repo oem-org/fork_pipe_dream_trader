@@ -10,6 +10,7 @@ export default class AuthService {
 	private constructor() { }
 
 	static getInstance(): AuthService {
+
 		if (!AuthService.instance) {
 			AuthService.instance = new AuthService();
 		}

@@ -9,13 +9,13 @@ export default async function handleFormSubmit<T extends object, R>(
 ): Promise<R | null> {
 
 	e.preventDefault();
-
 	setLoading(true);
-	let result: R | null = null;
 
 	const formData = new FormData(e.currentTarget);
 	const formDataObject = extractFormData<FormDataType<T>>(formData);
-	console.log(import.meta.env.VITE_API_URL)
+
+	let result: R | null = null;
+
 	try {
 		result = await apiCall(formDataObject);
 	} catch (error) {

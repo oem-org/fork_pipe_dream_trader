@@ -5,8 +5,7 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import sendFormDataSubmit from '../../lib/utils/generics/sendFormDataSubmit';
 
-
-type ReturnType = boolean
+type ReturnBool = boolean
 
 export default function LoginForm() {
 	const [loading, setLoading] = useState(false);
@@ -15,7 +14,7 @@ export default function LoginForm() {
 	const navigate = useNavigate();
 
 	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-		const success = await sendFormDataSubmit<ReturnType>(e, login, setError, setLoading);
+		const success = await sendFormDataSubmit<ReturnBool>(e, login, setError, setLoading);
 
 		if (success) {
 			navigate('/strategy');
