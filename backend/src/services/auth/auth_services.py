@@ -22,14 +22,14 @@ from datetime import datetime, timedelta, timezone
 from typing import Annotated
 
 from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer 
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from starlette import status
 
 from ...config import Config
 from ...models import Users
-
+# the client/user must send a username and password fields as form data.
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl='auth/token')
 

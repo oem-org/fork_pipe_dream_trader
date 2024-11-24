@@ -29,7 +29,7 @@ async def create_user(db: db_dependency, create_user_request: CreateUserRequest)
 
     db.add(create_user_model)
     db.commit()
-    # get autegenrated id
+    # get autogenrated id
     db.refresh(create_user_model)
 
     return {
@@ -37,7 +37,6 @@ async def create_user(db: db_dependency, create_user_request: CreateUserRequest)
         "email": create_user_model.email,
         "username": create_user_model.username,
     }
-
 
 # response_model vailidates
 @router.post("/token", response_model=TokenResponse)
@@ -52,9 +51,11 @@ async def login_for_access_token(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail='Could not validate user.'
         )
-    user = user.dump_model()
+
+    user = LoginSchema.model_validate(user) 
+
     token = create_access_token(
-        user.username, user.id, timedelta(minutes=20)
+        user.username, user.id, timedelta(minutes=40)
     )
 
     return {

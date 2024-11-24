@@ -1,5 +1,12 @@
 from pydantic import BaseModel
 
+class LoginSchema(BaseModel):
+    id: int
+    username: str
+    model_config = {
+        "from_attributes": True  
+    }
+
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str
@@ -12,7 +19,7 @@ class CreateUserRequest(BaseModel):
     password: str
 
 class CreateUserResponse(BaseModel):
-    id: str
+    id: int
     email: str
     username: str
 
