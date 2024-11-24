@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import handleFormSubmit from '../../lib/utils/generics/handleFormSubmit';
 import CreateUserFormRequest from '../../interfaces/requests/CreateUserFormRequest';
 
-type FormReturnData = boolean;
+type ReturnType = boolean;
 
 export default function CreateUserForm() {
 	const [loading, setLoading] = useState(false);
@@ -15,7 +15,7 @@ export default function CreateUserForm() {
 	const navigate = useNavigate();
 
 	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-		const success = await handleFormSubmit<CreateUserFormRequest, FormReturnData>(e, createUser, setError, setLoading);
+		const success = await handleFormSubmit<CreateUserFormRequest, ReturnType>(e, createUser, setError, setLoading);
 
 		if (success) {
 			navigate('/strategy');

@@ -1,7 +1,9 @@
 import { FormDataType } from "../../../interfaces/types/FormDataType";
 
 export default function extractFormData<T extends FormDataType<T>>(formData: FormData): T {
+
 	const data: Partial<T> = {};
+
 	formData.forEach((value, key) => {
 		// Form data can be files
 		if (typeof value === "string") {

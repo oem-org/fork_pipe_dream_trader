@@ -1,4 +1,3 @@
-import LoginFormRequest from "../../interfaces/requests/LoginFormRequest";
 import CreateUserResponse from "../../interfaces/responses/CreateUserResponse";
 import Token from "../../interfaces/Token";
 import { createUserApi } from "../apiClientInstances";
@@ -18,7 +17,7 @@ export default class AuthService {
 		return AuthService.instance;
 	}
 
-	async login(credentials: LoginFormRequest): Promise<Token> {
+	async login(credentials: FormData): Promise<Token> {
 		return await authUserApi.post(credentials)
 	}
 

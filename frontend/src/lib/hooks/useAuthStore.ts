@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import AuthService from "../services/AuthService";
-import LoginFormRequest from "../../interfaces/requests/LoginFormRequest";
 import CreateUserFormRequest from "../../interfaces/requests/CreateUserFormRequest";
 
 
@@ -8,7 +7,7 @@ const authService = AuthService.getInstance();
 
 interface AuthStore {
 	isAuthenticated: boolean;
-	login: (credentials: LoginFormRequest) => Promise<boolean>;
+	login: (credentials: FormData) => Promise<boolean>;
 	createUser: (user: CreateUserFormRequest) => Promise<boolean>
 	logout: () => void;
 }
@@ -31,7 +30,7 @@ const useAuthStore = create<AuthStore>((set) => ({
 		}
 	},
 
-	login: async (credentials: LoginFormRequest): Promise<boolean> => {
+	login: async (credentials: FormData): Promise<boolean> => {
 
 		const user = await authService.login(credentials);
 

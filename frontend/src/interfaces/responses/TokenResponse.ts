@@ -1,4 +1,4 @@
-export default interface LoginTokenResponse {
+export default interface TokenResponse {
     id: number,
     email: string,
     username: string,
