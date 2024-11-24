@@ -1,13 +1,10 @@
-import { useState, ReactNode } from 'react';
+import { useState } from 'react';
 import { DropdownMenuTrigger } from "../dropdown-hover/dropdown-menu-trigger";
 import { DropdownMenuContent } from "../dropdown-hover/dropdown-menu-content";
 import { DropdownMenuItem } from "../dropdown-hover/dropdown-menu-item";
 import { UserIcon } from "@heroicons/react/24/outline";
-interface DropdownMenuProps {
-  children: ReactNode;
-}
 
-export function DropdownMenu({ children }: DropdownMenuProps) {
+export function DropdownMenu() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

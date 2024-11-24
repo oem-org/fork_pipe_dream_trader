@@ -46,8 +46,9 @@ const useAuthStore = create<AuthStore>((set) => ({
 	},
 
 	logout: () => {
-		// Delegate logout to AuthService
-		authService.logout();
+
+		// Delegte logout to AuthService
+		console.log(authService.logout());
 		set({ isAuthenticated: false });
 	},
 }));
