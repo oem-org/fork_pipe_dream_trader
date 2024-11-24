@@ -1,6 +1,6 @@
 import CreateUserForm from "../components/auth/create-user-form"
 
-export default function CreateUserPage() {
+export default function SignupPage() {
   return (
     <CreateUserForm />
   )

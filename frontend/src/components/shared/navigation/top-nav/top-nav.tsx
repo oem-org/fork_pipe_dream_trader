@@ -11,14 +11,15 @@ export default function TopNav() {
       <div className="flex items-center">
         Logo
       </div>
-
+      <div className="flex items-center space-x-4">
+        <TopNavLink href="/bots">bots</TopNavLink>
+      </div>
       <div className="flex items-center space-x-4">
         <TopNavLink href="/bots">bots</TopNavLink>
       </div>
       <div className="flex items-center space-x-4">
         <TopNavLink href="/strategy">backtesting</TopNavLink>
       </div>
-      <p>lool</p>
       <div className="flex items-center">
         <DropdownMenu />
       </div>

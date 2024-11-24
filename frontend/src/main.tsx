@@ -8,7 +8,7 @@ import StrategyPage from "./pages/strategy-page.tsx"
 import NotFoundPage from "./pages/not-found-page.tsx"
 import RootPage from "./pages/root-page.tsx"
 import LoginPage from "./pages/login-page.tsx"
-import CreateUserPage from "./pages/create-user-page.tsx"
+import SignupPage from "./pages/signup.tsx"
 //
 const router = createBrowserRouter([
   {
@@ -25,8 +25,8 @@ const router = createBrowserRouter([
         element: <LoginPage />,
       },
       {
-        path: "/create-user",
-        element: <CreateUserPage />,
+        path: "/signup",
+        element: <SignupPage />,
       },
       //{
       //  path: "/coins/:id",
@@ -39,7 +39,7 @@ const router = createBrowserRouter([
     ],
   }])
 
-// when we pass this client we have access to cache 
+// when we pass this client we have access to cache
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

@@ -1,7 +1,10 @@
-import TokenResponse from "../interfaces/responses/LoginTokenResponse"
+import TokenResponse from "../interfaces/responses/TokenResponse"
 import ApiClientService from "./services/ApiClientService"
 import CreateUserResponse from "../interfaces/responses/CreateUserResponse"
 import CreateUserFormRequest from "../interfaces/requests/CreateUserFormRequest"
+import Strategy from "../interfaces/Strategy"
+import { PostService } from "./services/ApiService"
+// Class for GET requests
 
 const storedToken = localStorage.getItem('user');
 const token = storedToken ? JSON.parse(storedToken) : null;
@@ -17,5 +20,15 @@ const formDataHeader = {
 	'Authorization': token?.token ? `Token ${token.token}` : '',
 };
 
-export const authUserApi = new ApiClientService<FormData, TokenResponse>('auth/token', formDataHeader)
-export const createUserApi = new ApiClientService<CreateUserFormRequest, CreateUserResponse>('auth/', jsonHeader)
+
+
+//Auth
+//no end / for token endpoint, will throw cors error
+export const authUserApi = new PostService<FormData, TokenResponse>('auth/token', formDataHeader)
+export const createUserApi = new PostService<CreateUserFormRequest, CreateUserResponse>('auth/', jsonHeader)
+
+
+//Strategy
+export const strategyApi = new ApiClientService<Strategy, any>('auth/', jsonHeader)
+
+
