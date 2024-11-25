@@ -9,9 +9,7 @@ import NotFoundPage from "./pages/not-found-page.tsx"
 import RootPage from "./pages/root-page.tsx"
 import LoginPage from "./pages/login-page.tsx"
 import SignupPage from "./pages/signup.tsx"
-//
-//
-import { App } from "./components/shared/test.tsx"
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -34,10 +32,6 @@ const router = createBrowserRouter([
       //  path: "/coins/:id",
       //  element: <CoinPage />,
       //},
-      {
-        path: "/",
-        element: <App />,
-      },
     ],
   }])
 

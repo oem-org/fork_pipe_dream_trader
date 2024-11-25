@@ -1,10 +1,10 @@
 import StrategyLayout from "../components/shared/layouts/strategy-layout";
-import { App } from "../components/shared/test";
-import Chart from "../components/shared/chart/chart";
-import ChartComponent from "../components/shared/chart/chart";
 import { darkColors } from "../components/shared/chart/dark-colors";
 import Timeseries from "../interfaces/Timeseries";
 import { initialData } from "../components/shared/chart/initialData";
+import { Chart } from "../components/shared/chart/chart";
+
+
 //import usePriceStore from "../lib/hooks/usePriceStore";
 import { useEffect, useState } from "react";
 //import useStrategyStore from '../lib/hooks/useStrategyStore.ts'
@@ -56,7 +56,7 @@ export default function StrategyPage() {
 
   return (
     <StrategyLayout>
-      <App />
+      <Chart />
     </StrategyLayout>
   );
 }
