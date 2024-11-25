@@ -39,4 +39,4 @@ def coins_seeder(session: Session):
 
     except Exception as e:
         print(f"Error in coin seeder: {e}")
-        session.rollback()  # Rollback in case of an error
+        session.rollback()  
