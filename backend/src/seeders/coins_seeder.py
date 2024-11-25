@@ -29,8 +29,6 @@ def coins_seeder(session: Session):
                 new_coins += 1
                 flag = False
                 print(f"Added new coin: {symbol}")
-            else:
-                print(f"Coin already exists: {symbol}")
 
         session.commit()
 

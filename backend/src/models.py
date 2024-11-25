@@ -61,6 +61,8 @@ class Pairs(Base):
 class StrategyIndicators(Base):
     __tablename__ = 'strategy_indicators'
 
+    id = Column(Integer, primary_key=True, autoincrement=True) 
+    
     fk_indicator_id = Column(
         Integer, 
         ForeignKey('indicators.id', ondelete='CASCADE', onupdate='CASCADE'), 

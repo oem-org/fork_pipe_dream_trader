@@ -1,30 +1,4 @@
-from .services.auth.auth_services import hash_password
-
-INITIAL_DATA = {
-    "users": [
-        {
-            "username": "superuser",
-            "email": "superuser@example.com",
-            "hashed_password": hash_password("123"),
-        },
-        {
-            "username": "admin",
-            "email": "admin@example.com",
-            "hashed_password": hash_password("123"),
-        },
-    ],
-    "sometable": [{"column1": "value", "column2": "value"}],
-}
-
-
-def initialize_table(target, connection, **kw):
-    tablename = str(target)
-    if tablename in INITIAL_DATA and len(INITIAL_DATA[tablename]) > 0:
-        connection.execute(target.insert(), INITIAL_DATA[tablename])
-
-
 from fastapi import FastAPI
-from sqlalchemy import text
 
 from .database import SessionLocal, engine
 from .exceptions import register_all_errors
@@ -35,11 +9,10 @@ from .routers.strategies import strategies
 from .routers.users import users
 from .seeders.coins_seeder import coins_seeder
 from .seeders.indicators_seeder import indicators_seeder
+from .seeders.user_seeder import user_seeder
 
 app = FastAPI()
 
-
-Base.metadata.drop_all(engine)
 Base.metadata.create_all(bind=engine)
 
 
