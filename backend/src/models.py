@@ -1,8 +1,9 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
-from .database import Base
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy import JSON, Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.ext.mutable import MutableDict
+from sqlalchemy.orm import relationship
+
+from .database import Base
+
 
 class Users(Base):
     __tablename__ = 'users'
@@ -22,33 +23,50 @@ class Strategies(Base):
     priority = Column(Integer)
     fk_user_id = Column(Integer, ForeignKey("users.id"))
     indicators = relationship("Indicators", secondary="strategy_indicators", back_populates="strategies")
-    pairs = relationship("Pairs", secondary="strategy_pairs", back_populates="strategies")
+    # One-to-many relationship with Pairs
+    fk_pair_id = Column(Integer, ForeignKey("pairs.id"))
+    pair = relationship("Pairs", back_populates="strategies")
 
 class Indicators(Base):
-    __tablename__ = 'indicators'
+     __tablename__ = 'indicators'
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-    description = Column(String)
-    # Mutable dict makes it possible to change the JSONB values in the Query and access the new values
-    config = Column(MutableDict.as_mutable(JSONB))
-    strategies = relationship("Strategies", secondary="strategy_indicators", back_populates="indicators")
+     id = Column(Integer, primary_key=True, index=True)
+     kind = Column(String)
+     description = Column(String)
+     settings = Column(JSON)
+     chart_style = Column(String)
+     strategies = relationship("Strategies", secondary="strategy_indicators", back_populates="indicators")
+
+
+# class IndicatorType(models.Model):
+#      __tablename__ = 'indicators'
+#     kind = models.CharField(max_length=255)
+#     settings = models.JSONField(default=dict)
+#     chart_style = models.CharField(max_length=255, default='line')
+#     description = models.TextField(blank=True)
+#     strategies = relationship("Strategies", secondary="strategy_indicators", back_populates="indicators")
+#     def __str__(self):
+#         return self.kind
+
+
 
 class Pairs(Base):
     __tablename__ = 'pairs'
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
-    strategies = relationship("Strategies", secondary="strategy_pairs", back_populates="pairs")
-
-# Define the join table classes with the same syntax as other tables
+    strategies = relationship("Strategies", back_populates="pair")
+    
 class StrategyIndicators(Base):
     __tablename__ = 'strategy_indicators'
+
     fk_indicator_id = Column(Integer, ForeignKey('indicators.id'), primary_key=True)
     fk_strategy_id = Column(Integer, ForeignKey('strategies.id'), primary_key=True)
 
-class StrategyPairs(Base):
-    __tablename__ = 'strategy_pairs'
 
-    pair_id = Column(Integer, ForeignKey('pairs.id'), primary_key=True)
-    fk_strategy_id = Column(Integer, ForeignKey('strategies.id'), primary_key=True)
+class BaseCurrency(Base):
+    __tablename__ = "base_currency"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True, nullable=False)
+

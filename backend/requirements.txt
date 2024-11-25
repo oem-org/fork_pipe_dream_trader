@@ -1,4 +1,5 @@
 pip-audit
+python-binance
 psycopg2-binary
 flake8
 black

@@ -1,6 +1,7 @@
 from sqlalchemy import event
 from ..models.users import User
 from ..models.strategies import Strategies
+
 # Database initial data
 INITIAL_DATA = {
       'users': [
