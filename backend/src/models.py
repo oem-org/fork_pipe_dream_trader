@@ -57,11 +57,20 @@ class Pairs(Base):
     name = Column(String)
     strategies = relationship("Strategies", back_populates="pair")
     
+
 class StrategyIndicators(Base):
     __tablename__ = 'strategy_indicators'
 
-    fk_indicator_id = Column(Integer, ForeignKey('indicators.id'), primary_key=True)
-    fk_strategy_id = Column(Integer, ForeignKey('strategies.id'), primary_key=True)
+    fk_indicator_id = Column(
+        Integer, 
+        ForeignKey('indicators.id', ondelete='CASCADE', onupdate='CASCADE'), 
+        nullable=False
+    )
+    fk_strategy_id = Column(
+        Integer, 
+        ForeignKey('strategies.id', ondelete='CASCADE', onupdate='CASCADE'), 
+        nullable=False
+    )
 
 
 class BaseCurrency(Base):
