@@ -80,6 +80,3 @@ class BaseCurrency(Base):
     name = Column(String, unique=True, nullable=False)
 
 
-class Timeseries(Base):
-    __time
-

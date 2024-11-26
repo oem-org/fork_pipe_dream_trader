@@ -6,11 +6,18 @@ import psycopg2
 import websockets
 from binance.client import Client
 import os
+from dotenv import load_dotenv
+load_dotenv()
 #https://www.youtube.com/watch?v=-I7jprTueFw&t=2861s&ab_channel=ChadThackray
 #gets password from docker-compose env
-# dbname = os.environ['POSTGRES_DB']
-dbuser = os.environ['POSTGRES_USER']
-dbpass = os.environ['POSTGRES_PASSWORD']
+# dbname = os.getenv['POSTGRES_DB']
+dbuser = os.getenv('POSTGRES_USER')
+dbpass = os.getenv('POSTGRES_PASSWORD')
+db = os.getenv('POSTGRES_DB')
+host = os.getenv('POSTGRES_HOST')
+# port = os.getenv['POSTGRES_PORT']
+port = os.getenv('POSTGRES_PORT') 
+print(port,host,dbuser,dbpass)
 client = Client()
 
 dict_ = client.get_exchange_info()
@@ -54,7 +61,7 @@ sql_create_index = "CREATE INDEX IF NOT EXISTS ix_symbol_time ON bin1s (symbol, 
 #host is the ip or hostname of the server, since its called timescaledb in the network created by docker that is the name
 
 def query_row_count():
-    connection = psycopg2.connect(user="postgres", password="password", host="timescaledb", port="5435", database="postgres")
+    connection = psycopg2.connect(user=dbuser, password=dbpass, host=host, port=port, database=db)
     cursor = connection.cursor()
     cursor.execute("SELECT COUNT(*) FROM bin1s;")
     row_count = cursor.fetchone()[0]
@@ -92,8 +99,8 @@ async def connect_to_database():
         try:
 
             await asyncio.sleep(1)
-
-            connection = psycopg2.connect(user="postgres", password="password", host="timescaledb", port="5432", database="postgres")
+            print("trying to connect")
+            connection = psycopg2.connect(user=dbuser, password=dbpass, host=host, port=port, database=db)
             cursor = connection.cursor()
 
             cursor.execute("SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'bin1s')")
@@ -144,4 +151,9 @@ async def main():
             await asyncio.sleep(1)
 
 if __name__ == '__main__':
+    
+    print(port,host,dbuser,dbpass)
+    print(port,host,dbuser,dbpass)
+    print(port,host,dbuser,dbpass)
+    print(port,host,dbuser,dbpass)
     asyncio.run(main())

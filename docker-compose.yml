@@ -25,6 +25,7 @@ services:
       - "./backend/testenv"
     depends_on:
       - timescale
+      - postgres
     networks:
       - dbnet
       - webnet
@@ -40,33 +41,37 @@ services:
       - "./backend/testenv"
     networks:
       - dbnet
+    restart: always
+
   timescale:
     image: timescale/timescaledb-ha:pg16
     volumes:
-      - "db-data:/var/lib/postgresql/data"
+      - "timescale-data:/var/lib/postgresql/data"
     # remapped because it was conflicting with local postgres
     ports:
       - "5438:5432"
     env_file:
-      - "./pull_data_service/testenv"
+      - "./market_data_service/.env"
     networks:
       - dbnet
 
   python_program:
     build:
-      context: ./pull_data_service/
-      dockerfile: Dockerfile_python
+      context: ./market_data_service
     networks:
       - dbnet
+    environment:
+      - RTE=dev
+    volumes:
+      - ".:/app"
     depends_on:
-      - timescaledb
-    env_file:
-      - env
+      - timescale
     restart: always
 
 
 volumes:
-  db-data:
+  postgres-data:
+  timescale-data:
 
 networks:
   webnet:

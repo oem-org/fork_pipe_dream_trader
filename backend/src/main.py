@@ -9,7 +9,7 @@ from .routers.strategies import strategies
 from .routers.users import users
 from .seeders.coins_seeder import coins_seeder
 from .seeders.indicators_seeder import indicators_seeder
-from .seeders.user_seeder import user_seeder
+from .seeders.user_seeder import users_seeder
 
 app = FastAPI()
 

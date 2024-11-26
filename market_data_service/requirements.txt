@@ -3,4 +3,4 @@ psycopg2-binary
 python-binance
 asyncio
 websockets
-dotenv
+python-dotenv
