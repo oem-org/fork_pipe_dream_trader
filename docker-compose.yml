@@ -29,6 +29,52 @@ services:
       - dbnet
       - webnet
 
+  postgres:
+    image: postgres:16
+    container_name: postgres-db
+    volumes:
+      - "postgres-data:/var/lib/postgresql/data"
+    ports:
+      - "5439:5432"  # Remapped to avoid conflict
+    env_file:
+      - "./backend/testenv"
+    networks:
+      - dbnet
+  timescale:
+    image: timescale/timescaledb-ha:pg16
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    # remapped because it was conflicting with local postgres
+    ports:
+      - "5438:5432"
+    env_file:
+      - "./pull_data_service/testenv"
+    networks:
+      - dbnet
+
+  python_program:
+    build:
+      context: ./pull_data_service/
+      dockerfile: Dockerfile_python
+    networks:
+      - dbnet
+    depends_on:
+      - timescaledb
+    env_file:
+      - env
+    restart: always
+
+
+volumes:
+  db-data:
+
+networks:
+  webnet:
+    driver: bridge
+  dbnet:
+    driver: bridge
+
+
   # frontend:
   #   build:
   #     context: ./frontend
@@ -50,39 +96,3 @@ services:
   #     - dbnet
   #     - webnet
       #
-
-  postgres:
-    image: postgres:16
-    container_name: postgres-db
-    volumes:
-      - "postgres-data:/var/lib/postgresql/data"
-    ports:
-      - "5439:5432"  # Remapped to avoid conflict
-    environment:
-      POSTGRES_USER: your_user
-      POSTGRES_PASSWORD: your_password
-      POSTGRES_DB: your_database
-    networks:
-      - dbnet
-  timescale:
-    image: timescale/timescaledb-ha:pg16
-    volumes:
-      - "db-data:/var/lib/postgresql/data"
-    # remapped because it was conflicting with local postgres
-    ports:
-      - "5438:5432"
-    env_file:
-      - "./backend/testenv"
-    networks:
-      - dbnet
-
-volumes:
-  db-data:
-
-networks:
-  webnet:
-    driver: bridge
-  dbnet:
-    driver: bridge
-
-

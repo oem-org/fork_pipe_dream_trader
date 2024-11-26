@@ -1,0 +1,2 @@
+POSTGRES_USER=postgress
+POSTGRES_PASSWORD=password

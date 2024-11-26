@@ -1,0 +1,32 @@
+services:
+  timescaledb:
+    image: timescale/timescaledb-ha:pg16
+    ports:
+      - "5435:5432"
+    networks:
+      - dbnet
+    environment:
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - data:/var/lib/postgresql/data
+    restart: always
+
+
+  python_program:
+    build:
+      context: .
+      dockerfile: Dockerfile_python
+    networks:
+      - dbnet
+    depends_on:
+      - timescaledb
+    env_file:
+      - env
+    restart: always
+
+networks:
+  dbnet:
+    driver: bridge
+
+volumes:
+  data:
