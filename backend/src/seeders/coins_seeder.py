@@ -1,3 +1,5 @@
+# Refactored from old code
+# Source:https://github.com/JeppeOEM/crypto_dashboard_exam/blob/main/core/management/commands/seed_indicators.py
 from binance.client import Client
 from sqlalchemy.orm import Session
 
@@ -39,4 +41,4 @@ def coins_seeder(session: Session):
 
     except Exception as e:
         print(f"Error in coin seeder: {e}")
-        session.rollback()  
+        session.rollback()

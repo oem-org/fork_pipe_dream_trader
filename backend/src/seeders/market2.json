@@ -1,0 +1,275 @@
+{
+    "raw_trade_data": [
+
+        {
+            "time" : "2024-06-15T16:20:17.586Z",
+            "symbol" : "PENDLEUSDT",
+            "price" : 5.28400000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.586Z",
+            "symbol" : "NEARUSDT",
+            "price" : 5.62500000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.586Z",
+            "symbol" : "NOTUSDT",
+            "price" : 0.02115900,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.586Z",
+            "symbol" : "LTCUSDT",
+            "price" : 78.76000000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.587Z",
+            "symbol" : "OMNIUSDT",
+            "price" : 18.30000000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.587Z",
+            "symbol" : "FETUSDT",
+            "price" : 1.47700000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.587Z",
+            "symbol" : "ASRUSDT",
+            "price" : 2.88300000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.587Z",
+            "symbol" : "AXSUSDT",
+            "price" : 6.79100000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.587Z",
+            "symbol" : "MAVUSDT",
+            "price" : 0.38080000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.587Z",
+            "symbol" : "ADAUSDT",
+            "price" : 0.41150000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.587Z",
+            "symbol" : "AGIXUSDT",
+            "price" : 0.62460000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.587Z",
+            "symbol" : "LEVERUSDT",
+            "price" : 0.00266100,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.587Z",
+            "symbol" : "POLYXUSDT",
+            "price" : 0.41250000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.587Z",
+            "symbol" : "BCHUSDT",
+            "price" : 431.00000000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.587Z",
+            "symbol" : "BNBUSDT",
+            "price" : 606.40000000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.587Z",
+            "symbol" : "ICPUSDT",
+            "price" : 9.13800000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.622Z",
+            "symbol" : "DOGEUSDT",
+            "price" : 0.13614000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.674Z",
+            "symbol" : "BOMEUSDT",
+            "price" : 0.01027600,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.703Z",
+            "symbol" : "OGNUSDT",
+            "price" : 0.11920000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.856Z",
+            "symbol" : "ENAUSDT",
+            "price" : 0.74000000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.878Z",
+            "symbol" : "SNXUSDT",
+            "price" : 2.18900000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.910Z",
+            "symbol" : "TROYUSDT",
+            "price" : 0.00213300,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:17.916Z",
+            "symbol" : "REZUSDT",
+            "price" : 0.12550000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.586Z",
+            "symbol" : "PENDLEUSDT",
+            "price" : 5.28400000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.037Z",
+            "symbol" : "EPXUSDT",
+            "price" : 0.00014950,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.084Z",
+            "symbol" : "VITEUSDT",
+            "price" : 0.02115000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.101Z",
+            "symbol" : "WIFUSDT",
+            "price" : 2.35500000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.142Z",
+            "symbol" : "MLNUSDT",
+            "price" : 19.48000000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.153Z",
+            "symbol" : "ETHUSDT",
+            "price" : 3559.80000000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.155Z",
+            "symbol" : "CREAMUSDT",
+            "price" : 74.72000000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.221Z",
+            "symbol" : "VTHOUSDT",
+            "price" : 0.00272000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.221Z",
+            "symbol" : "SHIBUSDT",
+            "price" : 0.00002073,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.258Z",
+            "symbol" : "JASMYUSDT",
+            "price" : 0.03410500,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.291Z",
+            "symbol" : "TKOUSDT",
+            "price" : 0.40020000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.352Z",
+            "symbol" : "STRAXUSDT",
+            "price" : 0.05930000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.354Z",
+            "symbol" : "PEPEUSDT",
+            "price" : 0.00001178,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.395Z",
+            "symbol" : "QNTUSDT",
+            "price" : 82.90000000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.407Z",
+            "symbol" : "JUVUSDT",
+            "price" : 2.08000000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.465Z",
+            "symbol" : "NEXOUSDT",
+            "price" : 1.36100000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.526Z",
+            "symbol" : "SYSUSDT",
+            "price" : 0.15440000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.557Z",
+            "symbol" : "APEUSDT",
+            "price" : 1.05000000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.568Z",
+            "symbol" : "WAVESUSDT",
+            "price" : 1.11000000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.585Z",
+            "symbol" : "CLVUSDT",
+            "price" : 0.05899000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.586Z",
+            "symbol" : "UNIUSDT",
+            "price" : 11.42800000,
+            "quantity" : 23
+        },
+        {
+            "time" : "2024-06-15T16:20:18.586Z",
+            "symbol" : "FLOKIUSDT",
+            "price" : 0.00020195,
+            "quantity" : 23
+        }
+    ]
+}

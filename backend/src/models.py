@@ -4,7 +4,6 @@ from sqlalchemy.orm import relationship
 
 from .database import Base
 
-
 class Users(Base):
     __tablename__ = 'users'
 
@@ -74,10 +73,13 @@ class StrategyIndicators(Base):
         nullable=False
     )
 
-
 class BaseCurrency(Base):
     __tablename__ = "base_currency"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, nullable=False)
+
+
+class Timeseries(Base):
+    __time
 

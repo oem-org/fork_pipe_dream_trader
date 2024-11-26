@@ -1,7 +1,6 @@
 
 import axios, { AxiosInstance } from "axios";
 
-// Base class to create and manage axios instance
 class ApiService {
 	protected axiosInstance: AxiosInstance;
 	protected endpoint: string;
@@ -71,7 +70,6 @@ export class GetService<R> extends ApiService {
 	}
 }
 
-// Class for POST requests
 export class PostService<T, R> extends ApiService {
 	async post(data: T): Promise<R> {
 		try {
@@ -85,7 +83,6 @@ export class PostService<T, R> extends ApiService {
 	}
 }
 
-// Class for DELETE requests
 export class DeleteService extends ApiService {
 	async delete(id: number): Promise<void> {
 		try {
@@ -98,7 +95,6 @@ export class DeleteService extends ApiService {
 	}
 }
 
-// Class for UPDATE (PUT) requests
 export class UpdateClient<T, R> extends ApiService {
 	async update(id: number, data: T): Promise<R> {
 		try {
