@@ -30,20 +30,7 @@ class BinanceDatabaseStreamer:
             qty INTEGER
         );
         """
-        self.sql_aggregate = """
-        CREATE MATERIALIZED VIEW ohlc_data_minute
-        WITH (timescaledb.continuous) AS
-        SELECT symbol,
-            time_bucket(INTERVAL '1 minute', time) AS date,
-            FIRST(price, time) as open,
-            MAX(price) as high,
-            MIN(price) as low,
-            LAST(price, time) as close,
-            SUM(qty) as volume
-        FROM bin1s
-        GROUP BY symbol, date
-        WITH NO DATA;
-        """
+        u
         self.sql_create_hypertable = "SELECT create_hypertable('bin1s', 'time');"
         self.sql_create_index = "CREATE INDEX IF NOT EXISTS ix_symbol_time ON bin1s (symbol, time DESC);"
 
@@ -132,3 +119,4 @@ class BinanceDatabaseStreamer:
 if __name__ == '__main__':
     streamer = BinanceDatabaseStreamer()
     asyncio.run(streamer.run())
+
