@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     ALGORITHM: str
     DATABASE_URL: str
     RTE: str
+    TIMESCALE_DATABASE_URL: str
     model_config = SettingsConfigDict(env_file="testenv", extra="ignore")
 
 
