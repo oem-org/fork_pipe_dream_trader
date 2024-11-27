@@ -15,6 +15,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from pytz import utc
 
 scheduler = AsyncIOScheduler(timezone=utc)
+session = SessionLocal()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI): 
@@ -26,12 +27,11 @@ app = FastAPI(lifespan=lifespan)
 
 @scheduler.scheduled_job('cron', minute="*")
 async def fetch_current_time():
-   timescale_db_service.refresh_views()
+   print("cron")
 
 def startup_tasks():
     try:
             indicators_seeder(session)
-
     except Exception as e:
         print(f"Error during startup seeding: {e}")
 

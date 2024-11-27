@@ -1,7 +1,7 @@
 
 import datetime
 import psycopg2
-from config import Config
+from ..config import Config
 
 class TimescaleService:
     def __init__(self):
@@ -22,14 +22,18 @@ class TimescaleService:
         finally:
             conn.close()
 
-    def refresh_materialized_views(self):
+    def refresh_views(self):
         now = datetime.datetime.now()
         print(f"Current minute: {now.minute}")
 
         if now.minute % 5 == 0:
-            self.execute_raw_sql("REFRESH MATERIALIZED VIEW ohlc_data_1minute;")
-            self.execute_raw_sql("REFRESH MATERIALIZED VIEW ohlc_data_5minute;")
+            conn = self.get_connection()
+            # Create views from entire database
+            conn.execute("CALL refresh_continuous_aggregate('ohlc_data_1minute', NULL, NULL);")
+            conn.commit()
+            conn.execute("CALL refresh_continuous_aggregate('ohlc_data_5minute', NULL, NULL);")
+            conn.commit()
         else:
-            self.execute_raw_sql("REFRESH MATERIALIZED VIEW ohlc_data_1minute;")
+            conn.execute("CALL refresh_continuous_aggregate('ohlc_data_1minute', NULL, NULL);")
         
 

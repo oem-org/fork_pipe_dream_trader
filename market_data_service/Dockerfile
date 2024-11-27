@@ -1,18 +1,20 @@
 FROM python:3.9-alpine
 
-#Dont buffer standart streams but send them to the terminal
 ENV PYTHONBUFFERED 1
-RUN mkdir -p /opt/services/timescale_pull
 
-COPY requirements.txt /opt/services/timescale_pull
-WORKDIR /opt/services/timescale_pull
+RUN mkdir -p /opt/market_data_service
 
-RUN pip install --upgrade pip && pip install -r ./requirements.txt
-
-#copies entire content of current directory
-COPY . /opt/services/timescale_pull/
+RUN apk add --no-cache postgresql-client
 
 
+COPY requirements.txt /opt/market_data_service/
+
+WORKDIR /opt/market_data_service
+
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
+COPY . /opt/market_data_service/
 
 COPY ./entrypoint.sh /
+
 ENTRYPOINT ["sh", "/entrypoint.sh"]

@@ -1,19 +1,18 @@
-echo "GO"
-
+echo "Starting market data service"
 #!/bin/sh
 # run time enviroment
+
 case "$RTE" in
     dev )
         ;;
     test )
-	python main.py
-        # pip-audit || exit 1
+        echo "Test mode"
+        python main.py
         ;;
-
     prod )
         echo "** Production mode."
         ;;
-    command )
-        echo "** Command mode."
+    refresh )
+        echo "**Reseting database"
         ;;
 esac

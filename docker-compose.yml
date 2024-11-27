@@ -27,7 +27,6 @@ services:
     depends_on:
       - timescale
       - postgres
-      - market_websocket
     networks:
       - dbnet
       - webnet
@@ -38,6 +37,7 @@ services:
     container_name: postgres-db
     volumes:
       - "postgres-data:/var/lib/postgresql/data"
+      - ./sql/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5439:5432"  # Remapped to avoid conflict
     env_file:
@@ -50,25 +50,40 @@ services:
     image: timescale/timescaledb-ha:pg16
     volumes:
       - "timescale-data:/var/lib/postgresql/data"
+      - "./sql/setup_timescale.sql:/setup_timescale.sql" 
+      - ./sql/timescale/init.sql:/docker-entrypoint-initdb.d/init.sql
     # remapped because it was conflicting with local postgres
     ports:
       - "5438:5432"
     env_file:
-      - "./market_data_service/.env"
+      - ".env"
+    environment:
+      - RTE=${RTE}
+      - POSTGRES_USER=${TS_POSTGRES_USER}  # Use .env variables
+      - POSTGRES_PASSWORD=${TS_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${TS_POSTGRES_DB}
+      - POSTGRES_HOST=${TS_POSTGRES_HOST}
     networks:
       - dbnet
+    # command: ["bash", "entrypoint-timescale.sh"]
 
-  market_websocket:
+  market_data_service:
     build:
       context: ./market_data_service
-    networks:
-      - dbnet
+    env_file:
+      - ".env"
     environment:
-      - RTE=test
+      - RTE=${RTE}
+      - POSTGRES_USER=${TS_POSTGRES_USER}  # Use .env variables
+      - POSTGRES_PASSWORD=${TS_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${TS_POSTGRES_DB}
+      - POSTGRES_HOST=${TS_POSTGRES_HOST}
     volumes:
-      - ".:/app"
+      - ".:/opt/timescale_pull" 
     depends_on:
       - timescale
+    networks:
+      - dbnet
 
 
 volumes:
