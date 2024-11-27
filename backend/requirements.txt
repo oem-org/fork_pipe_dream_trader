@@ -26,3 +26,5 @@ alembic
 pandas_ta
 numpy==2.1.3
 requests
+asyncio
+websockets

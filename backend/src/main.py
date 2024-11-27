@@ -10,11 +10,9 @@ from .routers.users import users
 from .seeders.coins_seeder import coins_seeder
 from .seeders.indicators_seeder import indicators_seeder
 from .seeders.user_seeder import users_seeder
-
 app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
-
 
 def startup_tasks():
     try:
@@ -22,9 +20,9 @@ def startup_tasks():
 
             coins_seeder(session)  # Run the coin seeding process
             indicators_seeder(session)
+
     except Exception as e:
         print(f"Error during startup seeding: {e}")
-
 
 # Add the startup event handler
 app.add_event_handler("startup", startup_tasks)

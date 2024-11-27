@@ -1,10 +1,14 @@
 import { Outlet } from "react-router-dom";
+import BinanceWebSocket from "../components/websocket";
 
 function RootPage() {
   return (
-    <div>
-      <Outlet />
-    </div>
+    <>
+      <div>
+        <BinanceWebSocket />
+        <Outlet />
+      </div >
+    </>
   );
 }
 

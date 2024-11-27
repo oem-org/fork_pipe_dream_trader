@@ -27,6 +27,7 @@ services:
     depends_on:
       - timescale
       - postgres
+      - market_websocket
     networks:
       - dbnet
       - webnet
@@ -57,7 +58,7 @@ services:
     networks:
       - dbnet
 
-  python_program:
+  market_websocket:
     build:
       context: ./market_data_service
     networks:
@@ -79,8 +80,6 @@ networks:
     driver: bridge
   dbnet:
     driver: bridge
-
-
   # frontend:
   #   build:
   #     context: ./frontend
