@@ -10,6 +10,7 @@ services:
       - webnet
     depends_on:
       - backend
+    restart: always
 
   backend:
     build:
@@ -29,6 +30,7 @@ services:
     networks:
       - dbnet
       - webnet
+    restart: always
 
   postgres:
     image: postgres:16
@@ -61,16 +63,15 @@ services:
     networks:
       - dbnet
     environment:
-      - RTE=dev
+      - RTE=test
     volumes:
       - ".:/app"
     depends_on:
       - timescale
-    restart: always
 
 
 volumes:
-  postgres-data:
+  postgres-data:  
   timescale-data:
 
 networks:

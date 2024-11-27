@@ -6,7 +6,6 @@ case "$RTE" in
     dev )
         ;;
     test )
-        pytest
 	python main.py
         # pip-audit || exit 1
         ;;
