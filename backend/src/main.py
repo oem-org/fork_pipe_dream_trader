@@ -13,9 +13,23 @@ from .seeders.user_seeder import users_seeder
 from contextlib import asynccontextmanager
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from pytz import utc
+import logging
+import logging.config
+
+logging.config.fileConfig("log_config.ini")
 
 scheduler = AsyncIOScheduler(timezone=utc)
 session = SessionLocal()
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+handler = logging.StreamHandler()
+formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(message)s")
+
+handler.setFormatter(formatter)
+
+logger.addHandler(handler)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI): 

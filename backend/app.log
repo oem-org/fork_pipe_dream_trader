@@ -1,0 +1,6 @@
+2024-11-28 16:59:14,919 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-11-28 16:59:14,938 - apscheduler.scheduler - INFO - Added job "fetch_current_time" to job store "default"
+2024-11-28 16:59:14,938 - apscheduler.scheduler - INFO - Scheduler started
+2024-11-28 17:00:00,001 - apscheduler.executors.default - INFO - Running job "fetch_current_time (trigger: cron[minute='*'], next run at: 2024-11-28 17:01:00 UTC)" (scheduled at 2024-11-28 17:00:00+00:00)
+2024-11-28 17:00:00,001 - apscheduler.executors.default - INFO - Job "fetch_current_time (trigger: cron[minute='*'], next run at: 2024-11-28 17:01:00 UTC)" executed successfully
+2024-11-28 17:00:43,604 - apscheduler.scheduler - INFO - Scheduler has been shut down

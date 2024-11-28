@@ -1,7 +1,10 @@
 
 import psycopg2
+
+from src.utils.decorators.singleton import singleton
 from ..config import Config
 
+@singleton
 class TimescaleService:
     def __init__(self):
         self.db_url = Config.TIMESCALE_DATABASE_URL
