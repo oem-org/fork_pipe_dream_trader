@@ -1,4 +1,3 @@
-
 import axios, { AxiosInstance } from "axios";
 
 class ApiService {
@@ -63,6 +62,7 @@ export class GetService<R> extends ApiService {
 			const response = await this.axiosInstance.get<R>(`${this.endpoint}/${id}/`, {
 				headers: this.headers,
 			});
+
 			return response.data;
 		} catch (error) {
 			throw error;
@@ -76,6 +76,7 @@ export class PostService<T, R> extends ApiService {
 			const response = await this.axiosInstance.post<R>(this.endpoint, data, {
 				headers: this.headers,
 			});
+
 			return response.data;
 		} catch (error) {
 			throw error;
@@ -101,6 +102,7 @@ export class UpdateClient<T, R> extends ApiService {
 			const response = await this.axiosInstance.put<R>(`${this.endpoint}/${id}/`, data, {
 				headers: this.headers,
 			});
+
 			return response.data;
 		} catch (error) {
 			throw error;

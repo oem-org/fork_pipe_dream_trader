@@ -35,19 +35,6 @@ FROM ohlc_data_1minute
 GROUP BY symbol, time5m
 WITH NO DATA;
 
-CREATE MATERIALIZED VIEW IF NOT EXISTS ohlc_data_10minute
-WITH (timescaledb.continuous) AS
-SELECT symbol,
-       time_bucket(INTERVAL '10 minute', time1m) AS time10m,
-       FIRST(open, time5m) as open,
-       MAX(high) as high,
-       MIN(low) as low,
-       LAST(close, time5m) as close,
-       SUM(volume) as volume
-FROM ohlc_data_5minute
-GROUP BY symbol, time10m
-WITH NO DATA;
-
 SELECT add_continuous_aggregate_policy('ohlc_data_1minute',
   start_offset => NULL,
   end_offset => NULL,
@@ -57,8 +44,3 @@ SELECT add_continuous_aggregate_policy('ohlc_data_5minute',
   start_offset => NULL,
   end_offset => NULL,
   schedule_interval => INTERVAL '5 minute');
-
-SELECT add_continuous_aggregate_policy('ohlc_data_10minute',
-  start_offset => NULL,
-  end_offset => NULL,
-  schedule_interval => INTERVAL '10 minute');

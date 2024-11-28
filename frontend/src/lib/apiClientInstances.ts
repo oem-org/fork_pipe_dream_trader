@@ -29,6 +29,6 @@ export const createUserApi = new PostService<CreateUserFormRequest, CreateUserRe
 
 
 //Strategy
-export const strategyApi = new ApiClientService<Strategy, any>('auth/', jsonHeader)
+export const strategyApi = new ApiClientService<Strategy, any>('strategy/', jsonHeader)
 
 

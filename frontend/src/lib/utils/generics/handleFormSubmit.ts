@@ -8,12 +8,16 @@ export default async function handleFormSubmit<T extends object, R>(
 	setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ): Promise<R | null> {
 
+	"""
+	Dynamically creates JSON from form data
+	"""
 	e.preventDefault();
 	setLoading(true);
 
 	const formData = new FormData(e.currentTarget);
 	const formDataObject = extractFormData<FormDataType<T>>(formData);
 
+	// Return whatever type the apiCalls returns 
 	let result: R | null = null;
 
 	try {
