@@ -18,6 +18,10 @@ class BaseDatabase:
             password=self.dbpass,
             host=self.host,
             port=self.port,
+      - POSTGRES_USER=${TS_USER}  # Use .env variables
+      - POSTGRES_PASSWORD=${TS_PASSWORD}
+      - POSTGRES_DB=${TS_DB}
+      - POSTGRES_HOST=${TS_HOST}
             database=self.db
         )
         return connection

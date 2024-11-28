@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS bin1s (
+    time TIMESTAMP,
+);
+

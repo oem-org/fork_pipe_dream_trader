@@ -5,7 +5,7 @@ export default function extractFormData<T extends FormDataType<T>>(formData: For
 	const data: Partial<T> = {};
 
 	formData.forEach((value, key) => {
-		// FormData can be file
+		// FormData can be a file
 		if (typeof value === "string") {
 			data[key as keyof T] = value as T[keyof T];
 		} else {

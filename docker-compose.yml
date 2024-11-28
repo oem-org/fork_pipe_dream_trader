@@ -15,11 +15,6 @@ services:
   backend:
     build:
       context: ./backend
-      # dockerfile: Dockerfile
-
-    # build:
-    #   context: .
-    # image: soma1337/pipe_dream:latest
     volumes:
       - "./backend:/app"
     env_file:
@@ -36,8 +31,7 @@ services:
     image: postgres:16
     container_name: postgres-db
     volumes:
-      - "postgres-data:/var/lib/postgresql/data"
-      - ./sql/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5439:5432"  # Remapped to avoid conflict
     env_file:
@@ -49,8 +43,7 @@ services:
   timescale:
     image: timescale/timescaledb-ha:pg16
     volumes:
-      - "timescale-data:/var/lib/postgresql/data"
-      - "./sql/setup_timescale.sql:/setup_timescale.sql" 
+      - timescale_data:/home/postgres/pgdata/data
       - ./sql/timescale/init.sql:/docker-entrypoint-initdb.d/init.sql
     # remapped because it was conflicting with local postgres
     ports:
@@ -58,7 +51,6 @@ services:
     env_file:
       - ".env"
     environment:
-      - RTE=${RTE}
       - POSTGRES_USER=${TS_POSTGRES_USER}  # Use .env variables
       - POSTGRES_PASSWORD=${TS_POSTGRES_PASSWORD}
       - POSTGRES_DB=${TS_POSTGRES_DB}
@@ -79,7 +71,7 @@ services:
       - POSTGRES_DB=${TS_POSTGRES_DB}
       - POSTGRES_HOST=${TS_POSTGRES_HOST}
     volumes:
-      - ".:/opt/timescale_pull" 
+      - "./market_data_service/:/opt/timescale_pull" 
     depends_on:
       - timescale
     networks:
@@ -87,32 +79,11 @@ services:
 
 
 volumes:
-  postgres-data:  
-  timescale-data:
+  postgres_data:
+  timescale_data:
 
 networks:
   webnet:
     driver: bridge
   dbnet:
     driver: bridge
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     # dockerfile: Dockerfile
-  #
-  #   # volumes:
-  #   #   - ".:/app"
-  #   ports:
-  #     - "3000:3000"
-  #   # build:
-  #   #   context: .
-  #   # image: soma1337/pipe_dream:latest
-  #   env_file:
-  #     - "./backend/testenv"
-  #   depends_on:
-  #     - timescale
-  #     - backend
-  #   networks:
-  #     - dbnet
-  #     - webnet
-      #
