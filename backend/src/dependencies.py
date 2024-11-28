@@ -5,7 +5,7 @@ from fastapi import Depends
 # from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
-from .database import SessionLocal
+from .orm_connection import SessionLocal
 from .services.auth.auth_services import get_current_user
 
 # bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
@@ -19,7 +19,7 @@ from .services.auth.auth_services import get_current_user
 # If yield was ommited it woul
 #https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-with-yield/
 def get_db():
-    db = SessionLocal() 
+    db = SessionLocal()
     try:
         yield db
     finally:

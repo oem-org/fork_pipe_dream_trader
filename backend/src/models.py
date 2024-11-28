@@ -2,7 +2,7 @@ from sqlalchemy import JSON, Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy.orm import relationship
 
-from .database import Base
+from .orm_connection import Base
 
 class Users(Base):
     __tablename__ = 'users'
@@ -55,21 +55,21 @@ class Pairs(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     strategies = relationship("Strategies", back_populates="pair")
-    
+
 
 class StrategyIndicators(Base):
     __tablename__ = 'strategy_indicators'
 
-    id = Column(Integer, primary_key=True, autoincrement=True) 
-    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+
     fk_indicator_id = Column(
-        Integer, 
-        ForeignKey('indicators.id', ondelete='CASCADE', onupdate='CASCADE'), 
+        Integer,
+        ForeignKey('indicators.id', ondelete='CASCADE', onupdate='CASCADE'),
         nullable=False
     )
     fk_strategy_id = Column(
-        Integer, 
-        ForeignKey('strategies.id', ondelete='CASCADE', onupdate='CASCADE'), 
+        Integer,
+        ForeignKey('strategies.id', ondelete='CASCADE', onupdate='CASCADE'),
         nullable=False
     )
 

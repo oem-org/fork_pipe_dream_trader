@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 import datetime
-from .database import SessionLocal, timescale_db_service
+from .orm_connection import SessionLocal, timescale_db_service
 from .exceptions import register_all_errors
 from .middleware.register_middleware import register_middleware
 from .models import Base
@@ -32,7 +32,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 @asynccontextmanager
-async def lifespan(app: FastAPI): 
+async def lifespan(app: FastAPI):
     scheduler.start()
     yield
     scheduler.shutdown()
