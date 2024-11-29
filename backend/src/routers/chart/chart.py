@@ -1,23 +1,30 @@
-from datetime import timedelta
-from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.security import OAuth2PasswordRequestForm
 from starlette import status
 
 from src.services.TimescaleService import TimescaleService
 
-from ...dependencies import user_dependency
+from ...dependencies import user_dependency, timescale_dependency
 from ...models import Users
 
 from ...schemas import *
-TimescaleService
 
+timescale_conn = TimescaleService()
 
-router = APIRouter(prefix='/chart', tags=['chart'])
+router = APIRouter(prefix='/timeseries', tags=['chart'])
 
+@router.post("/", status_code=status.HTTP_200_OK)
+async def read_all(
+        chart_request: ChartRequest,
+        user: user_dependency = Depends(),
+        timescale: timescale_dependency = Depends()):
+        
+        print(timescale, user, chart_request)
 
 @router.get("/", status_code=status.HTTP_200_OK)
-async def read_all(user: user_dependency):
-    return db.query(Strategies).filter(Strategies.fk_user_id == user.get('id')).all()
+async def minmax(chart_request: ChartRequest, user: user_dependency = Depends()):
 
+@router.post("/get-timeperiod", status_code=status.HTTP_200_OK)
+async def get_timeperiod_endpoint(
+# Include the router in the FastAPI app
+app.include_router(router, prefix="/api")

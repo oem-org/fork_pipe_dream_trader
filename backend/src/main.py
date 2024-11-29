@@ -16,19 +16,16 @@ from pytz import utc
 import logging
 import logging.config
 
-logging.config.fileConfig("log_config.ini")
-
 scheduler = AsyncIOScheduler(timezone=utc)
 session = SessionLocal()
 
+logging.config.fileConfig("log_config.ini")
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 handler = logging.StreamHandler()
 formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(message)s")
-
 handler.setFormatter(formatter)
-
 logger.addHandler(handler)
 
 @asynccontextmanager

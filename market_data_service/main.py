@@ -1,20 +1,14 @@
 import asyncio
-
 from timescale.PullToDatabase import PullToDatabase
-
 import logging.config
 
 logging.config.fileConfig("log_config_websocket.ini")
-
-
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 handler = logging.StreamHandler()
 formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(message)s")
-
 handler.setFormatter(formatter)
-
 logger.addHandler(handler)
 
 def start_websocket():
@@ -24,7 +18,6 @@ def start_websocket():
 
 def main():
     """Main entry point to set up the database and start the WebSocket."""
-    start_websocket()
 
 if __name__ == "__main__":
     main()

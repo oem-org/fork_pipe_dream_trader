@@ -1,5 +1,13 @@
 from pydantic import BaseModel
 
+class ChartDataRequest(BaseModel):
+    period:str
+    pair:str
+
+class ChartDataResponse(BaseModel):
+    period:str
+    pair:str
+
 class LoginSchema(BaseModel):
     id: int
     username: str

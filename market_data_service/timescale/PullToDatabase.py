@@ -33,14 +33,11 @@ class PullToDatabase(BaseDatabase):
                         await self._process_message(message)
             
             except websockets.exceptions.ConnectionClosedError as e:
-                print("WebSocket connection closed unexpectedly. Reconnecting...")
-                
                 logging.critical(f"WebSocket closed {e}. Reconnecting...")
                 
                 await asyncio.sleep(1)
             
             except Exception as e:
-                print(f"WebSocket connection error: {e}. Reconnecting...")
                 logging.critical(f"WebSocket connection error: {e}. Reconnecting...")
                 await asyncio.sleep(1)
 
