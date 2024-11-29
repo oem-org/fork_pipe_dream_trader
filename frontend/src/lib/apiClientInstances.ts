@@ -4,10 +4,17 @@ import CreateUserResponse from "../interfaces/responses/CreateUserResponse"
 import CreateUserFormRequest from "../interfaces/requests/CreateUserFormRequest"
 import Strategy from "../interfaces/Strategy"
 import { PostService } from "./services/ApiService"
+import UploadFileRequest from "../interfaces/requests/UploadFileRequest"
 // Class for GET requests
 
 const storedToken = localStorage.getItem('user');
 const token = storedToken ? JSON.parse(storedToken) : null;
+
+
+const csvHeader = {
+	'Content-Type': 'test/csv',
+	'Authorization': token?.token ? `Token ${token.token}` : '',
+};
 
 const jsonHeader = {
 	'Content-Type': 'application/json',
@@ -31,4 +38,6 @@ export const createUserApi = new PostService<CreateUserFormRequest, CreateUserRe
 //Strategy
 export const strategyApi = new ApiClientService<Strategy, any>('strategy/', jsonHeader)
 
-
+//Upload files
+export const jsonFileApi = new PostService<FormData, any>('upload/', jsonHeader)
+export const csvFileApi = new PostService<FormData, any>('upload/', csvHeader)

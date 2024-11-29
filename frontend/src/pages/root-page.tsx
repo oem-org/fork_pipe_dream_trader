@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
-import BinanceWebSocket from "../components/websocket";
+import FileUploadForm from "../components/data/file-uploader";
 
 function RootPage() {
   return (
     <>
       <div>
-        <BinanceWebSocket />
+        <FileUploadForm />
         <Outlet />
       </div >
     </>
