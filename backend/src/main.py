@@ -6,6 +6,7 @@ from .models import Base
 from .routers.auth import auth
 from .routers.strategies import strategies
 from .routers.users import users
+from .routers.indicators import indicators 
 from .routers.files import files
 from .seeders.indicators_seeder import indicators_seeder
 from contextlib import asynccontextmanager
@@ -55,3 +56,4 @@ app.include_router(auth.router)
 app.include_router(strategies.router)
 app.include_router(users.router)
 app.include_router(files.router)
+app.include_router(indicators.router)

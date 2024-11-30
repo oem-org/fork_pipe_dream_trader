@@ -33,9 +33,25 @@ class Indicators(Base):
      id = Column(Integer, primary_key=True, index=True)
      kind = Column(String)
      description = Column(String)
-     settings = Column(JSON)
+     default_settings = Column(JSON)
      chart_style = Column(String)
      strategies = relationship("Strategies", secondary="strategy_indicators", back_populates="indicators")
+
+class StrategyIndicators(Base):
+    __tablename__ = 'strategy_indicators'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    settings = Column(JSON)
+    fk_indicator_id = Column(
+        Integer,
+        ForeignKey('indicators.id', ondelete='CASCADE', onupdate='CASCADE'),
+        nullable=False
+    )
+    fk_strategy_id = Column(
+        Integer,
+        ForeignKey('strategies.id', ondelete='CASCADE', onupdate='CASCADE'),
+        nullable=False
+    )
 
 class FilePath (Base):
      __tablename__ = 'files'
@@ -53,21 +69,6 @@ class Pairs(Base):
     strategies = relationship("Strategies", back_populates="pair")
 
 
-class StrategyIndicators(Base):
-    __tablename__ = 'strategy_indicators'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-
-    fk_indicator_id = Column(
-        Integer,
-        ForeignKey('indicators.id', ondelete='CASCADE', onupdate='CASCADE'),
-        nullable=False
-    )
-    fk_strategy_id = Column(
-        Integer,
-        ForeignKey('strategies.id', ondelete='CASCADE', onupdate='CASCADE'),
-        nullable=False
-    )
 
 class BaseCurrency(Base):
     __tablename__ = "base_currency"

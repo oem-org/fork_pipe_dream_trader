@@ -1,5 +1,6 @@
 export default interface IndicatorRequest {
-	kind: string,
+	id: number,
 	settings: string,
-	strategy_fk: number,
+	fk_strategy_id: number,
+	fk_indicator_id: number,
 }
