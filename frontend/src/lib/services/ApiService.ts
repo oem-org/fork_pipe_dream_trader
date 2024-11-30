@@ -14,12 +14,21 @@ class ApiService {
 	}
 
 	private getAuthorizationHeader(): Record<string, string> {
-		const token = localStorage.getItem("token");
-		if (token) {
-			return {
-				'Authorization': token?.token ? `${token.token_type} ${token.token}` : '',
-			};
+		const user = localStorage.getItem('user')
+		if (user) {
+			try {
+				const token = JSON.parse(user);
+				if (token && token.token_type && token.access_token) {
+					return {
+						"Authorization": `${token.token_type} ${token.access_token}`,
+					};
+				}
+			} catch (error) {
+				console.error("Error parsing user data:", error);
+			}
 		}
+
+		// If there's no valid token or an error occurred, return an empty object
 		return {};
 	}
 
@@ -83,7 +92,6 @@ export class GetService<R> extends ApiService {
 
 			return response.data;
 		} catch (error) {
-			console.log(error)
 			throw error;
 		}
 	}
@@ -98,7 +106,6 @@ export class PostService<T, R> extends ApiService {
 
 			return response.data;
 		} catch (error) {
-			console.log(error)
 			throw error;
 		}
 	}
@@ -120,7 +127,7 @@ export class UpdateClient<T, R> extends ApiService {
 	async update(id: number, data: T): Promise<R> {
 		try {
 			const response = await this.axiosInstance.put<R>(`${this.endpoint}/${id}/`, data, {
-				headers: this.getHeaders(),
+				headers: this.headers,
 			});
 
 			return response.data;

@@ -13,7 +13,6 @@ interface AuthStore {
 }
 
 const useAuthStore = create<AuthStore>((set) => ({
-	// Initialize the authentication state based on stored user data
 	isAuthenticated: !!authService.getCurrentUser(),
 
 	createUser: async (user: CreateUserFormRequest): Promise<boolean> => {
@@ -33,7 +32,6 @@ const useAuthStore = create<AuthStore>((set) => ({
 	login: async (credentials: FormData): Promise<boolean> => {
 
 		const user = await authService.login(credentials);
-		console.log(user, "LOGin")
 		if (user) {
 			set({ isAuthenticated: true });
 
@@ -46,8 +44,6 @@ const useAuthStore = create<AuthStore>((set) => ({
 	},
 
 	logout: () => {
-
-		// Delegte logout to AuthService
 		console.log(authService.logout());
 		set({ isAuthenticated: false });
 	},

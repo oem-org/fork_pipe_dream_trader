@@ -33,6 +33,7 @@ def register_middleware(app: FastAPI):
         
         "http://localhost:5173",
         "http://localhost:8000",
+        "http://localhost:8000/docs",
     ]
 
     # app.add_middleware(HTTPSRedirectMidVdleware)

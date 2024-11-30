@@ -3,7 +3,7 @@ import ApiClientService from "./services/ApiClientService"
 import CreateUserResponse from "../interfaces/responses/CreateUserResponse"
 import CreateUserFormRequest from "../interfaces/requests/CreateUserFormRequest"
 import Strategy from "../interfaces/Strategy"
-import { PostService } from "./services/ApiService"
+import { PostService, GetAllService } from "./services/ApiService"
 import UploadFileRequest from "../interfaces/requests/UploadFileRequest"
 // Class for GET requests
 
@@ -32,7 +32,7 @@ export const createUserApi = new PostService<CreateUserFormRequest, CreateUserRe
 
 
 //Strategy
-export const strategyApi = new ApiClientService<Strategy, any>('strategy', jsonHeader)
+export const getAllStrategiesApi = new GetAllService<Strategy>('strategy', jsonHeader)
 
 //Upload files
 export const jsonFileApi = new PostService<FormData, any>('files/save', jsonHeader)

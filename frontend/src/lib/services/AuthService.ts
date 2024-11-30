@@ -3,6 +3,7 @@ import Token from "../../interfaces/Token";
 import { createUserApi } from "../apiClientInstances";
 import { authUserApi } from "../apiClientInstances";
 import CreateUserFormRequest from "../../interfaces/requests/CreateUserFormRequest";
+import axios from "axios";
 
 export default class AuthService {
 	private static instance: AuthService
@@ -19,11 +20,26 @@ export default class AuthService {
 	}
 
 	async login(credentials: FormData): Promise<boolean> {
-		const authInformation = await authUserApi.post(credentials)
-		localStorage.setItem("user", JSON.stringify(authInformation))
-		console.log(authInformation)
-		return false
+		try {
+			const authInformation = await authUserApi.post(credentials);
 
+			if (authInformation && authInformation.access_token) {
+				localStorage.setItem("user", JSON.stringify(authInformation));
+				console.log(authInformation);
+				return true;
+			}
+
+			console.log("Authentication failed: No access token found");
+			return false;
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				console.error("Login failed with status:", error.response?.status);
+				console.error("Error details:", error.response?.data);
+			} else {
+				console.error("Login failed with an unexpected error:", error);
+			}
+			return false;
+		}
 	}
 
 	async logout(): Promise<boolean> {
