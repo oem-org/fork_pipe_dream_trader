@@ -36,9 +36,9 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-@scheduler.scheduled_job('cron', minute="*")
-async def fetch_current_time():
-   print("cron")
+# @scheduler.scheduled_job('cron', minute="*")
+# async def fetch_current_time():
+#    print("cron")
 
 def startup_tasks():
     try:
@@ -48,7 +48,7 @@ def startup_tasks():
 
 app.add_event_handler("startup", startup_tasks)
 
-register_all_errors(app)
+# register_all_errors(app)
 register_middleware(app)
 
 app.include_router(auth.router)

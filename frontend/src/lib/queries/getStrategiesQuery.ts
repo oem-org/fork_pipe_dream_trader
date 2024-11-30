@@ -1,26 +1,26 @@
 
 import { useQuery } from "@tanstack/react-query"
-import {postStrategyApi} from '../apiClientInstances'
+import { postStrategyApi } from '../apiClientInstances'
 
-import IndicatorList from "../models/IndicatorList"
+import Strategy from "../../interfaces/Strategy"
 
-const useIndicatorListQuery = () => {
-  const fetchIndicators = async (): Promise<IndicatorList[]> => {
+const getStrategiesQuery = () => {
+  const fetchStrategies = async (): Promise<Strategy[]> => {
     try {
-      const indicatorsData: IndicatorList[] = await postStrategyApi.getAll()
-      return indicatorsData
+      const strategiesData: Strategy[] = await postStrategyApi.getAll()
+      return strategiesData
     } catch (error) {
       console.log(error)
-      throw new Error("Failed to fetch indicators")
+      throw new Error("Failed to fetch strategies")
     }
   }
 
-  const { data, error, isError, isLoading } = useQuery<IndicatorList[], Error>({
-    queryKey: ["indicatorList"],
-    queryFn: fetchIndicators,
+  const { data, error, isError, isLoading } = useQuery<Strategy[], Error>({
+    queryKey: ["strategyList"],
+    queryFn: fetchStrategies,
   })
 
   return { data, error, isError, isLoading }
 }
 
-export default useIndicatorListQuery
+export default getStrategiesQuery
