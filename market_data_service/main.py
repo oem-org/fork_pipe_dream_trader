@@ -1,5 +1,5 @@
 import asyncio
-from timescale.PullToDatabase import PullToDatabase
+from timescale.PullToDatabase import BinanceWebsocket
 import logging.config
 
 logging.config.fileConfig("log_config_websocket.ini")
@@ -11,13 +11,7 @@ formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(messag
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-def start_websocket():
-    """Start the WebSocket to pull data and store it in the database."""
-    pull_db = PullToDatabase()
-    asyncio.run(pull_db.connect_to_websocket())
-
-def main():
-    """Main entry point to set up the database and start the WebSocket."""
 
 if __name__ == "__main__":
-    main()
+    pull_to_db = BinanceWebsocket()
+    asyncio.run(pull_to_db.connect_to_websocket())

@@ -30,14 +30,13 @@ const formDataHeader = {
 
 
 //Auth
-//no end / for token endpoint, will throw cors error
 export const authUserApi = new PostService<FormData, TokenResponse>('auth/token', formDataHeader)
-export const createUserApi = new PostService<CreateUserFormRequest, CreateUserResponse>('auth/', jsonHeader)
+export const createUserApi = new PostService<CreateUserFormRequest, CreateUserResponse>('auth', jsonHeader)
 
 
 //Strategy
-export const strategyApi = new ApiClientService<Strategy, any>('strategy/', jsonHeader)
+export const strategyApi = new ApiClientService<Strategy, any>('strategy', jsonHeader)
 
 //Upload files
-export const jsonFileApi = new PostService<FormData, any>('upload/', jsonHeader)
-export const csvFileApi = new PostService<FormData, any>('upload/', csvHeader)
+export const jsonFileApi = new PostService<FormData, any>('files/save', jsonHeader)
+export const csvFileApi = new PostService<FormData, any>('files/save', csvHeader)

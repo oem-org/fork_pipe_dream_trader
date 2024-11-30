@@ -1,8 +1,6 @@
 import psycopg2
 import os
-# from dotenv import load_dotenv
 #
-# load_dotenv()
 class BaseDatabase:
     def __init__(self):
         self.dbuser = os.environ['TS_POSTGRES_USER']

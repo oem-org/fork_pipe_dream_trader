@@ -8,7 +8,7 @@ from timescale.BaseDatabase import BaseDatabase
 from typing import Dict, Optional
 import logging
 
-class PullToDatabase(BaseDatabase):
+class BinanceWebsocket(BaseDatabase):
     def __init__(self):
         super().__init__()
         self.client = Client()

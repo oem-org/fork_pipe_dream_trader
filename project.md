@@ -22,6 +22,10 @@ WHERE symbol = 'BTCUSDT';
 
 # Tech stack
 
+FastAPI automatically converts responses to JSON
+https://fastapi.tiangolo.com/tutorial/encoder/
+
+
 https://realpython.com/prevent-python-sql-injection/
 
 

@@ -8,7 +8,7 @@ from ...exceptions import AuthenticationFailed, StrategyNotFound
 from ...models import Strategies
 
 print(user_dependency)
-router = APIRouter(tags=['strategy'])
+router = APIRouter(prefix="/strategy", tags=['strategy'])
 
 
 class CreateUserRequest(BaseModel):
@@ -34,7 +34,7 @@ class StrategyRequest(BaseModel):
 #     #     raise AutheticationFailed()
 #     return db.query(Strategies).filter(Strategies.fk_user_id == user.get('id')).all()
 #
-@router.get("/", status_code=status.HTTP_200_OK)
+@router.get("", status_code=status.HTTP_200_OK)
 async def read_all(user: user_dependency, db: db_dependency):
     # if user is None:
     #     raise AutheticationFailed()
