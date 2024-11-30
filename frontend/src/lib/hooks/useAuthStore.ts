@@ -33,7 +33,7 @@ const useAuthStore = create<AuthStore>((set) => ({
 	login: async (credentials: FormData): Promise<boolean> => {
 
 		const user = await authService.login(credentials);
-
+		console.log(user, "LOGin")
 		if (user) {
 			set({ isAuthenticated: true });
 

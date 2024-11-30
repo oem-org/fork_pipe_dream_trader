@@ -17,7 +17,7 @@ from ...schemas import *
 router = APIRouter(prefix='/auth', tags=['auth'])
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=CreateUserResponse)
+@router.post("", status_code=status.HTTP_201_CREATED, response_model=CreateUserResponse)
 async def create_user(db: db_dependency, create_user_request: CreateUserRequest):
 
     create_user_model = Users(

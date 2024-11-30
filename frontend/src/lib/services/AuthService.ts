@@ -18,8 +18,12 @@ export default class AuthService {
 		return AuthService.instance;
 	}
 
-	async login(credentials: FormData): Promise<Token> {
-		return await authUserApi.post(credentials)
+	async login(credentials: FormData): Promise<boolean> {
+		const authInformation = await authUserApi.post(credentials)
+		localStorage.setItem("user", JSON.stringify(authInformation))
+		console.log(authInformation)
+		return false
+
 	}
 
 	async logout(): Promise<boolean> {

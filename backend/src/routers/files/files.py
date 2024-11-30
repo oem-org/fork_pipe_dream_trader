@@ -4,8 +4,8 @@ from starlette import status
 
 from src.services.TimescaleService import TimescaleService
 
-from ...dependencies import user_dependency, timescale_dependency
-from ...models import Users
+from ...dependencies import user_dependency, timescale_dependency, db_dependency
+from ...models import Users, FilePath
 
 import shutil
 from pathlib import Path
@@ -13,6 +13,7 @@ from fastapi import HTTPException
 from ...schemas import *
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
+from pathlib import Path
 
 timescale_conn = TimescaleService()
 
@@ -34,7 +35,6 @@ import json
 def save_file(file, username):
     folder_path = Path(__file__).parent.parent.parent.parent / "uploaded_files" / username
     folder_path.mkdir(parents=True, exist_ok=True)   
-
     file_path = folder_path / file.filename
 
     if file_path.exists():
@@ -43,7 +43,9 @@ def save_file(file, username):
     
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
+   
     
+
     return str(file_path)
 
 
@@ -61,17 +63,21 @@ def get_files(user: user_dependency):
     return {"files": file_paths}
 
 @router.post("/save", status_code=status.HTTP_201_CREATED)
-async def save_uploaded_file(user: user_dependency, file: UploadFile = File(...)):
+async def save_uploaded_file(user: user_dependency, db: db_dependency, file: UploadFile):
     """
     Receives FormData and saves the file.
     The file input field is used to identify the file.
     FastAPI automatically reads the file and populates UploadFile.
-    The ... (ellipsis) in = File(...) signals that the parameter is required.
     """
     try:
         print(user)
         saved_file_path = save_file(file, user['username'])
+        filename = Path(saved_file_path).name
+        saved_file = FilePath(path=saved_file_path, filename=filename)
+        db.add(saved_file)
 
-        return {"file_saved": saved_file_path}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"File not saved {e}")
+    
+    
+    return {"file_saved": saved_file_path}

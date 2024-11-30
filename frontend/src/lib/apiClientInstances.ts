@@ -13,18 +13,15 @@ const token = storedToken ? JSON.parse(storedToken) : null;
 
 const csvHeader = {
 	'Content-Type': 'test/csv',
-	'Authorization': token?.token ? `Token ${token.token}` : '',
 };
 
 const jsonHeader = {
 	'Content-Type': 'application/json',
-	'Authorization': token?.token ? `Token ${token.token}` : '',
 };
 
 
 const formDataHeader = {
 	'Content-Type': 'application/x-www-form-urlencoded',
-	'Authorization': token?.token ? `Token ${token.token}` : '',
 };
 
 

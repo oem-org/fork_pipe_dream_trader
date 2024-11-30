@@ -36,17 +36,12 @@ class Indicators(Base):
      chart_style = Column(String)
      strategies = relationship("Strategies", secondary="strategy_indicators", back_populates="indicators")
 
+class FilePath (Base):
+     __tablename__ = 'files'
 
-# class IndicatorType(models.Model):
-#      __tablename__ = 'indicators'
-#     kind = models.CharField(max_length=255)
-#     settings = models.JSONField(default=dict)
-#     chart_style = models.CharField(max_length=255, default='line')
-#     description = models.TextField(blank=True)
-#     strategies = relationship("Strategies", secondary="strategy_indicators", back_populates="indicators")
-#     def __str__(self):
-#         return self.kind
-
+     id = Column(Integer, primary_key=True, index=True)
+     path = Column(String)
+     filenamne = Column(String)
 
 
 class Pairs(Base):
