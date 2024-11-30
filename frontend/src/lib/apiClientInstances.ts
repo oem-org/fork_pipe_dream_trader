@@ -31,6 +31,10 @@ export const authUserApi = new PostService<FormData, TokenResponse>('auth/token'
 export const createUserApi = new PostService<CreateUserFormRequest, CreateUserResponse>('auth', jsonHeader)
 
 
+
+//Currency Pairs
+export const getAllPairsDbApi = new GetAllService<Strategy>('strategy', jsonHeader)
+
 //Strategy
 export const getAllStrategiesApi = new GetAllService<Strategy>('strategy', jsonHeader)
 
