@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 import datetime
-from .orm_connection import SessionLocal, timescale_db_service
+from .orm_connection import SessionLocal, timescale_db_service, engine
 from .exceptions import register_all_errors
 from .middleware.register_middleware import register_middleware
 from .models import Base
@@ -36,6 +36,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+Base.metadata.create_all(bind=engine)
+
 @scheduler.scheduled_job('cron', minute="*")
 async def fetch_current_time():
    print("cron")
@@ -54,3 +56,4 @@ register_middleware(app)
 app.include_router(auth.router)
 app.include_router(strategies.router)
 app.include_router(users.router)
+
