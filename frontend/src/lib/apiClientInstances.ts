@@ -3,6 +3,8 @@ import ApiClientService from "./services/ApiClientService"
 import CreateUserResponse from "../interfaces/responses/CreateUserResponse"
 import CreateUserFormRequest from "../interfaces/requests/CreateUserFormRequest"
 import Strategy from "../interfaces/Strategy"
+import IndicatorRequest from "../interfaces/requests/IndicatorRequest"
+import Indicator from "../interfaces/Indicator"
 import { PostService, GetAllService } from "./services/ApiService"
 import UploadFileRequest from "../interfaces/requests/UploadFileRequest"
 // Class for GET requests
@@ -31,6 +33,9 @@ export const authUserApi = new PostService<FormData, TokenResponse>('auth/token'
 export const createUserApi = new PostService<CreateUserFormRequest, CreateUserResponse>('auth', jsonHeader)
 
 
+// Indicators
+export const getAllIndicatorsApi = new GetAllService<Indicator>('indicators', jsonHeader)
+export const postIndicatorApi = new PostService<IndicatorRequest, void>('indicators', jsonHeader)
 
 //Currency Pairs
 export const getAllPairsDbApi = new GetAllService<Strategy>('strategy', jsonHeader)

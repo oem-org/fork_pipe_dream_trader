@@ -18,7 +18,7 @@ router = APIRouter(prefix='/indicators', tags=['indicators'])
 
 
 
-class FleRequest(BaseModel):
+class FileRequest(BaseModel):
     period:str
     pair:str
 
@@ -36,10 +36,46 @@ def get_indicators(user: user_dependency, db: db_dependency):
 
 @router.get("/{indicator_id}", status_code=status.HTTP_200_OK)
 async def read_indicator(
-    user: user_dependency, db: db_dependency, indicator_id: int = Path(gt=0)
-):
+        user: user_dependency, db: db_dependency, indicator_id: int):
 
-    indicator_model = db.query(Indicators).get(indicator_id)
-    if not indicator_model:
+    indicator = db.query(Indicators).get(indicator_id)
+    if not indicator:
         raise HTTPException(status_code=404, detail="Indicator not found")
-    return indicator_model
+    return indicator
+
+
+class IndicatorUpdateRequest:
+    id: int
+    settings: str
+    fk_user_id: int
+    fk_strategy_id: int
+
+
+@router.patch("/{indicator_id}", status_code=status.HTTP_200_OK)
+async def update_indicator(
+    indicator_id: int,
+    indicator_data: IndicatorUpdateRequest,
+    user: user_dependency,
+    db: db_dependency
+):
+    # Retrieve the indicator from the database
+    indicator = db.query(Indicators).get(indicator_id)
+    if not indicator:
+        raise HTTPException(status_code=404, detail="Indicator not found")
+
+    indicator.settings = indicator_data.settings
+    if indicator_data.pair is not None:
+        indicator.pair = indicator_data.pair
+    # Add any other fields to update similarly
+
+    try:
+        db.commit()
+        db.refresh(indicator)
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to update indicator: {str(e)}",
+        )
+
+    return indicator
