@@ -8,7 +8,7 @@ export default async function handleFormSubmit<T extends object, R>(
 	setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ): Promise<R | null> {
 
-	"""Dynamically creates JSON from form data"""
+	//Dynamically creates JSON from form data
 
 	e.preventDefault();
 	setLoading(true);

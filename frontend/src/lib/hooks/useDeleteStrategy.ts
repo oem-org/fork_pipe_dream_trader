@@ -3,7 +3,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import strategyCli
 
-import Strategy from "../../interfaces/Strategy";
 
 
 export const useDeleteStrategy = () => {
