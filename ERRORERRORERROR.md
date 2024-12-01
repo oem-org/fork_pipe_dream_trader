@@ -14,7 +14,8 @@ backend-1              |     self._target(*self._args, **self._kwargs)
 backend-1              |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 backend-1              |   File "/usr/local/lib/python3.13/site-packages/uvicorn/_subprocess.py", line 80, in subprocess_started
 backend-1              |     target(sockets=sockets)
-backend-1              |     ~~~~~~^^^^^^^^^^^^^^^^^
+backend-1              |     ~~~~~~^^^^^^^^^^^^^^^^^    indicator = StrategyIndicators(**indicator_data.dict())
+    db.add(indicator)
 backend-1              |   File "/usr/local/lib/python3.13/site-packages/uvicorn/server.py", line 65, in run
 backend-1              |     return asyncio.run(self.serve(sockets=sockets))
 backend-1              |            ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
