@@ -1,5 +1,4 @@
 from sqlalchemy import JSON, Boolean, Column, ForeignKey, Integer, String
-from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy.orm import relationship
 
 from .orm_connection import Base
@@ -26,6 +25,9 @@ class Strategies(Base):
     # One-to-many relationship with Pairs
     fk_pair_id = Column(Integer, ForeignKey("pairs.id"))
     pair = relationship("Pairs", back_populates="strategies")
+    indicators = Column(JSON)
+
+
 
 class Indicators(Base):
      __tablename__ = 'indicators'

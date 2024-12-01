@@ -43,6 +43,7 @@ class ApiService {
 
 export class GetAllService<R> extends ApiService {
 	async getAll(): Promise<R[]> {
+		console.log(this.getHeaders())
 		try {
 			const response = await this.axiosInstance.get<R[]>(this.endpoint, {
 				headers: this.getHeaders(),

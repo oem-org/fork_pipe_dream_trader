@@ -1,16 +1,16 @@
 ---
 services:
-  nginx:
-    image: "nginx:latest"
-    volumes:
-      - ./nginx/:/etc/nginx/conf.d/:ro
-    ports:
-      - "8000:8000"
-    networks:
-      - webnet
-    depends_on:
-      - backend
-    restart: always
+  # nginx:
+  #   image: "nginx:latest"
+  #   volumes:
+  #     - ./nginx/:/etc/nginx/conf.d/:ro
+  #   ports:
+  #     - "8000:8000"
+  #   networks:
+  #     - webnet
+  #   depends_on:
+  #     - backend
+  #   restart: always
 
   backend:
     build:
@@ -22,8 +22,8 @@ services:
     depends_on:
       - timescale
       - postgres
-    # ports:
-    #   - "8000:8000"
+    ports:
+      - "8000:8000"
     networks:
       - dbnet
       - webnet
@@ -73,12 +73,11 @@ services:
       - POSTGRES_DB=${TS_POSTGRES_DB}
       - POSTGRES_HOST=${TS_POSTGRES_HOST}
     volumes:
-      - "./market_data_service/:/opt/timescale_pull" 
+      - "./market_data_service/:/opt/timescale_pull"
     depends_on:
       - timescale
     networks:
       - dbnet
-
 
 volumes:
   postgres_data:
