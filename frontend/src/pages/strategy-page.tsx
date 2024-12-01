@@ -1,12 +1,12 @@
-import StrategyLayout from "../components/shared/layouts/strategy-layout";
-import { darkColors } from "../components/shared/chart/dark-colors";
-import Timeseries from "../interfaces/Timeseries";
-import { initialData } from "../components/shared/chart/initialData";
-import { Chart } from "../components/shared/chart/chart";
+//import StrategyLayout from "../components/shared/layouts/strategy-layout";
+//import { darkColors } from "../components/shared/chart/dark-colors";
+//import Timeseries from "../interfaces/Timeseries";
+//import { initialData } from "../components/shared/chart/initialData";
+//import { Chart } from "../components/shared/chart/chart";
 
 
 //import usePriceStore from "../lib/hooks/usePriceStore";
-import { useEffect, useState } from "react";
+//import { useEffect, useState } from "react";
 //import useStrategyStore from '../lib/hooks/useStrategyStore.ts'
 //import usePriceQuery from "../lib/hooks/usePriceQuery.ts";
 //import { Price } from "../interfaces/Price.ts";
@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 
 export default function StrategyPage() {
 
-  let colors = darkColors
+  //let colors = darkColors
 
   //const { prices, selectedCoinId, results, setResults } = usePriceStore()
   //const { getById, selectedId } = useStrategyStore()
@@ -23,7 +23,7 @@ export default function StrategyPage() {
 
 
 
-  const [chartData, setChartData] = useState<Timeseries[]>(initialData);
+  //const [chartData, setChartData] = useState<Timeseries[]>(initialData);
 
   //function formatPriceData(rawData: Price[] | null) {
   //  return rawData.map(item => ({
@@ -54,11 +54,12 @@ export default function StrategyPage() {
 
 
 
-  return (
-    <StrategyLayout>
-      <Chart />
-    </StrategyLayout>
+  return (<></>
+    //<StrategyLayout>
+    //  <Chart />
+    //</StrategyLayout>
   );
 }
 
 //<Chart windowSize={windowSize.width} data={chartData} colors={colors} />
+//

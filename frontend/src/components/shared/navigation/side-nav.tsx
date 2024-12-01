@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import NavLinks from "./nav-links";
-import useAuthStore from "../../../lib/hooks/useAuthStore";
+//import useAuthStore from "../../../lib/hooks/useAuthStore";
 
 
 export default function SideNav() {

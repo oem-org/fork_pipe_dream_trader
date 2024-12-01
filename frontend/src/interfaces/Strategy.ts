@@ -1,14 +1,11 @@
-import Tag from './Tag'
-import Indicator from './IndicatorList'
-import Coin from './Coin'
+import Indicator from './Indicator'
+import Pair from './Pair'
 
 export default interface Strategy {
-    id?: number
+    id: number
     name: string
-    base_currency: number
-    coins: Coin[]
-    tags?: Tag[]
+    description: string
+    pair: Pair
     indicators?: Indicator[]
-    description?: string
 }
 
