@@ -1,15 +1,12 @@
 from fastapi import FastAPI
-import datetime
-from .database import SessionLocal, timescale_db_service
+from .database import SessionLocal
 from .exceptions import register_all_errors
 from .middleware.register_middleware import register_middleware
 from .models import Base
 from .routers.auth import auth
 from .routers.strategies import strategies
 from .routers.users import users
-from .seeders.coins_seeder import coins_seeder
 from .seeders.indicators_seeder import indicators_seeder
-from .seeders.user_seeder import users_seeder
 from contextlib import asynccontextmanager
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from pytz import utc

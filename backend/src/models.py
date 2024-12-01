@@ -19,7 +19,6 @@ class Strategies(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     description = Column(String)
-    priority = Column(Integer)
     fk_user_id = Column(Integer, ForeignKey("users.id"))
     indicators = relationship("Indicators", secondary="strategy_indicators", back_populates="strategies")
     # One-to-many relationship with Pairs
