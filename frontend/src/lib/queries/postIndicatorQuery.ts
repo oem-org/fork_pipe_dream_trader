@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query"
 import { postIndicatorApi } from "../apiClientInstances"
-import IndicatorRequest from "../../interfaces/requests/IndicatorRequest"
-import UpdateIndicatorRequest
+import IndicatorRequest from "@/interfaces/requests/UpdateIndicatorRequest"
 
 export const postIndicatorQuery = () => {
   const mutation = useMutation({

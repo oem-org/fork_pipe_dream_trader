@@ -1,21 +1,21 @@
 
 import { useQuery } from "@tanstack/react-query"
-import { CoinClient, StrategiesClient } from "../services/ApiClientInstances"
-import Strategy from "../models/Strategy"
-import Coin from "../models/Coin"
+import { getAllPairsDbApi } from "../apiClientInstances"
+//import Strategy from "../models/Strategy"
+import Pair from "@/interfaces/Pair"
 // import {GridItemClass} from "../models/GridItem"
 
 const getPairsDbQuery = () => {
-	const fetchCoins = async (): Promise<Coin[]> => {
+	const fetchPairs = async (): Promise<Pair[]> => {
 
-		const coinData: Coin[] = await CoinClient.getAll()
+		const coinData: Pair[] = await getAllPairsDbApi.getAll()
 
 		return coinData
 	}
 
-	return useQuery<Coin[], Error>({
+	return useQuery<Pair[], Error>({
 		queryKey: ["coins"],
-		queryFn: fetchCoins,
+		queryFn: fetchPairs,
 	})
 }
 

@@ -1,16 +1,14 @@
 import TokenResponse from "../interfaces/responses/TokenResponse"
-import ApiClientService from "./services/ApiClientService"
+// import ApiClientService from "./services/ApiClientService"
 import CreateUserResponse from "../interfaces/responses/CreateUserResponse"
 import CreateUserFormRequest from "../interfaces/requests/CreateUserFormRequest"
 import Strategy from "../interfaces/Strategy"
-import IndicatorRequest from "../interfaces/requests/IndicatorRequest"
+import IndicatorRequest from "@/interfaces/requests/UpdateIndicatorRequest"
 import Indicator from "../interfaces/Indicator"
 import { PostService, GetAllService } from "./services/ApiService"
-import UploadFileRequest from "../interfaces/requests/UploadFileRequest"
+// import UploadFileRequest from "../interfaces/requests/UploadFileRequest"
 // Class for GET requests
 
-const storedToken = localStorage.getItem('user');
-const token = storedToken ? JSON.parse(storedToken) : null;
 
 
 const csvHeader = {

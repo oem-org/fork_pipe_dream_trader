@@ -5,20 +5,20 @@ import Indicator from "../../interfaces/Indicator";
 import { postIndicatorQuery } from "../../lib/queries/postIndicatorQuery";
 
 export default function IndicatorList() {
-	const { data, error, isLoading } = getIndicatorsQuery();
+	const { data} = getIndicatorsQuery();
 	const { indicatorId, setIndicatorId } = useIndicatorStore();
-	const { selectedStrategy, strategyId, setStrategyId } = useStrategyStore();
+	const {  strategyId } = useStrategyStore();
 	const mutateAsyncIndicator = postIndicatorQuery()
 
 	const addIndicator = async (indicator: Indicator, strategyId: number) => {
 		console.log(indicator.id, strategyId);
 		// strategyId 0 is when none is selected
 		if (typeof indicator.id === "number" && strategyId === 0) {
-			console.log(strategyId, indicator.kind, indicator.settings);
+			console.log(strategyId, indicator.kind, indicator.default_settings);
 			try {
 				const data = await mutateAsyncIndicator({
 					kind: indicator.kind,
-					settings: indicator.settings,
+					settings: indicator.default_settings,
 					strategy_fk: strategyId,
 				});
 				console.log("Mutation was successful, returned data:", data);
@@ -30,11 +30,9 @@ export default function IndicatorList() {
 		}
 	};
 
-	function addSelectIndicator(indicator: Indicator, strategyId: number | null) {
-		if (indicator.id !== null) {
+	function addSelectIndicator(indicator: Indicator, strategyId: number) {
 			setIndicatorId(indicator.id);
 			console.log(indicatorId, "indicator id");
-		}
 		addIndicator(indicator, strategyId);
 	}
 

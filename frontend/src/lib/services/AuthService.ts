@@ -1,5 +1,5 @@
 import CreateUserResponse from "../../interfaces/responses/CreateUserResponse";
-import Token from "../../interfaces/Token";
+// import Token from "../../interfaces/Token";
 import { createUserApi } from "../apiClientInstances";
 import { authUserApi } from "../apiClientInstances";
 import CreateUserFormRequest from "../../interfaces/requests/CreateUserFormRequest";

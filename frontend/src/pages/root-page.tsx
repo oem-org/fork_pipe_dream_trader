@@ -7,7 +7,7 @@ import CreatePost from "../components/strategy/create-strategy-form";
 
 
 function RootPage() {
-  const { data, error, isError, isLoading } = getIndicatorsQuery()
+  const { data } = getIndicatorsQuery()
 
   return (
     <>
