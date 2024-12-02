@@ -12,13 +12,41 @@ class ApiService {
 		this.endpoint = endpoint;
 		this.headers = headers;
 	}
+
+	private getAuthorizationHeader(): Record<string, string> {
+		const user = localStorage.getItem('user')
+		if (user) {
+			try {
+				const token = JSON.parse(user);
+				if (token && token.token_type && token.access_token) {
+					return {
+						"Authorization": `${token.token_type} ${token.access_token}`,
+					};
+				}
+			} catch (error) {
+				console.error("Error parsing user data:", error);
+			}
+		}
+
+		// If there's no valid token or an error occurred, return an empty object
+		return {};
+	}
+
+	protected getHeaders(): Record<string, string> {
+		return {
+			...this.headers,
+			...this.getAuthorizationHeader(),
+		};
+	}
+
 }
 
 export class GetAllService<R> extends ApiService {
 	async getAll(): Promise<R[]> {
+		console.log(this.getHeaders())
 		try {
 			const response = await this.axiosInstance.get<R[]>(this.endpoint, {
-				headers: this.headers,
+				headers: this.getHeaders(),
 			});
 			return response.data;
 		} catch (error) {
@@ -34,7 +62,7 @@ export class GetWithParamsService<T, R> extends ApiService {
 		try {
 			const response = await this.axiosInstance.get<R>(`${this.endpoint}/${id}/`, {
 				params,
-				headers: this.headers,
+				headers: this.getHeaders(),
 			});
 			return response.data;
 		} catch (error) {
@@ -47,7 +75,7 @@ export class GetWithQueryService<R> extends ApiService {
 	async getQueryString(id: any, queryString: string): Promise<R> {
 		try {
 			const response = await this.axiosInstance.get<R>(`${this.endpoint}/?${queryString}=${id}`, {
-				headers: this.headers,
+				headers: this.getHeaders(),
 			});
 			return response.data;
 		} catch (error) {
@@ -60,7 +88,7 @@ export class GetService<R> extends ApiService {
 	async get(id: number): Promise<R> {
 		try {
 			const response = await this.axiosInstance.get<R>(`${this.endpoint}/${id}/`, {
-				headers: this.headers,
+				headers: this.getHeaders(),
 			});
 
 			return response.data;
@@ -74,7 +102,7 @@ export class PostService<T, R> extends ApiService {
 	async post(data: T): Promise<R> {
 		try {
 			const response = await this.axiosInstance.post<R>(this.endpoint, data, {
-				headers: this.headers,
+				headers: this.getHeaders(),
 			});
 
 			return response.data;
@@ -88,7 +116,7 @@ export class DeleteService extends ApiService {
 	async delete(id: number): Promise<void> {
 		try {
 			await this.axiosInstance.delete(`${this.endpoint}/${id}`, {
-				headers: this.headers,
+				headers: this.getHeaders(),
 			});
 		} catch (error) {
 			throw error;

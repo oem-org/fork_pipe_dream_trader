@@ -1,9 +1,0 @@
-RTE=test
-SECRET_KEY=dddddddddddddsss2
-ALGORITHM=HS256
-POSTGRES_USER=user
-POSTGRES_PASSWORD=pass
-POSTGRES_DB=testdb
-DATABASE_URL=postgresql://user:pass@testdb:5432/testdb
-
-

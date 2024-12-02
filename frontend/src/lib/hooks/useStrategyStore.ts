@@ -1,33 +1,30 @@
 import { create } from "zustand"
-
-
 import Strategy from "../../interfaces/Strategy"
-
 
 interface StrategyStore {
 	strategies: Strategy[]
-	selectedId: number | null
+	strategyId: number
 	setStrategies: (strategies: Strategy[]) => void
 	setStrategyId: (id: number) => void
-	getById: () => Strategy | undefined
+	getById: () => Strategy | null
 }
 
-const strategyStore = create<StrategyStore>((set, get) => ({
+const useStrategyStore = create<StrategyStore>((set, get) => ({
 	strategies: [],
-	selectedId: null,
+	strategyId: 0,
 	setStrategies: (strategies: Strategy[]) => set(() => ({ strategies })),
-	setStrategyId: (id: number) => set(() => ({ selectedId: id })),
+	setStrategyId: (id: number) => set(() => ({ strategyId: id })),
 
 	getById: () => {
-		const { strategies, selectedId } = get()
-		console.log(`Selected ID: ${selectedId}`)
+		const { strategies, strategyId } = get()
+		console.log(`Selected ID: ${strategyId}`)
 		console.log(`Strategies: ${JSON.stringify(strategies)}`)
-		const foundStrategy = strategies.find((strategy) => strategy.id === selectedId)
+		const foundStrategy = strategies.find((strategy) => strategy.id === strategyId)
 		console.log(`Found strategy: ${JSON.stringify(foundStrategy)}`)
-		return foundStrategy
+		return foundStrategy || null
 	},
 }))
 
-export default strategyStore
+export default useStrategyStore
 
 

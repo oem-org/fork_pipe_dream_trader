@@ -28,15 +28,24 @@ def register_middleware(app: FastAPI):
         print(message)
         return response
 
+
+    origins = [
+        
+        "http://localhost:5173",
+        "http://localhost:8000",
+        "http://localhost:8000/docs",
+    ]
+
+    # app.add_middleware(HTTPSRedirectMidVdleware)
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
+        allow_origins=origins,
         allow_methods=["*"],
         allow_headers=["*"],
         allow_credentials=True,
     )
 
-    app.add_middleware(
-        TrustedHostMiddleware,
-        allowed_hosts=["localhost", "127.0.0.1", "beyondapi.onrender.com", "0.0.0.0"],
-    )
+    # app.add_middleware(
+    #     TrustedHostMiddleware,
+    #     allowed_hosts=["localhost", "127.0.0.1", "0.0.0.0"],
+    # )

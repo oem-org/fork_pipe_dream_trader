@@ -1,20 +1,16 @@
 ---
 services:
-  frontend:
-    build:
-      context: ./frontend
-    volumes:
-    - "./frontend:/app"
-    environment:
-    - RTE=$RTE
-    depends_on:
-      - timescale
-      - postgres
-    ports:
-      - "5173:5173"  # Remapped to avoid conflict
-    networks:
-      - dbnet
-    restart: always
+  # nginx:
+  #   image: "nginx:latest"
+  #   volumes:
+  #     - ./nginx/:/etc/nginx/conf.d/:ro
+  #   ports:
+  #     - "8000:8000"
+  #   networks:
+  #     - webnet
+  #   depends_on:
+  #     - backend
+  #   restart: always
 
   backend:
     build:
@@ -28,6 +24,8 @@ services:
     depends_on:
       - timescale
       - postgres
+    ports:
+      - "8000:8000"
     networks:
       - dbnet
     restart: always
@@ -77,12 +75,11 @@ services:
       - POSTGRES_DB=${TS_POSTGRES_DB}
       - POSTGRES_HOST=${TS_POSTGRES_HOST}
     volumes:
-      - "./market_data_service/:/opt/timescale_pull" 
+      - "./market_data_service/:/opt/timescale_pull"
     depends_on:
       - timescale
     networks:
       - timescalenet
-
 
 volumes:
   postgres_data:

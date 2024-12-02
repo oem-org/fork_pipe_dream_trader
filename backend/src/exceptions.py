@@ -39,7 +39,7 @@ def register_all_errors(app: FastAPI):
             status_code=status.HTTP_404_NOT_FOUND,
             initial_detail={
                 "message": "User not found",
-                "error_code": "user_not_found",
+                "error_code": "user_not_found_404",
             },
         ),
     )
@@ -50,7 +50,7 @@ def register_all_errors(app: FastAPI):
             status_code=status.HTTP_404_NOT_FOUND,
             initial_detail={
                 "message": "Authentication Failed",
-                "error_code": "auth_failed",
+                "error_code": "auth_failed_404",
             },
         ),
     )

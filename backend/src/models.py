@@ -1,8 +1,7 @@
 from sqlalchemy import JSON, Boolean, Column, ForeignKey, Integer, String
-from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy.orm import relationship
 
-from .database import Base
+from .orm_connection import Base
 
 class Users(Base):
     __tablename__ = 'users'
@@ -18,12 +17,17 @@ class Strategies(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
+
+    title = Column(String)
     description = Column(String)
     fk_user_id = Column(Integer, ForeignKey("users.id"))
     indicators = relationship("Indicators", secondary="strategy_indicators", back_populates="strategies")
     # One-to-many relationship with Pairs
     fk_pair_id = Column(Integer, ForeignKey("pairs.id"))
     pair = relationship("Pairs", back_populates="strategies")
+    indicators = Column(JSON)
+
+
 
 class Indicators(Base):
      __tablename__ = 'indicators'
@@ -31,21 +35,32 @@ class Indicators(Base):
      id = Column(Integer, primary_key=True, index=True)
      kind = Column(String)
      description = Column(String)
-     settings = Column(JSON)
+     default_settings = Column(JSON)
      chart_style = Column(String)
      strategies = relationship("Strategies", secondary="strategy_indicators", back_populates="indicators")
 
+class StrategyIndicators(Base):
+    __tablename__ = 'strategy_indicators'
 
-# class IndicatorType(models.Model):
-#      __tablename__ = 'indicators'
-#     kind = models.CharField(max_length=255)
-#     settings = models.JSONField(default=dict)
-#     chart_style = models.CharField(max_length=255, default='line')
-#     description = models.TextField(blank=True)
-#     strategies = relationship("Strategies", secondary="strategy_indicators", back_populates="indicators")
-#     def __str__(self):
-#         return self.kind
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    settings = Column(JSON)
+    fk_indicator_id = Column(
+        Integer,
+        ForeignKey('indicators.id', ondelete='CASCADE', onupdate='CASCADE'),
+        nullable=False
+    )
+    fk_strategy_id = Column(
+        Integer,
+        ForeignKey('strategies.id', ondelete='CASCADE', onupdate='CASCADE'),
+        nullable=False
+    )
 
+class FilePath (Base):
+     __tablename__ = 'files'
+
+     id = Column(Integer, primary_key=True, index=True)
+     path = Column(String)
+     filenamne = Column(String)
 
 
 class Pairs(Base):
@@ -54,23 +69,8 @@ class Pairs(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     strategies = relationship("Strategies", back_populates="pair")
-    
 
-class StrategyIndicators(Base):
-    __tablename__ = 'strategy_indicators'
 
-    id = Column(Integer, primary_key=True, autoincrement=True) 
-    
-    fk_indicator_id = Column(
-        Integer, 
-        ForeignKey('indicators.id', ondelete='CASCADE', onupdate='CASCADE'), 
-        nullable=False
-    )
-    fk_strategy_id = Column(
-        Integer, 
-        ForeignKey('strategies.id', ondelete='CASCADE', onupdate='CASCADE'), 
-        nullable=False
-    )
 
 class BaseCurrency(Base):
     __tablename__ = "base_currency"
