@@ -1,15 +1,19 @@
 ---
 services:
-  nginx:
-    image: "nginx:latest"
+  frontend:
+    build:
+      context: ./frontend
     volumes:
-      - "./nginx/:/etc/nginx/conf.d/"
-    ports:
-      - "8000:8000"
-    networks:
-      - webnet
+    - "./frontend:/app"
+    environment:
+    - RTE=$RTE
     depends_on:
-      - backend
+      - timescale
+      - postgres
+    ports:
+      - "5173:5173"  # Remapped to avoid conflict
+    networks:
+      - dbnet
     restart: always
 
   backend:
@@ -19,12 +23,13 @@ services:
       - "./backend:/app"
     env_file:
       - "./backend/testenv"
+    environment:
+      - RTE=$RTE
     depends_on:
       - timescale
       - postgres
     networks:
       - dbnet
-      - webnet
     restart: always
 
   postgres:
@@ -35,7 +40,7 @@ services:
     ports:
       - "5439:5432"  # Remapped to avoid conflict
     env_file:
-      - "./backend/testenv"
+      - ".env"
     networks:
       - dbnet
     restart: always
@@ -51,12 +56,13 @@ services:
     env_file:
       - ".env"
     environment:
+      - RTE=$RTE
       - POSTGRES_USER=${TS_POSTGRES_USER}  # Use .env variables
       - POSTGRES_PASSWORD=${TS_POSTGRES_PASSWORD}
       - POSTGRES_DB=${TS_POSTGRES_DB}
       - POSTGRES_HOST=${TS_POSTGRES_HOST}
     networks:
-      - dbnet
+      - timescalenet
     # command: ["bash", "entrypoint-timescale.sh"]
 
   market_data_service:
@@ -65,7 +71,7 @@ services:
     env_file:
       - ".env"
     environment:
-      - RTE=${RTE}
+      - RTE=$RTE
       - POSTGRES_USER=${TS_POSTGRES_USER}  # Use .env variables
       - POSTGRES_PASSWORD=${TS_POSTGRES_PASSWORD}
       - POSTGRES_DB=${TS_POSTGRES_DB}
@@ -75,15 +81,18 @@ services:
     depends_on:
       - timescale
     networks:
-      - dbnet
+      - timescalenet
 
 
 volumes:
   postgres_data:
   timescale_data:
+  node_modules:
 
 networks:
   webnet:
+    driver: bridge
+  timescalenet:
     driver: bridge
   dbnet:
     driver: bridge

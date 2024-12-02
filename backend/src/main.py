@@ -22,9 +22,9 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-@scheduler.scheduled_job('cron', minute="*")
-async def fetch_current_time():
-   print("cron")
+# @scheduler.scheduled_job('cron', minute="*")
+# async def fetch_current_time():
+#    print("cron")
 
 def startup_tasks():
     try:

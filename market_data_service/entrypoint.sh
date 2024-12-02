@@ -1,6 +1,13 @@
 echo "Starting market data service"
 #!/bin/sh
 # run time enviroment
+echo $RTE
+echo $RTE
+echo $RTE
+echo $RTE
+echo $RTE
+echo $RTE
+echo $RTE
 
 case "$RTE" in
     dev )
@@ -11,6 +18,8 @@ case "$RTE" in
         ;;
     prod )
         echo "** Production mode."
+        echo "Test mode"
+        python main.py
         ;;
     refresh )
         echo "**Reseting database"
