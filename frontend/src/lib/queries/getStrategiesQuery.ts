@@ -1,13 +1,13 @@
 
 import { useQuery } from "@tanstack/react-query"
-import { postStrategyApi } from '../apiClientInstances'
 
 import Strategy from "../../interfaces/Strategy"
+import { getAllStrategiesApi } from "../apiClientInstances"
 
 const getStrategiesQuery = () => {
   const fetchStrategies = async (): Promise<Strategy[]> => {
     try {
-      const strategiesData: Strategy[] = await postStrategyApi.getAll()
+      const strategiesData: Strategy[] = await getAllStrategiesApi.getAll()
       return strategiesData
     } catch (error) {
       console.log(error)

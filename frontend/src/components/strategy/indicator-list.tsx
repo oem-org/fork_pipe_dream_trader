@@ -2,13 +2,13 @@ import getIndicatorsQuery from "../../lib/queries/getIndicatorsQuery"
 import useIndicatorStore from "../../lib/hooks/useIndicatorStore";
 import useStrategyStore from "../../lib/hooks/useStrategyStore";
 import Indicator from "../../interfaces/Indicator";
-import { postIndicatorQuery } from "../../lib/queries/postIndicatorQuery";
+//import { postIndicatorQuery } from "../../lib/queries/postIndicatorQuery";
 
 export default function IndicatorList() {
-	const { data} = getIndicatorsQuery();
+	const { data } = getIndicatorsQuery();
 	const { indicatorId, setIndicatorId } = useIndicatorStore();
-	const {  strategyId } = useStrategyStore();
-	const mutateAsyncIndicator = postIndicatorQuery()
+	const { strategyId } = useStrategyStore();
+	//const mutateAsyncIndicator = postIndicatorQuery()
 
 	const addIndicator = async (indicator: Indicator, strategyId: number) => {
 		console.log(indicator.id, strategyId);
@@ -16,11 +16,11 @@ export default function IndicatorList() {
 		if (typeof indicator.id === "number" && strategyId === 0) {
 			console.log(strategyId, indicator.kind, indicator.default_settings);
 			try {
-				const data = await mutateAsyncIndicator({
-					kind: indicator.kind,
-					settings: indicator.default_settings,
-					strategy_fk: strategyId,
-				});
+				//const data = await mutateAsyncIndicator({
+				//	kind: indicator.kind,
+				//	settings: indicator.default_settings,
+				//	strategy_fk: strategyId,
+				//});
 				console.log("Mutation was successful, returned data:", data);
 			} catch (error) {
 				console.error("Mutation failed with error:", error);
@@ -31,8 +31,8 @@ export default function IndicatorList() {
 	};
 
 	function addSelectIndicator(indicator: Indicator, strategyId: number) {
-			setIndicatorId(indicator.id);
-			console.log(indicatorId, "indicator id");
+		setIndicatorId(indicator.id);
+		console.log(indicatorId, "indicator id");
 		addIndicator(indicator, strategyId);
 	}
 
