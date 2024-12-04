@@ -3,7 +3,7 @@ from fastapi.params import Path
 from starlette import status
 
 from ...dependencies import db_dependency, user_dependency
-from ...models import Indicators, Strategy, Users
+from ...models import Indicators, Strategies, Users
 from ...schemas import *
 
 router = APIRouter(prefix="/indicators", tags=["indicators"])

@@ -9,8 +9,7 @@ class IndicatorSchema(BaseModel):
     default_settigs: Dict[str, Any]
     description: str
 
-    class Config:
-        orm_mode = True
+    model_config = {"from_attributes": True}
 
 
 class ChartDataRequest(BaseModel):

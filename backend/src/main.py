@@ -34,8 +34,12 @@ Base.metadata.create_all(bind=engine)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    print("STARTING APP")
+
+    indicators_seeder(session)
     scheduler.start()
     yield
+    print("STARTING APP")
     scheduler.shutdown()
 
 
@@ -48,6 +52,7 @@ app = FastAPI(lifespan=lifespan)
 
 def startup_tasks():
     try:
+        print("seeding")
         indicators_seeder(session)
     except Exception as e:
         print(f"Error during startup seeding: {e}")

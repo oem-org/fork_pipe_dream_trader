@@ -8,6 +8,7 @@ from .data_indicators.rsi import rsi
 
 def indicators_seeder(session: Session):
     indicator_data = [rsi, ao]
+    print(indicator_data)
     new_indicators = 0
     flag = True
 
@@ -19,11 +20,11 @@ def indicators_seeder(session: Session):
             description = indicator_dict.get("description", "")
             print(indicator_dict)
             existing_indicator = session.query(Indicators).filter_by(kind=kind).first()
-            
+
             if not existing_indicator:
                 new_indicator = Indicators(
                     kind=kind,
-                    settings=settings,
+                    default_settings=settings,
                     chart_style=chart_style,
                     description=description,
                 )
