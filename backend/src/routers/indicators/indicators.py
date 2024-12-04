@@ -5,7 +5,7 @@ from starlette import status
 from src.services.TimescaleService import TimescaleService
 
 from ...dependencies import user_dependency, db_dependency
-from ...models import Users, Indicators, Strategies, StrategyIndicators
+from ...models import Users, Indicators, Strategies
 
 from fastapi import HTTPException
 from ...schemas import *
