@@ -7,12 +7,14 @@ export default function getIndicatorsQuery() {
 	const fetchIndicators = async (): Promise<Indicator[]> => {
 		try {
 			const indicatorsData: Indicator[] = await getAllIndicatorsApi.getAll()
+			console.log(indicatorsData)
 			return indicatorsData
 		} catch (error) {
 			//console.error(error)
 			throw new Error("Failed to fetch indicators")
 		}
 	}
+
 
 	const { data, error, isError, isLoading } = useQuery<Indicator[], Error>({
 		queryKey: ["indicatorList"],

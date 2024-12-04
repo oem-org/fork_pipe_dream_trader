@@ -12,6 +12,8 @@
 //import { Price } from "../interfaces/Price.ts";
 //import { useQueryClient } from "@tanstack/react-query";
 
+import IndicatorList from "@/components/strategy/indicator-list";
+
 export default function StrategyPage() {
 
   //let colors = darkColors
@@ -54,7 +56,10 @@ export default function StrategyPage() {
 
 
 
-  return (<></>
+  return (<>
+    <h1>enenenen</h1>
+    <IndicatorList />
+  </>
     //<StrategyLayout>
     //  <Chart />
     //</StrategyLayout>

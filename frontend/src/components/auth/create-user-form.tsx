@@ -48,7 +48,7 @@ export default function CreateUserForm() {
 								id="username"
 								type="string"
 								name="username"
-								defaultValue="testuser"
+								defaultValue="jep"
 								placeholder="Enter your username"
 								required
 							/>
@@ -67,7 +67,7 @@ export default function CreateUserForm() {
 								id="email"
 								type="email"
 								name="email"
-								defaultValue="s@s.ss"
+								defaultValue="s@eeeeees.ss"
 								placeholder="Email"
 								required
 							/>
@@ -86,7 +86,7 @@ export default function CreateUserForm() {
 								id="password"
 								type="password"
 								name="password"
-								defaultValue="Ged666!"
+								defaultValue="password"
 								placeholder="Enter your password"
 								required
 							/>

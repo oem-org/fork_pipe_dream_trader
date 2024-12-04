@@ -1,26 +1,28 @@
-
-from fastapi import  APIRouter, HTTPException, Path
+from fastapi import APIRouter, HTTPException, Path
+from fastapi.params import Path
 from starlette import status
 
-from src.services.TimescaleService import TimescaleService
-
-from ...dependencies import user_dependency, db_dependency
-from ...models import Users, Indicators, Strategies
-
-from fastapi import HTTPException
+from ...dependencies import db_dependency, user_dependency
+from ...models import Indicators, Strategy, Users
 from ...schemas import *
 
-from fastapi.params import Path
+router = APIRouter(prefix="/indicators", tags=["indicators"])
 
-timescale_conn = TimescaleService()
+from typing import List
 
-router = APIRouter(prefix='/indicators', tags=['indicators'])
+from fastapi import APIRouter, HTTPException, status
+from sqlalchemy.orm import Session
 
-@router.get("", status_code=status.HTTP_200_OK)
+from ...schemas import *
+
+
+@router.get("", status_code=status.HTTP_200_OK, response_model=List[IndicatorSchema])
 def get_indicators(user: user_dependency, db: db_dependency):
-    """ return a list of available indicator to add to a strategy """
+    """Return a list of available indicators to add to a strategy"""
     try:
-        return db.query(Indicators).all()
+        indicators = db.query(Indicators).all()
+        print(indicators)
+        return indicators
 
     except Exception as e:
         raise HTTPException(
@@ -28,13 +30,11 @@ def get_indicators(user: user_dependency, db: db_dependency):
             detail=f"Failed to get indicators: {str(e)}",
         )
 
+
 @router.get("/{indicator_id}", status_code=status.HTTP_200_OK)
-async def read_indicator(
-        user: user_dependency, db: db_dependency, indicator_id: int):
+async def read_indicator(user: user_dependency, db: db_dependency, indicator_id: int):
 
     indicator = db.query(Indicators).get(indicator_id)
     if not indicator:
         raise HTTPException(status_code=404, detail="Indicator not found")
     return indicator
-
-

@@ -42,7 +42,7 @@ export default function LoginForm() {
 							id="username"
 							type="string"
 							name="username"
-							defaultValue="testuser"
+							defaultValue="jep"
 							placeholder="Enter your username"
 							required
 						/>
@@ -60,7 +60,7 @@ export default function LoginForm() {
 							id="password"
 							type="password"
 							name="password"
-							defaultValue="Ged666!"
+							defaultValue="password"
 							placeholder="Enter your password"
 							required
 						/>
