@@ -5,4 +5,4 @@ POSTGRES_USER=user
 POSTGRES_PASSWORD=pass
 POSTGRES_DB=db
 DATABASE_URL=postgresql://user:pass@postgres:5432/db
-TIMESCALE_DATABASE_URL=postgresql://user:pass@postgres:5432/db
+TIMESCALE_DATABASE_URL=postgresql://user:pass@timescale:5432/db

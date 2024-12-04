@@ -26,6 +26,6 @@ export default async function handleFormSubmit<T extends object, R>(
 	} finally {
 		setLoading(false);
 	}
-
+	console.log(result, formDataObject)
 	return result;
 }

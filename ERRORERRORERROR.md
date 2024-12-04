@@ -1,3 +1,6 @@
+trsctrstsr:wa!:wa!
+
+
 
 backend-1              | INFO  [alembic.runtime.migration] Will assume transactional DDL.
 backend-1              | INFO:     Will watch for changes in these directories: ['/app']

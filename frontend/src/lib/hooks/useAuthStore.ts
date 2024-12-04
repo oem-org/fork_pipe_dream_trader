@@ -18,6 +18,7 @@ const useAuthStore = create<AuthStore>((set) => ({
 	createUser: async (user: CreateUserFormRequest): Promise<boolean> => {
 
 		const userDetail = await authService.createUser(user)
+				
 
 		if (userDetail) {
 			set({ isAuthenticated: true });

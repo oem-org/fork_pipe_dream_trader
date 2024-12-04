@@ -22,33 +22,34 @@ from datetime import datetime, timedelta, timezone
 from typing import Annotated
 
 from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer 
+from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from starlette import status
 
 from ...config import Config
 from ...models import Users
+
 # the client/user must send a username and password fields as form data.
-bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl='auth/token')
+bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 
 async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
     # Decode and validate JWT token
     try:
         payload = jwt.decode(token, Config.SECRET_KEY, algorithms=[Config.ALGORITHM])
-        username = payload.get('sub')
-        user_id = payload.get('id')
+        username = payload.get("sub")
+        user_id = payload.get("id")
         if not isinstance(username, str) or not isinstance(user_id, int):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail='Could not validate user.',
+                detail="Could not validate user.",
             )
-        return {'username': username, 'id': user_id}
+        return {"username": username, "id": user_id}
     except JWTError:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail='Could not validate user.'
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user."
         )
 
 
@@ -62,15 +63,13 @@ def authenticate_user(username: str, password: str, db):
     return user
 
 
-def create_access_token(
-    username: str, user_id: int, expires_delta: timedelta
-):
+def create_access_token(username: str, user_id: int, expires_delta: timedelta):
     # Create JWT access token
     encode = {
-        'sub': username,
-        'id': user_id,
-        'iat': datetime.now(timezone.utc),
-        'exp': datetime.now(timezone.utc) + expires_delta,
+        "sub": username,
+        "id": user_id,
+        "iat": datetime.now(timezone.utc),
+        "exp": datetime.now(timezone.utc) + expires_delta,
     }
     return jwt.encode(encode, Config.SECRET_KEY, algorithm=Config.ALGORITHM)
 
@@ -80,4 +79,6 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 
 def hash_password(plain_password: str) -> str:
-    return bcrypt_context.hash(plain_password)
+    pw = bcrypt_context.hash(plain_password)
+    print(pw)
+    return pw

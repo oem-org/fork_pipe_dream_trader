@@ -16,7 +16,7 @@ export default function CreateUserForm() {
 
 	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		const success = await handleFormSubmit<CreateUserFormRequest, ReturnType>(e, createUser, setError, setLoading);
-
+		console.log(success)
 		if (success) {
 			navigate('/strategy');
 		}
