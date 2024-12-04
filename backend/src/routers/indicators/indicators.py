@@ -16,7 +16,7 @@ from sqlalchemy.orm import Session
 from ...schemas import *
 
 
-@router.get("", status_code=status.HTTP_200_OK, response_model=List[IndicatorSchema])
+@router.get("", status_code=status.HTTP_200_OK)
 def get_indicators(user: user_dependency, db: db_dependency):
     """Return a list of available indicators to add to a strategy"""
     try:
