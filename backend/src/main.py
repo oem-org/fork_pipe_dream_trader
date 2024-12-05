@@ -2,6 +2,7 @@ import logging
 import logging.config
 import os
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
@@ -16,34 +17,41 @@ from .routers.indicators import indicators
 from .routers.strategies import strategies
 from .routers.users import users
 from .seeders.indicators_seeder import indicators_seeder
+from .utils.sync_file_paths import sync_file_paths
 
-scheduler = AsyncIOScheduler(timezone=utc)
-session = SessionLocal()
+current_directory = Path(__file__).parent
+parent_folder = current_directory.parent
 
-current_directory = os.path.dirname(__file__)
+log_config_path = parent_folder / "log.ini"
 
-log_config_path = os.path.join(current_directory, "log.ini")
+if not log_config_path.exists():
+    raise FileNotFoundError(f"Log configuration file not found: {log_config_path}")
 
+# Configure logging
 logging.config.fileConfig(log_config_path)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+# Stream handler for additional logging
 handler = logging.StreamHandler()
 formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(message)s")
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
+session = SessionLocal()
+scheduler = AsyncIOScheduler(timezone=utc)
 Base.metadata.create_all(bind=engine)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print("STARTING APP")
-
+    print("Starting App")
+    result = sync_file_paths(session)
     indicators_seeder(session)
     scheduler.start()
+    print(result)
     yield
-    print("STARTING APP")
+    print("Stopping App")
     scheduler.shutdown()
 
 

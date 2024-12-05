@@ -26,7 +26,8 @@ class FileSchema(BaseModel):
 
 
 @router.get("", status_code=status.HTTP_200_OK, response_model=list[FileSchema])
-def get_all_files(user: user_dependency, db: db_dependency):
+def get_all_files(db: db_dependency):
+    # user: user_dependency,
     try:
         files = db.query(Files).all()
         if not files:
@@ -44,7 +45,8 @@ def get_all_files(user: user_dependency, db: db_dependency):
 
 
 @router.get("/{file_id}", status_code=status.HTTP_200_OK)
-def get_files(user: user_dependency, db: db_dependency, file_id: int):
+def get_files(db: db_dependency, file_id: int):
+    ##user: user_dependency,
     try:
         indicator = db.query(Files).get(file_id)
 
@@ -77,10 +79,9 @@ def save_file(file):
 
 
 @router.post("/save", status_code=status.HTTP_201_CREATED)
-async def save_uploaded_file(
-    user: user_dependency, db: db_dependency, file: UploadFile = File(...)
-):
+async def save_uploaded_file(db: db_dependency, file: UploadFile = File(...)):
     """
+    user: user_dependency,
     Receives FormData and saves the file.
     The file input field is used to identify the file.
     FastAPI automatically reads the file and populates UploadFile.
