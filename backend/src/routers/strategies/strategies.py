@@ -1,14 +1,15 @@
-from fastapi import APIRouter, Depends, Path, HTTPException,Query
+from fastapi import APIRouter, Depends, HTTPException, Path, Query
 from passlib.context import CryptContext
 from pydantic import BaseModel, Field
+from sqlalchemy.exc import SQLAlchemyError
 from starlette import status
 
 from ...dependencies import db_dependency, user_dependency
-from ...exceptions import AuthenticationFailed, StrategyNotFound
+from ...exceptions import handle_db_error, handle_not_found_error
 from ...models import Strategies
 
 print(user_dependency)
-router = APIRouter(prefix="/strategy", tags=['strategy'])
+router = APIRouter(prefix="/strategy", tags=["strategy"])
 
 
 class CreateUserRequest(BaseModel):
@@ -16,22 +17,17 @@ class CreateUserRequest(BaseModel):
     email: str
     password: str
 
+
 class Token(BaseModel):
     access_token: str
     token_type: str
+
 
 class StrategyRequest(BaseModel):
     # model_config allows for assigning directly to the ORM model without type errors
     # model_config = ConfigDict(from_attributes=True)
     title: str = Field(min_length=1)
     description: str = Field(min_length=1, max_length=10000)
-
-# @router.get("/", status_code=status.HTTP_200_OK)
-# async def read_all(er_dependency, db: db_dependency):
-#     # if user is None:
-#     #     raise AutheticationFailed()
-#     return db.query(Strategies).filter(Strategies.fk_user_id == user.get('id')).all()
-#
 
 
 @router.post("", status_code=status.HTTP_201_CREATED)
@@ -44,7 +40,7 @@ async def create_strategy(
     try:
         # Create strategy model instance
         strategy_model = Strategies(
-            **strategy_request.model_dump(), fk_user_id=user.get('id')
+            **strategy_request.model_dump(), fk_user_id=user.get("id")
         )
 
         # Add to database
@@ -54,13 +50,13 @@ async def create_strategy(
 
         return strategy_model
 
+    except SQLAlchemyError as e:
+        db.rollback()  # Rollback any changes on failure
+        handle_db_error(e, "SQLAlchemy Failed to query the database for indicators")
+
     except Exception as e:
         db.rollback()  # Rollback any changes on failure
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to create strategy: {str(e)}",
-        )
-
+        handle_db_error(e, "Unexpected error occurred while fetching indicators")
 
 
 @router.get("", status_code=status.HTTP_200_OK)
@@ -70,7 +66,9 @@ async def read_all(user: user_dependency, db: db_dependency):
     try:
         print(user)
 
-        return db.query(Strategies).filter(Strategies.fk_user_id == user.get('id')).all()
+        return (
+            db.query(Strategies).filter(Strategies.fk_user_id == user.get("id")).all()
+        )
 
     except Exception as e:
         db.rollback()  # Rollback any changes on failure
@@ -78,6 +76,7 @@ async def read_all(user: user_dependency, db: db_dependency):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to create strategy: {str(e)}",
         )
+
 
 @router.get("/{strategy_id}", status_code=status.HTTP_200_OK)
 async def read_strategy(
@@ -89,14 +88,13 @@ async def read_strategy(
     strategy_model = (
         db.query(Strategies)
         .filter(Strategies.id == strategy_id)
-        .filter(Strategies.fk_user_id == user.get('id'))
+        .filter(Strategies.fk_user_id == user.get("id"))
         .first()
     )
     if strategy_model is not None:
         return strategy_model
     # raise StrategyNotFound()
     raise StrategyNotFound()
-
 
 
 @router.put("/{strategy_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -110,7 +108,7 @@ async def update_strategy(
     strategy_model = (
         db.query(Strategies)
         .filter(Strategies.id == strategy_id)
-        .filter(Strategies.fk_user_id == user.get('id'))
+        .filter(Strategies.fk_user_id == user.get("id"))
         .first()
     )
     if strategy_model is None:
@@ -129,6 +127,7 @@ class IndicatorRequest:
     settings: dict
     fk_strategy_id: int
     fk_indicator_id: int
+
 
 # @router.put("/{strategy_id}/indicator/{indicator_id}", status_code=status.HTTP_200_OK)
 # async def update_indicator(
@@ -222,13 +221,13 @@ async def delete_strategy(
     strategy_model = (
         db.query(Strategies)
         .filter(Strategies.id == strategy_id)
-        .filter(Strategies.fk_user_id == user.get('id'))
+        .filter(Strategies.fk_user_id == user.get("id"))
         .first()
     )
     if strategy_model is None:
         raise StrategyNotFound()
     db.query(Strategies).filter(Strategies.id == strategy_id).filter(
-        Strategies.fk_user_id == user.get('id')
+        Strategies.fk_user_id == user.get("id")
     ).delete()
 
     db.commit()

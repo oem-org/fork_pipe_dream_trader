@@ -1,9 +1,10 @@
 from enum import Enum
 
-from sqlalchemy import JSON, Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import JSON, Boolean, Column, Enum, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from .orm_connection import Base
+from .schemas import FileTypeEnum
 
 
 class Users(Base):
@@ -50,12 +51,13 @@ class Indicators(Base):
     chart_style = Column(String)
 
 
-class FilePath(Base):
+class Files(Base):
     __tablename__ = "files"
 
     id = Column(Integer, primary_key=True, index=True)
     path = Column(String)
     filename = Column(String)
+    file_type = Column(Enum(FileTypeEnum))
 
 
 # class Pairs(Base):

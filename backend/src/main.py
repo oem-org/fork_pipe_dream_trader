@@ -1,5 +1,6 @@
 import logging
 import logging.config
+import os
 from contextlib import asynccontextmanager
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -19,7 +20,11 @@ from .seeders.indicators_seeder import indicators_seeder
 scheduler = AsyncIOScheduler(timezone=utc)
 session = SessionLocal()
 
-logging.config.fileConfig("log_config.ini")
+current_directory = os.path.dirname(__file__)
+
+log_config_path = os.path.join(current_directory, "log.ini")
+
+logging.config.fileConfig(log_config_path)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 

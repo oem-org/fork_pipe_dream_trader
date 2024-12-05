@@ -1,4 +1,11 @@
+from enum import Enum
+
 from pydantic import BaseModel
+
+
+class FileTypeEnum(Enum):
+    CSV = "csv"
+    JSON = "json"
 
 
 class ChartDataRequest(BaseModel):
