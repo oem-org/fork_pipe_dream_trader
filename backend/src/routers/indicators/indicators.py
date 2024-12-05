@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session, query
 from starlette import status
 
 from ...dependencies import db_dependency, user_dependency
-from ...exceptions import handle_db_error, handle_not_found_error
+from ...utils.exceptions import handle_db_error, handle_not_found_error
 from ...models import Indicators, Strategies, Users
 from ...schemas import *
 from ...utils.print_values_db_object import print_db_object

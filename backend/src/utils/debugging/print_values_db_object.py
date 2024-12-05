@@ -1,6 +1,9 @@
 def print_db_object(obj):
     """
     Helper function to print the values and types of attributes in a database object.
+
+    Args:
+        obj: The database object (e.g., SQLAlchemy ORM object).
     """
     if not obj:
         print("Object is None")

@@ -1,0 +1,4 @@
+2024-12-05 21:00:49,644 - src.logger - INFO - Starting App
+2024-12-05 21:00:49,653 - apscheduler.scheduler - INFO - Scheduler started
+2024-12-05 21:04:50,176 - root - ERROR - Unexpected error occurred fetching stategy: 404: Strategy not found
+2024-12-05 21:04:58,301 - root - ERROR - Unexpected error occurred fetching stategy: 404: Strategy not found

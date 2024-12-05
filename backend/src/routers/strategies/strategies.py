@@ -5,13 +5,17 @@ from sqlalchemy.exc import SQLAlchemyError
 from starlette import status
 
 from ...dependencies import db_dependency, user_dependency
-from ...exceptions import handle_db_error, handle_not_found_error
+from ...utils.exceptions import handle_db_error, handle_not_found_error
 from ...models import Strategies
 
 print(user_dependency)
 router = APIRouter(prefix="/strategy", tags=["strategy"])
 
 
+class IndicatorRequest:
+    settings: dict
+    fk_strategy_id: int
+    fk_indicator_id: int
 class CreateUserRequest(BaseModel):
     username: str
     email: str
@@ -24,8 +28,6 @@ class Token(BaseModel):
 
 
 class StrategyRequest(BaseModel):
-    # model_config allows for assigning directly to the ORM model without type errors
-    # model_config = ConfigDict(from_attributes=True)
     title: str = Field(min_length=1)
     description: str = Field(min_length=1, max_length=10000)
 
@@ -51,18 +53,16 @@ async def create_strategy(
         return strategy_model
 
     except SQLAlchemyError as e:
-        db.rollback()  # Rollback any changes on failure
-        handle_db_error(e, "SQLAlchemy Failed to query the database for indicators")
+        db.rollback()
+        handle_db_error(e, "SQLAlchemy Failed to post the strategy")
 
     except Exception as e:
-        db.rollback()  # Rollback any changes on failure
-        handle_db_error(e, "Unexpected error occurred while fetching indicators")
+        db.rollback()
+        handle_db_error(e, "Unexpected error occurred while posting stategies")
 
 
 @router.get("", status_code=status.HTTP_200_OK)
 async def read_all(user: user_dependency, db: db_dependency):
-    # if user is None:
-    #     raise AutheticationFailed()
     try:
         print(user)
 
@@ -70,31 +70,37 @@ async def read_all(user: user_dependency, db: db_dependency):
             db.query(Strategies).filter(Strategies.fk_user_id == user.get("id")).all()
         )
 
+    except SQLAlchemyError as e:
+        db.rollback()
+        handle_db_error(e, "SQLAlchemy Failed to get the strategies list")
+
     except Exception as e:
-        db.rollback()  # Rollback any changes on failure
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to create strategy: {str(e)}",
-        )
+        db.rollback()
+        handle_db_error(e, "Unexpected error occurred fetching stategies")
 
 
 @router.get("/{strategy_id}", status_code=status.HTTP_200_OK)
 async def read_strategy(
-    user: user_dependency, db: db_dependency, strategy_id: int = Path(gt=0)
-):
-    # if user is None:
-    #     raise AutheticationFailed()
+        user: user_dependency, db: db_dependency, strategy_id: int = Path(gt=0)):
+    try:
+        strategy_model = (
+            db.query(Strategies)
+            .filter(Strategies.id == strategy_id)
+            .filter(Strategies.fk_user_id == user.get("id"))
+            .first()
+        )
+        if strategy_model is not None:
+            
+            return strategy_model
 
-    strategy_model = (
-        db.query(Strategies)
-        .filter(Strategies.id == strategy_id)
-        .filter(Strategies.fk_user_id == user.get("id"))
-        .first()
-    )
-    if strategy_model is not None:
-        return strategy_model
-    # raise StrategyNotFound()
-    raise StrategyNotFound()
+    except SQLAlchemyError as e:
+        db.rollback()
+        handle_db_error(e, "SQLAlchemy Failed to get the strategy")
+
+    except Exception as e:
+        db.rollback()
+        handle_db_error(e, "Unexpected error occurred fetching stategy")
+    
 
 
 @router.put("/{strategy_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -104,29 +110,57 @@ async def update_strategy(
     strategy_request: StrategyRequest,
     strategy_id: int = Path(gt=0),
 ):
-    # Query for the Strategy item to be updated
-    strategy_model = (
-        db.query(Strategies)
-        .filter(Strategies.id == strategy_id)
-        .filter(Strategies.fk_user_id == user.get("id"))
-        .first()
-    )
-    if strategy_model is None:
-        raise StrategyNotFound()
+    try:
+        strategy_model = (
+            db.query(Strategies)
+            .filter(Strategies.id == strategy_id)
+            .filter(Strategies.fk_user_id == user.get("id"))
+            .first()
+        )
+        if strategy_model is None:
+            handle_not_found_error("No strategy found")
+        data = strategy_request.model_dump()
+    
+        for key, value in data.items():
+            setattr(strategy_model, key, value)
 
-    # Serialize RequestModel into a dict
-    data = strategy_request.model_dump()
+        db.commit()
 
-    for key, value in data.items():
-        setattr(strategy_model, key, value)
+    except SQLAlchemyError as e:
+        db.rollback()
+        handle_db_error(e, "SQLAlchemy Failed to get the strategy")
 
-    db.commit()
+    except Exception as e:
+        db.rollback()
+        handle_db_error(e, "Unexpected error occurred fetching stategy")
 
+@router.delete("/{strategy_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_strategy(
+    user: user_dependency, db: db_dependency, strategy_id: int = Path(gt=0)
+):
+    # if user is None:
+    #     raise AutheticationFailed()
+    try:
+        strategy_model = (
+            db.query(Strategies)
+            .filter(Strategies.id == strategy_id)
+            .filter(Strategies.fk_user_id == user.get("id"))
+            .first()
+        )
+        if strategy_model is None:
+            handle_not_found_error("Strategy not found")
+        db.query(Strategies).filter(Strategies.id == strategy_id).filter(
+            Strategies.fk_user_id == user.get("id")
+        ).delete()
+        db.commit()
 
-class IndicatorRequest:
-    settings: dict
-    fk_strategy_id: int
-    fk_indicator_id: int
+    except SQLAlchemyError as e:
+        db.rollback()
+        handle_db_error(e, "SQLAlchemy Failed to get the strategy")
+
+    except Exception as e:
+        db.rollback()
+        handle_db_error(e, "Unexpected error occurred fetching stategy")
 
 
 # @router.put("/{strategy_id}/indicator/{indicator_id}", status_code=status.HTTP_200_OK)
@@ -209,25 +243,3 @@ class IndicatorRequest:
 #
 #     db.add(strategy_model)
 #     db.commit()
-
-
-@router.delete("/{strategy_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_strategy(
-    user: user_dependency, db: db_dependency, strategy_id: int = Path(gt=0)
-):
-    # if user is None:
-    #     raise AutheticationFailed()
-
-    strategy_model = (
-        db.query(Strategies)
-        .filter(Strategies.id == strategy_id)
-        .filter(Strategies.fk_user_id == user.get("id"))
-        .first()
-    )
-    if strategy_model is None:
-        raise StrategyNotFound()
-    db.query(Strategies).filter(Strategies.id == strategy_id).filter(
-        Strategies.fk_user_id == user.get("id")
-    ).delete()
-
-    db.commit()

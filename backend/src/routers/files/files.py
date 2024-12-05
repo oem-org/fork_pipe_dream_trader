@@ -6,9 +6,10 @@ from sqlalchemy.exc import SQLAlchemyError
 from starlette import status
 
 from ...dependencies import db_dependency, user_dependency
-from ...exceptions import handle_db_error, handle_not_found_error
+from ...utils.exceptions import handle_db_error, handle_not_found_error
 from ...models import Files, Users
 from ...schemas import *
+from ...utils.file_type_check import file_type_check
 
 router = APIRouter(prefix="/files", tags=["files"])
 
@@ -19,10 +20,10 @@ class FileRequest(BaseModel):
 
 
 class FileSchema(BaseModel):
-
+    id: int
     filename: str
-    file_type: str
     path: str
+    file_type: FileTypeEnum
 
 
 @router.get("", status_code=status.HTTP_200_OK, response_model=list[FileSchema])
@@ -32,8 +33,8 @@ def get_all_files(db: db_dependency):
         files = db.query(Files).all()
         if not files:
             handle_not_found_error("No files found.")
-
-        return [FileSchema.model_validate(file) for file in files]
+        #
+        return [file for file in files]
 
     except SQLAlchemyError as e:
 
@@ -89,13 +90,9 @@ async def save_uploaded_file(db: db_dependency, file: UploadFile = File(...)):
     try:
 
         file_path = save_file(file)
-        file_type = None
-        if file_path.endswith(".csv"):
-            file_type = "csv"
-        elif file_path.endswith(".json"):
-            file_type = "json"
+        file_type = file_type_check(file_path)
 
-        if file_type != "json" or "csv":
+        if file_type != FileTypeEnum.JSON or FileTypeEnum.CSV:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, detail=f"Wrong file extension"
             )

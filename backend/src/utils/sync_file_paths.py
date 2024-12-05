@@ -1,10 +1,12 @@
+from inspect import _void
 from pathlib import Path
 
-from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
+# import .logger 
+
 from ..models import Files
-from ..schemas import FileTypeEnum
+from .file_type_check import file_type_check
 
 
 def delete_missing_files(db: Session, missing_files: dict):
@@ -15,6 +17,7 @@ def delete_missing_files(db: Session, missing_files: dict):
             files_to_delete.append(db_file_to_delete)
 
     for file_to_delete in files_to_delete:
+        print(file_to_delete)
         db.delete(file_to_delete)
 
     db.commit()
@@ -23,14 +26,14 @@ def delete_missing_files(db: Session, missing_files: dict):
 def add_non_matching_files(db: Session, non_matching_files: dict):
     files_to_add = []
     for filename, file_info in non_matching_files.items():
+        file_type = file_type_check(filename)
         file_to_add = Files(
             filename=filename,
             path=file_info["folder_path"],
-            file_type=FileTypeEnum.UNKNOWN,
+            file_type=file_type,
         )
         files_to_add.append(file_to_add)
-
-    for file_to_add in files_to_add:
+        print(file_to_add)
         db.add(file_to_add)
 
     db.commit()
@@ -73,11 +76,11 @@ def sync_file_paths(db: Session):
         if db_file.filename not in folder_files
     }
 
+    # logger.info("Matching Files: %s", matching_files)
+    # logger.info("Non-Matching Files: %s", non_matching_files)
+    # logger.info("Missing Files in Folder: %s", missing_in_folder)
+    #
+
     delete_missing_files(db, missing_in_folder)
     add_non_matching_files(db, non_matching_files)
 
-    return {
-        "matching_files": matching_files,
-        "non_matching_files": non_matching_files,
-        "missing_in_folder": missing_in_folder,
-    }
