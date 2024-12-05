@@ -41,6 +41,7 @@ export const getAllPairsDbApi = new GetAllService<Strategy>('strategy', jsonHead
 //Strategy
 export const getAllStrategiesApi = new GetAllService<Strategy>('strategy', jsonHeader)
 
-//Upload files
+//Files
+export const getAllFilesApi = new GetAllService<File>('files', jsonHeader)
 export const jsonFileApi = new PostService<FormData, any>('files/save', jsonHeader)
 export const csvFileApi = new PostService<FormData, any>('files/save', csvHeader)

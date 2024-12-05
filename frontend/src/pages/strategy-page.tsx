@@ -4,22 +4,25 @@
 //import { initialData } from "../components/shared/chart/initialData";
 //import { Chart } from "../components/shared/chart/chart";
 
-
+import SideNav from '@/components/shared/navigation/side-nav.tsx';
 //import usePriceStore from "../lib/hooks/usePriceStore";
 //import { useEffect, useState } from "react";
-//import useStrategyStore from '../lib/hooks/useStrategyStore.ts'
+import useStrategyStore from '../lib/hooks/useStrategyStore.ts'
 //import usePriceQuery from "../lib/hooks/usePriceQuery.ts";
 //import { Price } from "../interfaces/Price.ts";
 //import { useQueryClient } from "@tanstack/react-query";
 
 import IndicatorList from "@/components/strategy/indicator-list";
 
+
+
 export default function StrategyPage() {
 
   //let colors = darkColors
 
   //const { prices, selectedCoinId, results, setResults } = usePriceStore()
-  //const { getById, selectedId } = useStrategyStore()
+
+  const { getById, strategyId } = useStrategyStore()
   //const mutateAsync = useDeleteStrategy();
   //const { data: dataPrices, error: errorPrices, isLoading: isLoadingPrices } = usePriceQuery(selectedCoinId)
 
@@ -57,6 +60,7 @@ export default function StrategyPage() {
 
 
   return (<>
+    <SideNav />
     <h1>enenenen</h1>
     <IndicatorList />
   </>

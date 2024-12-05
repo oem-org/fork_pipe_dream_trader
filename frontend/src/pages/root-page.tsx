@@ -7,16 +7,10 @@ import getIndicatorsQuery from "../lib/queries/getIndicatorsQuery";
 
 
 function RootPage() {
-  const { data } = getIndicatorsQuery()
 
   return (
     <>
       <div>
-        {data && Array.isArray(data) && data.map((indicator) => (
-          <div key={indicator.id} >
-            {indicator.kind}
-          </div>
-        ))}
 
         <FileUploadForm />
         <Outlet />
