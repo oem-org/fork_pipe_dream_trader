@@ -15,8 +15,8 @@ export default function SideNav() {
         <div className="w-32 text-white md:w-40">
         </div>
       </Link>
+      <StrategyList />
       <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">
-        <StrategyList />
         <NavLinks />
         <div className="hidden h-auto w-full grow rounded-md bg-gray-50 md:block"></div>
         <form>
