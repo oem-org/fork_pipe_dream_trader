@@ -1,7 +1,10 @@
+from enum import Enum
+
 from sqlalchemy import JSON, Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from .orm_connection import Base
+
 
 class Users(Base):
     __tablename__ = "users"
@@ -11,18 +14,31 @@ class Users(Base):
     username = Column(String, unique=True)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
+    strategies = relationship("Strategies", back_populates="user")
 
 
 class Strategies(Base):
+    """
+    # Query a user and get their strategies
+    user = session.query(Users).filter_by(id=1).first()
+    for strategy in user.strategies:
+        print(strategy.title)
+
+    # Query a strategy and get its user
+    strategy = session.query(Strategies).filter_by(id=1).first()
+    print(strategy.user.username)
+    """
+
     __tablename__ = "strategies"
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String)
     description = Column(String)
     fk_user_id = Column(Integer, ForeignKey("users.id"))
-    fk_pair_id = Column(Integer, ForeignKey("pairs.id"))
-    indicators = Column(JSON)
-    data_source = Column(JSON)
+    indicators = Column(JSON, nullable=True)
+    data_source = Column(JSON, nullable=True)
+    user = relationship("Users", back_populates="strategies")
+
 
 class Indicators(Base):
     __tablename__ = "indicators"
@@ -33,12 +49,13 @@ class Indicators(Base):
     default_settings = Column(JSON)
     chart_style = Column(String)
 
+
 class FilePath(Base):
     __tablename__ = "files"
 
     id = Column(Integer, primary_key=True, index=True)
     path = Column(String)
-    filenamne = Column(String)
+    filename = Column(String)
 
 
 # class Pairs(Base):

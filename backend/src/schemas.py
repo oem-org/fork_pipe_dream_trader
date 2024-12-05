@@ -1,15 +1,4 @@
-from typing import Any, Dict
-
-from pydantic import BaseModel, Field
-
-
-class IndicatorSchema(BaseModel):
-    chart_style: str
-    kind: str
-    default_settigs: Dict[str, Any]
-    description: str
-
-    model_config = {"from_attributes": True}
+from pydantic import BaseModel
 
 
 class ChartDataRequest(BaseModel):

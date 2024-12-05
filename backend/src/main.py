@@ -6,7 +6,6 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
 from pytz import utc
 
-from .exceptions import register_all_errors
 from .middleware.register_middleware import register_middleware
 from .models import Base
 from .orm_connection import SessionLocal, engine

@@ -1,10 +1,10 @@
 ao = {
     "kind": "ao",
-    "default_settings": [
-        ("fast", "int", 5),
-        ("slow", "int", 34),
-        ("offset", "int", 0),
-    ],
+    "default_settings": {
+        "fast": {"type": "int", "value": 5},
+        "slow": {"type": "int", "value": 34},
+        "offset": {"type": "int", "value": 0},
+    },
     "chart_style": "histogram",
     "description": """Awesome Oscillator (AO)
 

@@ -15,7 +15,7 @@ def indicators_seeder(session: Session):
     try:
         for indicator_dict in indicator_data:
             kind = indicator_dict.get("kind", "")
-            settings = indicator_dict.get("default_settings", [])
+            settings = indicator_dict.get("default_settings", {})
             chart_style = indicator_dict.get("chart_style", "")
             description = indicator_dict.get("description", "")
             print(indicator_dict)
@@ -44,4 +44,4 @@ def indicators_seeder(session: Session):
 
     except Exception as e:
         print(f"Error in indicator seeder: {e}")
-        session.rollback()  # Rollback in case of an error
+        session.rollback()
