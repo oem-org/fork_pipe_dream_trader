@@ -1,12 +1,11 @@
 rsi = {
-    "kind": "rsi",
-    "default_settings": [
-        ("length", "int", 14),
-        ("scalar", "float", 100),
-        ("talib", "bool", False),
-        ("drift", "int", 1),
-        ("offset", "int", 0),
-    ],
+    "default_settings": {
+        "length": {"type": "int", "value": 14},
+        "scalar": {"type": "float", "value": 100},
+        "talib": {"type": "bool", "value": False},
+        "drift": {"type": "int", "value": 1},
+        "offset": {"type": "int", "value": 0},
+    },
     "chart_style": "line_add_pane",
     "description": """Relative Strength Index (RSI)
 

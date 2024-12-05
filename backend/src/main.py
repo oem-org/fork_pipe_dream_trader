@@ -1,12 +1,13 @@
 import logging
 import logging.config
+import os
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
 from pytz import utc
 
-from .exceptions import register_all_errors
 from .middleware.register_middleware import register_middleware
 from .models import Base
 from .orm_connection import SessionLocal, engine
@@ -16,30 +17,27 @@ from .routers.indicators import indicators
 from .routers.strategies import strategies
 from .routers.users import users
 from .seeders.indicators_seeder import indicators_seeder
+from .logger import logger
+from .utils.sync_file_paths import sync_file_paths
 
-scheduler = AsyncIOScheduler(timezone=utc)
+current_directory = Path(__file__).parent
+parent_folder = current_directory.parent
+
+
 session = SessionLocal()
-
-logging.config.fileConfig("log_config.ini")
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-handler = logging.StreamHandler()
-formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(message)s")
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-
+scheduler = AsyncIOScheduler(timezone=utc)
 Base.metadata.create_all(bind=engine)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print("STARTING APP")
-
+    logger.info("Starting App")
+    sync_file_paths(session)
     indicators_seeder(session)
+
     scheduler.start()
     yield
-    print("STARTING APP")
+    logger.info("Stopping App")
     scheduler.shutdown()
 
 

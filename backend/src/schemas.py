@@ -1,15 +1,11 @@
-from typing import Any, Dict
+from enum import Enum
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
-class IndicatorSchema(BaseModel):
-    chart_style: str
-    kind: str
-    default_settigs: Dict[str, Any]
-    description: str
-
-    model_config = {"from_attributes": True}
+class FileTypeEnum(Enum):
+    CSV = "csv"
+    JSON = "json"
 
 
 class ChartDataRequest(BaseModel):

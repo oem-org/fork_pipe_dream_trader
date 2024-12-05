@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from starlette import status
 
 from ...dependencies import db_dependency, user_dependency
-from ...utils.exceptions 
+from ...utils.exceptions import handle_db_error, handle_not_found_error
 from ...models import Strategies
 
 print(user_dependency)
@@ -90,7 +90,7 @@ async def read_strategy(
             .first()
         )
         if strategy_model is not None:
-            
+
             return strategy_model
 
     except SQLAlchemyError as e:
@@ -100,7 +100,7 @@ async def read_strategy(
     except Exception as e:
         db.rollback()
         handle_db_error(e, "Unexpected error occurred fetching stategy")
-    
+
 
 
 @router.put("/{strategy_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -120,7 +120,7 @@ async def update_strategy(
         if strategy_model is None:
             handle_not_found_error("No strategy found")
         data = strategy_request.model_dump()
-    
+
         for key, value in data.items():
             setattr(strategy_model, key, value)
 
@@ -138,6 +138,8 @@ async def update_strategy(
 async def delete_strategy(
     user: user_dependency, db: db_dependency, strategy_id: int = Path(gt=0)
 ):
+    # if user is None:
+    #     raise AutheticationFailed()
     try:
         strategy_model = (
             db.query(Strategies)
