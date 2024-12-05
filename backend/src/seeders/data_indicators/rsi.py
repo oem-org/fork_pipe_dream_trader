@@ -1,4 +1,5 @@
 rsi = {
+    "kind": "rsi",
     "default_settings": {
         "length": {"type": "int", "value": 14},
         "scalar": {"type": "float", "value": 100},
