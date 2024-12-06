@@ -1,18 +1,11 @@
 import { Outlet } from "react-router-dom";
-import FileUploadForm from "../components/data/file-uploader";
-import getIndicatorsQuery from "../lib/queries/getIndicatorsQuery";
-
-//import CreatePost from "../components/strategy/create-strategy-form";
-
-
-
+import TopNav from "@/components/shared/navigation/top-nav/top-nav";
 function RootPage() {
 
   return (
     <>
       <div>
-
-        <FileUploadForm />
+        <TopNav />
         <Outlet />
       </div >
     </>
