@@ -16,7 +16,7 @@ export default function CreateStrategyForm() {
 
 	return (
 		<form onSubmit={handleSubmit} className="space-y-4">
-
+			<p>Clone an existing strategy</p>
 			<GenericSelect<Strategy>
 				data={data || []}
 				keyExtractor={(strategy) => strategy.id}
@@ -25,7 +25,8 @@ export default function CreateStrategyForm() {
 					console.log(strategy.id, "Selected Strategy ID");
 				}}
 				renderItem={(strategy) => <span>{strategy.name}</span>}
-				title="Clone existing strategy"
+				title="Select or search"
+				searchEnabled={true}
 			/>
 			<div>
 				<label htmlFor="name" className="block text-white">Strategy Name</label>

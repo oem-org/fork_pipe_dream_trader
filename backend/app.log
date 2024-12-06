@@ -1,1 +1,2 @@
-2024-12-06 18:39:04,755 - src.logger - INFO - Starting App
+2024-12-06 18:40:32,301 - src.logger - INFO - Starting App
+2024-12-06 18:40:32,316 - apscheduler.scheduler - INFO - Scheduler started
