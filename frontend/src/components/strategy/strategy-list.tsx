@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronDown, SearchIcon } from 'lucide-react';
 
 interface NamedItem {
@@ -44,7 +44,7 @@ interface ToggleDataProps {
 function ToggleData({ setIsOpen, isOpen }: ToggleDataProps) {
 	return (
 		<button
-			className="p-4 flex justify-between items-center rounded-md hover:bg-gray-200 transition-colors duration-200"
+			className="p-4 flex justify-between items-center rounded-md transition-colors duration-200"
 			onClick={() => setIsOpen(!isOpen)}
 		>
 			<ChevronDown
@@ -65,6 +65,8 @@ export default function GenericSelect<T extends NamedItem>({
 	const [isOpen, setIsOpen] = useState(false);
 	const [currentTitle, setCurrentTitle] = useState<string>(title);
 	const [isHovered, setIsHovered] = useState(false);
+	const [filteredData, setFilteredData] = useState<T[]>(data);
+	const [searchQuery, setSearchQuery] = useState("");
 
 	const handleSelection = (item: T) => {
 		onSelect(item);
@@ -73,8 +75,21 @@ export default function GenericSelect<T extends NamedItem>({
 	};
 
 	const handleSearch = (query: string) => {
-		console.log("Searching for:", query);
+		setSearchQuery(query);
+
+		if (query.trim() !== "") {
+			const filteredItems = data.filter((item) =>
+				item.name.toLowerCase().includes(query.toLowerCase())
+			);
+			setFilteredData(filteredItems);
+		} else {
+			setFilteredData(data); // Reset to all items if the query is empty
+		}
 	};
+
+	useEffect(() => {
+		setFilteredData(data); // Reset filtered data if the original data changes
+	}, [data]);
 
 	return (
 		<div
@@ -83,12 +98,16 @@ export default function GenericSelect<T extends NamedItem>({
 			onMouseLeave={() => setIsHovered(false)}
 		>
 			<div className="w-full flex justify-between items-center bg-gray-200 hover:bg-gray-300 transition-colors duration-200">
-				{searchEnabled && isHovered ? (
-					<div className="flex-grow p-4">
+				{searchEnabled && (isHovered || searchQuery) ? (
+					<div className="flex-grow">
 						<Search onSearch={handleSearch} />
 					</div>
 				) : (
-					<p className="flex-grow p-4 font-semibold">{currentTitle}</p>
+					!searchQuery && (
+						<p onClick={() => setIsOpen(!isOpen)} className="flex-grow p-4 font-semibold cursor-pointer">
+							{currentTitle}
+						</p>
+					)
 				)}
 				<ToggleData isOpen={isOpen} setIsOpen={setIsOpen} />
 			</div>
@@ -97,19 +116,22 @@ export default function GenericSelect<T extends NamedItem>({
 				className={`transition-all duration-300 ease-in-out ${isOpen ? "max-h-60" : "max-h-0"} overflow-y-auto`}
 			>
 				<ul className="list-none p-0">
-					{data.map((item) => (
-						<li key={keyExtractor(item)} className="border-t border-gray-200">
-							<button
-								className="w-full p-4 text-left text-md font-normal text-black hover:bg-gray-100 transition-colors duration-200"
-								onClick={() => handleSelection(item)}
-							>
-								{renderItem(item)}
-							</button>
-						</li>
-					))}
+					{filteredData.length > 0 ? (
+						filteredData.map((item) => (
+							<li key={keyExtractor(item)} className="border-t border-gray-200">
+								<button
+									className="w-full p-4 text-left text-md font-normal text-black hover:bg-gray-100 transition-colors duration-200"
+									onClick={() => handleSelection(item)}
+								>
+									{renderItem(item)}
+								</button>
+							</li>
+						))
+					) : (
+						<li className="p-4 text-center text-gray-500">No results found</li>
+					)}
 				</ul>
 			</div>
 		</div>
 	);
 }
-
