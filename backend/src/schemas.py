@@ -2,6 +2,26 @@ from enum import Enum
 
 from pydantic import BaseModel
 
+from pydantic import BaseModel, Field
+from typing import Optional, Any, Dict
+
+class StrategySchema(BaseModel):
+    id: int
+    name: str
+    description: Optional[str] = None
+    fk_user_id: int
+    indicators: Optional[Dict] = None  
+    data_source: Optional[Dict] = None  
+    model_config = {"from_attributes": True}
+
+class StrategyResponseSchema(BaseModel):
+    id: int
+    title: str
+    description: Optional[str] = None
+    fk_user_id: int
+    indicators: Optional[Any] = None  
+    data_source: Optional[Any] = None
+    model_config = {"from_attributes": True}
 
 class FileTypeEnum(Enum):
     CSV = "csv"

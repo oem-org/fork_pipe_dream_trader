@@ -34,7 +34,7 @@ class Strategies(Base):
     __tablename__ = "strategies"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String)
+    name = Column(String)
     description = Column(String)
     fk_user_id = Column(Integer, ForeignKey("users.id"))
     indicators = Column(JSON, nullable=True)
