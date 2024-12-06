@@ -6,6 +6,7 @@ import Strategy from "../interfaces/Strategy"
 import IndicatorRequest from "@/interfaces/requests/UpdateIndicatorRequest"
 import Indicator from "../interfaces/Indicator"
 import File from "@/interfaces/File"
+import CreateStrategyRequest from "@/interfaces/requests/CreateStrategyRequest"
 import { PostService, GetAllService } from "./services/ApiService"
 // import UploadFileRequest from "../interfaces/requests/UploadFileRequest"
 // Class for GET requests
@@ -41,8 +42,7 @@ export const getAllPairsDbApi = new GetAllService<Strategy>('strategy', jsonHead
 
 //Strategy
 export const getAllStrategiesApi = new GetAllService<Strategy>('strategy', jsonHeader)
-
-export const postStrategyApi = new PostService<Strategy, any>('strategy', jsonHeader)
+export const postStrategyApi = new PostService<CreateStrategyRequest, any>('strategy', jsonHeader)
 
 
 //Files

@@ -100,7 +100,7 @@ export class GetService<R> extends ApiService {
 
 export class PostService<T, R> extends ApiService {
 	async post(data: T): Promise<R> {
-		console.log('post data')
+		console.log('post data', data)
 		try {
 			const response = await this.axiosInstance.post<R>(this.endpoint, data, {
 				headers: this.getHeaders(),
