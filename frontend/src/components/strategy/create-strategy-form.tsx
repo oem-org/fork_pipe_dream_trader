@@ -2,29 +2,59 @@ import { useState } from "react";
 import GenericSelect from "./strategy-list";
 import Strategy from "@/interfaces/Strategy";
 import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
+import getFilesQuery from "@/lib/queries/getFilesQuery";
+import File from "@/interfaces/File";
+import { postStrategyApi } from "@/lib/apiClientInstances";
 
+
+//id: number
+//name: string
+//description: string
+//data_source?: JSON
+//indicators?: JSON
 
 export default function CreateStrategyForm() {
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
 	const [clonedStrategy, setClonedStrategyId] = useState(0)
+	const [file, setFileId] = useState(0)
+	const [dataSourceType, setDataSourceType] = useState(null)
+
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		console.log("Strategy Created:", { name, description, clonedStrategy });
+		//const data_source = {
+		//	type:
+		//}
+		//postStrategyApi.post({ name, description, data_source })
+
 	};
-	const { data } = getStrategiesQuery();
+	const { data: dataStrategies } = getStrategiesQuery();
+	const { data: dataFiles } = getFilesQuery();
 
 	return (
 		<form onSubmit={handleSubmit} className="space-y-4">
-			<p>Clone an existing strategy</p>
+			<h4>Clone an existing strategy</h4>
 			<GenericSelect<Strategy>
-				data={data || []}
+				data={dataStrategies || []}
 				keyExtractor={(strategy) => strategy.id}
 				onSelect={(strategy) => {
 					setClonedStrategyId(strategy.id);
 					console.log(strategy.id, "Selected Strategy ID");
 				}}
 				renderItem={(strategy) => <span>{strategy.name}</span>}
+				title="Select or search"
+				searchEnabled={true}
+			/>
+
+			<h4>Choose a data source</h4>
+			<GenericSelect<File>
+				data={dataFiles || []}
+				keyExtractor={(file) => file.id}
+				onSelect={(file) => {
+					setFileId(file.id);
+					console.log(file.id, "Selected Strategy ID");
+				}}
+				renderItem={(file) => <span>{file.name}</span>}
 				title="Select or search"
 				searchEnabled={true}
 			/>

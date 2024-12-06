@@ -14,45 +14,6 @@ interface GenericSelectProps<T extends NamedItem> {
 	searchEnabled: boolean;
 }
 
-function Search({ onSearch }: { onSearch: (query: string) => void }) {
-	const [query, setQuery] = useState("");
-
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setQuery(event.target.value);
-		onSearch(event.target.value);
-	};
-
-	return (
-		<div className="w-full flex items-center">
-			<SearchIcon className="mx-2" />
-			<input
-				type="text"
-				className="w-full p-2 bg-gray-100 border border-gray-300 rounded-md"
-				placeholder="Search..."
-				value={query}
-				onChange={handleChange}
-			/>
-		</div>
-	);
-}
-
-interface ToggleDataProps {
-	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	isOpen: boolean;
-}
-
-function ToggleData({ setIsOpen, isOpen }: ToggleDataProps) {
-	return (
-		<button
-			className="p-4 flex justify-between items-center rounded-md transition-colors duration-200"
-			onClick={() => setIsOpen(!isOpen)}
-		>
-			<ChevronDown
-				className={`transform transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
-			/>
-		</button>
-	);
-}
 
 export default function GenericSelect<T extends NamedItem>({
 	data,
@@ -72,6 +33,7 @@ export default function GenericSelect<T extends NamedItem>({
 		onSelect(item);
 		setCurrentTitle(item.name);
 		setIsOpen(false);
+		setSearchQuery("")
 	};
 
 	const handleSearch = (query: string) => {
@@ -133,5 +95,46 @@ export default function GenericSelect<T extends NamedItem>({
 				</ul>
 			</div>
 		</div>
+	);
+}
+
+
+function Search({ onSearch }: { onSearch: (query: string) => void }) {
+	const [query, setQuery] = useState("");
+
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setQuery(event.target.value);
+		onSearch(event.target.value);
+	};
+
+	return (
+		<div className="w-full flex items-center">
+			<SearchIcon className="mx-2" />
+			<input
+				type="text"
+				className="w-full p-2 bg-gray-100 border border-gray-300 rounded-md"
+				placeholder="Search..."
+				value={query}
+				onChange={handleChange}
+			/>
+		</div>
+	);
+}
+
+interface ToggleDataProps {
+	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	isOpen: boolean;
+}
+
+function ToggleData({ setIsOpen, isOpen }: ToggleDataProps) {
+	return (
+		<button
+			className="p-4 flex justify-between items-center rounded-md transition-colors duration-200"
+			onClick={() => setIsOpen(!isOpen)}
+		>
+			<ChevronDown
+				className={`transform transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+			/>
+		</button>
 	);
 }
