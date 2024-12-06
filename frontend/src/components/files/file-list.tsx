@@ -15,7 +15,7 @@ export default function FileList() {
 		console.log(file.id, strategyId);
 		// strategyId 0 is when none is selected
 		if (typeof file.id === "number" && strategyId === 0) {
-			console.log(strategyId, file.filename);
+			console.log(strategyId, file.name);
 			try {
 				//const data = await mutateAsyncFile({
 				//	kind: file.kind,
@@ -49,7 +49,7 @@ export default function FileList() {
 							className="text-left text-md font-normal text-black hover:text-blue-500"
 							onClick={() => addSelectFile(file, strategyId)}
 						>
-							{file.filename}
+							{file.name}
 						</button>
 					</div>
 

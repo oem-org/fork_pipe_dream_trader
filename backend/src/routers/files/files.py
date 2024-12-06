@@ -21,7 +21,7 @@ class FileRequest(BaseModel):
 
 class FileSchema(BaseModel):
     id: int
-    filename: str
+    name: str
     path: str
     file_type: FileTypeEnum
 
@@ -65,12 +65,12 @@ def get_files(db: db_dependency, file_id: int):
 def save_file(file):
     folder_path = Path(__file__).parent.parent.parent.parent / "uploaded_files"
     folder_path.mkdir(parents=True, exist_ok=True)
-    file_path = folder_path / file.filename
+    file_path = folder_path / file.name
 
     if file_path.exists():
         # send a "Conflict" status code
         raise HTTPException(
-            status_code=409, detail=f"File '{file.filename}' already exists."
+            status_code=409, detail=f"File '{file.name}' already exists."
         )
 
     with open(file_path, "wb") as buffer:
@@ -97,8 +97,8 @@ async def save_uploaded_file(db: db_dependency, file: UploadFile = File(...)):
                 status_code=status.HTTP_400_BAD_REQUEST, detail=f"Wrong file extension"
             )
 
-        filename = Path(file_path).name
-        saved_file = Files(path=file_path, filename=filename, file_type=file_type)
+        name = Path(file_path).name
+        saved_file = Files(path=file_path, name=name, file_type=file_type)
 
         db.add(saved_file)
         db.commit()  # Commit the transaction to save the file info in the database

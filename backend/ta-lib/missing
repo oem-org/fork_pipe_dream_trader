@@ -293,10 +293,10 @@ WARNING: \`$1' is $msg.  You should only need it if
     file=`echo "$*" | sed -n "$sed_output"`
     test -z "$file" && file=`echo "$*" | sed -n "$sed_minuso"`
     if test -z "$file"; then
-      # ... or it is the one specified with @setfilename ...
+      # ... or it is the one specified with @setname ...
       infile=`echo "$*" | sed 's/.* \([^ ]*\) *$/\1/'`
       file=`sed -n '
-	/^@setfilename/{
+	/^@setname/{
 	  s/.* \([^ ]*\) *$/\1/
 	  p
 	  q

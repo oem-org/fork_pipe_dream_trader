@@ -3,7 +3,7 @@ from pathlib import Path
 
 from sqlalchemy.orm import Session
 
-# import .logger 
+# import .logger
 
 from ..models import Files
 from .file_type_check import file_type_check
@@ -11,8 +11,8 @@ from .file_type_check import file_type_check
 
 def delete_missing_files(db: Session, missing_files: dict):
     files_to_delete = []
-    for filename in missing_files.keys():
-        db_file_to_delete = db.query(Files).filter(Files.filename == filename).first()
+    for name in missing_files.keys():
+        db_file_to_delete = db.query(Files).filter(Files.name == name).first()
         if db_file_to_delete:
             files_to_delete.append(db_file_to_delete)
 
@@ -25,10 +25,10 @@ def delete_missing_files(db: Session, missing_files: dict):
 
 def add_non_matching_files(db: Session, non_matching_files: dict):
     files_to_add = []
-    for filename, file_info in non_matching_files.items():
-        file_type = file_type_check(filename)
+    for name, file_info in non_matching_files.items():
+        file_type = file_type_check(name)
         file_to_add = Files(
-            filename=filename,
+            name=name,
             path=file_info["folder_path"],
             file_type=file_type,
         )
@@ -49,31 +49,31 @@ def sync_file_paths(db: Session):
     print(folder_files)
 
     db_files = db.query(Files).all()
-    db_file_map = {db_file.filename: Path(db_file.path) for db_file in db_files}
+    db_file_map = {db_file.name: Path(db_file.path) for db_file in db_files}
 
     matching_files = {}
     non_matching_files = {}
     missing_in_folder = {}
 
-    for filename, file_path in folder_files.items():
-        if filename in db_file_map:
-            if file_path.resolve() == db_file_map[filename].resolve():
-                matching_files[filename] = str(file_path)
+    for name, file_path in folder_files.items():
+        if name in db_file_map:
+            if file_path.resolve() == db_file_map[name].resolve():
+                matching_files[name] = str(file_path)
             else:
-                non_matching_files[filename] = {
+                non_matching_files[name] = {
                     "folder_path": str(file_path),
-                    "db_path": str(db_file_map[filename]),
+                    "db_path": str(db_file_map[name]),
                 }
         else:
-            non_matching_files[filename] = {
+            non_matching_files[name] = {
                 "folder_path": str(file_path),
                 "db_path": None,
             }
 
     missing_in_folder = {
-        db_file.filename: str(db_file_map[db_file.filename])
+        db_file.name: str(db_file_map[db_file.name])
         for db_file in db_files
-        if db_file.filename not in folder_files
+        if db_file.name not in folder_files
     }
 
     # logger.info("Matching Files: %s", matching_files)

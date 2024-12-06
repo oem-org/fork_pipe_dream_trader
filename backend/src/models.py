@@ -57,7 +57,7 @@ class Files(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     path = Column(String)
-    filename = Column(String)
+    name = Column(String)
     file_type = Column(Enum(FileTypeEnum))
 
 
