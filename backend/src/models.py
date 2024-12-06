@@ -3,8 +3,9 @@ from enum import Enum
 from sqlalchemy import JSON, Boolean, Column, Enum, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from .orm_connection import Base
 from .schemas import FileTypeEnum
+
+from .orm_connection import Base
 
 
 class Users(Base):
@@ -23,7 +24,7 @@ class Strategies(Base):
     # Query a user and get their strategies
     user = session.query(Users).filter_by(id=1).first()
     for strategy in user.strategies:
-        print(strategy.name)
+        print(strategy.title)
 
     # Query a strategy and get its user
     strategy = session.query(Strategies).filter_by(id=1).first()
@@ -33,7 +34,7 @@ class Strategies(Base):
     __tablename__ = "strategies"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
+    title = Column(String)
     description = Column(String)
     fk_user_id = Column(Integer, ForeignKey("users.id"))
     indicators = Column(JSON, nullable=True)

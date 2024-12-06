@@ -1,32 +1,59 @@
-import { useState } from "react";
-import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
+
+import getStrategiesQuery from "../../lib/queries/getStrategiesQuery"
+import useStrategyStore from "../../lib/hooks/useStrategyStore";
+import Strategy from "../../interfaces/Strategy";
+//import { postStrategyQuery } from "../../lib/queries/postStrategyQuery";
 
 export default function StrategyList() {
-	const [showStrategies, setShowStrategies] = useState(false);
+	const { data } = getStrategiesQuery();
+	const { strategyId, setStrategyId } = useStrategyStore();
+	//const mutateAsyncStrategy = postStrategyQuery()
 
-	const { data, error, isError, isLoading } = getStrategiesQuery();
-
-	const handleFetchStrategies = () => {
-		setShowStrategies(true);
+	const addStrategy = async (strategy: Strategy, strategyId: number) => {
+		console.log(strategy.id, strategyId);
+		// strategyId 0 is when none is selected
+		if (typeof strategy.id === "number" && strategyId === 0) {
+			console.log(strategyId, strategy.name);
+			try {
+				//const data = await mutateAsyncStrategy({
+				//	kind: strategy.kind,
+				//	settings: strategy.default_settings,
+				//	strategy_fk: strategyId,
+				//});
+				console.log("Mutation was successful, returned data:", data);
+			} catch (error) {
+				console.error("Mutation failed with error:", error);
+			}
+		} else {
+			console.log("Error");
+		}
 	};
 
-	console.log(data)
+	function addSelectStrategy(strategy: Strategy, strategyId: number) {
+		setStrategyId(strategy.id);
+		console.log(strategyId, "strategy id");
+		addStrategy(strategy, strategyId);
+	}
+
 	return (
-		<div>
-			<h1>Strategy List</h1>
-			<button onClick={handleFetchStrategies} disabled={isLoading}>
-				{isLoading ? "Loading..." : "Fetch Strategies"}
-			</button>
+		<ul className="list-none p-0">
+			{data && data.map(strategy => (
+				<li
+					key={strategy.id}
+					className="p-2 cursor-pointer bg-gray-100 border-b border-gray-300 hover:bg-gray-200"
+				>
+					<div className="flex justify-between items-center w-full">
+						<button
+							className="text-left text-md font-normal text-black hover:text-blue-500"
+							onClick={() => addSelectStrategy(strategy, strategyId)}
+						>
+							{strategy.name}
+						</button>
+					</div>
 
-			{isError && <p style={{ color: "red" }}>Error: {error?.message}</p>}
-
-			{data && (
-				<ul>
-					{data.map((strategy) => (
-						<li key={strategy.id}>{strategy.name}</li>
-					))}
-				</ul>
-			)}
-		</div>
-	);
+				</li>
+			))}
+		</ul>
+	)
 }
+
