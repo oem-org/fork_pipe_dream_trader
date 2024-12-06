@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import NavLinks from "./nav-links";
 import StrategyList from "@/components/strategy/strategy-list";
+import FileList from "@/components/files/file-list";
 //import useAuthStore from "../../../lib/hooks/useAuthStore";
 
 
@@ -15,6 +16,7 @@ export default function SideNav() {
         <div className="w-32 text-white md:w-40">
         </div>
       </Link>
+      <FileList />
       <StrategyList />
       <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">
         <NavLinks />

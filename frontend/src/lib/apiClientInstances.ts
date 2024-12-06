@@ -5,6 +5,7 @@ import CreateUserFormRequest from "../interfaces/requests/CreateUserFormRequest"
 import Strategy from "../interfaces/Strategy"
 import IndicatorRequest from "@/interfaces/requests/UpdateIndicatorRequest"
 import Indicator from "../interfaces/Indicator"
+import File from "@/interfaces/File"
 import { PostService, GetAllService } from "./services/ApiService"
 // import UploadFileRequest from "../interfaces/requests/UploadFileRequest"
 // Class for GET requests

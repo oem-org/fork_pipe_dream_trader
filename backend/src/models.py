@@ -23,7 +23,7 @@ class Strategies(Base):
     # Query a user and get their strategies
     user = session.query(Users).filter_by(id=1).first()
     for strategy in user.strategies:
-        print(strategy.title)
+        print(strategy.name)
 
     # Query a strategy and get its user
     strategy = session.query(Strategies).filter_by(id=1).first()
@@ -33,7 +33,7 @@ class Strategies(Base):
     __tablename__ = "strategies"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String)
+    name = Column(String)
     description = Column(String)
     fk_user_id = Column(Integer, ForeignKey("users.id"))
     indicators = Column(JSON, nullable=True)

@@ -28,7 +28,7 @@ class Token(BaseModel):
 
 
 class StrategyRequest(BaseModel):
-    title: str = Field(min_length=1)
+    name: str = Field(min_length=1)
     description: str = Field(min_length=1, max_length=10000)
 
 
@@ -236,7 +236,7 @@ async def delete_strategy(
 #     if strategy_model is None:
 #         raise StrategyNotFound()
 #
-#     strategy_model.title = strategy_request.title
+#     strategy_model.name = strategy_request.name
 #     strategy_model.description = strategy_request.description
 #     strategy_model.priority = strategy_request.priority
 #     strategy_model.complete = strategy_request.complete

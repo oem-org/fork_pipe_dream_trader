@@ -5,18 +5,18 @@ import File from "../../interfaces/File"
 export default function getFilesQuery() {
 	const fetchFiles = async (): Promise<File[]> => {
 		try {
-			const indicatorsData: File[] = await getAllFilesApi.getAll()
-			console.log(indicatorsData)
-			return indicatorsData
+			const filesData: File[] = await getAllFilesApi.getAll()
+			console.log(filesData)
+			return filesData
 		} catch (error) {
 			//console.error(error)
-			throw new Error("Failed to fetch indicators")
+			throw new Error("Failed to fetch files")
 		}
 	}
 
 
 	const { data, error, isError, isLoading } = useQuery<File[], Error>({
-		queryKey: ["indicatorList"],
+		queryKey: ["fileList"],
 		queryFn: fetchFiles,
 	})
 

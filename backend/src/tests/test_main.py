@@ -49,7 +49,7 @@ app.dependency_overrides[get_db] = mock_get_db
 def test_strategy():
     # Create a strategy object for testing
     strategy = Strategies(
-        title="Learn to code!",
+        name="Learn to code!",
         description="Need to learn everyday!",
         fk_user_id=1,  # Link to test user
     )

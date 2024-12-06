@@ -10,6 +10,7 @@ export default function StrategyList() {
 		setShowStrategies(true);
 	};
 
+	console.log(data)
 	return (
 		<div>
 			<h1>Strategy List</h1>
@@ -19,7 +20,7 @@ export default function StrategyList() {
 
 			{isError && <p style={{ color: "red" }}>Error: {error?.message}</p>}
 
-			{showStrategies && !isLoading && data && (
+			{data && (
 				<ul>
 					{data.map((strategy) => (
 						<li key={strategy.id}>{strategy.name}</li>
