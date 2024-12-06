@@ -1,20 +1,32 @@
 import { useState } from "react";
-import StrategyList from "./strategy-list";
+import GenericSelect from "./strategy-list";
+import Strategy from "@/interfaces/Strategy";
+import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
+
 
 export default function CreateStrategyForm() {
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
-	const [clonedStrategy, setClonedStrategy] = useState(0)
+	const [clonedStrategy, setClonedStrategyId] = useState(0)
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		console.log("Strategy Created:", { name, description, clonedStrategy });
 	};
-
+	const { data } = getStrategiesQuery();
 
 	return (
 		<form onSubmit={handleSubmit} className="space-y-4">
 
-			<StrategyList setId={setClonedStrategy} />
+			<GenericSelect<Strategy>
+				data={data || []}
+				keyExtractor={(strategy) => strategy.id}
+				onSelect={(strategy) => {
+					setClonedStrategyId(strategy.id);
+					console.log(strategy.id, "Selected Strategy ID");
+				}}
+				renderItem={(strategy) => <span>{strategy.name}</span>}
+				title="Clone existing strategy"
+			/>
 			<div>
 				<label htmlFor="name" className="block text-white">Strategy Name</label>
 				<input
