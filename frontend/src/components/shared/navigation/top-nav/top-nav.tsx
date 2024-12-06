@@ -11,17 +11,18 @@ export default function TopNav() {
           <li className="text-white text-xl">MyApp</li>
           <NavItem to="/" label="Dashboard" />
           <Dropdown label="Strategies" animation={true}>
-            <Link to="/strategy" className="block text-white px-4 py-2">View all</Link>
-            <Link to="/strategy" className="block text-white px-4 py-2">Create new strategy</Link>
+            <Link to="/select-strategy" className="block text-white px-4 py-2">View all</Link>
+            <Link to="/create-strategy" className="block text-white px-4 py-2">Create new strategy</Link>
           </Dropdown>
         </div>
-        <li className="flex space-x-4">
+        <div className="flex space-x-4">
           <Dropdown icon={CircleUserIcon} animation={false}>
             <Link to="/profile" className="block text-white px-4 py-2">Profiles</Link>
             <Link to="/profile" className="block text-white px-4 py-2">Create new profile</Link>
             <Link to="/profile" className="block text-white px-4 py-2">Logout</Link>
           </Dropdown>
-        </li>
+        </div>
+
       </ul>
     </nav>
   );

@@ -1,72 +1,52 @@
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import StrategyList from "./strategy-list";
 
-export default function SaveStrategy() {
-	type Strategy = {
-		name: string;
-		description: string;
-		fk_user_id: number;
-		fk_pair_id: number;
-	};
-
-	//type ResponseData = {
-	//	id: number;
-	//	name: string;
-	//	description: string;
-	//	priority: number;
-	//	fk_user_id: number;
-	//	fk_pair_id: number;
-	//};
-
+export default function CreateStrategyForm() {
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
-	const [fk_user_id, setFkUserId] = useState<number | "">("");
-	const [fk_pair_id, setFkPairId] = useState<number | "">("");
-
-	const mutation = useMutation((newStrategy: Strategy) =>
-		axios.post("http://localhost:8000/strategy", newStrategy), // Replace with your actual backend endpoint
-	);
-
-	const submitData = () => {
-		if (priority === "" || fk_user_id === "" || fk_pair_id === "") {
-			alert("Please fill in all fields.");
-			return;
-		}
-		mutation.mutate({
-			name,
-			description,
-			priority: Number(priority),
-		});
+	const [clonedStrategy, setClonedStrategy] = useState(0)
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		console.log("Strategy Created:", { name, description, clonedStrategy });
 	};
 
+
 	return (
-		<div>
-			<h1>Create a New Strategy</h1>
-			<input
-				type="text"
-				value={name}
-				onChange={(e) => setName(e.target.value)}
-				placeholder="Name"
-			/>
-			<input
-				type="text"
-				value={description}
-				onChange={(e) => setDescription(e.target.value)}
-				placeholder="Description"
-			/>
+		<form onSubmit={handleSubmit} className="space-y-4">
 
+			<StrategyList setId={setClonedStrategy} />
+			<div>
+				<label htmlFor="name" className="block text-white">Strategy Name</label>
+				<input
+					type="text"
+					id="name"
+					name="name"
+					value={name}
+					onChange={(e) => setName(e.target.value)}
+					placeholder="Enter strategy name"
+					className="w-full px-4 py-2 mt-2 text-black border rounded-lg"
+				/>
+			</div>
 
+			<div>
+				<label htmlFor="description" className="block text-white">Strategy Description</label>
+				<textarea
+					id="description"
+					name="description"
+					value={description}
+					onChange={(e) => setDescription(e.target.value)}
+					placeholder="Enter strategy description"
+					rows="4"
+					className="w-full px-4 py-2 mt-2 text-black border rounded-lg"
+				/>
+			</div>
 
-			<button onClick={submitData} disabled={mutation.isLoading}>
-				{mutation.isLoading ? "Submitting..." : "Submit"}
+			<button
+				type="submit"
+				className="w-full bg-blue-600 text-white py-2 rounded-lg mt-4 hover:bg-blue-700"
+			>
+				Create Strategy
 			</button>
-			{mutation.isError && (
-				<div style={{ color: "red" }}>
-					Error: {mutation.error?.response?.data?.message || mutation.error.message}
-				</div>
-			)}
-			{mutation.isSuccess && <div>Strategy submitted successfully!</div>}
-		</div>
+		</form>
 	);
 }

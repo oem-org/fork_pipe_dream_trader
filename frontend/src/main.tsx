@@ -9,6 +9,8 @@ import NotFoundPage from "./pages/not-found-page.tsx"
 import RootPage from "./pages/root-page.tsx"
 import LoginPage from "./pages/login-page.tsx"
 import SignupPage from "./pages/signup.tsx"
+import CreateStrategyPage from "./pages/create-strategy-page.tsx"
+import SelectStrategyPage from "./pages/select-strategy-page.tsx"
 
 const router = createBrowserRouter([
   {
@@ -28,6 +30,17 @@ const router = createBrowserRouter([
         path: "/signup",
         element: <SignupPage />,
       },
+      {
+        path: "/create-strategy",
+        element: <CreateStrategyPage />,
+      },
+      {
+        path: "/select-strategy",
+        element: <SelectStrategyPage />,
+      },
+
+
+
       //{
       //  path: "/coins/:id",
       //  element: <CoinPage />,
