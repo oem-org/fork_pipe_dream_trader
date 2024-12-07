@@ -5,10 +5,11 @@ interface DropdownProps {
   children: ReactNode;
   icon?: LucideIcon;
   label?: string;
-  animation: boolean
+  animation: boolean;
+  direction?: 'left' | 'right';
 }
 
-export default function Dropdown({ icon: Icon, label, animation, children }: DropdownProps) {
+export default function Dropdown({ icon: Icon, label, animation, children, direction = 'left' }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLLIElement>(null);
 
@@ -37,15 +38,17 @@ export default function Dropdown({ icon: Icon, label, animation, children }: Dro
       >
         {Icon && <Icon className="h-5 w-5 mr-2" />}
         {label && <span className="mr-2">{label}</span>}
-        {animation && <ChevronDown
-          className={`h-4 w-4 transition-transform duration-200 ease-in-out ${isOpen ? 'rotate-180' : ''
-            }`} />
-        }
+        {animation && (
+          <ChevronDown
+            className={`h-4 w-4 transition-transform duration-200 ease-in-out ${isOpen ? 'rotate-180' : ''
+              }`}
+          />
+        )}
       </button>
 
       {(isOpen || dropdownRef.current?.matches(':hover')) && (
         <ul
-          className="absolute left-0 w-48 bg-gray-800 text-white mt-2 rounded-md shadow-lg py-2 z-10"
+          className={`absolute ${direction === 'right' ? 'right-0' : 'left-0'} w-48 bg-gray-800 text-white mt-2 rounded-md shadow-lg py-2 z-10`}
           onMouseLeave={() => setIsOpen(false)}
         >
           {children}

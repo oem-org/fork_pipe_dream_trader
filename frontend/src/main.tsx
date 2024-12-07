@@ -17,7 +17,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      staleTime: 1000 * 60 * 1,
+      staleTime: 2000 * 60 * 1,
     },
   },
 });
@@ -25,7 +25,11 @@ const queryClient = new QueryClient({
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootPage />,
+    element: (
+      <ProtectedRoute>
+        <RootPage />
+      </ProtectedRoute>
+    ),
     errorElement: <NotFoundPage />,
     children: [
       {
@@ -35,14 +39,6 @@ const router = createBrowserRouter([
             <StrategyPage />
           </ProtectedRoute>
         ),
-      },
-      {
-        path: "/login",
-        element: <LoginPage />,
-      },
-      {
-        path: "/signup",
-        element: <SignupPage />,
       },
       {
         path: "/create-strategy",
@@ -61,6 +57,18 @@ const router = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/signup",
+    element: <SignupPage />,
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ]);
 

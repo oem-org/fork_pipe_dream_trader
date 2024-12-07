@@ -8,9 +8,9 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 	const { isAuthenticated } = useAuthStore();
-
+	console.log("Not authenticated")
 	if (!isAuthenticated) {
-		return <Navigate to="/login" replace />;
+		return <Navigate to="/login" replace />
 	}
 
 	return <>{children}</>;
