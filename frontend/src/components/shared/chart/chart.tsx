@@ -1,21 +1,13 @@
 import { useEffect, useState } from 'react';
-
+import Timeseries from '@/interfaces/Timeseries';
 import ChartCanvas from './chart-canvas';
 
-export function Chart() {
+interface ChartProps {
+	timeseries: Timeseries[]
+}
 
-	const customData = [
-		{ time: '2024-11-01', value: 25.50 },
-		{ time: '2024-11-02', value: 27.85 },
-		{ time: '2024-11-03', value: 28.90 },
-		{ time: '2024-11-04', value: 30.10 },
-		{ time: '2024-11-05', value: 29.50 },
-		{ time: '2024-11-06', value: 32.30 },
-		{ time: '2024-11-07', value: 33.60 },
-		{ time: '2024-11-08', value: 34.00 },
-		{ time: '2024-11-09', value: 35.10 },
-		{ time: '2024-11-10', value: 36.20 },
-	];
+export function Chart({ timeseries }: ChartProps) {
+
 
 	const [windowSize, setWindowSize] = useState({
 		width: typeof window !== 'undefined' ? window.innerWidth : 0,
@@ -48,7 +40,7 @@ export function Chart() {
 	return (
 		<div>
 			<ChartCanvas windowSize={windowSize.width}
-				data={customData}
+				data={timeseries}
 				colors={customColors}
 			/>
 		</div>

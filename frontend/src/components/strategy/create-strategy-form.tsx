@@ -15,7 +15,11 @@ export default function CreateStrategyForm() {
 	const [fileId, setFileId] = useState<number>(0);
 	const [dataSourceType, setDataSourceType] = useState<DataSourceType>("file");
 	const [databaseOption, setDatabaseOption] = useState("");
+
 	const navigate = useNavigate()
+
+	const { data: dataStrategies } = getStrategiesQuery();
+	const { data: dataFiles } = getFilesQuery();
 
 	const [errors, setErrors] = useState({
 		name: "",
@@ -49,13 +53,12 @@ export default function CreateStrategyForm() {
 		try {
 			const strategy = await postStrategyApi.post({ name, description, data_source: data_source });
 			navigate(`/strategy/${strategy.id}`)
+
 		} catch (error) {
 			console.log(error)
 		}
 	};
 
-	const { data: dataStrategies } = getStrategiesQuery();
-	const { data: dataFiles } = getFilesQuery();
 
 	return (
 		<form onSubmit={handleSubmit} className="space-y-4">

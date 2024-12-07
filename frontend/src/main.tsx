@@ -13,7 +13,7 @@ import CreateStrategyPage from "./pages/create-strategy-page.tsx";
 import SelectStrategyPage from "./pages/select-strategy-page.tsx";
 import ProtectedRoute from "./components/auth/protected-route.tsx";
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,

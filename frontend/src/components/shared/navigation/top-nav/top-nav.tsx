@@ -3,6 +3,7 @@ import Dropdown from "./dropdown";
 import { Link } from "react-router-dom";
 import { CircleUserIcon } from "lucide-react";
 import useAuthStore from "@/lib/hooks/useAuthStore";
+import { queryClient } from "@/main";
 
 export default function TopNav() {
   const { logout } = useAuthStore()
@@ -19,7 +20,7 @@ export default function TopNav() {
         </div>
         <div className="flex space-x-4">
           <Dropdown icon={CircleUserIcon} animation={false} direction="right">
-            <button onClick={() => { logout() }} className="block text-white px-4 py-2">Logout</button>
+            <button onClick={() => { logout(queryClient) }} className="block text-white px-4 py-2">Logout</button>
             <Link to="/profile" className="block text-white px-4 py-2">Create new profile</Link>
           </Dropdown>
         </div>

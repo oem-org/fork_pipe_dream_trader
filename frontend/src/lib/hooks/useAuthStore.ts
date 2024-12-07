@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import AuthService from "../services/AuthService";
 import CreateUserFormRequest from "../../interfaces/requests/CreateUserFormRequest";
+import { QueryClient } from "@tanstack/react-query";
 
 
 const authService = AuthService.getInstance();
@@ -9,7 +10,7 @@ interface AuthStore {
 	isAuthenticated: boolean;
 	login: (credentials: FormData) => Promise<boolean>;
 	createUser: (user: CreateUserFormRequest) => Promise<boolean>
-	logout: () => void;
+	logout: (queryClient: QueryClient) => void;
 	checkAuth: () => Promise<boolean>;
 }
 
@@ -41,7 +42,8 @@ const useAuthStore = create<AuthStore>((set) => ({
 		return false;
 	},
 
-	logout: async () => {
+	logout: async (queryClient: QueryClient) => {
+		queryClient.clear()
 		await authService.logout();
 		set({ isAuthenticated: false });
 		window.location.reload();
