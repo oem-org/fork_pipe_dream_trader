@@ -13,21 +13,40 @@ export default function CreateStrategyForm() {
 	const [description, setDescription] = useState("");
 	const [clonedStrategy, setClonedStrategyId] = useState<number>(0);
 	const [fileId, setFileId] = useState<number>(0);
-	const [dataSourceType, setDataSourceType] = useState<DataSourceType>("file"); // Default to file
+	const [dataSourceType, setDataSourceType] = useState<DataSourceType>("file");
 	const [databaseOption, setDatabaseOption] = useState("");
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const [errors, setErrors] = useState({
+		name: "",
+		description: "",
+		fileId: "",
+		databaseOption: "",
+	});
+
+	const validateForm = () => {
+		const newErrors = {
+			name: name ? "" : "Strategy name is required",
+			description: description ? "" : "Strategy description is required",
+			fileId: dataSourceType === "file" && !fileId ? "Select a file" : "",
+			databaseOption: dataSourceType === "database" && !databaseOption
+				? "Please enter a database option" : "",
+		};
+		setErrors(newErrors);
+
+		return Object.values(newErrors).every((error) => error === "");
+	};
+
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		if (dataSourceType === 'file') {
-			const data_source = { type: dataSourceType, id: fileId }
-			postStrategyApi.post({ name, description, data_source: data_source });
+		if (!validateForm()) return;
 
-		} else if (dataSourceType === 'database') {
-			const data_source = { type: dataSourceType, table: "bin1s" }
-			postStrategyApi.post({ name, description, data_source: data_source });
-		}
+		const data_source = dataSourceType === "file"
+			? { type: dataSourceType, id: fileId }
+			: { type: dataSourceType, table: "bin1s" };
 
+		const strategy = await postStrategyApi.post({ name, description, data_source: data_source });
+		console.log(strategy.id)
 	};
 
 	const { data: dataStrategies } = getStrategiesQuery();
@@ -49,41 +68,41 @@ export default function CreateStrategyForm() {
 			/>
 
 			<h4>Choose a data source</h4>
-
 			<div className="flex items-center justify-center space-x-4">
 				<button
 					type="button"
 					onClick={() => setDataSourceType("file")}
-					className={`px-4 py-2 rounded-lg ${dataSourceType === "file" ? "bg-blue-600 text-white" : "bg-gray-200 text-black"
-						}`}
+					className={`btn-primary ${dataSourceType === "file" ? "bg-blue-600 text-white" : "btn-secondary"}`}
 				>
 					File
 				</button>
 				<button
 					type="button"
 					onClick={() => setDataSourceType("database")}
-					className={`px-4 py-2 rounded-lg ${dataSourceType === "database" ? "bg-blue-600 text-white" : "bg-gray-200 text-black"
-						}`}
+					className={`btn-primary ${dataSourceType === "database" ? "bg-blue-600 text-white" : "btn-secondary"}`}
 				>
 					Database
 				</button>
 			</div>
 
 			{dataSourceType === "file" ? (
-				<GenericSelect<File>
-					data={dataFiles || []}
-					keyExtractor={(file) => file.id}
-					onSelect={(file) => {
-						setFileId(file.id);
-						console.log(file.id, "Selected File ID");
-					}}
-					renderItem={(file) => <span>{file.name}</span>}
-					title="Select or search a file"
-					searchEnabled={true}
-				/>
+				<div>
+					<GenericSelect<File>
+						data={dataFiles || []}
+						keyExtractor={(file) => file.id}
+						onSelect={(file) => {
+							setFileId(file.id);
+							console.log(file.id, "Selected File ID");
+						}}
+						renderItem={(file) => <span>{file.name}</span>}
+						title="Select or search a file"
+						searchEnabled={true}
+					/>
+					{errors.fileId && <p className="text-error">{errors.fileId}</p>}
+				</div>
 			) : (
 				<div>
-					<label htmlFor="databaseOption" className="block text-white">Select Database</label>
+					<label htmlFor="databaseOption" className="text-white-label">Select Database</label>
 					<input
 						type="text"
 						id="databaseOption"
@@ -91,13 +110,14 @@ export default function CreateStrategyForm() {
 						value={databaseOption}
 						onChange={(e) => setDatabaseOption(e.target.value)}
 						placeholder="Enter database option"
-						className="w-full px-4 py-2 mt-2 text-black border rounded-lg"
+						className="input-field"
 					/>
+					{errors.databaseOption && <p className="text-error">{errors.databaseOption}</p>}
 				</div>
 			)}
 
 			<div>
-				<label htmlFor="name" className="block text-white">Strategy Name</label>
+				<label htmlFor="name" className="text-white-label">Strategy Name</label>
 				<input
 					type="text"
 					id="name"
@@ -105,12 +125,13 @@ export default function CreateStrategyForm() {
 					value={name}
 					onChange={(e) => setName(e.target.value)}
 					placeholder="Enter strategy name"
-					className="w-full px-4 py-2 mt-2 text-black border rounded-lg"
+					className="input-field"
 				/>
+				{errors.name && <p className="text-error">{errors.name}</p>}
 			</div>
 
 			<div>
-				<label htmlFor="description" className="block text-white">Strategy Description</label>
+				<label htmlFor="description" className="text-white-label">Strategy Description</label>
 				<textarea
 					id="description"
 					name="description"
@@ -118,13 +139,13 @@ export default function CreateStrategyForm() {
 					onChange={(e) => setDescription(e.target.value)}
 					placeholder="Enter strategy description"
 					rows={4}
-					className="w-full px-4 py-2 mt-2 text-black border rounded-lg"
+					className="textarea-field"
 				/>
 			</div>
 
 			<button
 				type="submit"
-				className="w-full bg-blue-600 text-white py-2 rounded-lg mt-4 hover:bg-blue-700"
+				className="btn-primary w-full mt-4"
 			>
 				Create Strategy
 			</button>

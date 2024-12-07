@@ -36,13 +36,13 @@ export const createUserApi = new PostService<CreateUserFormRequest, CreateUserRe
 // Indicators
 export const getAllIndicatorsApi = new GetAllService<Indicator>('indicators', jsonHeader)
 export const postIndicatorApi = new PostService<IndicatorRequest, void>('indicators', jsonHeader)
-
+//
 //Currency Pairs
 export const getAllPairsDbApi = new GetAllService<Strategy>('strategy', jsonHeader)
 
 //Strategy
 export const getAllStrategiesApi = new GetAllService<Strategy>('strategy', jsonHeader)
-export const postStrategyApi = new PostService<CreateStrategyRequest, any>('strategy', jsonHeader)
+export const postStrategyApi = new PostService<CreateStrategyRequest, Strategy>('strategy', jsonHeader)
 
 
 //Files

@@ -89,7 +89,7 @@ async def login_for_access_token(
 
     user = LoginSchema.model_validate(user)
 
-    token = create_access_token(user.username, user.id, timedelta(minutes=40))
+    token = create_access_token(user.username, user.id, timedelta(minutes=140))
 
     return {
         "access_token": token,
