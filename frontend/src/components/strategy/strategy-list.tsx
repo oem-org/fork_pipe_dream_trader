@@ -36,7 +36,9 @@ export default function GenericSelect<T extends NamedItem>({
 		setSearchQuery("")
 	};
 
-	const handleSearch = (query: string) => {
+	const handleSearch = (query: string, e: React.ChangeEvent<HTMLInputElement>) => {
+		e.preventDefault();
+		e.stopPropagation(); // Prevent interaction from bubbling to parent form
 		setSearchQuery(query);
 
 		if (query.trim() !== "") {
@@ -62,14 +64,19 @@ export default function GenericSelect<T extends NamedItem>({
 			<div className="w-full flex justify-between items-center bg-gray-200 hover:bg-gray-300 transition-colors duration-200">
 				{searchEnabled && (isHovered || searchQuery) ? (
 					<div className="flex-grow">
-						<Search onSearch={handleSearch} />
+						<Search onSearch={(query, e) => handleSearch(query, e)} />
 					</div>
 				) : (
-					!searchQuery && (
-						<p onClick={() => setIsOpen(!isOpen)} className="flex-grow p-4 font-semibold cursor-pointer">
-							{currentTitle}
-						</p>
-					)
+					<p
+						onClick={(e) => {
+							e.preventDefault();
+							e.stopPropagation(); // Prevent interaction from bubbling to parent form
+							setIsOpen(!isOpen);
+						}}
+						className="flex-grow p-4 font-semibold cursor-pointer"
+					>
+						{currentTitle}
+					</p>
 				)}
 				<ToggleData isOpen={isOpen} setIsOpen={setIsOpen} />
 			</div>
@@ -83,7 +90,7 @@ export default function GenericSelect<T extends NamedItem>({
 							<li key={keyExtractor(item)} className="border-t border-gray-200">
 								<button
 									className="w-full p-4 text-left text-md font-normal text-black hover:bg-gray-100 transition-colors duration-200"
-									onClick={() => handleSelection(item)}
+									onClick={(e) => handleSelection(item, e)}
 								>
 									{renderItem(item)}
 								</button>
@@ -98,13 +105,16 @@ export default function GenericSelect<T extends NamedItem>({
 	);
 }
 
-
-function Search({ onSearch }: { onSearch: (query: string) => void }) {
+function Search({
+	onSearch,
+}: {
+	onSearch: (query: string, e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
 	const [query, setQuery] = useState("");
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setQuery(event.target.value);
-		onSearch(event.target.value);
+		onSearch(event.target.value, event); // Pass event to prevent bubbling
 	};
 
 	return (
@@ -130,7 +140,11 @@ function ToggleData({ setIsOpen, isOpen }: ToggleDataProps) {
 	return (
 		<button
 			className="p-4 flex justify-between items-center rounded-md transition-colors duration-200"
-			onClick={() => setIsOpen(!isOpen)}
+			onClick={(e) => {
+				e.preventDefault();
+				e.stopPropagation(); // Prevent interaction from bubbling to parent form
+				setIsOpen(!isOpen);
+			}}
 		>
 			<ChevronDown
 				className={`transform transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
