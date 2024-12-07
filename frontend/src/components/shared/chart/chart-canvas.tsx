@@ -62,8 +62,8 @@ export default function ChartCanvas(props: ChartProps): React.ReactElement {
 					background: { type: ColorType.Solid, color: backgroundColor },
 					textColor,
 				},
-				width: chartSize.width,
-				height: chartSize.height,
+				width: newWidth,
+				height: newHeight,
 			});
 
 			chartRef.current.timeScale().fitContent();
@@ -95,17 +95,10 @@ export default function ChartCanvas(props: ChartProps): React.ReactElement {
 	]);
 
 	return (
-		<div className="relative w-full h-full">
-			<div
-				className="absolute inset-0 rounded-lg overflow-hidden"
-				style={{ backgroundColor }}
-			>
-				<div
-					className="w-full h-full"
-					ref={chartContainerRef}
-				/>
-			</div>
-		</div>
+		<div
+			className="w-full h-full"
+			ref={chartContainerRef}
+		/>
 	);
 }
 

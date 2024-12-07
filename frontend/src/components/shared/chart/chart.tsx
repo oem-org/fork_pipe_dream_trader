@@ -1,28 +1,31 @@
-import { useRef, useEffect, useState } from 'react';
-import Timeseries from '@/interfaces/Timeseries';
+import { useRef } from 'react';
+import { CandlestickData } from 'lightweight-charts';
 import ChartCanvas from './chart-canvas';
 
 interface ChartProps {
-	timeseries: Timeseries[]
+	timeseries: CandlestickData[]
 }
 
 export function Chart({ timeseries }: ChartProps) {
-
-
 	const customColors = {
 		backgroundColor: '#f5f5f5',
-		lineColor: '#FF5722',
 		textColor: '#212121',
-		areaTopColor: '#FF5722',
-		areaBottomColor: 'rgba(255, 87, 34, 0.2)',
+		upColor: '#26a69a',
+		downColor: '#ef5350',
+		borderUpColor: '#26a69a',
+		borderDownColor: '#ef5350',
+		wickUpColor: '#26a69a',
+		wickDownColor: '#ef5350',
 	};
 
 	const chartContainerRef = useRef<HTMLDivElement>(null);
 
+	console.log('Chart component rendered with data:', timeseries);
 
 	return (
-		<div ref={chartContainerRef} className="w-full h-full rounded-lg">
-			<ChartCanvas chartContainerRef={chartContainerRef} data={timeseries} />
+		<div className="w-full h-full rounded-lg overflow-hidden">
+			<ChartCanvas chartContainerRef={chartContainerRef} data={timeseries} colors={customColors} />
 		</div>
 	);
 }
+

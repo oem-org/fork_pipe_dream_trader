@@ -23,6 +23,7 @@ export default function StrategyPage() {
     { time: '2024-11-09', value: 35.10 },
     { time: '2024-11-10', value: 36.20 },
   ];
+
   useEffect(() => {
     if (strategy) {
       if (strategy.data_source_type === DataSourceEnum.FILE) {
@@ -31,7 +32,7 @@ export default function StrategyPage() {
         setDataSourceType(DataSourceEnum.DATABASE);
       }
     }
-  }, [strategy]); // This will run when strategy changes
+  }, [strategy]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -42,23 +43,36 @@ export default function StrategyPage() {
   }
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 space-y-6">
       {strategy ? (
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-          <section className="lg:col-span-1 p-4 bg-gray-100 rounded-lg">
-            <h4 className="text-xl font-bold mb-4">{strategy.name}</h4>
-            <p>Data Source Type: {dataSourceType}</p>
-          </section>
-          <div className="lg:col-span-3 h-[400px] md:h-[600px]">
-            <div className="relative w-full h-full">
-              <p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded">Chart Title</p>
-              <Chart timeseries={timeseries} />
+        <>
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+            <section className="lg:col-span-1 p-4 bg-gray-100 rounded-lg">
+              <h4 className="text-xl font-bold mb-4">{strategy.name}</h4>
+              <p>Data Source Type: {dataSourceType}</p>
+            </section>
+            <div className="lg:col-span-3 h-[400px] md:h-[600px]">
+              <div className="relative w-full h-full bg-white rounded-lg overflow-hidden">
+                <p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded">Chart Title</p>
+                <Chart timeseries={timeseries} />
+              </div>
             </div>
           </div>
-        </div>
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+            <section className="lg:col-span-3 p-4 bg-gray-100 rounded-lg">
+              <h4 className="text-xl font-bold mb-4">Indicators</h4>
+              <p>This section contains information about the strategy's indicators.</p>
+            </section>
+            <section className="lg:col-span-1 p-4 bg-gray-100 rounded-lg">
+              <h4 className="text-xl font-bold mb-4">Backtest</h4>
+              <p>This section contains backtest results for the strategy.</p>
+            </section>
+          </div>
+        </>
       ) : (
         <p>Strategy not found.</p>
       )}
     </div>
   );
 }
+
