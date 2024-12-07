@@ -42,12 +42,18 @@ export default function StrategyPage() {
   }
 
   return (
-    <div className="">
+    <div className="container mx-auto px-4">
       {strategy ? (
-        <div className="flex flex-col">
-          <p>{strategy.data_source_type}</p>
-          <div className="">
-            <Chart timeseries={timeseries} />
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+          <section className="lg:col-span-1 p-4 bg-gray-100 rounded-lg">
+            <h4 className="text-xl font-bold mb-4">{strategy.name}</h4>
+            <p>Data Source Type: {dataSourceType}</p>
+          </section>
+          <div className="lg:col-span-3 h-[400px] md:h-[600px]">
+            <div className="relative w-full h-full">
+              <p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded">Chart Title</p>
+              <Chart timeseries={timeseries} />
+            </div>
           </div>
         </div>
       ) : (

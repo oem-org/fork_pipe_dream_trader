@@ -94,5 +94,18 @@ export default function ChartCanvas(props: ChartProps): React.ReactElement {
 		chartSize.height,
 	]);
 
-	return <div ref={chartContainerRef} style={{ width: '100%', height: '100%' }} />;
+	return (
+		<div className="relative w-full h-full">
+			<div
+				className="absolute inset-0 rounded-lg overflow-hidden"
+				style={{ backgroundColor }}
+			>
+				<div
+					className="w-full h-full"
+					ref={chartContainerRef}
+				/>
+			</div>
+		</div>
+	);
 }
+
