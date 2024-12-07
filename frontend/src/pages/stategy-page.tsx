@@ -1,11 +1,13 @@
-import { useParams, Navigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 import getStrategyQuery from "@/lib/queries/getStrategyQuery";
+import { useState } from "react";
+import { DataSourceEnum } from "@/interfaces/enums/DataSourceEnum";
+import { Chart } from "@/components/shared/chart/chart";
 
-function StrategyPage() {
+export default function StrategyPage() {
   const { id } = useParams();
   const strategyId = id ? parseInt(id) : NaN;
-
+  const [dataSourceType, setDataSourceType] = useState("")
   const { data: strategy, error, isError, isLoading } = getStrategyQuery(strategyId)
 
   if (isLoading) {
@@ -16,12 +18,20 @@ function StrategyPage() {
     return <div>Error: {error.message}</div>;
   }
 
+  if (strategy?.data_source_type === DataSourceEnum.FILE) {
+    setDataSourceType(DataSourceEnum.FILE)
+  } else {
+    setDataSourceType(DataSourceEnum.DATABASE)
+  }
+
   return (
     <div className="">
       {strategy ? (
         <div>
-          <h1>{strategy.name}</h1>
-          <p>{strategy.description}</p>
+          <p>{strategy.data_source_type}</p>
+          <div>
+            <Chart />
+          </div>
         </div>
       ) : (
         <p>Strategy not found.</p>
@@ -30,4 +40,3 @@ function StrategyPage() {
   );
 }
 
-export default StrategyPage;

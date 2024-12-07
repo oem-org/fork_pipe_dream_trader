@@ -1,5 +1,4 @@
-export default interface CreateUserResponse {
-    id: number,
-    email: string,
-    username: string,
+import User from "../User";
+
+export default interface CreateUserResponse extends User {
 }

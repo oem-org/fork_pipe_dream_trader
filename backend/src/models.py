@@ -38,7 +38,9 @@ class Strategies(Base):
     description = Column(String)
     fk_user_id = Column(Integer, ForeignKey("users.id"))
     indicators = Column(JSON, nullable=True)
+    data_source_type = Column(String)
     data_source = Column(JSON, nullable=True)
+    
     user = relationship("Users", back_populates="strategies")
 
 

@@ -5,7 +5,7 @@ import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
 import getFilesQuery from "@/lib/queries/getFilesQuery";
 import File from "@/interfaces/File";
 import { postStrategyApi } from "@/lib/apiClientInstances";
-
+import { useNavigate } from 'react-router-dom'
 type DataSourceType = "file" | "database";
 
 export default function CreateStrategyForm() {
@@ -15,6 +15,7 @@ export default function CreateStrategyForm() {
 	const [fileId, setFileId] = useState<number>(0);
 	const [dataSourceType, setDataSourceType] = useState<DataSourceType>("file");
 	const [databaseOption, setDatabaseOption] = useState("");
+	const navigate = useNavigate()
 
 	const [errors, setErrors] = useState({
 		name: "",
@@ -46,9 +47,8 @@ export default function CreateStrategyForm() {
 			: { type: dataSourceType, table: "bin1s" };
 
 		try {
-
 			const strategy = await postStrategyApi.post({ name, description, data_source: data_source });
-			console.log(strategy.id)
+			navigate(`/strategy/${strategy.id}`)
 		} catch (error) {
 			console.log(error)
 		}
