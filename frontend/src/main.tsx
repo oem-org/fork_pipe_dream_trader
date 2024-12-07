@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import './index.css';
+import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -33,28 +33,16 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       {
-        path: "/strategy/:id",
-        element: (
-          <ProtectedRoute>
-            <StrategyPage />
-          </ProtectedRoute>
-        ),
+        path: "strategy/:id", // Relative to "/"
+        element: <StrategyPage />,
       },
       {
-        path: "/create-strategy",
-        element: (
-          <ProtectedRoute>
-            <CreateStrategyPage />
-          </ProtectedRoute>
-        ),
+        path: "create-strategy", // Relative to "/"
+        element: <CreateStrategyPage />,
       },
       {
-        path: "/select-strategy",
-        element: (
-          <ProtectedRoute>
-            <SelectStrategyPage />
-          </ProtectedRoute>
-        ),
+        path: "select-strategy", // Relative to "/"
+        element: <SelectStrategyPage />,
       },
     ],
   },

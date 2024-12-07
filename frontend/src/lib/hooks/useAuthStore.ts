@@ -10,44 +10,41 @@ interface AuthStore {
 	login: (credentials: FormData) => Promise<boolean>;
 	createUser: (user: CreateUserFormRequest) => Promise<boolean>
 	logout: () => void;
+	checkAuth: () => Promise<boolean>;
 }
 
 const useAuthStore = create<AuthStore>((set) => ({
 	isAuthenticated: false,
 
+	checkAuth: async (): Promise<boolean> => {
+		const user = await authService.getCurrentUser();
+		const isAuthenticated = !!user;
+		set({ isAuthenticated });
+		return isAuthenticated;
+	},
+
 	createUser: async (user: CreateUserFormRequest): Promise<boolean> => {
-
-		const userDetail = await authService.createUser(user)
-
-
+		const userDetail = await authService.createUser(user);
 		if (userDetail) {
 			set({ isAuthenticated: true });
-
 			return true;
 		}
-		else {
-			return false
-		}
+		return false;
 	},
 
 	login: async (credentials: FormData): Promise<boolean> => {
-
 		const user = await authService.login(credentials);
 		if (user) {
 			set({ isAuthenticated: true });
-
 			return true;
 		}
-		else {
-			return false
-		}
-
+		return false;
 	},
 
 	logout: async () => {
-		console.log(authService.logout());
+		await authService.logout();
 		set({ isAuthenticated: false });
-		window.location.reload()
+		window.location.reload();
 	},
 }));
 
