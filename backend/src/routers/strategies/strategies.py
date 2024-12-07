@@ -34,7 +34,7 @@ class StrategyRequest(BaseModel):
     description: str = Field(min_length=1, max_length=10000)
 
 
-@router.post("", status_code=status.HTTP_201_CREATED)
+@router.post("", status_code=status.HTTP_201_CREATED, response_model=StrategySchema )
 async def create_strategy(
     user: user_dependency,
     db: db_dependency,
@@ -50,6 +50,8 @@ async def create_strategy(
         db.add(strategy_model)
         db.commit()
         db.refresh(strategy_model)
+
+        return strategy_model
 
     except SQLAlchemyError as e:
         db.rollback()

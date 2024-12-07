@@ -7,8 +7,8 @@ import { getAllStrategiesApi } from "../apiClientInstances"
 const getStrategiesQuery = () => {
   const fetchStrategies = async (): Promise<Strategy[]> => {
     try {
-      const strategiesData: Strategy[] = await getAllStrategiesApi.getAll()
-      return strategiesData
+      const strategies: Strategy[] = await getAllStrategiesApi.getAll()
+      return strategies
     } catch (error) {
       console.log(error)
       throw new Error("Failed to fetch strategies")

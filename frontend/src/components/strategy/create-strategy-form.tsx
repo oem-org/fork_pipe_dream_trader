@@ -45,8 +45,13 @@ export default function CreateStrategyForm() {
 			? { type: dataSourceType, id: fileId }
 			: { type: dataSourceType, table: "bin1s" };
 
-		const strategy = await postStrategyApi.post({ name, description, data_source: data_source });
-		console.log(strategy.id)
+		try {
+
+			const strategy = await postStrategyApi.post({ name, description, data_source: data_source });
+			console.log(strategy.id)
+		} catch (error) {
+			console.log(error)
+		}
 	};
 
 	const { data: dataStrategies } = getStrategiesQuery();
@@ -141,6 +146,7 @@ export default function CreateStrategyForm() {
 					rows={4}
 					className="textarea-field"
 				/>
+				{errors.description && <p className="text-error">{errors.description}</p>}
 			</div>
 
 			<button

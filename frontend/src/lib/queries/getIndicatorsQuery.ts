@@ -6,9 +6,9 @@ import Indicator from "../../interfaces/Indicator"
 export default function getIndicatorsQuery() {
 	const fetchIndicators = async (): Promise<Indicator[]> => {
 		try {
-			const indicatorsData: Indicator[] = await getAllIndicatorsApi.getAll()
-			console.log(indicatorsData)
-			return indicatorsData
+			const indicators: Indicator[] = await getAllIndicatorsApi.getAll()
+			console.log(indicators)
+			return indicators
 		} catch (error) {
 			//console.error(error)
 			throw new Error("Failed to fetch indicators")

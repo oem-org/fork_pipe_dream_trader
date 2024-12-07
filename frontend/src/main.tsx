@@ -1,26 +1,40 @@
-import React from "react"
-import ReactDOM from "react-dom/client"
-import './index.css'
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import StrategyPage from "./pages/strategy-page.tsx"
-import NotFoundPage from "./pages/not-found-page.tsx"
-import RootPage from "./pages/root-page.tsx"
-import LoginPage from "./pages/login-page.tsx"
-import SignupPage from "./pages/signup.tsx"
-import CreateStrategyPage from "./pages/create-strategy-page.tsx"
-import SelectStrategyPage from "./pages/select-strategy-page.tsx"
+import React from "react";
+import ReactDOM from "react-dom/client";
+import './index.css';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import StrategyPage from "./pages/stategy-page.tsx";
+import NotFoundPage from "./pages/not-found-page.tsx";
+import RootPage from "./pages/root-page.tsx";
+import LoginPage from "./pages/login-page.tsx";
+import SignupPage from "./pages/signup.tsx";
+import CreateStrategyPage from "./pages/create-strategy-page.tsx";
+import SelectStrategyPage from "./pages/select-strategy-page.tsx";
+import ProtectedRoute from "./components/auth/protected-route.tsx";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 1,
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootPage />,
-    errorElement: <NotFoundPage></NotFoundPage>,
+    errorElement: <NotFoundPage />,
     children: [
       {
-        path: "/strategy",
-        element: <StrategyPage />,
+        path: "/strategy/:id",
+        element: (
+          <ProtectedRoute>
+            <StrategyPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/login",
@@ -32,33 +46,23 @@ const router = createBrowserRouter([
       },
       {
         path: "/create-strategy",
-        element: <CreateStrategyPage />,
+        element: (
+          <ProtectedRoute>
+            <CreateStrategyPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/select-strategy",
-        element: <SelectStrategyPage />,
+        element: (
+          <ProtectedRoute>
+            <SelectStrategyPage />
+          </ProtectedRoute>
+        ),
       },
-
-
-
-      //{
-      //  path: "/coins/:id",
-      //  element: <CoinPage />,
-      //},
     ],
-  }])
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      staleTime: 1000 * 60 * 1,
-    },
   },
-})
-
-
-
+]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -67,4 +71,4 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </React.StrictMode>
-)
+);

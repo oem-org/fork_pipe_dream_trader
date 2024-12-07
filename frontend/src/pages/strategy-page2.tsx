@@ -16,7 +16,7 @@ import IndicatorList from "@/components/strategy/indicator-list";
 
 
 
-export default function StrategyPage() {
+export default function StrategyPage2() {
 
   //let colors = darkColors
 

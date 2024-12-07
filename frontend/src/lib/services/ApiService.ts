@@ -50,6 +50,8 @@ export class GetAllService<R> extends ApiService {
 			});
 			return response.data;
 		} catch (error) {
+			console.log("get all ereerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+
 			throw error;
 		}
 	}
@@ -108,6 +110,7 @@ export class PostService<T, R> extends ApiService {
 
 			return response.data;
 		} catch (error) {
+			console.log("errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
 			throw error;
 		}
 	}
