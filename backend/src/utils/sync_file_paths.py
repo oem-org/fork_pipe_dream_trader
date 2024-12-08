@@ -1,6 +1,6 @@
 from inspect import _void
 from pathlib import Path
-from schemas import FileTypeEnum
+from ..schemas import FileTypeEnum
 from sqlalchemy.orm import Session
 
 # import .logger
