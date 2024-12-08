@@ -14,8 +14,24 @@ def handle_db_error(
     )
 
 
+def handle_not_validated_file_error(detail, errors: dict) -> None:
+    raise HTTPException(
+        status_code=422,
+        detail={
+            "message": detail,
+            "errors": errors
+        }
+    )
+
 def handle_not_found_error(detail: str) -> None:
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=detail,
     )
+
+def handle_bad_request_error(exception: Exception, detail: str) -> None:
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail=f"{detail}: {str(exception)}",
+    )
+

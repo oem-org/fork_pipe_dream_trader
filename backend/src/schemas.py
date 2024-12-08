@@ -1,9 +1,19 @@
 from enum import Enum
-
 from pydantic import BaseModel
 
 from pydantic import BaseModel, Field
 from typing import Optional, Any, Dict
+
+
+class FileTypeEnum(Enum):
+    CSV = "csv"
+    JSON = "json"
+
+class FileSchema(BaseModel):
+    id: int
+    path: str
+    name: str
+    file_type: FileTypeEnum
 
 class StrategySchema(BaseModel):
     id: int
@@ -23,9 +33,6 @@ class StrategyResponseSchema(BaseModel):
     data_source: Optional[Any] = None
     model_config = {"from_attributes": True}
 
-class FileTypeEnum(Enum):
-    CSV = "csv"
-    JSON = "json"
 
 
 class ChartDataRequest(BaseModel):

@@ -45,7 +45,6 @@ export default class AuthService {
 	async logout(): Promise<boolean> {
 		try {
 			localStorage.removeItem("user")
-			console.log("gg")
 			return true
 		} catch (error) {
 			return false

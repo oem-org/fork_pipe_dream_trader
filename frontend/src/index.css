@@ -31,3 +31,6 @@
   @apply w-full px-4 py-2 mt-2 text-black border rounded-lg;
 }
 
+.transparent-bg {
+  @apply bg-transparent text-black text-2xl font-bold
+}

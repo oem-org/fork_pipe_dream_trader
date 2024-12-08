@@ -13,6 +13,7 @@ export default function TopNav() {
         <div className="flex flex-row"> {/* Corrected the comma to space */}
           <li className="text-white text-xl">MyApp</li>
           <NavItem to="/" label="Dashboard" />
+          <NavItem to="/data" label="Data" />
           <Dropdown label="Strategies" animation={true}>
             <Link to="/select-strategy" className="block text-white px-4 py-2">View all</Link>
             <Link to="/create-strategy" className="block text-white px-4 py-2">Create new strategy</Link>

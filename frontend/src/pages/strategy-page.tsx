@@ -53,7 +53,7 @@ export default function StrategyPage() {
             </section>
             <div className="lg:col-span-3 h-[400px] md:h-[600px]">
               <div className="relative w-full h-full bg-white rounded-lg overflow-hidden">
-                <p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded">Chart Title</p>
+                <p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded transparent-bg">Chart Title</p>
                 <Chart timeseries={timeseries} />
               </div>
             </div>

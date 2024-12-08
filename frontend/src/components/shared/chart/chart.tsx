@@ -3,7 +3,7 @@ import { CandlestickData } from 'lightweight-charts';
 import ChartCanvas from './chart-canvas';
 
 interface ChartProps {
-	timeseries: CandlestickData[]
+	timeseries: timeseries[]
 }
 
 export function Chart({ timeseries }: ChartProps) {

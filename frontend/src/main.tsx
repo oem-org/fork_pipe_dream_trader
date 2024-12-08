@@ -12,6 +12,8 @@ import SignupPage from "./pages/signup.tsx";
 import CreateStrategyPage from "./pages/create-strategy-page.tsx";
 import SelectStrategyPage from "./pages/select-strategy-page.tsx";
 import ProtectedRoute from "./components/auth/protected-route.tsx";
+import DataPage from "./pages/data-page.tsx";
+
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,15 +35,19 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       {
-        path: "strategy/:id", // Relative to "/"
+        path: "data",
+        element: <DataPage />,
+      },
+      {
+        path: "strategy/:id",
         element: <StrategyPage />,
       },
       {
-        path: "create-strategy", // Relative to "/"
+        path: "create-strategy",
         element: <CreateStrategyPage />,
       },
       {
-        path: "select-strategy", // Relative to "/"
+        path: "select-strategy",
         element: <SelectStrategyPage />,
       },
     ],
