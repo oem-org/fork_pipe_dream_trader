@@ -1,11 +1,10 @@
 import pandas as pd
 import os
 
-from utils.exceptions import handle_not_validated_file_error
 from ...schemas import FileTypeEnum
 
 
-class FileValidationBase():
+class FileValidation():
     def __init__(self, file_path: str):
         self.file_path = file_path
         self.file_type = self._file_type_check()
@@ -20,16 +19,6 @@ class FileValidationBase():
         else:
             return None
 
-    def validate_or_delete(self) -> bool | None:
-        self._load_data()
-        result = self._validate_data()
-        if result == False:
-            print(self.errors)
-            os.remove(self.file_path)
-            handle_not_validated_file_error("File contains validation errors, see result in details", self.errors)
-        else:
-            return True
-
     def _load_data(self) -> None:
         """
         Load to a dataframe with errors to generate a detail error response
@@ -37,7 +26,7 @@ class FileValidationBase():
         try:
             if self.file_type == FileTypeEnum.JSON:
                 self.data = pd.read_csv(self.file_path)
-            
+
             else:
                 self.data = pd.read_json(self.file_path)
 
@@ -49,13 +38,15 @@ class FileValidationBase():
             self.data['time'] = pd.to_datetime(self.data['time'], errors='coerce')
 
         except Exception as e:
-            raise Exception(f"Error reading CSV file: {e}")    
-             
+            raise Exception(f"Error reading CSV file: {e}")
 
-    def _validate_data(self) -> bool:
+
+    def validate(self) -> bool:
         """
         Validate the DataFrame with vectorized operators for speed
         """
+        self._load_data()
+        
         errors = []
 
         missing_fields = self.data[['time', 'volume', 'value']].isna().any(axis=1)
@@ -69,7 +60,7 @@ class FileValidationBase():
             row = self.data.loc[index]
             error_message = []
 
-            # isna().any(axis=1) returns a DataFrame of same shape where each value is True/False 
+            # isna().any(axis=1) returns a DataFrame of same shape where each value is True/False
             # depending on if the original DataFrame is NaN
             if pd.isna(row['time']) or pd.isna(row['volume']) or pd.isna(row['value']):
                 error_message.append("Missing or invalid fields")
@@ -77,7 +68,7 @@ class FileValidationBase():
                 error_message.append("Invalid volume")
             if not isinstance(row['value'], (int, float)):
                 error_message.append("Invalid value")
-            
+
             errors.append((index, ", ".join(error_message)))
             if len(errors) == 0:
                 return True

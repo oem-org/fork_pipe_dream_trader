@@ -2,15 +2,10 @@ import shutil
 from pathlib import Path
 import os
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
-from ...services.data.FileValidationCsv import FileValidationCsv
-
-from ...services.data.FileValidationCsv import FileValidationCsv
-
-from ...services.data.FileValidationJson import FileValidationJson
 from sqlalchemy.exc import SQLAlchemyError
 from starlette import status
 
-
+from ...services.data.FileValidation import FileValidation
 from ...dependencies import db_dependency, user_dependency
 from ...utils.exceptions import handle_db_error, handle_not_found_error, handle_not_validated_file_error
 from ...models import Files, Users
@@ -78,19 +73,24 @@ async def save_uploaded_file(db: db_dependency, file: UploadFile):
     Saves to disk if validation passes otherwise retures a list of broken
     rows
 
+    -------------------------------------------------------------------
+    FastApi dont have max file size so depends on the server
+
     """
     try:
 
         file_path = save_file(file)
-        
-
-
+        fileValidation = FileValidation(file_path)
+        validated = fileValidation.validate()
 
         if(validated == True):
             name = Path(file_path).name
-            saved_file = Files(path=file_path, name=name, file_type=file_type)
+            saved_file = Files(path=file_path, name=name, file_type=fileValidation.file_type)
             db.add(saved_file)
             db.commit()
+        else:
+            os.remove(fileValidation.file_path)
+            handle_not_validated_file_error("File contains validation errors, see result in the details", fileValidation.errors)
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"File not saved: {e}")

@@ -1,13 +1,18 @@
 from inspect import _void
 from pathlib import Path
-
+from schemas import FileTypeEnum
 from sqlalchemy.orm import Session
 
 # import .logger
-
 from ..models import Files
-from .file_type_check import file_type_check
 
+def file_type_check(file_path: str) -> FileTypeEnum | None:
+        if file_path.endswith(".csv"):
+            return FileTypeEnum.CSV
+        elif file_path.endswith(".json"):
+            return FileTypeEnum.JSON
+        else:
+            return None
 
 def delete_missing_files(db: Session, missing_files: dict):
     files_to_delete = []
