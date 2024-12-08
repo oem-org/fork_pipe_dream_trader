@@ -14,18 +14,22 @@ export default class UploadService {
 			const reader = new FileReader();
 
 			reader.onloadend = () => {
-				let fileType = "";
+				try {
+					let fileType = "";
 
-				if (file.name.endsWith(".json")) {
-					fileType = "json";
-				} else if (file.name.endsWith(".csv")) {
-					fileType = "csv";
-				} else {
-					reject(new Error("Unsupported file type"));
-					return;
+					if (file.name.endsWith(".json")) {
+						fileType = "json";
+					} else if (file.name.endsWith(".csv")) {
+						fileType = "csv";
+					} else {
+						reject(new Error("Unsupported file type"));
+						return;
+					}
+
+					resolve(fileType);
+				} catch (err) {
+					reject(new Error("Error processing the file"));
 				}
-
-				resolve(fileType);
 			};
 
 			reader.onerror = () => {
@@ -37,12 +41,21 @@ export default class UploadService {
 	}
 
 	async upload(formData: FormData): Promise<any> {
-		const type = await this.detectFileType(formData)
-		if (type === "json") {
-			jsonFileApi.post(formData)
-		}
-		else {
-			csvFileApi.post(formData)
+		try {
+			const type = await this.detectFileType(formData);
+
+			if (type === "json") {
+				await jsonFileApi.post(formData).catch((error) => {
+					throw new Error("Failed to upload JSON file: " + error.message);
+				});
+			} else {
+				await csvFileApi.post(formData).catch((error) => {
+					throw new Error("Failed to upload CSV file: " + error.message);
+				});
+			}
+		} catch (error) {
+			console.error("Error in upload process:", error);
+			//throw error;
 		}
 	}
 }

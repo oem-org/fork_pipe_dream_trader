@@ -77,10 +77,13 @@ async def save_uploaded_file(db: db_dependency, file: UploadFile):
     FastApi dont have max file size so depends on the server
 
     """
-    try:
 
+    file_path = None
+    try:
         file_path = save_file(file)
+        print(file_path)
         fileValidation = FileValidation(file_path)
+        print(fileValidation.df.head())
         validated = fileValidation.validate()
 
         if(validated == True):
@@ -93,6 +96,9 @@ async def save_uploaded_file(db: db_dependency, file: UploadFile):
             handle_not_validated_file_error("File contains validation errors, see result in the details", fileValidation.errors)
 
     except Exception as e:
+        if file_path:
+            # clean up if validation fails
+            os.remove(file_path)
         raise HTTPException(status_code=500, detail=f"File not saved: {e}")
 
     return {"file_saved": file_path}

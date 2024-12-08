@@ -50,7 +50,7 @@ export class GetAllService<R> extends ApiService {
 			});
 			return response.data;
 		} catch (error) {
-			console.log("get all ereerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+			console.error(error);
 
 			throw error;
 		}
@@ -68,6 +68,7 @@ export class GetWithParamsService<T, R> extends ApiService {
 			});
 			return response.data;
 		} catch (error) {
+			console.error(error)
 			throw error;
 		}
 	}
@@ -81,6 +82,7 @@ export class GetWithQueryService<R> extends ApiService {
 			});
 			return response.data;
 		} catch (error) {
+			console.error(error)
 			throw error;
 		}
 	}
@@ -95,6 +97,8 @@ export class GetService<R> extends ApiService {
 
 			return response.data;
 		} catch (error) {
+			console.error(error);
+
 			throw error;
 		}
 	}
@@ -110,7 +114,7 @@ export class PostService<T, R> extends ApiService {
 
 			return response.data;
 		} catch (error) {
-			console.log("errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
+			console.log("PostService throwing an error")
 			throw error;
 		}
 	}
@@ -123,6 +127,8 @@ export class DeleteService extends ApiService {
 				headers: this.getHeaders(),
 			});
 		} catch (error) {
+			console.error(error);
+
 			throw error;
 		}
 	}
@@ -137,6 +143,8 @@ export class UpdateClient<T, R> extends ApiService {
 
 			return response.data;
 		} catch (error) {
+			console.error(error);
+
 			throw error;
 		}
 	}
