@@ -1,6 +1,6 @@
+from lib.data.FileHandler import FileHandler
 import pandas as pd
 from ...schemas import FileTypeEnum
-
 
 class FileValidation():
     def __init__(self, file_path: str):
@@ -120,7 +120,8 @@ class FileValidation():
         print("Errors:", self.errors)
         self.errors = errors
         return False
-
+    
+    def create_pickle(self):
 
     def get_date_range(self):
         """
