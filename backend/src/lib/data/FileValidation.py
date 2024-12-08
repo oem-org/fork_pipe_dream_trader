@@ -46,6 +46,7 @@ class FileValidation():
                 "c": "close",
             }
 
+            #https://pandas.pydata.org/docs/reference/api/pandas.to_numeric.html
             self.df.rename(columns=lambda col: column_mapping.get(col, col), inplace=True)
             print("Mapped columns:", self.df.columns)
             print(self.df.columns)
@@ -69,6 +70,11 @@ class FileValidation():
         
         errors = []
 
+        # timestamp_lengths = self.df['time'].apply(lambda x: len(str(int(x))) if pd.notna(x) else None)
+        
+        # print(f"Timestamp Lengths: {timestamp_lengths.unique()}") 
+
+        # Missing or invalid fields
         missing_fields = self.df[['time', 'volume', 'open']].isna().any(axis=1)
         
         invalid_volume = self.df['volume'] < 0
@@ -80,16 +86,21 @@ class FileValidation():
         invalid_low = ~self.df['low'].apply(lambda x: isinstance(x, (int, float)))
         invalid_high = ~self.df['high'].apply(lambda x: isinstance(x, (int, float)))
 
+        # Check for timestamps that don't have the same number of digits
+        invalid_timestamp_length = ~self.df['time'].apply(lambda x: len(str(int(x))) in [10, 13])
+
         # Combine all invalid conditions into one condition with bitwise OR
-        invalid_rows = missing_fields | invalid_volume | invalid_open | invalid_close | invalid_low | invalid_high
+        invalid_rows = missing_fields | invalid_volume | invalid_open | invalid_close | invalid_low | invalid_high | invalid_timestamp_length
 
         for index in self.df[invalid_rows].index:
             row = self.df.loc[index]
             error_message = []
 
-            # Missing or invalid fields (check for NaN and invalid types)
             if pd.isna(row['time']):
                 error_message.append("Missing or invalid timestamp")
+            elif not (len(str(int(row['time']))) in [10, 13]):
+                error_message.append(f"Timestamp length is invalid (actual length: {len(str(int(row['time'])))} digits)")
+
             if pd.isna(row['volume']) or row['volume'] < 0:
                 error_message.append("Invalid volume")
             if pd.isna(row['open']) or not isinstance(row['open'], (int, float)):
@@ -105,9 +116,11 @@ class FileValidation():
 
         if len(errors) == 0:
             return True
-        print(self.errors)
+        
+        print("Errors:", self.errors)
         self.errors = errors
         return False
+
 
     def get_date_range(self):
         """
