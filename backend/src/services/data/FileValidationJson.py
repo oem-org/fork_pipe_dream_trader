@@ -1,5 +1,5 @@
 import pandas as pd
-from .FileValidationBase import FileValidationBase 
+from .FileValidation import FileValidationBase
 
 
 class FileValidationJson(FileValidationBase):
