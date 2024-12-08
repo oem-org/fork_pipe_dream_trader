@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from ..models import Users
-from ..services.auth.auth_services import hash_password
+from ..lib.auth.auth_services import hash_password
 
 INITIAL_DATA = {
     "users": [
@@ -20,7 +20,7 @@ INITIAL_DATA = {
 
 def users_seeder(session: Session):
     new_users = 0
-    flag = True  
+    flag = True
 
     try:
         for user_data in INITIAL_DATA["users"]:

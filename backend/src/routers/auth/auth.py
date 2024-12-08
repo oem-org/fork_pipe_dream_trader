@@ -8,7 +8,7 @@ from starlette import status
 from ...dependencies import db_dependency
 from ...models import Users
 from ...schemas import *
-from ...services.auth.auth_services import (
+from ...lib.auth.auth_services import (
     authenticate_user,
     create_access_token,
     hash_password,
