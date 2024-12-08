@@ -5,8 +5,8 @@ from pydantic import BaseModel, Field
 from sqlalchemy.exc import SQLAlchemyError
 from starlette import status
 
-from ...dependencies import db_dependency, user_dependency
-from ...utils.exceptions import handle_db_error, handle_not_found_error
+from ...lib.dependencies import db_dependency, user_dependency
+from ...lib.exceptions import handle_db_error, handle_not_found_error
 from ...models import Strategies
 from ...schemas import StrategySchema
 
@@ -81,9 +81,9 @@ async def read_all(user: user_dependency, db: db_dependency):
 
 
 
-@router.get("/{strategy_id}", status_code=status.HTTP_200_OK, response_model=StrategySchema) 
+@router.get("/{strategy_id}", status_code=status.HTTP_200_OK, response_model=StrategySchema)
 async def read_strategy(
-        user: user_dependency, db: db_dependency, strategy_id: int = Path(gt=0)): 
+        user: user_dependency, db: db_dependency, strategy_id: int = Path(gt=0)):
     try:
         strategy_model = (
             db.query(Strategies)

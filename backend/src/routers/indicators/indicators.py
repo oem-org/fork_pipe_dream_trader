@@ -6,11 +6,11 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session, query
 from starlette import status
 
-from ...dependencies import db_dependency, user_dependency
-from ...utils.exceptions import handle_db_error, handle_not_found_error
+from ...lib.dependencies import db_dependency, user_dependency
+from ...lib.exceptions import handle_db_error, handle_not_found_error
 from ...models import Indicators, Strategies, Users
 from ...schemas import *
-from ...utils.print_values_db_object import print_db_object
+from ...lib.debugging.print_values_db_object import print_db_object
 
 router = APIRouter(prefix="/indicators", tags=["indicators"])
 

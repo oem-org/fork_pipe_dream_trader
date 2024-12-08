@@ -1,10 +1,10 @@
 from inspect import _void
 from pathlib import Path
-from schemas import FileTypeEnum
+from ...schemas import FileTypeEnum
 from sqlalchemy.orm import Session
 
 # import .logger
-from ..models import Files
+from ...models import Files
 
 def file_type_check(file_path: str) -> FileTypeEnum | None:
         if file_path.endswith(".csv"):

@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship
 
 from .schemas import FileTypeEnum
 
-from .orm_connection import Base
+from .lib.database.orm_connection import Base
 
 
 class Users(Base):
@@ -40,7 +40,7 @@ class Strategies(Base):
     indicators = Column(JSON, nullable=True)
     data_source_type = Column(String)
     data_source = Column(JSON, nullable=True)
-    
+
     user = relationship("Users", back_populates="strategies")
 
 

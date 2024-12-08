@@ -10,7 +10,7 @@ from pytz import utc
 
 from .middleware.register_middleware import register_middleware
 from .models import Base
-from .orm_connection import SessionLocal, engine
+from .lib.database.orm_connection import SessionLocal, engine
 from .routers.auth import auth
 from .routers.files import files
 from .routers.indicators import indicators
@@ -18,7 +18,7 @@ from .routers.strategies import strategies
 from .routers.users import users
 from .seeders.indicators_seeder import indicators_seeder
 from .logger import logger
-from .utils.sync_file_paths import sync_file_paths
+from .lib.data.sync_file_paths import sync_file_paths
 
 current_directory = Path(__file__).parent
 parent_folder = current_directory.parent

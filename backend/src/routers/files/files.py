@@ -5,9 +5,9 @@ from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.exc import SQLAlchemyError
 from starlette import status
 
-from ...services.data.FileValidation import FileValidation
-from ...dependencies import db_dependency, user_dependency
-from ...utils.exceptions import handle_db_error, handle_not_found_error, handle_not_validated_file_error
+from ...lib.data.FileValidation import FileValidation
+from ...lib.dependencies import db_dependency, user_dependency
+from ...lib.exceptions import handle_db_error, handle_not_found_error, handle_not_validated_file_error
 from ...models import Files, Users
 from ...schemas import *
 

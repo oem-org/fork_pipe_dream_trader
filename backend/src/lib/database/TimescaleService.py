@@ -2,7 +2,7 @@ import psycopg2
 from psycopg2 import sql
 from typing_extensions import Tuple
 
-from ..config import Config
+from ...config import Config
 
 
 class TimescaleService:
@@ -28,7 +28,7 @@ class TimescaleService:
         # Ensure the column name is safely handled
         query = sql.SQL(
             """
-            SELECT 
+            SELECT
                 MIN({val}) AS first,
                 MAX({val}) AS last
             FROM {table_name}

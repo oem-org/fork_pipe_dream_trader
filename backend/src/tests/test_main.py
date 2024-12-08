@@ -6,8 +6,8 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from ..orm_connection import Base
-from ..dependencies import get_db
+from ..lib.database.orm_connection import Base
+from ..lib.dependencies import get_db
 from ..main import app
 from ..models import Strategies, Users
 from ..services.auth.auth_services import get_current_user

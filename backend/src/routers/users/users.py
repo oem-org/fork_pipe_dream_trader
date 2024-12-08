@@ -6,9 +6,9 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 from starlette import status
 
-from ...dependencies import db_dependency, user_dependency
+from ...lib.dependencies import db_dependency, user_dependency
 from ...models import Users
-from ...services.auth.auth_services import hash_password, verify_password
+from ...lib.auth.auth_utils import hash_password, verify_password
 
 router = APIRouter(prefix='/user', tags=['user'])
 
