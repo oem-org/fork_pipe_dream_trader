@@ -1,5 +1,15 @@
-import { FileDataSource, DatabaseDataSource } from "./DataSource";
 import { DataSourceEnum } from "./enums/DataSourceEnum";
+
+export interface FileDataSource {
+    id: number;
+    fileName: string;
+    filePath: string;
+}
+
+export interface DatabaseDataSource {
+    tableName: string;
+    pair: string
+}
 
 
 export default interface Strategy {

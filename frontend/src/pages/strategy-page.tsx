@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { DataSourceEnum } from "@/interfaces/enums/DataSourceEnum";
 import { Chart } from "@/components/shared/chart/chart";
 import { priceData } from "@/components/shared/chart/priceData";
-
+import GenericSelect from "@/components/shared/lists/generic-select";
 
 export default function StrategyPage() {
   const { id } = useParams();
@@ -40,6 +40,7 @@ export default function StrategyPage() {
             <section className="lg:col-span-1 p-4 bg-gray-100 rounded-lg">
               <h4 className="text-xl font-bold mb-4">{strategy.name}</h4>
               <p>Data Source Type: {dataSourceType}</p>
+
             </section>
             <div className="lg:col-span-3 h-[400px] md:h-[600px]">
               <div className="relative w-full h-full bg-white rounded-lg overflow-hidden">
