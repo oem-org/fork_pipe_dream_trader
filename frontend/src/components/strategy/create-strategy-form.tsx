@@ -15,23 +15,28 @@ export default function CreateStrategyForm() {
 	const [clonedStrategy, setClonedStrategyId] = useState<number>(0);
 	const [fileId, setFileId] = useState<number>(0);
 	const [dataSourceType, setDataSourceType] = useState<DataSourceEnum>(DataSourceEnum.FILE);
+
+	const { data: dataStrategies } = getStrategiesQuery();
+	const { data: dataFiles } = getFilesQuery();
+
 	const [databaseOption, setDatabaseOption] = useState("");
 	const [errors, setErrors] = useState({
 		name: "",
 		description: "",
 		fileId: "",
 		databaseOption: "",
+
 	});
+
 	const [touched, setTouched] = useState({
 		name: false,
 		description: false,
 		fileId: false,
 		databaseOption: false,
 	});
+
 	const navigate = useNavigate();
 
-	const { data: dataStrategies } = getStrategiesQuery();
-	const { data: dataFiles } = getFilesQuery();
 
 	const validateForm = () => {
 		const newErrors = {

@@ -15,11 +15,11 @@ export default function getStrategyQuery(id: number) {
 	}
 
 
-	const { data, error, isError, isLoading } = useQuery<Strategy, Error>({
+	const { data, error, isError, isLoading, refetch } = useQuery<Strategy, Error>({
 		queryKey: ["strategy"],
 		queryFn: fetchStrategy,
 	})
 
-	return { data, error, isError, isLoading }
+	return { data, error, isError, isLoading, refetch }
 }
 

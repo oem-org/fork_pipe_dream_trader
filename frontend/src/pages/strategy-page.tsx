@@ -1,18 +1,22 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import getStrategyQuery from "@/lib/queries/getStrategyQuery";
+import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
 import { useState, useEffect } from "react";
 import { DataSourceEnum } from "@/interfaces/enums/DataSourceEnum";
 import { Chart } from "@/components/shared/chart/chart";
 import { priceData } from "@/components/shared/chart/priceData";
 import GenericSelect from "@/components/shared/lists/generic-select";
+import Strategy from "@/interfaces/Strategy";
 
 export default function StrategyPage() {
   const { id } = useParams();
-  const strategyId = id ? parseInt(id) : NaN;
+  const navigate = useNavigate();
+  const paramId = id ? parseInt(id) : NaN;
+
+  // States
   const [dataSourceType, setDataSourceType] = useState<string>("");
-
-  const { data: strategy, error, isError, isLoading } = getStrategyQuery(strategyId);
-
+  const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
+  const { data: dataStrategies } = getStrategiesQuery();
 
   useEffect(() => {
     if (strategy) {
@@ -23,6 +27,16 @@ export default function StrategyPage() {
       }
     }
   }, [strategy]);
+
+  useEffect(() => {
+    if (id) {
+      refetch();
+    }
+  }, [id, refetch]);
+
+  const handleStrategyChange = (strategy: Strategy) => {
+    navigate(`/strategy/${strategy.id}`);
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -39,10 +53,17 @@ export default function StrategyPage() {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
             <section className="lg:col-span-1 p-4 bg-gray-100 rounded-lg">
               <h4 className="text-xl font-bold mb-4">{strategy.name}</h4>
-
               <p>Data Source Type: {dataSourceType}</p>
               <h4 className="text-xl font-bold mb-4">{strategy.data_source_type}</h4>
 
+              <GenericSelect<Strategy>
+                data={dataStrategies || []}
+                keyExtractor={(s) => s.id}
+                onSelect={handleStrategyChange}
+                renderItem={(s) => <span>{s.name}</span>}
+                title="Select or search"
+                searchEnabled={true}
+              />
             </section>
             <div className="lg:col-span-3 h-[400px] md:h-[600px]">
               <div className="relative w-full h-full bg-white rounded-lg overflow-hidden">
@@ -68,4 +89,3 @@ export default function StrategyPage() {
     </div>
   );
 }
-
