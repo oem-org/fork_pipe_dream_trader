@@ -3,7 +3,7 @@ from enum import Enum
 from sqlalchemy import JSON, Boolean, Column, Enum, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from .schemas import FileTypeEnum
+from .schemas import FileTypeEnum, DataSourceEnum
 
 from .orm_connection import Base
 
@@ -38,7 +38,7 @@ class Strategies(Base):
     description = Column(String)
     fk_user_id = Column(Integer, ForeignKey("users.id"))
     indicators = Column(JSON, nullable=True)
-    data_source_type = Column(String)
+    data_source_type = Column(Enum(DataSourceEnum))
     data_source = Column(JSON, nullable=True)
     
     user = relationship("Users", back_populates="strategies")

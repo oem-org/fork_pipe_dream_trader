@@ -8,7 +8,9 @@ from starlette import status
 from ...dependencies import db_dependency, user_dependency
 from ...utils.exceptions import handle_db_error, handle_not_found_error
 from ...models import Strategies
-from ...schemas import StrategySchema
+from ...schemas import DataSourceEnum, StrategySchema, StrategyRequest
+
+
 
 print(user_dependency)
 router = APIRouter(prefix="/strategy", tags=["strategy"])
@@ -29,9 +31,6 @@ class Token(BaseModel):
     token_type: str
 
 
-class StrategyRequest(BaseModel):
-    name: str = Field(min_length=1)
-    description: str = Field(min_length=1, max_length=10000)
 
 
 @router.post("", status_code=status.HTTP_201_CREATED, response_model=StrategySchema )

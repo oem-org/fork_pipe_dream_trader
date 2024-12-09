@@ -59,7 +59,7 @@ export default function CreateStrategyForm() {
 				? { id: fileId }
 				: { table: databaseOption };
 		try {
-			console.log(dataSource, dataSourceType);
+			console.log("data source", dataSource, dataSourceType);
 
 			const strategy = await postStrategyApi.post({
 				name,
@@ -112,6 +112,7 @@ export default function CreateStrategyForm() {
 						keyExtractor={(file) => file.id}
 						onSelect={(file) => {
 							setFileId(file.id);
+							console.log(file.id, "ololololollolololololololololol")
 							setTouched((prev) => ({ ...prev, fileId: true }));
 						}}
 						renderItem={(file) => <span>{file.name}</span>}

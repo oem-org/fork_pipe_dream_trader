@@ -34,6 +34,10 @@ export default function FileList() {
 	function addSelectFile(file: File, strategyId: number) {
 		setFileId(file.id);
 		console.log(fileId, "file id");
+		console.log(fileId, "file id");
+		console.log(fileId, "file id");
+		console.log(fileId, "file id");
+		console.log(fileId, "file id");
 		addFile(file, strategyId);
 	}
 

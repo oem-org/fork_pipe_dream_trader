@@ -39,7 +39,9 @@ export default function StrategyPage() {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
             <section className="lg:col-span-1 p-4 bg-gray-100 rounded-lg">
               <h4 className="text-xl font-bold mb-4">{strategy.name}</h4>
+
               <p>Data Source Type: {dataSourceType}</p>
+              <h4 className="text-xl font-bold mb-4">{strategy.data_source_type}</h4>
 
             </section>
             <div className="lg:col-span-3 h-[400px] md:h-[600px]">

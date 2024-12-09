@@ -1,13 +1,32 @@
 from enum import Enum
 from pydantic import BaseModel
 
-from pydantic import BaseModel, Field
-from typing import Optional, Any, Dict
+from pydantic import BaseModel
+from typing import Optional, Any, Dict, Union
 
 
 class FileTypeEnum(Enum):
     CSV = "csv"
     JSON = "json"
+
+class DataSourceEnum(Enum):
+    CSV = "file"
+    JSON = "database"
+
+class FileDataSourceRequest(BaseModel):
+    id: int
+
+
+class DatabaseDataSourceRequest(BaseModel):
+    table: str
+
+
+class StrategyRequest(BaseModel):
+    name: str
+    description: str
+    data_source_type: DataSourceEnum
+    data_source: Union[FileDataSourceRequest, DatabaseDataSourceRequest]
+    indicators: Optional[Dict[str, Any]] = None
 
 class FileSchema(BaseModel):
     id: int
