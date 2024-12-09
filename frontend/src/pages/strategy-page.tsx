@@ -22,11 +22,6 @@ export default function StrategyPage() {
   const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
   const { data: strategies } = getStrategiesQuery();
 
-
-
-
-
-
   useEffect(() => {
     if (strategy) {
       console.log(strategy, "STRATEGY");
