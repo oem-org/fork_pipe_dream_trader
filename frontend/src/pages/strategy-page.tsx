@@ -22,25 +22,34 @@ export default function StrategyPage() {
   const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
   const { data: strategies } = getStrategiesQuery();
 
+
+
+
+
+
   useEffect(() => {
     if (strategy) {
-      setTimeperiod(strategy.timeperiod || "");
+      console.log(strategy, "STRATEGY");
+      let data = "ly"
+      //setTimeperiod(strategy.timeperiod || "");
 
       if (strategy.data_source_type === DataSourceEnum.FILE) {
         setDataSourceType(DataSourceEnum.FILE);
+        console.log("FILE");
 
         const fileId = (strategy.data_source as FileDataSource).id;
-        const { data } = getTimeseriesQuery(`file=${fileId}&timeperiod=${timeperiod}`);
+        //const { data } = getTimeseriesQuery(`file=${fileId}&timeperiod=${timeperiod}`);
         if (!!data) {
           setTimeseries(data)
         }
 
       } else if (strategy.data_source_type === DataSourceEnum.DATABASE) {
+
         setDataSourceType(DataSourceEnum.DATABASE);
 
         const tableName = (strategy.data_source as DatabaseDataSource).tableName;
         const pair = (strategy.data_source as DatabaseDataSource).pair;
-        const { data } = getTimeseriesQuery(`pair=${pair}&table=${tableName}timeperiod=${timeperiod}`);
+        //const { data } = getTimeseriesQuery(`pair=${pair}&table=${tableName}timeperiod=${timeperiod}`);
 
         if (!!data) {
           setTimeseries(data)

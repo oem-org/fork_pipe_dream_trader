@@ -40,6 +40,7 @@ class StrategySchema(BaseModel):
     description: Optional[str] = None
     fk_user_id: int
     indicators: Optional[Dict] = None  
+    data_source_type: str
     data_source: Optional[Dict] = None  
     model_config = {"from_attributes": True}
 

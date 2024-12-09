@@ -20,6 +20,7 @@ class IndicatorRequest:
     settings: dict
     fk_strategy_id: int
     fk_indicator_id: int
+
 class CreateUserRequest(BaseModel):
     username: str
     email: str

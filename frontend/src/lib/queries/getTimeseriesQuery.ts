@@ -8,6 +8,7 @@ import { getTimeseriesApi } from "../apiClientInstances"
 const getTimeseriesQuery = (query: string) => {
 	const fetchTimeseries = async (): Promise<Timeseries[]> => {
 		try {
+			console.log(query, query)
 			const timeseries: Timeseries[] = await getTimeseriesApi.getQueryString(query)
 			return timeseries
 		} catch (error) {
