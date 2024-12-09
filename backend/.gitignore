@@ -15,3 +15,5 @@ env-prod
 .env-test
 .env-dev
 .env-prod
+
+app.log

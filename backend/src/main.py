@@ -31,13 +31,11 @@ Base.metadata.create_all(bind=engine)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("Starting App")
     sync_file_paths(session)
     indicators_seeder(session)
 
     scheduler.start()
     yield
-    logger.info("Stopping App")
     scheduler.shutdown()
 
 
