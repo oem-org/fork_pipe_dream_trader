@@ -6,11 +6,9 @@ import { DataSourceEnum } from "@/interfaces/enums/DataSourceEnum";
 import { Chart } from "@/components/shared/chart/chart";
 import { priceData } from "@/components/shared/chart/priceData";
 import GenericSelect from "@/components/shared/lists/generic-select";
-import { Strategy, DatabaseDataSource } from "@/interfaces/Strategy";
+import { Strategy, DatabaseDataSource, FileDataSource } from "@/interfaces/Strategy";
 import getTimeseriesQuery from "@/lib/queries/getTimeseriesQuery";
-
-
-
+import Timeseries from "@/interfaces/Timeseries";
 
 export default function StrategyPage() {
   const { id } = useParams();
@@ -19,33 +17,45 @@ export default function StrategyPage() {
 
   // States
   const [dataSourceType, setDataSourceType] = useState<string>("");
+  const [timeperiod, setTimeperiod] = useState<string>("");
+  const [timeseries, setTimeseries] = useState<Timeseries[]>([])
   const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
   const { data: strategies } = getStrategiesQuery();
 
-  const [timeperiod, setTimeperiod] = useState("recent")
-
-
   useEffect(() => {
     if (strategy) {
+      setTimeperiod(strategy.timeperiod || "");
+
       if (strategy.data_source_type === DataSourceEnum.FILE) {
         setDataSourceType(DataSourceEnum.FILE);
+
         const fileId = (strategy.data_source as FileDataSource).id;
         const { data } = getTimeseriesQuery(`file=${fileId}&timeperiod=${timeperiod}`);
+        if (!!data) {
+          setTimeseries(data)
+        }
+
       } else if (strategy.data_source_type === DataSourceEnum.DATABASE) {
         setDataSourceType(DataSourceEnum.DATABASE);
+
         const tableName = (strategy.data_source as DatabaseDataSource).tableName;
         const pair = (strategy.data_source as DatabaseDataSource).pair;
-        const { data } = getTimeseriesQuery(`symbol=${pair}&timeperiod=${timeperiod}`);
+        const { data } = getTimeseriesQuery(`pair=${pair}&table=${tableName}timeperiod=${timeperiod}`);
+
+        if (!!data) {
+          setTimeseries(data)
+        }
       }
     }
+    console.log(timeseries)
   }, [strategy, timeperiod]);
 
   useEffect(() => {
     if (id) {
+      console.log("refeching")
       refetch();
     }
   }, [id, refetch]);
-
 
   const handleStrategyChange = (strategy: Strategy) => {
     navigate(`/strategy/${strategy.id}`);

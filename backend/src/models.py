@@ -40,7 +40,7 @@ class Strategies(Base):
     indicators = Column(JSON, nullable=True)
     data_source_type = Column(Enum(DataSourceEnum))
     data_source = Column(JSON, nullable=True)
-    
+    timeperiod = Column(String)    
     user = relationship("Users", back_populates="strategies")
 
 

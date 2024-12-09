@@ -12,11 +12,13 @@ export interface DatabaseDataSource {
 }
 
 
+
 export interface Strategy {
     id: number;
     name: string;
     description: string;
     data_source_type: DataSourceEnum;
     data_source: FileDataSource | DatabaseDataSource;
+    timeperiod: string;
     indicators?: Record<string, any>;
 }

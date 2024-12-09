@@ -1,6 +1,6 @@
 import { useState } from "react";
 import GenericSelect from "../shared/lists/generic-select";
-import {Strategy} from "@/interfaces/Strategy";
+import { Strategy } from "@/interfaces/Strategy";
 import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
 import getFilesQuery from "@/lib/queries/getFilesQuery";
 import File from "@/interfaces/File";
@@ -16,7 +16,7 @@ export default function CreateStrategyForm() {
 	const [fileId, setFileId] = useState<number>(0);
 	const [dataSourceType, setDataSourceType] = useState<DataSourceEnum>(DataSourceEnum.FILE);
 
-	const { data: dataStrategies } = getStrategiesQuery();
+	const { data: dataStrategies, refetch } = getStrategiesQuery();
 	const { data: dataFiles } = getFilesQuery();
 
 	const [databaseOption, setDatabaseOption] = useState("");
@@ -72,6 +72,7 @@ export default function CreateStrategyForm() {
 				data_source_type: dataSourceType,
 				data_source: dataSource,
 			});
+			refetch()
 			navigate(`/strategy/${strategy.id}`);
 		} catch (error) {
 			console.error("Error creating strategy:", error);

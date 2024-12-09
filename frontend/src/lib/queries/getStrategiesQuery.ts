@@ -1,7 +1,7 @@
 
 import { useQuery } from "@tanstack/react-query"
 
-import {Strategy} from "../../interfaces/Strategy"
+import { Strategy } from "../../interfaces/Strategy"
 import { getAllStrategiesApi } from "../apiClientInstances"
 
 const getStrategiesQuery = () => {
@@ -15,12 +15,12 @@ const getStrategiesQuery = () => {
     }
   }
 
-  const { data, error, isError, isLoading } = useQuery<Strategy[], Error>({
+  const { data, error, isError, isLoading, refetch } = useQuery<Strategy[], Error>({
     queryKey: ["strategyList"],
     queryFn: fetchStrategies,
   })
 
-  return { data, error, isError, isLoading }
+  return { data, error, isError, isLoading, refetch }
 }
 
 export default getStrategiesQuery

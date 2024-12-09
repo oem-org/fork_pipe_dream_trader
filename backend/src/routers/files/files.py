@@ -4,7 +4,7 @@ import os
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.exc import SQLAlchemyError
 from starlette import status
-from ...lib.data.FileValidation import FileValidation
+from ...lib.data.FileValidator import FileValidator
 from ...dependencies import db_dependency, user_dependency
 from ...utils.exceptions import handle_db_error, handle_not_found_error, handle_not_validated_file_error
 from ...models import Files, Users
@@ -81,7 +81,7 @@ async def save_uploaded_file(db: db_dependency, file: UploadFile):
     try:
         file_path = save_file(file)
         print(file_path)
-        fileValidation = FileValidation(file_path)
+        fileValidation = FileValidator(file_path)
         print(fileValidation.df.head())
         validated = fileValidation.validate()
 
