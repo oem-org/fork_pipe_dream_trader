@@ -4,7 +4,7 @@ import { getStrategyApi } from "../apiClientInstances"
 import Strategy from "@/interfaces/Strategy"
 
 export default function getStrategyQuery(id: number) {
-	const fetchFiles = async (): Promise<Strategy> => {
+	const fetchStrategy = async (): Promise<Strategy> => {
 		try {
 			const strategy = await getStrategyApi.getWithParams(id)
 			console.log(strategy)
@@ -17,7 +17,7 @@ export default function getStrategyQuery(id: number) {
 
 	const { data, error, isError, isLoading } = useQuery<Strategy, Error>({
 		queryKey: ["strategy"],
-		queryFn: fetchFiles,
+		queryFn: fetchStrategy,
 	})
 
 	return { data, error, isError, isLoading }

@@ -54,16 +54,18 @@ export default function CreateStrategyForm() {
 			databaseOption: true,
 		});
 		if (!validateForm()) return;
-		const data_source: FileDataSourceRequest | DatabaseDataSourceRequest =
+		const dataSource: FileDataSourceRequest | DatabaseDataSourceRequest =
 			dataSourceType === DataSourceEnum.FILE
 				? { id: fileId }
 				: { table: databaseOption };
 		try {
+			console.log(dataSource, dataSourceType);
+
 			const strategy = await postStrategyApi.post({
 				name,
 				description,
 				data_source_type: dataSourceType,
-				data_source,
+				data_source: dataSource,
 			});
 			navigate(`/strategy/${strategy.id}`);
 		} catch (error) {
