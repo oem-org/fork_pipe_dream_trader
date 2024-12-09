@@ -1,4 +1,4 @@
-from lib.data.FileHandler import FileHandler
+from .FileHandler import FileHandler
 import pandas as pd
 from ...schemas import FileTypeEnum
 
@@ -122,6 +122,7 @@ class FileValidation():
         return False
     
     def create_pickle(self):
+        pass
 
     def get_date_range(self):
         """

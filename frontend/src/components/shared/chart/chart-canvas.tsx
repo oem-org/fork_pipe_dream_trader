@@ -1,11 +1,15 @@
-import { createChart, ColorType, IChartApi } from 'lightweight-charts'
+import { createChart, CrosshairMode, ColorType, IChartApi } from 'lightweight-charts'
 import { useEffect, useRef, useState } from 'react'
 import React from 'react'
 import Timeseries from '../../../interfaces/Timeseries'
+import Volume from '@/interfaces/Volume'
+import { volumeData } from './volume'
+
 
 interface ChartProps {
 	chartContainerRef: React.RefObject<HTMLDivElement>;
 	data: Timeseries[];
+	volume: Volume[];
 	colors?: {
 		backgroundColor?: string;
 		lineColor?: string;
@@ -20,7 +24,7 @@ export default function ChartCanvas(props: ChartProps): React.ReactElement {
 		chartContainerRef,
 		data,
 		colors: {
-			backgroundColor = 'white',
+			backgroundColor = '#253248',
 			lineColor = '#2962FF',
 			textColor = 'black',
 			areaTopColor = '#2962FF',
@@ -58,21 +62,76 @@ export default function ChartCanvas(props: ChartProps): React.ReactElement {
 			}
 
 			chartRef.current = createChart(chartContainerRef.current, {
+				//layout: {
+				//	background: { type: ColorType.Solid, color: backgroundColor },
+				//	textColor,
+				//},
+
+
 				layout: {
-					background: { type: ColorType.Solid, color: backgroundColor },
-					textColor,
+					background: { type: ColorType.Solid, color: "black" },
+					textColor: 'white',
 				},
+				grid: {
+					vertLines: {
+						color: '#334158',
+					},
+					horzLines: {
+						color: '#334158',
+					},
+				},
+				crosshair: {
+					mode: CrosshairMode.Normal,
+				},
+				//priceScale: {
+				//	borderColor: '#485c7b',
+				//},
+				timeScale: {
+					borderColor: '#485c7b',
+				},
+
+
 				width: newWidth,
 				height: newHeight,
 			});
 
 			chartRef.current.timeScale().fitContent();
-			const newSeries = chartRef.current.addAreaSeries({
-				lineColor,
-				topColor: areaTopColor,
-				bottomColor: areaBottomColor,
+
+
+			const candleSeries = chartRef.current.addCandlestickSeries({
+				upColor: '#4bffb5',
+				downColor: '#ff4976',
+				borderDownColor: '#ff4976',
+				borderUpColor: '#4bffb5',
+				wickDownColor: '#838ca1',
+				wickUpColor: '#838ca1',
 			});
-			newSeries.setData(data);
+
+			//const newSeries = chartRef.current.addAreaSeries({
+			//	lineColor,
+			//	topColor: areaTopColor,
+			//	bottomColor: areaBottomColor,
+			//});
+			//
+			//newSeries.setData(data);
+
+
+			const volumeSeries = chartRef.current.addHistogramSeries({
+				priceFormat: {
+					type: 'volume',
+				},
+				priceScaleId: '',
+			});
+			volumeSeries.priceScale().applyOptions({
+				// 
+				scaleMargins: {
+					top: 0.8,
+					bottom: 0.001,
+				},
+			});
+			volumeSeries.setData(volumeData);
+
+			candleSeries.setData(data);
 
 			window.addEventListener('resize', handleResize);
 

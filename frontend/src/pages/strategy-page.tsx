@@ -3,6 +3,8 @@ import getStrategyQuery from "@/lib/queries/getStrategyQuery";
 import { useState, useEffect } from "react";
 import { DataSourceEnum } from "@/interfaces/enums/DataSourceEnum";
 import { Chart } from "@/components/shared/chart/chart";
+import { priceData } from "@/components/shared/chart/priceData";
+
 
 export default function StrategyPage() {
   const { id } = useParams();
@@ -11,18 +13,6 @@ export default function StrategyPage() {
 
   const { data: strategy, error, isError, isLoading } = getStrategyQuery(strategyId);
 
-  const timeseries = [
-    { time: '2024-11-01', value: 25.50 },
-    { time: '2024-11-02', value: 27.85 },
-    { time: '2024-11-03', value: 28.90 },
-    { time: '2024-11-04', value: 30.10 },
-    { time: '2024-11-05', value: 29.50 },
-    { time: '2024-11-06', value: 32.30 },
-    { time: '2024-11-07', value: 33.60 },
-    { time: '2024-11-08', value: 34.00 },
-    { time: '2024-11-09', value: 35.10 },
-    { time: '2024-11-10', value: 36.20 },
-  ];
 
   useEffect(() => {
     if (strategy) {
@@ -54,7 +44,7 @@ export default function StrategyPage() {
             <div className="lg:col-span-3 h-[400px] md:h-[600px]">
               <div className="relative w-full h-full bg-white rounded-lg overflow-hidden">
                 <p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded transparent-bg">Chart Title</p>
-                <Chart timeseries={timeseries} />
+                <Chart timeseries={priceData} />
               </div>
             </div>
           </div>

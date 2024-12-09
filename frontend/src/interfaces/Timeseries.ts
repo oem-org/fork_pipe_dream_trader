@@ -1,5 +1,8 @@
-// fixed naming convention for lightweight chart
 export default interface Timeseries {
-    time: string
-    value: number
+    time: string;
+    open: number;
+    high: number;
+    low: number;
+    close: number;
+    volume?: number;
 }

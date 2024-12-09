@@ -1,10 +1,15 @@
 import { useRef } from 'react';
 import { CandlestickData } from 'lightweight-charts';
 import ChartCanvas from './chart-canvas';
+import Timeseries from '../../../interfaces/Timeseries'
+import { volumeData } from './volume';
+
 
 interface ChartProps {
-	timeseries: timeseries[]
+	timeseries: Timeseries[]
 }
+
+
 
 export function Chart({ timeseries }: ChartProps) {
 	const customColors = {
@@ -24,7 +29,7 @@ export function Chart({ timeseries }: ChartProps) {
 
 	return (
 		<div className="w-full h-full rounded-lg overflow-hidden">
-			<ChartCanvas chartContainerRef={chartContainerRef} data={timeseries} colors={customColors} />
+			<ChartCanvas chartContainerRef={chartContainerRef} data={timeseries} volume={volumeData} colors={customColors} />
 		</div>
 	);
 }

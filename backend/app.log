@@ -1,4 +1,2 @@
-2024-12-08 21:21:24,590 - src.logger - INFO - Starting App
-2024-12-08 21:21:24,599 - apscheduler.scheduler - INFO - Scheduler started
-2024-12-08 22:55:15,179 - src.logger - INFO - Stopping App
-2024-12-08 22:55:15,180 - apscheduler.scheduler - INFO - Scheduler has been shut down
+2024-12-09 11:47:11,749 - src.logger - INFO - Starting App
+2024-12-09 11:47:11,760 - apscheduler.scheduler - INFO - Scheduler started
