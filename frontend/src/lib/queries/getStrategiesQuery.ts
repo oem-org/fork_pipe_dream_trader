@@ -1,7 +1,7 @@
 
 import { useQuery } from "@tanstack/react-query"
 
-import Strategy from "../../interfaces/Strategy"
+import {Strategy} from "../../interfaces/Strategy"
 import { getAllStrategiesApi } from "../apiClientInstances"
 
 const getStrategiesQuery = () => {

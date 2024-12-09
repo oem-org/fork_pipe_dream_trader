@@ -6,7 +6,11 @@ import { DataSourceEnum } from "@/interfaces/enums/DataSourceEnum";
 import { Chart } from "@/components/shared/chart/chart";
 import { priceData } from "@/components/shared/chart/priceData";
 import GenericSelect from "@/components/shared/lists/generic-select";
-import Strategy from "@/interfaces/Strategy";
+import { Strategy, DatabaseDataSource } from "@/interfaces/Strategy";
+import getTimeseriesQuery from "@/lib/queries/getTimeseriesQuery";
+
+
+
 
 export default function StrategyPage() {
   const { id } = useParams();
@@ -16,23 +20,32 @@ export default function StrategyPage() {
   // States
   const [dataSourceType, setDataSourceType] = useState<string>("");
   const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
-  const { data: dataStrategies } = getStrategiesQuery();
+  const { data: strategies } = getStrategiesQuery();
+
+  const [timeperiod, setTimeperiod] = useState("recent")
+
 
   useEffect(() => {
     if (strategy) {
       if (strategy.data_source_type === DataSourceEnum.FILE) {
         setDataSourceType(DataSourceEnum.FILE);
-      } else {
+        const fileId = (strategy.data_source as FileDataSource).id;
+        const { data } = getTimeseriesQuery(`file=${fileId}&timeperiod=${timeperiod}`);
+      } else if (strategy.data_source_type === DataSourceEnum.DATABASE) {
         setDataSourceType(DataSourceEnum.DATABASE);
+        const tableName = (strategy.data_source as DatabaseDataSource).tableName;
+        const pair = (strategy.data_source as DatabaseDataSource).pair;
+        const { data } = getTimeseriesQuery(`symbol=${pair}&timeperiod=${timeperiod}`);
       }
     }
-  }, [strategy]);
+  }, [strategy, timeperiod]);
 
   useEffect(() => {
     if (id) {
       refetch();
     }
   }, [id, refetch]);
+
 
   const handleStrategyChange = (strategy: Strategy) => {
     navigate(`/strategy/${strategy.id}`);
@@ -57,7 +70,7 @@ export default function StrategyPage() {
               <h4 className="text-xl font-bold mb-4">{strategy.data_source_type}</h4>
 
               <GenericSelect<Strategy>
-                data={dataStrategies || []}
+                data={strategies || []}
                 keyExtractor={(s) => s.id}
                 onSelect={handleStrategyChange}
                 renderItem={(s) => <span>{s.name}</span>}

@@ -15,8 +15,7 @@ class ChartRequest:
 
 router = APIRouter(prefix='/timeseries', tags=['chart'])
 
-@router.post("/", status_code=status.HTTP_200_OK)
-async def read_all(chart_request: ChartRequest, user: user_dependency, timescale: timescale_dependency)
+@router.get("/", status_code=status.HTTP_200_OK)
+async def read_all(user: user_dependency, timescale: timescale_dependency):
         
-        print(timescale, user, chart_request)
-
+    return {}

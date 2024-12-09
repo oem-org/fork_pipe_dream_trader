@@ -14,6 +14,7 @@ from .orm_connection import SessionLocal, engine
 from .routers.auth import auth
 from .routers.files import files
 from .routers.indicators import indicators
+from .routers.timeseries import timeseries
 from .routers.strategies import strategies
 from .routers.users import users
 from .seeders.indicators_seeder import indicators_seeder
@@ -64,11 +65,9 @@ app.include_router(strategies.router)
 app.include_router(users.router)
 app.include_router(files.router)
 app.include_router(indicators.router)
+app.include_router(timeseries.router)
 
 
 @app.get("/health", tags=["Health"])
 async def health_check():
-    """
-    Endpoint to check if the application is running.
-    """
     return {"status": "ok", "message": "FastAPI is running"}

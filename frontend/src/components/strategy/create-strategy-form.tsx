@@ -1,6 +1,6 @@
 import { useState } from "react";
 import GenericSelect from "../shared/lists/generic-select";
-import Strategy from "@/interfaces/Strategy";
+import {Strategy} from "@/interfaces/Strategy";
 import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
 import getFilesQuery from "@/lib/queries/getFilesQuery";
 import File from "@/interfaces/File";

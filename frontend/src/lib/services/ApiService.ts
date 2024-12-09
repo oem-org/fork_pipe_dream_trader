@@ -75,9 +75,9 @@ export class GetWithParamsService<T, R> extends ApiService {
 }
 
 export class GetWithQueryService<R> extends ApiService {
-	async getQueryString(id: any, queryString: string): Promise<R> {
+	async getQueryString(queryString: string): Promise<R> {
 		try {
-			const response = await this.axiosInstance.get<R>(`${this.endpoint}/?${queryString}=${id}`, {
+			const response = await this.axiosInstance.get<R>(`${this.endpoint}/?${queryString}`, {
 				headers: this.getHeaders(),
 			});
 			return response.data;

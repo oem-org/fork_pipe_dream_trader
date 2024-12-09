@@ -1,5 +1,5 @@
 import GenericSelect from "@/components/shared/lists/generic-select";
-import Strategy from "@/interfaces/Strategy";
+import {Strategy} from "@/interfaces/Strategy";
 import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
 import { useState } from "react";
 export default function SelectStrategyPage() {

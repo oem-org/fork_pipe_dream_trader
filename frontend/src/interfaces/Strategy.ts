@@ -12,7 +12,7 @@ export interface DatabaseDataSource {
 }
 
 
-export default interface Strategy {
+export interface Strategy {
     id: number;
     name: string;
     description: string;
