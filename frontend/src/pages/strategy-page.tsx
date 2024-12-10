@@ -6,7 +6,7 @@ import { DataSourceEnum } from "@/interfaces/enums/DataSourceEnum";
 import { Chart } from "@/components/shared/chart/chart";
 import { priceData } from "@/components/shared/chart/priceData";
 import GenericSelect from "@/components/shared/lists/generic-select";
-import { Strategy, DatabaseDataSource, FileDataSource } from "@/interfaces/Strategy";
+import { Strategy, DatabaseSource, FileSource } from "@/interfaces/Strategy";
 import getTimeseriesQuery from "@/lib/queries/getTimeseriesQuery";
 import Timeseries from "@/interfaces/Timeseries";
 
@@ -33,7 +33,7 @@ export default function StrategyPage() {
         setDataSourceType(DataSourceEnum.FILE);
         console.log("FILE");
 
-        const fileId = (strategy.data_source as FileDataSource).id;
+        const fileId = (strategy.data_source as FileSource).id;
         if (!!data) {
           setTimeseries(data)
         }
@@ -42,8 +42,8 @@ export default function StrategyPage() {
 
         setDataSourceType(DataSourceEnum.DATABASE);
 
-        const tableName = (strategy.data_source as DatabaseDataSource).tableName;
-        const pair = (strategy.data_source as DatabaseDataSource).pair;
+        const tableName = (strategy.data_source as DatabaseSource).tableName;
+        const pair = (strategy.data_source as DatabaseSource).pair;
         //const { data } = getTimeseriesQuery(`pair=${pair}&table=${tableName}timeperiod=${timeperiod}`);
 
         if (!!data) {

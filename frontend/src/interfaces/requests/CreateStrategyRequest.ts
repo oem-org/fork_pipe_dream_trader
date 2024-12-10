@@ -1,19 +1,11 @@
-import { DataSourceEnum } from "../enums/DataSourceEnum";
+import { FileSource, DatabaseSource } from "../Strategy";
 
-export interface FileDataSourceRequest {
-	id: number,
-}
 
-export interface DatabaseDataSourceRequest {
-	table: string
-}
 
 
 export interface CreateStrategyRequest {
-	id: number;
 	name: string;
 	description: string;
-	data_source_type: DataSourceEnum;
-	data_source: FileDataSourceRequest | DatabaseDataSourceRequest;
+	data_source: FileSource | DatabaseSource;
 	indicators?: Record<string, any>;
 }

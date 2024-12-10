@@ -14,19 +14,20 @@ class DataSourceEnum(Enum):
     DATABASE = "database"
 
 
-class FileDataSourceRequest(BaseModel):
-    id: int
+class FileSourceRequest(BaseModel):
+    fk_file_id: int
+    timeperiod: Optional[str] = None
 
 
-class DatabaseDataSourceRequest(BaseModel):
+class DatabaseSourceRequest(BaseModel):
     table: str
+    timeperiod: Optional[str] = None
 
 
 class StrategyRequest(BaseModel):
     name: str
     description: str
-    data_source_type: DataSourceEnum
-    data_source: Union[FileDataSourceRequest, DatabaseDataSourceRequest]
+    data_source: Union[FileSourceRequest, DatabaseSourceRequest]
     indicators: Optional[Dict[str, Any]] = None
 
 
@@ -43,7 +44,6 @@ class StrategySchema(BaseModel):
     description: Optional[str] = None
     fk_user_id: int
     indicators: Optional[Dict] = None
-    data_source_type: str
     data_source: Optional[Dict] = None
     model_config = {"from_attributes": True}
 

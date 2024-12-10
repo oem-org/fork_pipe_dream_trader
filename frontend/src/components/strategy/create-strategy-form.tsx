@@ -7,7 +7,7 @@ import File from "@/interfaces/File";
 import { postStrategyApi } from "@/lib/apiClientInstances";
 import { useNavigate } from 'react-router-dom';
 import { DataSourceEnum } from "@/interfaces/enums/DataSourceEnum";
-import { DatabaseDataSourceRequest, FileDataSourceRequest } from "@/interfaces/requests/CreateStrategyRequest";
+import { DatabaseSourceRequest, FileSourceRequest } from "@/interfaces/requests/CreateStrategyRequest";
 
 export default function CreateStrategyForm() {
 	const [name, setName] = useState("");
@@ -59,9 +59,9 @@ export default function CreateStrategyForm() {
 			databaseOption: true,
 		});
 		if (!validateForm()) return;
-		const dataSource: FileDataSourceRequest | DatabaseDataSourceRequest =
+		const dataSource: FileSourceRequest | DatabaseSourceRequest =
 			dataSourceType === DataSourceEnum.FILE
-				? { id: fileId }
+				? { fk_file_id: fileId }
 				: { table: databaseOption };
 		try {
 			console.log("data source", dataSource, dataSourceType);
