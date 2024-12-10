@@ -1,5 +1,9 @@
+from pathlib import Path
+
 import pandas as pd
+
 from ...schemas import FileTypeEnum
+
 
 class FileLoader:
     def __init__(self, file_path: str):
@@ -17,6 +21,24 @@ class FileLoader:
             print(self.file_path)
             return None
 
+    def load_or_reload(self):
+        """
+        Checks if a pickle file with the same name as the original file exists.
+        If the pickle file does not exist, loads data from the original file and saves it as a pickle.
+        """
+        pickle_file_path = Path(self.file_path).with_suffix(".pkl")
+
+        if pickle_file_path.exists():
+            print(f"Loading data from pickle file: {pickle_file_path}")
+            self.df = pd.read_pickle(pickle_file_path)
+        else:
+            print(
+                f"Pickle file not found, loading data from original file: {self.file_path}"
+            )
+            self.load_data()
+            self.df.to_pickle(pickle_file_path)
+            print(f"Data saved as pickle file: {pickle_file_path}")
+
     def load_data(self) -> None:
         """
         Loads data into the DataFrame. This method can be called by subclasses
@@ -28,23 +50,31 @@ class FileLoader:
             elif self.file_type == FileTypeEnum.CSV:
                 self.df = pd.read_csv(self.file_path)
 
-            self.df.columns = self.df.columns.str.lower().str.strip()  
+            self.df.columns = self.df.columns.str.lower().str.strip()
             column_mapping = {
-                "unix": "time", "timestamp": "time",
-                "o": "open", "h": "high", "l": "low", "c": "close"
+                "unix": "time",
+                "timestamp": "time",
+                "o": "open",
+                "h": "high",
+                "l": "low",
+                "c": "close",
             }
-            self.df.rename(columns=lambda col: column_mapping.get(col, col), inplace=True)
-            
+            self.df.rename(
+                columns=lambda col: column_mapping.get(col, col), inplace=True
+            )
+
             # Coerce inserts NaN or NaT if it gets bad row, instead of raising a exception, so we can idetify excatly which rows are bad
-            self.df['volume'] = pd.to_numeric(self.df['volume'], errors='coerce')
-            self.df['open'] = pd.to_numeric(self.df['open'], errors='coerce')
-            self.df['close'] = pd.to_numeric(self.df['close'], errors='coerce')
-            self.df['low'] = pd.to_numeric(self.df['low'], errors='coerce')
-            self.df['high'] = pd.to_numeric(self.df['high'], errors='coerce')
-            self.df['time'] = pd.to_datetime(self.df['time'], unit='ms', errors='coerce')
+            self.df["volume"] = pd.to_numeric(self.df["volume"], errors="coerce")
+            self.df["open"] = pd.to_numeric(self.df["open"], errors="coerce")
+            self.df["close"] = pd.to_numeric(self.df["close"], errors="coerce")
+            self.df["low"] = pd.to_numeric(self.df["low"], errors="coerce")
+            self.df["high"] = pd.to_numeric(self.df["high"], errors="coerce")
+            self.df["time"] = pd.to_datetime(
+                self.df["time"], unit="ms", errors="coerce"
+            )
 
         except Exception as e:
             raise Exception(f"Error reading file: {e}")
-    
+
     def get_data(self):
         return self.df

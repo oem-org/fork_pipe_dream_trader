@@ -97,9 +97,7 @@ class StrategyResponse(BaseModel):
     model_config = {"from_attributes": True}
 
 
-@router.get(
-    "/{strategy_id}", status_code=status.HTTP_200_OK, response_model=StrategyResponse
-)
+@router.get("/{strategy_id}", status_code=status.HTTP_200_OK)
 async def read_strategy(
     user: user_dependency, db: db_dependency, strategy_id: int = Path(gt=0)
 ):

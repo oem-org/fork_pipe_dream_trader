@@ -1,14 +1,21 @@
+import os
 import shutil
 from pathlib import Path
-import os
+
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.exc import SQLAlchemyError
 from starlette import status
-from ...lib.data.FileValidator import FileValidator
+
 from ...dependencies import db_dependency, user_dependency
-from ...utils.exceptions import handle_db_error, handle_not_found_error, handle_not_validated_file_error
+from ...lib.data.FileLoader import FileLoader
+from ...lib.data.FileValidator import FileValidator
 from ...models import Files, Users
 from ...schemas import *
+from ...utils.exceptions import (
+    handle_db_error,
+    handle_not_found_error,
+    handle_not_validated_file_error,
+)
 
 router = APIRouter(prefix="/files", tags=["files"])
 
@@ -48,9 +55,15 @@ def get_all_files(db: db_dependency):
 def get_files(db: db_dependency, file_id: int):
     ##user: user_dependency,
     try:
-        indicator = db.query(Files).get(file_id)
+        file = db.query(Files).get(file_id)
 
-        return indicator
+        if file:
+            path = file.file_path
+            fileLoader = FileLoader(path)
+            fileLoader.load_or_reload()
+            indicatorLoader = IndicatorLoader(fileLoader.df)
+            fileLoader.df
+        return file
 
     except SQLAlchemyError as e:
 
@@ -58,8 +71,6 @@ def get_files(db: db_dependency, file_id: int):
 
     except Exception as e:
         handle_db_error(e, "Unexpected error occurred while fetching the file path")
-
-
 
 
 @router.post("/save", status_code=status.HTTP_201_CREATED)
@@ -81,18 +92,25 @@ async def save_uploaded_file(db: db_dependency, file: UploadFile):
     try:
         file_path = save_file(file)
         print(file_path)
+
+        name = Path(file_path).name
         fileValidation = FileValidator(file_path)
         print(fileValidation.df.head())
         validated = fileValidation.validate()
 
-        if(validated == True):
+        if validated == True:
             name = Path(file_path).name
-            saved_file = Files(path=file_path, name=name, file_type=fileValidation.file_type)
+            saved_file = Files(
+                path=file_path, name=name, file_type=fileValidation.file_type
+            )
             db.add(saved_file)
             db.commit()
         else:
             os.remove(fileValidation.file_path)
-            handle_not_validated_file_error("File contains validation errors, see result in the details", fileValidation.errors)
+            handle_not_validated_file_error(
+                "File contains validation errors, see result in the details",
+                fileValidation.errors,
+            )
 
     except Exception as e:
         if file_path:
@@ -111,7 +129,8 @@ def save_file(file: UploadFile) -> str:
     if file_path.exists():
         # send a "Conflict" status code
         raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT, detail=f"File '{file.filename}' already exists."
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"File '{file.filename}' already exists.",
         )
 
     with open(file_path, "wb") as buffer:
@@ -120,10 +139,11 @@ def save_file(file: UploadFile) -> str:
     return str(file_path)
 
 
-
 def validate_or_delete(result, file_path) -> bool:
-            if not result.validated:
-                print(result.errors)
-                os.remove(file_path)
-                handle_not_validated_file_error("File contains validation errors, see result in details", result.errors)
-            return True
+    if not result.validated:
+        print(result.errors)
+        os.remove(file_path)
+        handle_not_validated_file_error(
+            "File contains validation errors, see result in details", result.errors
+        )
+    return True
