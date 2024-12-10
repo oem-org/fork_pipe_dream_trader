@@ -21,6 +21,7 @@ export default function StrategyPage() {
   const [timeseries, setTimeseries] = useState<Timeseries[]>([])
   const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
   const { data: strategies } = getStrategiesQuery();
+  //const { data } = getTimeseriesQuery(`file=${fileId}&timeperiod=${timeperiod}`);
 
   useEffect(() => {
     if (strategy) {
@@ -33,7 +34,6 @@ export default function StrategyPage() {
         console.log("FILE");
 
         const fileId = (strategy.data_source as FileDataSource).id;
-        //const { data } = getTimeseriesQuery(`file=${fileId}&timeperiod=${timeperiod}`);
         if (!!data) {
           setTimeseries(data)
         }

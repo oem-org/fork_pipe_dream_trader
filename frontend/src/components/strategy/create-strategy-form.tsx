@@ -69,7 +69,6 @@ export default function CreateStrategyForm() {
 			const strategy = await postStrategyApi.post({
 				name,
 				description,
-				data_source_type: dataSourceType,
 				data_source: dataSource,
 			});
 			refetch()

@@ -1,16 +1,16 @@
 from typing import Dict, List, Optional
+
 from fastapi import APIRouter, Depends, HTTPException, Path, Query
 from passlib.context import CryptContext
 from pydantic import BaseModel, Field
+from sqlalchemy import or_
 from sqlalchemy.exc import SQLAlchemyError
 from starlette import status
 
 from ...dependencies import db_dependency, user_dependency
-from ...utils.exceptions import handle_db_error, handle_not_found_error
 from ...models import Strategies
-from ...schemas import DataSourceEnum, StrategySchema, StrategyRequest
-
-
+from ...schemas import DataSourceEnum, StrategyRequest, StrategySchema
+from ...utils.exceptions import handle_db_error, handle_not_found_error
 
 print(user_dependency)
 router = APIRouter(prefix="/strategy", tags=["strategy"])
@@ -20,6 +20,7 @@ class IndicatorRequest:
     settings: dict
     fk_strategy_id: int
     fk_indicator_id: int
+
 
 class CreateUserRequest(BaseModel):
     username: str
@@ -32,9 +33,7 @@ class Token(BaseModel):
     token_type: str
 
 
-
-
-@router.post("", status_code=status.HTTP_201_CREATED, response_model=StrategySchema )
+@router.post("", status_code=status.HTTP_201_CREATED, response_model=StrategySchema)
 async def create_strategy(
     user: user_dependency,
     db: db_dependency,
@@ -80,21 +79,34 @@ async def read_all(user: user_dependency, db: db_dependency):
         handle_db_error(e, "Unexpected error occurred fetching stategies")
 
 
-
-@router.get("/{strategy_id}", status_code=status.HTTP_200_OK, response_model=StrategySchema) 
 async def read_strategy(
-        user: user_dependency, db: db_dependency, strategy_id: int = Path(gt=0)): 
+    user: user_dependency, db: db_dependency, strategy_id: int = Path(gt=0)
+):
     try:
+        # Query strategy with JSON conditions
         strategy_model = (
             db.query(Strategies)
             .filter(Strategies.id == strategy_id)
             .filter(Strategies.fk_user_id == user.get("id"))
             .first()
         )
-        if strategy_model is not None:
-            print("reurning",strategy_model)
-            # Converts to validated pydantic model to conform with the response_model
-            # Needed when type not automatically can be converted by the response model
+
+        if not strategy_model:
+            raise Exception(
+                f"No strategy found with id {strategy_id} for user {user.get('id')} with valid data_source"
+            )
+
+        # Check JSON content and act accordingly
+        if strategy_model.data_source_type.get("table"):
+            print("Returning strategy based on table")
+            model = StrategySchema.model_validate(strategy_model)
+            return model
+        elif strategy_model.data_source.get("fileid"):
+            print("Returning strategy based on fileid")
+            model = StrategySchema.model_validate(strategy_model)
+            return model
+        else:
+            print("No valid table or fileid found in data_source")
             model = StrategySchema.model_validate(strategy_model)
             return model
 
@@ -104,8 +116,7 @@ async def read_strategy(
 
     except Exception as e:
         db.rollback()
-        handle_db_error(e, f"Unexpected error occurred fetching stategy{e}")
-
+        handle_db_error(e, f"Unexpected error occurred fetching strategy: {e}")
 
 
 @router.put("/{strategy_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -139,6 +150,7 @@ async def update_strategy(
     except Exception as e:
         db.rollback()
         handle_db_error(e, "Unexpected error occurred fetching stategy")
+
 
 @router.delete("/{strategy_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_strategy(
