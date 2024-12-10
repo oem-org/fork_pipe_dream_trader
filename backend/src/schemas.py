@@ -16,12 +16,13 @@ class DataSourceEnum(Enum):
 
 class FileSourceRequest(BaseModel):
     fk_file_id: int
-    timeperiod: Optional[str] = None
+    timeperiod: Optional[str]
 
 
 class DatabaseSourceRequest(BaseModel):
     table: str
-    timeperiod: Optional[str] = None
+    pair: str
+    timeperiod: Optional[str]
 
 
 class StrategyRequest(BaseModel):

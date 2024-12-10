@@ -1,13 +1,13 @@
 
 export interface FileSource {
     fk_file_id: number;
-    timeperiod: string
+    timeperiod?: string
 }
 
 export interface DatabaseSource {
     table: string;
     pair: string;
-    timeperiod: string;
+    timeperiod?: string;
 }
 
 export interface Strategy {

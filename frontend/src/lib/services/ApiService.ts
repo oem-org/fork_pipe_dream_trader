@@ -50,7 +50,7 @@ export class GetAllService<R> extends ApiService {
 			});
 			return response.data;
 		} catch (error) {
-			console.error(error);
+			console.error("Error in get all");
 
 			throw error;
 		}
@@ -68,7 +68,7 @@ export class GetWithParamsService<T, R> extends ApiService {
 			});
 			return response.data;
 		} catch (error) {
-			console.error(error)
+			console.error("Error in with params")
 			throw error;
 		}
 	}
@@ -82,7 +82,7 @@ export class GetWithQueryService<R> extends ApiService {
 			});
 			return response.data;
 		} catch (error) {
-			console.error(error)
+			console.error("Error in get string query")
 			throw error;
 		}
 	}
@@ -97,7 +97,7 @@ export class GetService<R> extends ApiService {
 
 			return response.data;
 		} catch (error) {
-			console.error(error);
+			console.error("Error in get ");
 
 			throw error;
 		}
@@ -143,7 +143,7 @@ export class UpdateClient<T, R> extends ApiService {
 
 			return response.data;
 		} catch (error) {
-			console.error(error);
+			console.error("Error in update");
 
 			throw error;
 		}

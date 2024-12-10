@@ -1,17 +1,25 @@
-from typing import Dict, List, Optional
+import logging
+from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Path, Query
+from fastapi import APIRouter, HTTPException, Path, Query
 from passlib.context import CryptContext
 from pydantic import BaseModel, Field
 from sqlalchemy import or_
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import load_only
 from starlette import status
 
 from ...dependencies import db_dependency, user_dependency
 from ...models import Strategies
 from ...schemas import DataSourceEnum, StrategyRequest, StrategySchema
+from ...utils.debugging.print_db_object import print_db_object
 from ...utils.exceptions import handle_db_error, handle_not_found_error
 
+# Configure logging
+logging.basicConfig(
+    level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 print(user_dependency)
 router = APIRouter(prefix="/strategy", tags=["strategy"])
 
@@ -79,44 +87,46 @@ async def read_all(user: user_dependency, db: db_dependency):
         handle_db_error(e, "Unexpected error occurred fetching stategies")
 
 
+class StrategyResponse(BaseModel):
+    id: int
+    name: str
+    description: Optional[str] = None
+    indicators: Optional[dict] = None
+    data_source: Optional[Dict[str, Any]] = None
+
+    model_config = {"from_attributes": True}
+
+
+@router.get(
+    "/{strategy_id}", status_code=status.HTTP_200_OK, response_model=StrategyResponse
+)
 async def read_strategy(
     user: user_dependency, db: db_dependency, strategy_id: int = Path(gt=0)
 ):
     try:
-        # Query strategy with JSON conditions
         strategy_model = (
             db.query(Strategies)
             .filter(Strategies.id == strategy_id)
             .filter(Strategies.fk_user_id == user.get("id"))
+            .options(
+                load_only(
+                    Strategies.id,
+                    Strategies.name,
+                    Strategies.description,
+                    Strategies.indicators,
+                    Strategies.data_source,
+                )
+            )
             .first()
         )
-
         if not strategy_model:
-            raise Exception(
-                f"No strategy found with id {strategy_id} for user {user.get('id')} with valid data_source"
+            raise HTTPException(
+                status_code=404,
+                detail=f"No strategy found with id {strategy_id} for user {user.get('id')}",
             )
-
-        # Check JSON content and act accordingly
-        if strategy_model.data_source_type.get("table"):
-            print("Returning strategy based on table")
-            model = StrategySchema.model_validate(strategy_model)
-            return model
-        elif strategy_model.data_source.get("fileid"):
-            print("Returning strategy based on fileid")
-            model = StrategySchema.model_validate(strategy_model)
-            return model
-        else:
-            print("No valid table or fileid found in data_source")
-            model = StrategySchema.model_validate(strategy_model)
-            return model
-
-    except SQLAlchemyError as e:
-        db.rollback()
-        handle_db_error(e, f"SQLAlchemy Failed to get the strategy: {e}")
-
+        return strategy_model
     except Exception as e:
-        db.rollback()
-        handle_db_error(e, f"Unexpected error occurred fetching strategy: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.put("/{strategy_id}", status_code=status.HTTP_204_NO_CONTENT)
