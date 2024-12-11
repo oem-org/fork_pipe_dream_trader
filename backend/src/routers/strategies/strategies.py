@@ -188,7 +188,7 @@ async def delete_strategy(
         handle_db_error(e, "Unexpected error occurred fetching stategy")
 
 
-@router.post("/{strategy_id}/indicators/{indicator_id}")
+@router.post("/{strategy_id}/indicator/{indicator_id}")
 def add_indicator_to_strategy(
     strategy_id: int,
     indicator_id: int,
@@ -197,13 +197,14 @@ def add_indicator_to_strategy(
     user: user_dependency,
 ):
     strategy = db.query(Strategies).filter(Strategies.id == strategy_id).first()
+    print(strategy, "ylylylylylylylylylylylylylylylyl")
     if not strategy:
         raise HTTPException(status_code=404, detail="Strategy not found")
-    if strategy.fk_user_id != user["id"]:
-         raise HTTPException(
-             status_code=status.HTTP_403_FORBIDDEN,
-             detail="Strategy id dont belong to user"
-         )
+    # if strategy.fk_user_id != user["id"]:
+    #      raise HTTPException(
+    #          status_code=status.HTTP_403_FORBIDDEN,
+    #          detail="Strategy id dont belong to user"
+    #      )
     strategy_indicator = StrategyIndicators(
         fk_strategy_id=strategy_id,
         fk_indicator_id=indicator_id,
@@ -214,7 +215,7 @@ def add_indicator_to_strategy(
     db.refresh(strategy_indicator)
     return {"message": "Indicator successfully added to strategy", "connection": strategy_indicator}
 
-@router.delete("/strategies/{strategy_id}/indicators/{indicator_id}")
+@router.delete("/{strategy_id}/indicator/{indicator_id}")
 def remove_indicator_from_strategy(
     strategy_id: int,
     indicator_id: int,
@@ -241,7 +242,7 @@ def remove_indicator_from_strategy(
 
 
 
-@router.put("/{strategy_id}/indicators/{indicator_id}", status_code=status.HTTP_200_OK)
+@router.put("/{strategy_id}/indicator/{indicator_id}", status_code=status.HTTP_200_OK)
 async def update_indicator_in_strategy(
     strategy_id: int,
     indicator_id: int,

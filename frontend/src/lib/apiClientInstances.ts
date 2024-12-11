@@ -40,9 +40,9 @@ export const getAllIndicatorsApi = new GetAllService<Indicator>('indicators', {}
 export const postIndicatorApi = new PostService<IndicatorRequest, void>('indicators', jsonHeader)
 //
 // StrategyIndicators
-export const postStrategyIndicatorsApi = new PostRelationService<Record<string, any>, any>('strategy', jsonHeader, 'indicators')
-export const deleteStrategyIndicatorsApi = new DeleteService('strategy', jsonHeader, 'indicators')
-export const putStrategyIndicatorsApi = new UpdateRelationService<StrategyIndicatorRequest, StrategyIndicator>('strategy', jsonHeader, 'indicators')
+export const postStrategyIndicatorsApi = new PostRelationService<Record<string, any>, any>('strategy', jsonHeader, 'indicator')
+export const deleteStrategyIndicatorsApi = new DeleteService('strategy', jsonHeader, 'indicator')
+export const putStrategyIndicatorsApi = new UpdateRelationService<StrategyIndicatorRequest, StrategyIndicator>('strategy', jsonHeader, 'indicator')
 
 //Strategy
 export const getAllStrategiesApi = new GetAllService<Strategy>('strategy', {})
