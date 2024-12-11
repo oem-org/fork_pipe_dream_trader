@@ -1,21 +1,21 @@
 from pydantic import BaseModel, Field
 from typing import Dict, Any
 
-class AO(BaseModel):
+class Ao(BaseModel):
     fast: int = Field(5, description="The short period for the AO calculation.")
     slow: int = Field(34, description="The long period for the AO calculation.")
     offset: int = Field(0, description="Offset the result by these periods.")
 
     model_config = {
-        'min_anystr_length': 1,  
-        'anystr_strip_whitespace': True  
+        'min_anystr_length': 1,
+        'anystr_strip_whitespace': True
     }
 
-ao_settings = AO()
+ao_settings = Ao()
 
 ao = {
     "kind": "ao",
-    "default_settings": ao_settings.dict(),  
+    "default_settings": ao_settings.dict(),
     "chart_style": "histogram",
     "description": """Awesome Oscillator (AO)
 
