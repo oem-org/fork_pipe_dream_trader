@@ -64,8 +64,9 @@ async def read_all(
             indicatorLoader = IndicatorLoader(fileLoader.df, dummy)
             indicatorLoader.load_indicators()
             print(indicatorLoader.df.head())
-            if indicatorLoader.df:
-                return indicatorLoader.df.to_json()
+            if not indicatorLoader.df.empty:
+                json = indicatorLoader.df.to_json(orient="index")
+                return json
             else: 
                 handle_not_found_error("No data found for the file")
     except Exception as e:

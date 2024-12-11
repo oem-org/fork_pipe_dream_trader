@@ -34,17 +34,12 @@ class FileLoader:
 
         new_folder = directory / "pickled_files"
 
-        new_folder.mkdir(parents=True, exist_ok=True)
-
         pickle_file_path = new_folder / original_file_path.with_suffix(".pkl").name
         
-        print("########################################3")
-        print("########################################3")
-        print("########################################3")
-        print("########################################3")
         print(pickle_file_path)
 
         if pickle_file_path.exists():
+            print("LOADING DATA FROM PICKLE")
             print(f"Loading data from pickle file: {pickle_file_path}")
             self.df = pd.read_pickle(pickle_file_path)
         else:

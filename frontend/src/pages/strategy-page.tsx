@@ -2,25 +2,20 @@ import { useParams, useNavigate } from "react-router-dom";
 import getStrategyQuery from "@/lib/queries/getStrategyQuery";
 import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
 import { useState, useEffect } from "react";
-import { DataSourceEnum } from "@/interfaces/enums/DataSourceEnum";
 import { Chart } from "@/components/shared/chart/chart";
 import { priceData } from "@/components/shared/chart/priceData";
 import GenericSelect from "@/components/shared/lists/generic-select";
 import { Strategy, DatabaseSource, FileSource } from "@/interfaces/Strategy";
 import File from "@/interfaces/File";
-import getTimeseriesQuery from "@/lib/queries/getTimeseriesQuery";
 import Timeseries from "@/interfaces/Timeseries";
 import getFilesQuery from "@/lib/queries/getFilesQuery";
 import { getTimeseriesApi } from "@/lib/apiClientInstances";
-import { dataTagSymbol } from "@tanstack/react-query";
-import { useRef } from "react";
 
 
 export default function StrategyPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const paramId = id ? parseInt(id) : NaN;
-  const fileid = useRef(0)
   const [fileId, setFileId] = useState<number>(0);
   // States
   const [dataSourceType, setDataSourceType] = useState<string>("");
@@ -52,7 +47,9 @@ export default function StrategyPage() {
       if (!!data) {
         console.log(data)
         console.log(data, "t")
-        setTimeseries(data)
+
+
+        //setTimeseries(data)
       }
     } catch (error) {
 

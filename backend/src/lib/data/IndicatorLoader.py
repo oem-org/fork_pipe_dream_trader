@@ -35,12 +35,13 @@ class IndicatorLoader:
 
         # Take a peek
         self.df.tail()
-        
+       
+
 
         MyStrategy = ta.Strategy(
             name="DCSMA10",
-            ta=[
-                {"kind": "sma", "length": 10},
+        ta=[{"kind": "bbands", "close":"close", "std":2,"ddof":0, "mamode":"sma","talib":False, "offset":0},
+                {"kind": "ao", "fast": 5, "slow": 34, "offset":0 },
             ]
         )
 

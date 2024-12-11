@@ -1,11 +1,23 @@
+from pydantic import BaseModel, Field
+from typing import Dict, Any
+
+# Define a Pydantic model for the RSI settings
+class RSI(BaseModel):
+    length: int = Field(14, description="The period for RSI calculation.")
+    scalar: float = Field(100, description="Scalar value for magnification.")
+    talib: bool = Field(False, description="Use TA Lib version if True.")
+    drift: int = Field(1, description="Period difference for RSI calculation.")
+    offset: int = Field(0, description="Offset the result by these periods.")
+    
+    model_config = {
+        'min_anystr_length': 1,  
+        'anystr_strip_whitespace': True  
+    }
+
+rsi_settings = RSI()
+
 rsi = {
-    "default_settings": {
-        "length": {"type": "int", "value": 14},
-        "scalar": {"type": "float", "value": 100},
-        "talib": {"type": "bool", "value": False},
-        "drift": {"type": "int", "value": 1},
-        "offset": {"type": "int", "value": 0},
-    },
+    "default_settings": rsi_settings.dict(),  # Convert the Pydantic model to a dictionary
     "chart_style": "line_add_pane",
     "description": """Relative Strength Index (RSI)
 
@@ -47,3 +59,6 @@ rsi = {
         pd.Series: New feature generated.
     """,
 }
+
+# Now you can print or use the rsi dictionary with the Pydantic model's settings converted into a dictionary
+print(rsi)
