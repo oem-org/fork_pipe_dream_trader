@@ -1,10 +1,12 @@
 from pathlib import Path
 from typing import Dict, List
-
 import pandas as pd
 import pandas_ta as ta
 
-from ...schemas import FileTypeEnum
+from ...indicators import *
+
+test = Ao(fast=5, slow=34, offset=0)
+
 
 class IndicatorLoader:
     def __init__(self, df: pd.DataFrame, indicators: List[Dict]):
@@ -36,12 +38,13 @@ class IndicatorLoader:
         # Take a peek
         self.df.tail()
        
+         
 
-
+        ao_settings = Ao()
         MyStrategy = ta.Strategy(
             name="DCSMA10",
-        ta=[{"kind": "bbands", "close":"close", "std":2,"ddof":0, "mamode":"sma","talib":False, "offset":0},
-                {"kind": "ao", "fast": 5, "slow": 34, "offset":0 },
+        ta=[
+                ao_settings.dict(),
             ]
         )
 

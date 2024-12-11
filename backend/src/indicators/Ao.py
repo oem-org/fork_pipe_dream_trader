@@ -2,9 +2,18 @@ from pydantic import BaseModel, Field
 from typing import Dict, Any
 
 class Ao(BaseModel):
-    fast: int = Field(5, description="The short period for the AO calculation.")
-    slow: int = Field(34, description="The long period for the AO calculation.")
-    offset: int = Field(0, description="Offset the result by these periods.")
+    """
+     Args:
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        fast (int): The short period. Default: 5
+        slow (int): The long period. Default: 34
+        offset (int): How many periods to offset the result. Default: 0
+    """
+    kind: str = "ao"
+    fast: int = Field(5)
+    slow: int = Field(34)
+    offset: int = Field(0)
 
     model_config = {
         'min_anystr_length': 1,

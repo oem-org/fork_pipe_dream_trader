@@ -2,8 +2,7 @@
 from sqlalchemy.orm import Session
 
 from ..models import Indicators
-from ..indicators.Ao import ao
-from ..indicators.Rsi import rsi
+from ..indicators import ao, rsi
 
 
 def indicators_seeder(session: Session):
