@@ -61,7 +61,7 @@ export default function CreateStrategyForm() {
 		if (!validateForm()) return;
 		const dataSource: FileSource | DatabaseSource =
 			dataSourceType === DataSourceEnum.FILE
-				? { fk_file_id: fileId }
+				? { fk_file_id: fileId, timeperiod: "" }
 				: { table: databaseOption, pair: "BTCUSDT" };
 		try {
 			console.log("data source", dataSource, dataSourceType);

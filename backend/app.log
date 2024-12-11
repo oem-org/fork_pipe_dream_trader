@@ -1,1 +1,2 @@
-2024-12-10 18:24:02,109 - apscheduler.scheduler - INFO - Scheduler started
+2024-12-11 13:46:32,977 - apscheduler.scheduler - INFO - Scheduler started
+2024-12-11 13:46:41,135 - root - ERROR - Unexpected error occurred while fetching the file path: The truth value of a DataFrame is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().

@@ -2,36 +2,53 @@ from pathlib import Path
 from typing import Dict, List
 
 import pandas as pd
-import pandas_ta
+import pandas_ta as ta
 
 from ...schemas import FileTypeEnum
-
-dummy = [
-    {
-        "kind": "ao",
-        "default_settings": {
-            "fast": {"type": "int", "value": 5},
-            "slow": {"type": "int", "value": 34},
-            "offset": {"type": "int", "value": 0},
-        },
-    },
-    {
-        "kind": "rsi",
-        "default_settings": {
-            "length": {"type": "int", "value": 14},
-            "scalar": {"type": "float", "value": 100},
-            "talib": {"type": "bool", "value": False},
-            "drift": {"type": "int", "value": 1},
-            "offset": {"type": "int", "value": 0},
-        },
-    },
-]
-
 
 class IndicatorLoader:
     def __init__(self, df: pd.DataFrame, indicators: List[Dict]):
         self.df = df
         self.indicators = indicators
+    
+
+
+    def load_indicators(self):
+        # Indicators = ta.Study(
+        #     name="DCSMA10",
+        #     ta=[
+        #         {"kind": "ohlc4"},
+        #         {"kind": "sma", "length": 10},
+        #         {"kind": "donchian", "lower_length": 10, "upper_length": 15},
+        #         {"kind": "ema", "close": "OHLC4", "length": 10, "suffix": "OHLC4"},
+        #     ]
+        # )
+        # self.df = self.df.ta.study(Indicators)
+        self.df.set_index(pd.DatetimeIndex(self.df["time"]), inplace=True)
+
+# Calculate Returns and append to the df DataFrame
+        self.df.ta.log_return(cumulative=True, append=True)
+        self.df.ta.percent_return(cumulative=True, append=True)
+
+        # New Columns with results
+        self.df.columns
+
+        # Take a peek
+        self.df.tail()
+        
+
+        MyStrategy = ta.Strategy(
+            name="DCSMA10",
+            ta=[
+                {"kind": "sma", "length": 10},
+            ]
+        )
+
+        # (2) Run the Strategy
+        test = self.df.ta.strategy(MyStrategy)
+        print(test)
+        print(self.df.tail(3))
+        print(self.df.columns.tolist())
 
     def get_data(self):
         return self.df

@@ -25,14 +25,8 @@ class FileRequest(BaseModel):
     pair: str
 
 
-class FileSchema(BaseModel):
-    id: int
-    name: str
-    path: str
-    file_type: FileTypeEnum
 
-
-@router.get("", status_code=status.HTTP_200_OK, response_model=list[FileSchema])
+@router.get("", status_code=status.HTTP_200_OK)
 def get_all_files(db: db_dependency):
     # user: user_dependency,
     try:
@@ -60,9 +54,8 @@ def get_files(db: db_dependency, file_id: int):
         if file:
             path = file.file_path
             fileLoader = FileLoader(path)
-            fileLoader.load_or_reload()
-            indicatorLoader = IndicatorLoader(fileLoader.df)
             fileLoader.df
+            print(fileLoader.df)
         return file
 
     except SQLAlchemyError as e:
