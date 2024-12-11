@@ -1,3 +1,4 @@
+
 export default interface Indicator {
     id: number
     kind: string

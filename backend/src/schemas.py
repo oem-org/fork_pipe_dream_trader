@@ -49,6 +49,13 @@ class StrategySchema(BaseModel):
     model_config = {"from_attributes": True}
 
 
+class StrategyIndicatorSchema(BaseModel):
+    id: int
+    name: str
+    fk_strategy_id: int
+    fk_indicator_id: int
+    settings: Dict
+
 class StrategyResponseSchema(BaseModel):
     id: int
     title: str

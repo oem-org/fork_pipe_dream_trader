@@ -9,7 +9,9 @@ import { Strategy, DatabaseSource, FileSource } from "@/interfaces/Strategy";
 import File from "@/interfaces/File";
 import Timeseries from "@/interfaces/Timeseries";
 import getFilesQuery from "@/lib/queries/getFilesQuery";
-import { getTimeseriesApi } from "@/lib/apiClientInstances";
+import { getTimeseriesApi, postIndicatorApi } from "@/lib/apiClientInstances";
+import getIndicatorsQuery from "@/lib/queries/getIndicatorsQuery";
+import Indicator from "@/interfaces/Indicator";
 
 
 export default function StrategyPage() {
@@ -23,6 +25,8 @@ export default function StrategyPage() {
   const [timeseries, setTimeseries] = useState<Timeseries[]>(priceData)
   const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
   const { data: strategies } = getStrategiesQuery();
+  const { data: indicators } = getIndicatorsQuery();
+
   //const { data } = getTimeseriesQuery(`file=${fileId}&timeperiod=${timeperiod}`);
   const { data: files } = getFilesQuery();
   useEffect(() => {
@@ -57,8 +61,11 @@ export default function StrategyPage() {
   };
 
 
-  const handleStrategyChange = (strategy: Strategy) => {
+  const handleIndicatorChange = (strategy: Strategy) => {
     navigate(`/strategy/${strategy.id}`);
+  };
+  const handleStrategyChange = (indicator: Indicator) => {
+    postIndicatorApi.post(indicator)
   };
 
   if (isLoading) {
@@ -80,17 +87,20 @@ export default function StrategyPage() {
               <GenericSelect<File>
                 data={files || []}
                 keyExtractor={(file) => file.id}
+                nameExtractor={(file) => file.name}
                 onSelect={handleFileChange}
                 renderItem={(file) => <span>{file.name}</span>}
                 title="Select or search"
                 searchEnabled={true}
+
               />
 
               <GenericSelect<Strategy>
                 data={strategies || []}
-                keyExtractor={(s) => s.id}
+                keyExtractor={(strategy) => strategy.id}
+                nameExtractor={(strategy) => strategy.name}
                 onSelect={handleStrategyChange}
-                renderItem={(s) => <span>{s.name}</span>}
+                renderItem={(strategy) => <span>{strategy.name}</span>}
                 title="Select or search"
                 searchEnabled={true}
               />
@@ -105,7 +115,15 @@ export default function StrategyPage() {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
             <section className="lg:col-span-3 p-4 bg-gray-100 rounded-lg">
               <h4 className="text-xl font-bold mb-4">Indicators</h4>
-              <p>This section contains information about the strategy's indicators.</p>
+              <GenericSelect<Indicator>
+                data={indicators || []}
+                keyExtractor={(indicator) => indicator.id}
+                nameExtractor={(indicator) => indicator.kind}
+                onSelect={handleIndicatorChange}
+                renderItem={(indicator) => <span>{indicator.kind}</span>}
+                title="Select or search"
+                searchEnabled={true}
+              />
             </section>
             <section className="lg:col-span-1 p-4 bg-gray-100 rounded-lg">
               <h4 className="text-xl font-bold mb-4">Backtest</h4>

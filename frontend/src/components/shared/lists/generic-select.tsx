@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from "react";
+
 import { ChevronDown, SearchIcon } from 'lucide-react';
 
-interface NamedItem {
-	name: string;
-}
-
-interface GenericSelectProps<T extends NamedItem> {
+interface GenericSelectProps<T> {
 	data: T[];
 	keyExtractor: (item: T) => string | number;
 	onSelect: (item: T) => void;
 	renderItem: (item: T) => React.ReactNode;
 	title: string;
 	searchEnabled: boolean;
+	nameExtractor: (item: T) => string
 }
 
 
-export default function GenericSelect<T extends NamedItem>({
+export default function GenericSelect<T>({
 	data,
 	keyExtractor,
 	onSelect,
 	renderItem,
 	title,
 	searchEnabled,
+	nameExtractor
+
 }: GenericSelectProps<T>) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [currentTitle, setCurrentTitle] = useState<string>(title);
@@ -31,7 +31,7 @@ export default function GenericSelect<T extends NamedItem>({
 
 	const handleSelection = (item: T, e: React.MouseEvent<HTMLButtonElement>) => {
 		onSelect(item);
-		setCurrentTitle(item.name);
+		setCurrentTitle(nameExtractor(item));
 		setIsOpen(false);
 		setSearchQuery("")
 		e.preventDefault()

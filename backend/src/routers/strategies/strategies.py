@@ -10,7 +10,7 @@ from sqlalchemy.orm import load_only
 from starlette import status
 
 from ...dependencies import db_dependency, user_dependency
-from ...models import Strategies
+from ...models import Strategies, StrategyIndicators
 from ...schemas import DataSourceEnum, StrategyRequest, StrategySchema
 from ...utils.debugging.print_db_object import print_db_object
 from ...utils.exceptions import handle_db_error, handle_not_found_error
@@ -186,6 +186,45 @@ async def delete_strategy(
         db.rollback()
         handle_db_error(e, "Unexpected error occurred fetching stategy")
 
+
+@router.post("/strategies/{strategy_id}/indicators/{indicator_id}")
+def add_indicator_to_strategy(
+    strategy_id: int,
+    indicator_id: int,
+    settings: Dict,
+    db: db_dependency,
+):
+    strategy = db.query(Strategies).filter(Strategies.id == strategy_id).first()
+    if not strategy:
+        raise HTTPException(status_code=404, detail="Strategy not found")
+    
+    strategy_indicator = StrategyIndicators(
+        fk_strategy_id=strategy_id,
+        fk_indicator_id=indicator_id,
+        settings=settings,
+    )
+    db.add(strategy_indicator)
+    db.commit()
+    db.refresh(strategy_indicator)
+    return {"message": "Indicator successfully added to strategy", "connection": strategy_indicator}
+
+@router.delete("/strategies/{strategy_id}/indicators/{indicator_id}")
+def remove_indicator_from_strategy(
+    strategy_id: int,
+    indicator_id: int,
+    db: db_dependency,
+):
+    strategy_indicator = db.query(StrategyIndicators).filter(
+        StrategyIndicators.fk_strategy_id == strategy_id,
+        StrategyIndicators.fk_indicator_id == indicator_id
+    ).first()
+
+    if not strategy_indicator:
+        raise HTTPException(status_code=404, detail="Indicator not connected to strategy")
+    
+    db.delete(strategy_indicator)
+    db.commit()
+    return {"message": "Indicator successfully removed from strategy"}
 
 # @router.put("/{strategy_id}/indicator/{indicator_id}", status_code=status.HTTP_200_OK)
 # async def update_indicator(

@@ -7,9 +7,10 @@ import IndicatorRequest from "@/interfaces/requests/UpdateIndicatorRequest"
 import Indicator from "../interfaces/Indicator"
 import File from "@/interfaces/File"
 import CreateStrategyRequest from "@/interfaces/requests/CreateStrategyRequest"
-import { PostService, GetAllService, GetWithParamsService, GetWithQueryService } from "./services/ApiService"
+import { PostRelationService, PostService, GetAllService, GetWithParamsService, GetWithQueryService, } from "./services/ApiService"
 import TimeseriesRequest from "@/interfaces/requests/TimeseriesRequest"
 import Timeseries from "@/interfaces/Timeseries"
+import useStrategyIndicatorStore from "./hooks/useStrategyIndicatorsStore"
 // import UploadFileRequest from "../interfaces/requests/UploadFileRequest"
 // Class for GET requests
 
@@ -35,13 +36,15 @@ export const authUserApi = new PostService<FormData, TokenResponse>('auth/token'
 export const createUserApi = new PostService<CreateUserFormRequest, CreateUserResponse>('auth', jsonHeader)
 
 // Indicators
-export const getAllIndicatorsApi = new GetAllService<Indicator>('indicators', jsonHeader)
+export const getAllIndicatorsApi = new GetAllService<Indicator>('indicators', {})
 export const postIndicatorApi = new PostService<IndicatorRequest, void>('indicators', jsonHeader)
 //
+// StrategyIndicators
+export const postStrategyIndicatorsApi = new PostRelationService('strategy', jsonHeader, 'indicators')
 
 //Strategy
-export const getAllStrategiesApi = new GetAllService<Strategy>('strategy', jsonHeader)
-export const getStrategyApi = new GetWithParamsService<number, Strategy>('strategy', jsonHeader)
+export const getAllStrategiesApi = new GetAllService<Strategy>('strategy', {})
+export const getStrategyApi = new GetWithParamsService<number, Strategy>('strategy', {})
 export const postStrategyApi = new PostService<CreateStrategyRequest, Strategy>('strategy', jsonHeader)
 
 
@@ -49,6 +52,6 @@ export const postStrategyApi = new PostService<CreateStrategyRequest, Strategy>(
 export const getTimeseriesApi = new GetWithQueryService<Timeseries[]>('timeseries', {})
 
 //Files
-export const getAllFilesApi = new GetAllService<File>('files', jsonHeader)
+export const getAllFilesApi = new GetAllService<File>('files', {})
 export const jsonFileApi = new PostService<FormData, any>('files/save', jsonHeader)
 export const csvFileApi = new PostService<FormData, any>('files/save', csvHeader)

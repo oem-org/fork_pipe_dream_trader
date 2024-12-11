@@ -3,13 +3,15 @@ import axios, { AxiosInstance } from "axios";
 class ApiService {
 	protected axiosInstance: AxiosInstance;
 	protected endpoint: string;
+	protected model: string;
 	protected headers: Record<string, string>;
 
-	constructor(endpoint: string, headers: Record<string, string>) {
+	constructor(endpoint: string, headers: Record<string, string>, model: string = "") {
 		const url = 'http://localhost:8000'
 
 		this.axiosInstance = axios.create({ baseURL: url });
 		this.endpoint = endpoint;
+		this.model = model;
 		this.headers = headers;
 	}
 
@@ -58,6 +60,21 @@ export class GetAllService<R> extends ApiService {
 
 }
 
+
+export class PostRelationService<T, R> extends ApiService {
+	async getWithParams(id: number, modelId: number, params?: T): Promise<R> {
+		try {
+			const response = await this.axiosInstance.post<R>(`${this.endpoint}/${id}/${this.model}/${modelId}`, {
+				params,
+				headers: this.getHeaders(),
+			});
+			return response.data;
+		} catch (error) {
+			console.error("Error in with params")
+			throw error;
+		}
+	}
+}
 
 export class GetWithParamsService<T, R> extends ApiService {
 	async getWithParams(id: number, params?: T): Promise<R> {
