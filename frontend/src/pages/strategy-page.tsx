@@ -12,6 +12,10 @@ import getFilesQuery from "@/lib/queries/getFilesQuery";
 import { getTimeseriesApi, postStrategyIndicatorsApi } from "@/lib/apiClientInstances";
 import getIndicatorsQuery from "@/lib/queries/getIndicatorsQuery";
 import Indicator from "@/interfaces/Indicator";
+import useStrategyIndicatorStore from "@/lib/hooks/useStrategyIndicatorsStore";
+
+
+
 
 export default function StrategyPage() {
   const { id } = useParams();
@@ -25,6 +29,8 @@ export default function StrategyPage() {
   const { data: strategies } = getStrategiesQuery();
   const { data: indicators } = getIndicatorsQuery();
   const { data: files } = getFilesQuery();
+  const { addStrategyIndicator, deleteStrategyIndicator, putStrategyIndicator } = useStrategyIndicatorStore();
+
 
   useEffect(() => {
     if (strategy) {
@@ -57,7 +63,7 @@ export default function StrategyPage() {
 
   const handleIndicatorChange = (indicator: Indicator) => {
     if (strategy) {
-      postStrategyIndicatorsApi.post(strategy.id, indicator.id, settings);
+      addStrategyIndicator(strategy.id, indicator.id, settings)
     }
   };
 

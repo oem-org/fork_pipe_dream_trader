@@ -40,7 +40,8 @@ class Strategies(Base):
     indicators = relationship(
         "Indicators",
         secondary="strategy_indicators",
-        back_populates="strategies"
+        back_populates="strategies",
+    
     )
 
     strategy_indicators = relationship("StrategyIndicators", back_populates="strategy")

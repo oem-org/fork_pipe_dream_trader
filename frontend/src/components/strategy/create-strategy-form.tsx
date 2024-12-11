@@ -84,6 +84,7 @@ export default function CreateStrategyForm() {
 			<GenericSelect<Strategy>
 				data={dataStrategies || []}
 				keyExtractor={(strategy) => strategy.id}
+				nameExtractor={(strategy) => strategy.name}
 				onSelect={(strategy) => {
 					setClonedStrategyId(strategy.id);
 				}}
@@ -115,6 +116,7 @@ export default function CreateStrategyForm() {
 					<GenericSelect<File>
 						data={dataFiles || []}
 						keyExtractor={(file) => file.id}
+						nameExtractor={(file) => file.name}
 						onSelect={(file) => {
 							setFileId(file.id);
 							console.log(file.id, "ololololollolololololololololol")

@@ -151,10 +151,27 @@ export class DeleteService extends ApiService {
 	}
 }
 
+
 export class UpdateService<T, R> extends ApiService {
-	async update(id: number, data: T): Promise<R> {
+	async put(id: number, data: T): Promise<R> {
 		try {
-			const response = await this.axiosInstance.put<R>(`${this.endpoint}/${id}/`, data, {
+			const response = await this.axiosInstance.put<R>(`${this.endpoint}/${id}`, data, {
+				headers: this.headers,
+			});
+
+			return response.data;
+		} catch (error) {
+			console.error("Error in update");
+
+			throw error;
+		}
+	}
+}
+
+export class UpdateRelationService<T, R> extends ApiService {
+	async put(id: number, modelId: number, data: T): Promise<R> {
+		try {
+			const response = await this.axiosInstance.put<R>(`${this.endpoint}/${id}/${this.model}/${modelId}`, data, {
 				headers: this.headers,
 			});
 

@@ -1,6 +1,6 @@
 import { StrategyIndicator } from "@/interfaces/StrategyIndicator";
 import { create } from "zustand";
-import { postStrategyIndicatorsApi, deleteStrategyIndicatorsApi } from "../apiClientInstances";
+import { putStrategyIndicatorsApi, postStrategyIndicatorsApi, deleteStrategyIndicatorsApi } from "../apiClientInstances";
 
 interface StrategyIndicatorStore {
 	indicators: StrategyIndicator[];
@@ -9,11 +9,11 @@ interface StrategyIndicatorStore {
 	setStrategyIndicatorId: (id: number) => void;
 	addStrategyIndicator: (strategyId: number, indicatorId: number, settings: Record<string, any>) => Promise<void>;
 	deleteStrategyIndicator: (id: number) => Promise<void>;
-	updateStrategyIndicator: (updatedStrategyIndicator: StrategyIndicator) => Promise<void>;
+	putStrategyIndicator: (strategyId: number, updatedStrategyIndicator: StrategyIndicator) => Promise<void>;
 	getById: () => StrategyIndicator | null;
 }
 
-const useStrategyStrategyIndicatorStore = create<StrategyIndicatorStore>((set, get) => ({
+const useStrategyIndicatorStore = create<StrategyIndicatorStore>((set, get) => ({
 	indicators: [],
 	indicatorId: 0,
 
@@ -41,15 +41,16 @@ const useStrategyStrategyIndicatorStore = create<StrategyIndicatorStore>((set, g
 		}
 	},
 
-	updateStrategyIndicator: async (updatedStrategyIndicator: StrategyIndicator) => {
+	putStrategyIndicator: async (strategyId, updatedStrategyIndicator: StrategyIndicator) => {
 		try {
 			const response = await putStrategyIndicatorsApi.put(
+				strategyId,
 				updatedStrategyIndicator.id,
 				updatedStrategyIndicator
 			);
 			set((state) => ({
 				indicators: state.indicators.map((indicator) =>
-					indicator.id === updatedStrategyIndicator.id ? response.data : indicator
+					indicator.id === updatedStrategyIndicator.id ? response : indicator
 				),
 			}));
 		} catch (error) {
@@ -64,4 +65,4 @@ const useStrategyStrategyIndicatorStore = create<StrategyIndicatorStore>((set, g
 	},
 }));
 
-export default useStrategyStrategyIndicatorStore;
+export default useStrategyIndicatorStore;

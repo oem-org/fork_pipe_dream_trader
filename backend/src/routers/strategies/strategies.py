@@ -49,7 +49,7 @@ async def create_strategy(
     db: db_dependency,
     strategy_request: StrategyRequest,
 ):
-    print(strategy_request)
+    print(strategy_request,"STRATEGYREQUEST!!!!!!!!!!!!!")
     try:
         # Create strategy model instance
         strategy_model = Strategies(
@@ -113,7 +113,6 @@ async def read_strategy(
                     Strategies.id,
                     Strategies.name,
                     Strategies.description,
-                    Strategies.indicators,
                     Strategies.data_source,
                 )
             )

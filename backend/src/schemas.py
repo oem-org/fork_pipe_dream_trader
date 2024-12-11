@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Optional, Union, List
 
 from pydantic import BaseModel
 
@@ -29,7 +29,6 @@ class StrategyRequest(BaseModel):
     name: str
     description: str
     data_source: Union[FileSourceRequest, DatabaseSourceRequest]
-    indicators: Optional[Dict[str, Any]] = None
 
 
 class FileSchema(BaseModel):
@@ -44,7 +43,6 @@ class StrategySchema(BaseModel):
     name: str
     description: Optional[str] = None
     fk_user_id: int
-    indicators: Optional[Dict] = None
     data_source: Optional[Dict] = None
     model_config = {"from_attributes": True}
 
