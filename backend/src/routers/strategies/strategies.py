@@ -1,6 +1,8 @@
 import logging
 from typing import Any, Dict, List, Optional
 
+from pandas.io.common import uses_relative
+
 from fastapi import APIRouter, HTTPException, Path, Query
 from passlib.context import CryptContext
 from pydantic import BaseModel, Field
@@ -187,17 +189,22 @@ async def delete_strategy(
         handle_db_error(e, "Unexpected error occurred fetching stategy")
 
 
-@router.post("/strategies/{strategy_id}/indicators/{indicator_id}")
+@router.post("/{strategy_id}/indicators/{indicator_id}")
 def add_indicator_to_strategy(
     strategy_id: int,
     indicator_id: int,
     settings: Dict,
     db: db_dependency,
+    user: user_dependency,
 ):
     strategy = db.query(Strategies).filter(Strategies.id == strategy_id).first()
     if not strategy:
         raise HTTPException(status_code=404, detail="Strategy not found")
-    
+    if strategy.fk_user_id != user["id"]:
+         raise HTTPException(
+             status_code=status.HTTP_403_FORBIDDEN,
+             detail="Strategy id dont belong to user"
+         )
     strategy_indicator = StrategyIndicators(
         fk_strategy_id=strategy_id,
         fk_indicator_id=indicator_id,
@@ -213,18 +220,77 @@ def remove_indicator_from_strategy(
     strategy_id: int,
     indicator_id: int,
     db: db_dependency,
+    user: user_dependency
 ):
     strategy_indicator = db.query(StrategyIndicators).filter(
         StrategyIndicators.fk_strategy_id == strategy_id,
         StrategyIndicators.fk_indicator_id == indicator_id
     ).first()
 
+    if strategy_indicator.strategy.fk_user_id != user["id"]:
+         raise HTTPException(
+             status_code=status.HTTP_403_FORBIDDEN,
+             detail="Strategy id dont belong to user"
+         )
     if not strategy_indicator:
         raise HTTPException(status_code=404, detail="Indicator not connected to strategy")
     
     db.delete(strategy_indicator)
     db.commit()
     return {"message": "Indicator successfully removed from strategy"}
+
+
+
+
+@router.put("/{strategy_id}/indicators/{indicator_id}", status_code=status.HTTP_200_OK)
+async def update_indicator_in_strategy(
+    strategy_id: int,
+    indicator_id: int,
+    settings: Dict,
+    db: db_dependency,
+    user: user_dependency,
+):
+    """
+    Update an indicator within a strategy.
+    """
+    try:
+        # Fetch the existing strategy-indicator relationship
+        strategy_indicator = db.query(StrategyIndicators).filter(
+            StrategyIndicators.fk_strategy_id == strategy_id,
+            StrategyIndicators.fk_indicator_id == indicator_id,
+        ).first()
+
+        if strategy_indicator.strategy.fk_user_id != user["id"]:
+             raise HTTPException(
+                 status_code=status.HTTP_403_FORBIDDEN,
+                 detail="Strategy id dont belong to user"
+             )
+        if not strategy_indicator:
+            raise HTTPException(status_code=404, detail="Indicator not connected to strategy")
+    
+        strategy_indicator.settings = settings
+
+        db.commit()
+        db.refresh(strategy_indicator)
+
+        return {"message": "Indicator successfully updated", "indicator": strategy_indicator}
+
+    except SQLAlchemyError as e:
+        db.rollback()
+        logger.error(f"SQLAlchemy error while updating indicator: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to update indicator",
+        )
+
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Unexpected error while updating indicator: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Unexpected error occurred",
+        )
+
 
 # @router.put("/{strategy_id}/indicator/{indicator_id}", status_code=status.HTTP_200_OK)
 # async def update_indicator(

@@ -9,63 +9,56 @@ import { Strategy, DatabaseSource, FileSource } from "@/interfaces/Strategy";
 import File from "@/interfaces/File";
 import Timeseries from "@/interfaces/Timeseries";
 import getFilesQuery from "@/lib/queries/getFilesQuery";
-import { getTimeseriesApi, postIndicatorApi } from "@/lib/apiClientInstances";
+import { getTimeseriesApi, postStrategyIndicatorsApi } from "@/lib/apiClientInstances";
 import getIndicatorsQuery from "@/lib/queries/getIndicatorsQuery";
 import Indicator from "@/interfaces/Indicator";
-
 
 export default function StrategyPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const paramId = id ? parseInt(id) : NaN;
   const [fileId, setFileId] = useState<number>(0);
-  // States
   const [dataSourceType, setDataSourceType] = useState<string>("");
   const [timeperiod, setTimeperiod] = useState<string>("recent");
-  const [timeseries, setTimeseries] = useState<Timeseries[]>(priceData)
+  const [timeseries, setTimeseries] = useState<Timeseries[]>(priceData);
   const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
   const { data: strategies } = getStrategiesQuery();
   const { data: indicators } = getIndicatorsQuery();
-
-  //const { data } = getTimeseriesQuery(`file=${fileId}&timeperiod=${timeperiod}`);
   const { data: files } = getFilesQuery();
+
   useEffect(() => {
     if (strategy) {
-      console.log(timeseries)
+      console.log(timeseries);
     }
   }, [strategy, timeperiod]);
 
   useEffect(() => {
     if (id) {
-      console.log("refeching")
       refetch();
     }
-  }, [id, refetch]);
+  }, [id]);
 
   const handleFileChange = async (file: File) => {
-    setFileId(file.id)
-    console.log(file.id, fileId)
+    setFileId(file.id);
     try {
-
       const data = await getTimeseriesApi.getQueryString(`file=${file.id}&timeperiod=${timeperiod}`);
-      if (!!data) {
-        console.log(data)
-        console.log(data, "t")
-
-
-        //setTimeseries(data)
+      if (data) {
+        console.log(data);
       }
     } catch (error) {
-
+      console.error(error);
     }
   };
 
-
-  const handleIndicatorChange = (strategy: Strategy) => {
+  const handleStrategyChange = (strategy: Strategy) => {
     navigate(`/strategy/${strategy.id}`);
   };
-  const handleStrategyChange = (indicator: Indicator) => {
-    postIndicatorApi.post(indicator)
+  let settings = { "kind": "rsi", "length": 10 }
+
+  const handleIndicatorChange = (indicator: Indicator) => {
+    if (strategy) {
+      postStrategyIndicatorsApi.post(strategy.id, indicator.id, settings);
+    }
   };
 
   if (isLoading) {
@@ -92,9 +85,7 @@ export default function StrategyPage() {
                 renderItem={(file) => <span>{file.name}</span>}
                 title="Select or search"
                 searchEnabled={true}
-
               />
-
               <GenericSelect<Strategy>
                 data={strategies || []}
                 keyExtractor={(strategy) => strategy.id}
@@ -107,7 +98,9 @@ export default function StrategyPage() {
             </section>
             <div className="lg:col-span-3 h-[400px] md:h-[600px]">
               <div className="relative w-full h-full bg-white rounded-lg overflow-hidden">
-                <p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded transparent-bg">Chart Title</p>
+                <p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded transparent-bg">
+                  Chart Title
+                </p>
                 <Chart timeseries={timeseries} />
               </div>
             </div>

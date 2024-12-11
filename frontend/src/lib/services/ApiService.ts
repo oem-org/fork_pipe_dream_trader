@@ -62,7 +62,7 @@ export class GetAllService<R> extends ApiService {
 
 
 export class PostRelationService<T, R> extends ApiService {
-	async getWithParams(id: number, modelId: number, params?: T): Promise<R> {
+	async post(id: number, modelId: number, params?: T): Promise<R> {
 		try {
 			const response = await this.axiosInstance.post<R>(`${this.endpoint}/${id}/${this.model}/${modelId}`, {
 				params,
@@ -151,7 +151,7 @@ export class DeleteService extends ApiService {
 	}
 }
 
-export class UpdateClient<T, R> extends ApiService {
+export class UpdateService<T, R> extends ApiService {
 	async update(id: number, data: T): Promise<R> {
 		try {
 			const response = await this.axiosInstance.put<R>(`${this.endpoint}/${id}/`, data, {
