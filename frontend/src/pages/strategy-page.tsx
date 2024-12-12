@@ -11,19 +11,18 @@ import Timeseries from "@/interfaces/Timeseries";
 import getFilesQuery from "@/lib/queries/getFilesQuery";
 import { getTimeseriesApi, postStrategyIndicatorsApi } from "@/lib/apiClientInstances";
 import getIndicatorsQuery from "@/lib/queries/getIndicatorsQuery";
-import Indicator from "@/interfaces/Indicator";
 import getStrategyIndicatorsQuery from "@/lib/queries/getStrategyIndicatorsQuery";
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
-import { StrategyIndicator } from "@/interfaces/StrategyIndicator";
-import { useAddIndicator } from "@/lib/hooks/useAddIndicator";
-import { useDeleteIndicator } from "@/lib/hooks/useDeleteIndicator";
-import { Button } from "@/components/shared/buttons/button";
+
+import IndicatorSection from "@/components/strategy/indicator-section";
+
+
 
 
 export default function StrategyPage() {
   const { id } = useParams();
   const paramId = id ? parseInt(id) : NaN;
-  const { strategyId, setStrategyId } = useStrategyStore();
+  const { setStrategyId } = useStrategyStore();
 
   // setStrategyId(paramId)
 
@@ -38,24 +37,15 @@ export default function StrategyPage() {
   const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
   const { data: strategies } = getStrategiesQuery();
   const { data: strategyIndicators, error: siError, isLoading: siIsLoading, refetch: siRefetch } = getStrategyIndicatorsQuery(paramId);
-  const { data: indicators } = getIndicatorsQuery();
   const { data: files } = getFilesQuery();
-  const [indicatorsList, setIndicatorsList] = useState({})
 
   console.log(strategyIndicators, "strategy indicators")
 
-  const { mutateAsync: addIndicatorMutation } = useAddIndicator(paramId);
-  const { mutateAsync: deleteIndicatorMutation } = useDeleteIndicator(paramId);
 
-  const handleIndicatorChange = async (indicator: Indicator) => {
-    try {
-      const response = await addIndicatorMutation(indicator); // Use the destructured mutateAsync
-      console.log("Indicator added successfully:", response);
+  useEffect(() => {
+    setStrategyId(paramId)
 
-    } catch (error) {
-      console.error("Error adding indicator:", error);
-    }
-  };
+  }, [])
 
 
   useEffect(() => {
@@ -89,40 +79,12 @@ export default function StrategyPage() {
     }
   };
 
-  //const addIndicator = async (indicator: Indicator) => {
-  //  try {
-  //    const response = await mutateAsync(indicator); // mutateAsync directly accepts the parameter
-  //    console.log("Indicator added successfully:", response);
-  //  } catch (error) {
-  //    console.error("Error adding indicator:", error);
-  //  }
-  //};
-  //
-
-
-  //const addIndicator = async (indicator: Indicator) => {
-  //  try {
-  //    const response = await mutateAsync({
-  //      fk_strategy_id: paramId,
-  //      fk_indicator_id: indicator.id,
-  //      settings: indicator.default_settings
-  //    });
-  //    console.log("Mutation was successful, returned data:", response);
-  //  } catch (error) {
-  //    console.error("Mutation failed with error:", error);
-  //  }
-  //}
-
 
 
   const handleStrategyChange = (strategy: Strategy) => {
     navigate(`/strategy/${strategy.id}`);
   };
 
-  //const handleIndicatorChange = (indicator: Indicator) => {
-  //
-  //  addIndicator(indicator)
-  //};
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -170,38 +132,7 @@ export default function StrategyPage() {
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
             <section className="lg:col-span-3 p-4 bg-gray-100 rounded-lg">
-              <h4 className="text-xl font-bold mb-4">Indicators</h4>
-              <GenericSelect<Indicator>
-                data={indicators || []}
-                keyExtractor={(indicator) => indicator.id}
-                nameExtractor={(indicator) => indicator.kind}
-                onSelect={handleIndicatorChange}
-                renderItem={(indicator) => <span>{indicator.kind}</span>}
-                title="Select or search"
-                searchEnabled={true}
-              />
-
-              <div className="mt-4">
-                <h5 className="text-lg font-semibold mb-2">Loaded Indicators</h5>
-                {siIsLoading && <p>Loading indicators...</p>}
-                {siError && siError instanceof Error && (
-                  <p className="text-red-500">Error loading indicators: {siError.message}</p>
-                )}
-                {!siIsLoading && !siError && strategyIndicators && strategyIndicators.length > 0 ? (
-                  <ul className="list-disc pl-4">
-                    {strategyIndicators.map((indicator) => (
-                      <li key={indicator.id}>
-                        <Button onClick={() => deleteIndicatorMutation(indicator.id)}>
-                          {indicator.id}
-
-                        </Button>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>No indicators found for this strategy.</p>
-                )}
-              </div>
+              <IndicatorSection />
             </section>
             <section className="lg:col-span-1 p-4 bg-gray-100 rounded-lg">
               <h4 className="text-xl font-bold mb-4">Backtest</h4>
