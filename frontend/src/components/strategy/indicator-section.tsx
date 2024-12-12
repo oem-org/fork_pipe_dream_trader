@@ -6,7 +6,7 @@ import useStrategyStore from "@/lib/hooks/useStrategyStore";
 import { useAddIndicator } from "@/lib/hooks/useAddIndicator";
 import { useDeleteIndicator } from "@/lib/hooks/useDeleteIndicator";
 import { Button } from "@/components/shared/buttons/button";
-
+import GenericIndicator from "./generic-indicator";
 
 import { SquareX } from 'lucide-react';
 
@@ -55,6 +55,7 @@ export default function IndicatorSection() {
 				<ul className="list-disc pl-4">
 					{strategyIndicators.map((indicator) => (
 						<li key={indicator.id}>
+							<GenericIndicator settings={indicator.settings} />
 							<Button onClick={() => deleteIndicatorMutation(indicator.id)}>
 								{indicator.id}
 

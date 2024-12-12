@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import Dict, Any
-
+import json
 class Ao(BaseModel):
     """
      Args:
@@ -21,10 +21,13 @@ class Ao(BaseModel):
     }
 
 ao_settings = Ao()
+schema = ao_settings.model_json_schema()
+serialized_schema = json.dumps(schema)
 
 ao = {
     "kind": "ao",
     "default_settings": ao_settings.dict(),
+    "settings": serialized_schema,
     "chart_style": "histogram",
     "description": """Awesome Oscillator (AO)
 
@@ -57,4 +60,5 @@ ao = {
         pd.Series: New feature generated.
     """,
 }
+
 

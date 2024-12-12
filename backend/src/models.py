@@ -55,6 +55,7 @@ class Indicators(Base):
     kind = Column(String)
     description = Column(String)
     default_settings = Column(JSON)
+    settings_schema = Column(JSON)
     chart_style = Column(String)
 
     strategies = relationship(

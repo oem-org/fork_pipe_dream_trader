@@ -20,6 +20,7 @@ rsi_settings = Rsi()
 rsi = {
     "kind": "rsi",
     "default_settings": rsi_settings.dict(),  # Convert the Pydantic model to a dictionary
+    "settings_schema": rsi_settings.schema(), 
     "chart_style": "line_add_pane",
     "description": """Relative Strength Index (RSI)
 

@@ -8,8 +8,9 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
 from pytz import utc
 
+
 from .middleware.register_middleware import register_middleware
-from .models import Base
+from .models import *
 from .orm_connection import SessionLocal, engine
 from .routers.auth import auth
 from .routers.files import files
@@ -20,6 +21,9 @@ from .routers.users import users
 from .seeders.indicators_seeder import indicators_seeder
 from .logger import logger
 from .utils.sync_file_paths import sync_file_paths
+from .indicators.Ao import Ao 
+
+import json
 
 current_directory = Path(__file__).parent
 parent_folder = current_directory.parent
@@ -30,11 +34,37 @@ scheduler = AsyncIOScheduler(timezone=utc)
 Base.metadata.create_all(bind=engine)
 
 
+ao_settings = Ao()
+
+# Debug schema generation
+schema = ao_settings.model_json_schema()
+
+print("Generated Schema:")
+print(json.dumps(schema, indent=4))  # Ensure schema is correct
+
+# Serialize schema for database storage
+serialized_schema = json.dumps(schema)
+
+print("Serialized Schema for DB:")
+print(serialized_schema)
+
+# Example dictionary to be stored
+ao = {
+    "kind": "ao",
+    "default_settings": ao_settings.dict(),
+    "settings": serialized_schema,
+    "chart_style": "histogram",
+    "description": "..."
+}
+
+print("Final AO Object:")
+print(json.dumps(ao, indent=4)) 
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     sync_file_paths(session)
     indicators_seeder(session)
-
     scheduler.start()
     yield
     scheduler.shutdown()
