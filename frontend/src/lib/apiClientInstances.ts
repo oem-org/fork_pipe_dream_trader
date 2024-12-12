@@ -13,7 +13,7 @@ import useStrategyIndicatorStore from "./hooks/useStrategyIndicatorsStore"
 // import UploadFileRequest from "../interfaces/requests/UploadFileRequest"
 // Class for GET requests
 
-import { StrategyIndicator, StrategyIndicatorRequest } from "@/interfaces/StrategyIndicator"
+import { StrategyIndicator, UpdateStrategyIndicatorRequest } from "@/interfaces/StrategyIndicator"
 import { CreateStrategyRequest } from "@/interfaces/requests/CreateStrategyRequest"
 
 const csvHeader = {
@@ -49,8 +49,7 @@ export const postStrategyIndicatorsApi = new PostRelationService<Record<string, 
 export const deleteStrategyIndicatorsApi = new DeleteRelationService('strategy', jsonHeader, 'indicator')
 
 
-export const putStrategyIndicatorsApi = new UpdateRelationService<StrategyIndicatorRequest, StrategyIndicator>('strategy', jsonHeader, 'indicator')
-
+export const putStrategyIndicatorsApi = new UpdateRelationService<Record<string, any>, StrategyIndicator>('strategy', jsonHeader, 'indicator')
 //Strategy
 export const getAllStrategiesApi = new GetAllService<Strategy>('strategy', {})
 export const getStrategyApi = new GetWithParamsService<number, Strategy>('strategy', {})

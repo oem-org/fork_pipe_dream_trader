@@ -300,9 +300,10 @@ async def update_indicator_in_strategy(
         # Fetch the existing strategy-indicator relationship
         strategy_indicator = db.query(StrategyIndicators).filter(
             StrategyIndicators.fk_strategy_id == strategy_id,
-            StrategyIndicators.fk_indicator_id == indicator_id,
+            StrategyIndicators.id == indicator_id,
         ).first()
-
+        print(indicator_id, strategy_id, settings)
+        print_db_object(strategy_indicator)
         if strategy_indicator.strategy.fk_user_id != user["id"]:
              raise HTTPException(
                  status_code=status.HTTP_403_FORBIDDEN,

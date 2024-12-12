@@ -4,12 +4,6 @@ import { deleteStrategyIndicatorsApi } from "../apiClientInstances";
 
 const deleteIndicator = async (strategyId: number, indicatorId: number): Promise<any> => {
 
-	console.log(strategyId, "ind", indicatorId);
-	console.log(strategyId, "ind", indicatorId);
-	console.log(strategyId, "ind", indicatorId);
-	console.log(strategyId, "ind", indicatorId);
-	console.log(strategyId, "ind", indicatorId);
-
 	const response = await deleteStrategyIndicatorsApi.delete(strategyId, indicatorId);
 	return response
 };

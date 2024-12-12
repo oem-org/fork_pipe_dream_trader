@@ -3,11 +3,12 @@ from typing import Dict, Any
 
 # Define a Pydantic model for the RSI settings
 class Rsi(BaseModel):
-    length: int = Field(14, description="The period for RSI calculation.")
-    scalar: float = Field(100, description="Scalar value for magnification.")
-    talib: bool = Field(False, description="Use TA Lib version if True.")
-    drift: int = Field(1, description="Period difference for RSI calculation.")
-    offset: int = Field(0, description="Offset the result by these periods.")
+    kind: str = "rsi"
+    length: int = Field(14)
+    scalar: float = Field(100)
+    talib: bool = Field(False)
+    drift: int = Field(1)
+    offset: int = Field(0)
 
     model_config = {
         'min_anystr_length': 1,
