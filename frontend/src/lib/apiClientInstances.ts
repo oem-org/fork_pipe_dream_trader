@@ -6,7 +6,7 @@ import { Strategy } from "../interfaces/Strategy"
 import IndicatorRequest from "@/interfaces/requests/UpdateIndicatorRequest"
 import Indicator from "../interfaces/Indicator"
 import File from "@/interfaces/File"
-import { PostRelationService, PostService, UpdateRelationService, GetAllService, DeleteService, GetWithParamsService, GetWithQueryService, GetAllRelationService, } from "./services/ApiService"
+import { PostRelationService, PostService, DeleteRelationService, UpdateRelationService, GetAllService, DeleteService, GetWithParamsService, GetWithQueryService, GetAllRelationService, } from "./services/ApiService"
 import TimeseriesRequest from "@/interfaces/requests/TimeseriesRequest"
 import Timeseries from "@/interfaces/Timeseries"
 import useStrategyIndicatorStore from "./hooks/useStrategyIndicatorsStore"
@@ -45,7 +45,10 @@ export const postIndicatorApi = new PostService<IndicatorRequest, void>('indicat
 // StrategyIndicators
 export const getStrategyIndicatorsApi = new GetAllRelationService<StrategyIndicator>('strategy', jsonHeader, 'indicator')
 export const postStrategyIndicatorsApi = new PostRelationService<Record<string, any>, any>('strategy', jsonHeader, 'indicator')
-export const deleteStrategyIndicatorsApi = new DeleteService('strategy', jsonHeader, 'indicator')
+
+export const deleteStrategyIndicatorsApi = new DeleteRelationService('strategy', jsonHeader, 'indicator')
+
+
 export const putStrategyIndicatorsApi = new UpdateRelationService<StrategyIndicatorRequest, StrategyIndicator>('strategy', jsonHeader, 'indicator')
 
 //Strategy

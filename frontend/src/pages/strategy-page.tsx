@@ -16,6 +16,8 @@ import getStrategyIndicatorsQuery from "@/lib/queries/getStrategyIndicatorsQuery
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
 import { StrategyIndicator } from "@/interfaces/StrategyIndicator";
 import { useAddIndicator } from "@/lib/hooks/useAddIndicator";
+import { useDeleteIndicator } from "@/lib/hooks/useDeleteIndicator";
+import { Button } from "@/components/shared/buttons/button";
 
 
 export default function StrategyPage() {
@@ -38,16 +40,18 @@ export default function StrategyPage() {
   const { data: strategyIndicators, error: siError, isLoading: siIsLoading, refetch: siRefetch } = getStrategyIndicatorsQuery(paramId);
   const { data: indicators } = getIndicatorsQuery();
   const { data: files } = getFilesQuery();
-
+  const [indicatorsList, setIndicatorsList] = useState({})
 
   console.log(strategyIndicators, "strategy indicators")
 
   const { mutateAsync: addIndicatorMutation } = useAddIndicator(paramId);
+  const { mutateAsync: deleteIndicatorMutation } = useDeleteIndicator(paramId);
 
   const handleIndicatorChange = async (indicator: Indicator) => {
     try {
       const response = await addIndicatorMutation(indicator); // Use the destructured mutateAsync
       console.log("Indicator added successfully:", response);
+
     } catch (error) {
       console.error("Error adding indicator:", error);
     }
@@ -186,7 +190,12 @@ export default function StrategyPage() {
                 {!siIsLoading && !siError && strategyIndicators && strategyIndicators.length > 0 ? (
                   <ul className="list-disc pl-4">
                     {strategyIndicators.map((indicator) => (
-                      <li key={indicator.id}>{indicator.id}</li>
+                      <li key={indicator.id}>
+                        <Button onClick={() => deleteIndicatorMutation(indicator.id)}>
+                          {indicator.id}
+
+                        </Button>
+                      </li>
                     ))}
                   </ul>
                 ) : (

@@ -213,7 +213,7 @@ async def read_all_strategy_indicators(user: user_dependency, db: db_dependency,
         instrumented_indicators = [
             {
                 "id": si.id,
-                "indicator_name": si.indicator.kind,
+                "kind": si.indicator.kind,
                 "settings": si.settings,
                 "indicator_id": si.indicator.id,
             }
@@ -267,7 +267,7 @@ def remove_indicator_from_strategy(
 ):
     strategy_indicator = db.query(StrategyIndicators).filter(
         StrategyIndicators.fk_strategy_id == strategy_id,
-        StrategyIndicators.fk_indicator_id == indicator_id
+        StrategyIndicators.id == indicator_id
     ).first()
 
     if strategy_indicator.strategy.fk_user_id != user["id"]:
