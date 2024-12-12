@@ -12,24 +12,51 @@ import getFilesQuery from "@/lib/queries/getFilesQuery";
 import { getTimeseriesApi, postStrategyIndicatorsApi } from "@/lib/apiClientInstances";
 import getIndicatorsQuery from "@/lib/queries/getIndicatorsQuery";
 import Indicator from "@/interfaces/Indicator";
-import useStrategyIndicatorStore from "@/lib/hooks/useStrategyIndicatorsStore";
-
-
+import getStrategyIndicatorsQuery from "@/lib/queries/getStrategyIndicatorsQuery";
+import useStrategyStore from "@/lib/hooks/useStrategyStore";
+import { StrategyIndicator } from "@/interfaces/StrategyIndicator";
+import { useAddIndicator } from "@/lib/hooks/useAddIndicator";
 
 
 export default function StrategyPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const paramId = id ? parseInt(id) : NaN;
+  const { strategyId, setStrategyId } = useStrategyStore();
+
+  // setStrategyId(paramId)
+
+  const navigate = useNavigate();
+
   const [fileId, setFileId] = useState<number>(0);
   const [dataSourceType, setDataSourceType] = useState<string>("");
   const [timeperiod, setTimeperiod] = useState<string>("recent");
   const [timeseries, setTimeseries] = useState<Timeseries[]>(priceData);
+  //const [selectedIndicator, setSelectedIndicator] = useState<number>(0)
+
   const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
   const { data: strategies } = getStrategiesQuery();
+  const { data: strategyIndicators, error: siError, isLoading: siIsLoading, refetch: siRefetch } = getStrategyIndicatorsQuery(paramId);
   const { data: indicators } = getIndicatorsQuery();
   const { data: files } = getFilesQuery();
-  const { addStrategyIndicator, deleteStrategyIndicator, putStrategyIndicator } = useStrategyIndicatorStore();
+
+
+  const { mutateAsync: addIndicatorMutation } = useAddIndicator(paramId);
+
+  const handleIndicatorChange = async (indicator: Indicator) => {
+    try {
+      const response = await addIndicatorMutation(indicator); // Use the destructured mutateAsync
+      console.log("Indicator added successfully:", response);
+    } catch (error) {
+      console.error("Error adding indicator:", error);
+    }
+  };
+
+
+  useEffect(() => {
+    if (strategy) {
+      //siRefetch();
+    }
+  }, []);
 
 
   useEffect(() => {
@@ -56,16 +83,40 @@ export default function StrategyPage() {
     }
   };
 
+  //const addIndicator = async (indicator: Indicator) => {
+  //  try {
+  //    const response = await mutateAsync(indicator); // mutateAsync directly accepts the parameter
+  //    console.log("Indicator added successfully:", response);
+  //  } catch (error) {
+  //    console.error("Error adding indicator:", error);
+  //  }
+  //};
+  //
+
+
+  //const addIndicator = async (indicator: Indicator) => {
+  //  try {
+  //    const response = await mutateAsync({
+  //      fk_strategy_id: paramId,
+  //      fk_indicator_id: indicator.id,
+  //      settings: indicator.default_settings
+  //    });
+  //    console.log("Mutation was successful, returned data:", response);
+  //  } catch (error) {
+  //    console.error("Mutation failed with error:", error);
+  //  }
+  //}
+
+
+
   const handleStrategyChange = (strategy: Strategy) => {
     navigate(`/strategy/${strategy.id}`);
   };
-  let settings = { "kind": "rsi", "length": 10 }
 
-  const handleIndicatorChange = (indicator: Indicator) => {
-    if (strategy) {
-      addStrategyIndicator(strategy.id, indicator.id, settings)
-    }
-  };
+  //const handleIndicatorChange = (indicator: Indicator) => {
+  //
+  //  addIndicator(indicator)
+  //};
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -123,6 +174,23 @@ export default function StrategyPage() {
                 title="Select or search"
                 searchEnabled={true}
               />
+
+              <div className="mt-4">
+                <h5 className="text-lg font-semibold mb-2">Loaded Indicators</h5>
+                {siIsLoading && <p>Loading indicators...</p>}
+                {siError && siError instanceof Error && (
+                  <p className="text-red-500">Error loading indicators: {siError.message}</p>
+                )}
+                {!siIsLoading && !siError && strategyIndicators && strategyIndicators.length > 0 ? (
+                  <ul className="list-disc pl-4">
+                    {strategyIndicators.map((indicator) => (
+                      <li key={indicator.id}>{indicator.id}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No indicators found for this strategy.</p>
+                )}
+              </div>
             </section>
             <section className="lg:col-span-1 p-4 bg-gray-100 rounded-lg">
               <h4 className="text-xl font-bold mb-4">Backtest</h4>

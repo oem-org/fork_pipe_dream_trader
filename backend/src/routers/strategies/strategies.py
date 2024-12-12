@@ -10,6 +10,8 @@ from sqlalchemy import or_
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import load_only
 from starlette import status
+from sqlalchemy.orm import Session, joinedload  
+
 
 from ...dependencies import db_dependency, user_dependency
 from ...models import Strategies, StrategyIndicators
@@ -26,9 +28,9 @@ print(user_dependency)
 router = APIRouter(prefix="/strategy", tags=["strategy"])
 
 
-class IndicatorRequest:
+class IndicatorRequest(BaseModel):
     settings: dict
-    fk_strategy_id: int
+    # fk_strategy_id: int
     fk_indicator_id: int
 
 
@@ -188,32 +190,50 @@ async def delete_strategy(
         handle_db_error(e, "Unexpected error occurred fetching stategy")
 
 
-@router.post("/{strategy_id}/indicator/{indicator_id}")
+@router.get("/{strategy_id}/indicator", status_code=status.HTTP_204_NO_CONTENT)
+async def read_all_strategy_indicators(user: user_dependency, db: db_dependency, strategy_id: int = Path(gt=0)):
+    
+    # Eager loadin}
+    print("ateeeeeeeeeeeeeeeeeeeeeeeeeeeest")
+    strategy = (
+        db.query(Strategies)
+        .filter(Strategies.id == strategy_id)
+        .filter(Strategies.fk_user_id == user['id'])  
+        .options(joinedload(Strategies.strategy_indicators).joinedload(StrategyIndicators.indicator))
+        .first()
+    )
+
+    if not strategy:
+        raise HTTPException(status_code=404, detail="Strategy not found")
+    
+    # Return associated indicators
+    return strategy.strategy_indicators
+
+@router.post("/{strategy_id}/indicator", status_code=200 )
 def add_indicator_to_strategy(
     strategy_id: int,
-    indicator_id: int,
-    settings: Dict,
+    settings: IndicatorRequest,
     db: db_dependency,
     user: user_dependency,
 ):
     strategy = db.query(Strategies).filter(Strategies.id == strategy_id).first()
-    print(strategy, "ylylylylylylylylylylylylylylylyl")
+    print(strategy)
     if not strategy:
         raise HTTPException(status_code=404, detail="Strategy not found")
-    # if strategy.fk_user_id != user["id"]:
-    #      raise HTTPException(
-    #          status_code=status.HTTP_403_FORBIDDEN,
-    #          detail="Strategy id dont belong to user"
-    #      )
+    if strategy.fk_user_id != user["id"]:
+         raise HTTPException(
+             status_code=status.HTTP_403_FORBIDDEN,
+             detail="Strategy id dont belong to user"
+         )
     strategy_indicator = StrategyIndicators(
         fk_strategy_id=strategy_id,
-        fk_indicator_id=indicator_id,
-        settings=settings,
+        fk_indicator_id=settings.fk_indicator_id,
+        settings=settings.settings,
     )
     db.add(strategy_indicator)
     db.commit()
     db.refresh(strategy_indicator)
-    return {"message": "Indicator successfully added to strategy", "connection": strategy_indicator}
+    return {"message":"nenen"}
 
 @router.delete("/{strategy_id}/indicator/{indicator_id}")
 def remove_indicator_from_strategy(

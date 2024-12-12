@@ -16,7 +16,7 @@ export default function getFilesQuery() {
 
 
 	const { data, error, isError, isLoading } = useQuery<File[], Error>({
-		queryKey: ["fileList"],
+		queryKey: ["files"],
 		queryFn: fetchFiles,
 	})
 

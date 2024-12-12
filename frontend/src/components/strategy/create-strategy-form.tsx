@@ -18,6 +18,7 @@ export default function CreateStrategyForm() {
 
 	const { data: dataStrategies, refetch } = getStrategiesQuery();
 	const { data: dataFiles } = getFilesQuery();
+	console.log(clonedStrategy);
 
 	const [databaseOption, setDatabaseOption] = useState("");
 	const [errors, setErrors] = useState({

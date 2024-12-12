@@ -16,7 +16,7 @@ const getStrategiesQuery = () => {
   }
 
   const { data, error, isError, isLoading, refetch } = useQuery<Strategy[], Error>({
-    queryKey: ["strategyList"],
+    queryKey: ["strategies"],
     queryFn: fetchStrategies,
   })
 

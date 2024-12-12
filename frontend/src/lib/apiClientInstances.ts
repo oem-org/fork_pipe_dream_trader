@@ -6,7 +6,7 @@ import { Strategy } from "../interfaces/Strategy"
 import IndicatorRequest from "@/interfaces/requests/UpdateIndicatorRequest"
 import Indicator from "../interfaces/Indicator"
 import File from "@/interfaces/File"
-import { PostRelationService, PostService, UpdateRelationService, GetAllService, DeleteService, GetWithParamsService, GetWithQueryService, } from "./services/ApiService"
+import { PostRelationService, PostService, UpdateRelationService, GetAllService, DeleteService, GetWithParamsService, GetWithQueryService, GetAllRelationService, } from "./services/ApiService"
 import TimeseriesRequest from "@/interfaces/requests/TimeseriesRequest"
 import Timeseries from "@/interfaces/Timeseries"
 import useStrategyIndicatorStore from "./hooks/useStrategyIndicatorsStore"
@@ -30,6 +30,7 @@ const formDataHeader = {
 };
 
 
+export const post = new PostService<any, any>("strategy", jsonHeader)
 
 //Auth
 export const authUserApi = new PostService<FormData, TokenResponse>('auth/token', formDataHeader)
@@ -39,7 +40,10 @@ export const createUserApi = new PostService<CreateUserFormRequest, CreateUserRe
 export const getAllIndicatorsApi = new GetAllService<Indicator>('indicators', {})
 export const postIndicatorApi = new PostService<IndicatorRequest, void>('indicators', jsonHeader)
 //
+
+
 // StrategyIndicators
+export const getStrategyIndicatorsApi = new GetAllRelationService<StrategyIndicator>('strategy', jsonHeader, 'indicator')
 export const postStrategyIndicatorsApi = new PostRelationService<Record<string, any>, any>('strategy', jsonHeader, 'indicator')
 export const deleteStrategyIndicatorsApi = new DeleteService('strategy', jsonHeader, 'indicator')
 export const putStrategyIndicatorsApi = new UpdateRelationService<StrategyIndicatorRequest, StrategyIndicator>('strategy', jsonHeader, 'indicator')
