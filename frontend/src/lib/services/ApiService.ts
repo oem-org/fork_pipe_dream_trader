@@ -55,6 +55,7 @@ export class GetAllRelationService<R> extends ApiService {
 				{
 					headers: await this.getHeaders(),
 				});
+			console.log(response.data)
 			return response.data;
 		} catch (error) {
 			console.error("Error in get all");

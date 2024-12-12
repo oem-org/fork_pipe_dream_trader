@@ -40,6 +40,8 @@ export default function StrategyPage() {
   const { data: files } = getFilesQuery();
 
 
+  console.log(strategyIndicators, "strategy indicators")
+
   const { mutateAsync: addIndicatorMutation } = useAddIndicator(paramId);
 
   const handleIndicatorChange = async (indicator: Indicator) => {
