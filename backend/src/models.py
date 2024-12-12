@@ -20,6 +20,8 @@ class Users(Base):
 class StrategyIndicators(Base):
     __tablename__ = "strategy_indicators"
 
+
+    id = Column(Integer, primary_key=True, autoincrement=True)  
     fk_strategy_id = Column(Integer, ForeignKey("strategies.id"), primary_key=True)
     fk_indicator_id = Column(Integer, ForeignKey("indicators.id"), primary_key=True)
     settings = Column(JSON, nullable=True)  

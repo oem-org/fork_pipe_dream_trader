@@ -212,6 +212,7 @@ async def read_all_strategy_indicators(user: user_dependency, db: db_dependency,
 
         instrumented_indicators = [
             {
+                "id": si.id,
                 "indicator_name": si.indicator.kind,
                 "settings": si.settings,
                 "indicator_id": si.indicator.id,
