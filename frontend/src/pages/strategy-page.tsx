@@ -12,7 +12,10 @@ import getFilesQuery from "@/lib/queries/getFilesQuery";
 import { getTimeseriesApi, postStrategyIndicatorsApi } from "@/lib/apiClientInstances";
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
 
+
+
 import IndicatorSection from "@/components/strategy/indicator-section";
+import TimeseriesService from "@/lib/services/TimeseriesService";
 
 
 
@@ -67,8 +70,11 @@ export default function StrategyPage() {
     setFileId(file.id);
     try {
       const data = await getTimeseriesApi.getQueryString(`file=${file.id}&timeperiod=${timeperiod}`);
-      if (data) {
-        console.log(data);
+      if (!!data) {
+
+        const timeseriesService = new TimeseriesService(data)
+        const ohlc = timeseriesService.getOHLC()
+        console.log(ohlc);
       }
     } catch (error) {
       console.error(error);

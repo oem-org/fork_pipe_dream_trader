@@ -15,7 +15,7 @@ interface Props {
 	settings_schema: Record<string, any>;
 }
 
-// TODO: inputs go back to default when empty
+// TODO: inputs go back to default when empty and the inputs move 
 export default function GenericIndicator({ indicatorId, settings_schema, settings }: Props) {
 	const [formData, setFormData] = useState<Record<string, any>>(settings);
 	const [errors, setErrors] = useState<Record<string, string>>({});

@@ -10,6 +10,7 @@ class Ao(BaseModel):
         slow (int): The long period. Default: 34
         offset (int): How many periods to offset the result. Default: 0
     """
+    kind: str = Field("ao")
     fast: int = Field(5)
     slow: int = Field(34)
     offset: int = Field(0)

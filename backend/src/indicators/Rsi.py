@@ -19,6 +19,7 @@ class Rsi(BaseModel):
         fill_method (value, optional): Type of fill method
 
     """
+    kind: str = Field("rsi")
     length: int = Field(14)
     scalar: float = Field(100)
     talib: bool = Field(False)

@@ -52,24 +52,29 @@ async def read_all(
     }
 
     print(data, "query data")
-    print(file, "file file file file file file file file") 
     try:
         fileModel = db.query(Files).get(file)
-        print(file)
+        # print(file)
         if file:
             path = fileModel.path
             fileLoader = FileLoader(path)
             fileLoader.load_or_reload()
-            print(fileLoader.df)
+            # print(fileLoader.df)
             indicatorLoader = IndicatorLoader(fileLoader.df, dummy)
             indicatorLoader.load_indicators()
             print(indicatorLoader.df.head())
-            if not indicatorLoader.df.empty:
-                json = indicatorLoader.df.to_json(orient="index")
-                return json
-            else: 
-                handle_not_found_error("No data found for the file")
+            print('that json')
+            print('that json')
+            print('that json')
+            print('that json')
+            print('that json')
+            print('that json')
+            print('that json')
+            json = indicatorLoader.df.to_json(orient="index")
+            print('that json')
+            print(json)
+            return json
     except Exception as e:
-        handle_db_error(e, "Unexpected error occurred while fetching the file path")
+        handle_db_error(e, "Unexpected error occurred while fetching the file data")
 
 

@@ -9,10 +9,6 @@ from sqlalchemy.orm import load_only
 from starlette import status
 from sqlalchemy.orm import joinedload  
 
-import logging
-logging.basicConfig()
-logging.getLogger('sqlalchemy.engine').setLevel(logging.DEBUG)
-
 from ...dependencies import db_dependency, user_dependency
 from ...models import Strategies, StrategyIndicators
 from ...schemas import  StrategyRequest, StrategySchema
@@ -297,28 +293,20 @@ async def update_indicator_in_strategy(
     """
     Update an indicator within a strategy.
     """
-    # TODO: make, joins other places
     try:
-        # strategy_indicator = db.query(StrategyIndicators).join(
-        #     Strategies, StrategyIndicators.fk_strategy_id == Strategies.id
-        # ).filter(
-        #     StrategyIndicators.fk_strategy_id == strategy_id,
-        #     StrategyIndicators.fk_indicator_id == indicator_id,
-        #     Strategies.fk_user_id == user["id"]
-        # ).first()
+        # Fetch the existing strategy-indicator relationship
         strategy_indicator = db.query(StrategyIndicators).join(
             Strategies, StrategyIndicators.fk_strategy_id == Strategies.id
         ).filter(
-        Strategies.fk_user_id == user['id'],
-        StrategyIndicators.id == indicator_id,).first()
-        # Debug print statements
-        # print("vuery Result: ", repr(strategy_indicator))  # Prints the SQLAlchemy object details
-        print("Input Data: ", indicator_id,"indicator id", indicator_id, strategy_id, settings)
+            StrategyIndicators.fk_strategy_id == strategy_id,
+            StrategyIndicators.id == indicator_id,
+            Strategies.fk_user_id == user["id"]
+        ).first()
+
+        print(indicator_id, strategy_id, settings)
         
-        if strategy_indicator:
-            print("Query Result: ", strategy_indicator.__dict__)  # Prints all attributes of the object
-        else:
-            print("No matching strategy-indicator found.")
+        print_db_object(strategy_indicator)
+        
         if not strategy_indicator:
             raise HTTPException(status_code=404, detail="Indicator not connected to strategy")
     

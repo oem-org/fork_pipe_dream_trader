@@ -16,6 +16,7 @@ class IndicatorLoader:
 
 
     def load_indicators(self):
+
         # Indicators = ta.Study(
         #     name="DCSMA10",
         #     ta=[
