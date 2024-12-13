@@ -50,7 +50,7 @@ export default function CreateStrategyForm() {
 		setErrors(newErrors);
 		return Object.values(newErrors).every((error) => error === "");
 	};
-
+	// TODO: clean source type
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setTouched({
@@ -64,16 +64,33 @@ export default function CreateStrategyForm() {
 			dataSourceType === DataSourceEnum.FILE
 				? { fk_file_id: fileId, timeperiod: "" }
 				: { table: databaseOption, pair: "BTCUSDT" };
-		try {
-			console.log("data source", dataSource, dataSourceType);
 
-			const strategy = await postStrategyApi.post({
-				name,
-				description,
-				data_source: dataSource,
-			});
-			refetch()
-			navigate(`/strategy/${strategy.id}`);
+		try {
+
+			if (dataSourceType === DataSourceEnum.FILE) {
+				console.log("data source", dataSource, dataSourceType);
+
+				const strategy = await postStrategyApi.post({
+					name,
+					fk_file_id: fileId,
+					description,
+					data_source: dataSource,
+				});
+				refetch()
+				navigate(`/strategy/${strategy.id}`);
+			}
+			else {
+				console.log("data source", dataSource, dataSourceType);
+				const strategy = await postStrategyApi.post({
+					name,
+					description,
+					data_source: dataSource,
+				});
+				refetch()
+				navigate(`/strategy/${strategy.id}`);
+			}
+
+
 		} catch (error) {
 			console.error("Error creating strategy:", error);
 		}

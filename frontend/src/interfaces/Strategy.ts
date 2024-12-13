@@ -13,6 +13,7 @@ export interface DatabaseSource {
 export interface Strategy {
     id: number;
     name: string;
+    fk_file_id?: number;
     description: string;
     data_source: FileSource | DatabaseSource;
     timeperiod: string;

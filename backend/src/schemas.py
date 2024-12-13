@@ -29,6 +29,7 @@ class StrategyRequest(BaseModel):
     name: str
     description: str
     data_source: Union[FileSourceRequest, DatabaseSourceRequest]
+    fk_file_id: Optional[int]
 
 
 class FileSchema(BaseModel):
