@@ -10,6 +10,7 @@ class FileLoader:
         self.file_path = file_path
         self.file_type = self._file_type_check()
         self.df = pd.DataFrame()
+        self.pickle_dir = Path("pickled_files")
 
     def _file_type_check(self) -> FileTypeEnum | None:
         """Checks the file type based on the extension"""
@@ -26,9 +27,19 @@ class FileLoader:
         Checks if a pickle file with the same name as the original file exists.
         If the pickle file does not exist, loads data from the original file and saves it as a pickle.
         """
-        pickle_file_path = Path(self.file_path).with_suffix(".pkl")
+
+        original_file_path = Path(self.file_path)
+
+        directory = original_file_path.parent
+
+        new_folder = directory / "pickled_files"
+
+        pickle_file_path = new_folder / original_file_path.with_suffix(".pkl").name
+        
+        print(pickle_file_path)
 
         if pickle_file_path.exists():
+            print("LOADING DATA FROM PICKLE")
             print(f"Loading data from pickle file: {pickle_file_path}")
             self.df = pd.read_pickle(pickle_file_path)
         else:

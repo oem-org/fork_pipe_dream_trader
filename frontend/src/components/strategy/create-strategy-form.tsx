@@ -18,6 +18,7 @@ export default function CreateStrategyForm() {
 
 	const { data: dataStrategies, refetch } = getStrategiesQuery();
 	const { data: dataFiles } = getFilesQuery();
+	console.log(clonedStrategy);
 
 	const [databaseOption, setDatabaseOption] = useState("");
 	const [errors, setErrors] = useState({
@@ -61,7 +62,7 @@ export default function CreateStrategyForm() {
 		if (!validateForm()) return;
 		const dataSource: FileSource | DatabaseSource =
 			dataSourceType === DataSourceEnum.FILE
-				? { fk_file_id: fileId }
+				? { fk_file_id: fileId, timeperiod: "" }
 				: { table: databaseOption, pair: "BTCUSDT" };
 		try {
 			console.log("data source", dataSource, dataSourceType);
@@ -84,6 +85,7 @@ export default function CreateStrategyForm() {
 			<GenericSelect<Strategy>
 				data={dataStrategies || []}
 				keyExtractor={(strategy) => strategy.id}
+				nameExtractor={(strategy) => strategy.name}
 				onSelect={(strategy) => {
 					setClonedStrategyId(strategy.id);
 				}}
@@ -115,6 +117,7 @@ export default function CreateStrategyForm() {
 					<GenericSelect<File>
 						data={dataFiles || []}
 						keyExtractor={(file) => file.id}
+						nameExtractor={(file) => file.name}
 						onSelect={(file) => {
 							setFileId(file.id);
 							console.log(file.id, "ololololollolololololololololol")

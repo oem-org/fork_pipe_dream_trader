@@ -1,17 +1,21 @@
 import logging
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException, Path, Query
-from passlib.context import CryptContext
-from pydantic import BaseModel, Field
-from sqlalchemy import or_
+
+from fastapi import APIRouter, HTTPException, Path
+from pydantic import BaseModel
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import load_only
 from starlette import status
+from sqlalchemy.orm import joinedload  
+
+import logging
+logging.basicConfig()
+logging.getLogger('sqlalchemy.engine').setLevel(logging.DEBUG)
 
 from ...dependencies import db_dependency, user_dependency
-from ...models import Strategies
-from ...schemas import DataSourceEnum, StrategyRequest, StrategySchema
+from ...models import Strategies, StrategyIndicators
+from ...schemas import  StrategyRequest, StrategySchema
 from ...utils.debugging.print_db_object import print_db_object
 from ...utils.exceptions import handle_db_error, handle_not_found_error
 
@@ -24,9 +28,9 @@ print(user_dependency)
 router = APIRouter(prefix="/strategy", tags=["strategy"])
 
 
-class IndicatorRequest:
+class IndicatorRequest(BaseModel):
     settings: dict
-    fk_strategy_id: int
+    # fk_strategy_id: int
     fk_indicator_id: int
 
 
@@ -47,7 +51,7 @@ async def create_strategy(
     db: db_dependency,
     strategy_request: StrategyRequest,
 ):
-    print(strategy_request)
+    print(strategy_request,"STRATEGYREQUEST!!!!!!!!!!!!!")
     try:
         # Create strategy model instance
         strategy_model = Strategies(
@@ -111,7 +115,6 @@ async def read_strategy(
                     Strategies.id,
                     Strategies.name,
                     Strategies.description,
-                    Strategies.indicators,
                     Strategies.data_source,
                 )
             )
@@ -187,83 +190,159 @@ async def delete_strategy(
         handle_db_error(e, "Unexpected error occurred fetching stategy")
 
 
-# @router.put("/{strategy_id}/indicator/{indicator_id}", status_code=status.HTTP_200_OK)
-# async def update_indicator(
-#     data: IndicatorRequest,
-#     user: user_dependency,
-#     db: db_dependency,
-#     strategy_id: int = Query(...),
-#     indicator_id: int = Query(...),
-# ):
-#     """ update a indicator from StrategyIndicators """
-#     # Step 1: Retrieve the indicator from the database
-#
-#     indicator = db.query(StrategyIndicators).get(indicator_id)
-#     strategy = db.query(Strategies).get(strategy_id)
-#
-#     if not strategy.fk_user_id == user['id']:
-#         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Indicator belongs to wrong strategy")
-#
-#     indicator.settings = data.settings
-#
-#     try:
-#         db.commit()
-#     except Exception as e:
-#         db.rollback()
-#         raise HTTPException(
-#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-#             detail=f"Failed to update indicator: {str(e)}",
-#         )
-#
-#     return indicator
+@router.get("/{strategy_id}/indicator", status_code=status.HTTP_200_OK)
+async def read_all_strategy_indicators(user: user_dependency, db: db_dependency, strategy_id: int = Path(gt=0)):
+    
+    try:
+        # Query the strategy with eager loading
+        strategy = (
+            db.query(Strategies)
+            .filter(Strategies.id == strategy_id)
+            .filter(Strategies.fk_user_id == user['id'])  
+            .options(joinedload(Strategies.strategy_indicators).joinedload(StrategyIndicators.indicator))
+            .first()
+        )
+        
+        if not strategy:
+            print(f"Strategy with id={strategy_id} not found for user_id={user['id']}")
+            handle_not_found_error("Strategy not found")
+
+        print(f"Strategy found: {strategy}")
+
+        print(f"Strategy indicators: {strategy.strategy_indicators}")
+
+        instrumented_indicators = [
+            {
+                "id": si.id,
+                "settings": si.settings,
+                "settings_schema": si.indicator.settings_schema,
+                "fk_indicator_id": si.indicator.id,
+            }
+            for si in strategy.strategy_indicators
+        ]
+
+        # Debug: Print final response
+        print(f"Instrumented indicators: {instrumented_indicators}")
+
+        return instrumented_indicators
+
+    except Exception as e:
+        # Debug: Log the exception details
+        print(f"Error occurred: {str(e)}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+    
+
+@router.post("/{strategy_id}/indicator", status_code=200 )
+def add_indicator_to_strategy(
+    strategy_id: int,
+    settings: IndicatorRequest,
+    db: db_dependency,
+    user: user_dependency,
+):
+    strategy = db.query(Strategies).filter(Strategies.id == strategy_id).first()
+    print(strategy)
+    if not strategy:
+        raise HTTPException(status_code=404, detail="Strategy not found")
+    if strategy.fk_user_id != user["id"]:
+         raise HTTPException(
+             status_code=status.HTTP_403_FORBIDDEN,
+             detail="Strategy id dont belong to user"
+         )
+    strategy_indicator = StrategyIndicators(
+        fk_strategy_id=strategy_id,
+        fk_indicator_id=settings.fk_indicator_id,
+        settings=settings.settings,
+    )
+    db.add(strategy_indicator)
+    db.commit()
+    db.refresh(strategy_indicator)
+    return {"message":"nenen"}
+
+@router.delete("/{strategy_id}/indicator/{indicator_id}")
+def remove_indicator_from_strategy(
+    strategy_id: int,
+    indicator_id: int,
+    db: db_dependency,
+    user: user_dependency
+):
+    strategy_indicator = db.query(StrategyIndicators).filter(
+        StrategyIndicators.fk_strategy_id == strategy_id,
+        StrategyIndicators.id == indicator_id
+    ).first()
+
+    if strategy_indicator.strategy.fk_user_id != user["id"]:
+         raise HTTPException(
+             status_code=status.HTTP_403_FORBIDDEN,
+             detail="Strategy id dont belong to user"
+         )
+    if not strategy_indicator:
+        raise HTTPException(status_code=404, detail="Indicator not connected to strategy")
+    
+    db.delete(strategy_indicator)
+    db.commit()
+    return {"message": "Indicator successfully removed from strategy"}
 
 
-# @router.post("/{strategy_id}/indicator", status_code=status.HTTP_200_OK)
-# async def add_indicator(
-#     data: IndicatorRequest,
-#     user: user_dependency,
-#     db: db_dependency
-# ):
-#     """ Post a indicator too StrategyIndicators """
-#     strategy = db.query(Strategies).get(data.fk_strategy_id)
-#
-#     if not strategy:
-#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Strategy not found")
-#     if strategy.fk_user_id != user["id"]:
-#         raise HTTPException(
-#             status_code=status.HTTP_403_FORBIDDEN,
-#             detail="Strategy id dont belong to user"
-#         )
-#
-#     indicator = StrategyIndicators(fk_strategy_id=data.fk_strategy_id,fk_indicator_id=data.fk_indicator_id,settings=data.settings)
-#     db.add(indicator)
-#     try:
-#         db.commit()
-#     except Exception as e:
-#         db.rollback()
-#         raise HTTPException(
-#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-#             detail=f"Failed to update indicator: {str(e)}",
-#         )
-#
-#     return indicator
 
-# @routertput("/strategy/{strategy_id}", status_code=status.HTTP_204_NO_CONTENT)
-# async def update_strategy(user: user_dependency, db: db_dependency,
-#                       strategy_request: StrategyRequest,
-#                       strategy_id: int = Path(gt=0)):
-#     # if user is None:
-#     #     raise AutheticationFailed()
-#
-#     strategy_model = db.query(Strategies).filter(Strategies.id == strategy_id)\
-#         .filter(Strategies.fk_user_id == user.get('id')).first()
-#     if strategy_model is None:
-#         raise StrategyNotFound()
-#
-#     strategy_model.name = strategy_request.name
-#     strategy_model.description = strategy_request.description
-#     strategy_model.priority = strategy_request.priority
-#     strategy_model.complete = strategy_request.complete
-#
-#     db.add(strategy_model)
-#     db.commit()
+
+@router.put("/{strategy_id}/indicator/{indicator_id}", status_code=status.HTTP_200_OK)
+async def update_indicator_in_strategy(
+    strategy_id: int,
+    indicator_id: int,
+    settings: Dict,
+    db: db_dependency,
+    user: user_dependency,
+):
+    """
+    Update an indicator within a strategy.
+    """
+    # TODO: make, joins other places
+    try:
+        # strategy_indicator = db.query(StrategyIndicators).join(
+        #     Strategies, StrategyIndicators.fk_strategy_id == Strategies.id
+        # ).filter(
+        #     StrategyIndicators.fk_strategy_id == strategy_id,
+        #     StrategyIndicators.fk_indicator_id == indicator_id,
+        #     Strategies.fk_user_id == user["id"]
+        # ).first()
+        strategy_indicator = db.query(StrategyIndicators).join(
+            Strategies, StrategyIndicators.fk_strategy_id == Strategies.id
+        ).filter(
+        Strategies.fk_user_id == user['id'],
+        StrategyIndicators.id == indicator_id,).first()
+        # Debug print statements
+        # print("vuery Result: ", repr(strategy_indicator))  # Prints the SQLAlchemy object details
+        print("Input Data: ", indicator_id,"indicator id", indicator_id, strategy_id, settings)
+        
+        if strategy_indicator:
+            print("Query Result: ", strategy_indicator.__dict__)  # Prints all attributes of the object
+        else:
+            print("No matching strategy-indicator found.")
+        if not strategy_indicator:
+            raise HTTPException(status_code=404, detail="Indicator not connected to strategy")
+    
+        strategy_indicator.settings = settings
+
+        db.commit()
+        db.refresh(strategy_indicator)
+
+        return {"message": "Indicator successfully updated", "indicator": strategy_indicator}
+
+    except SQLAlchemyError as e:
+        db.rollback()
+        logger.error(f"SQLAlchemy error while updating indicator: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to update indicator",
+        )
+
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Unexpected error while updating indicator: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Unexpected error occurred",
+        )
+
+
