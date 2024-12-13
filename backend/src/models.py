@@ -39,14 +39,16 @@ class Strategies(Base):
     fk_user_id = Column(Integer, ForeignKey("users.id"))
     data_source = Column(JSON, nullable=True)
     user = relationship("Users", back_populates="strategies")
+    fk_file_id = Column(Integer, ForeignKey("files.id"))
 
-    indicators = relationship(
-        "Indicators",
-        secondary="strategy_indicators",
-        back_populates="strategies",
-    
-    )
-
+    # file = relationship("files", back_populates="strategies")
+    # indicators = relationship(
+    #     "Indicators",
+    #     secondary="strategy_indicators",
+    #     back_populates="strategies",
+    #
+    # )
+    # strategy is the name of the relationship on the StrategyIndicators side.
     strategy_indicators = relationship("StrategyIndicators", back_populates="strategy")
 
 class Indicators(Base):
@@ -59,11 +61,11 @@ class Indicators(Base):
     settings_schema = Column(JSON)
     chart_style = Column(String)
 
-    strategies = relationship(
-        "Strategies",
-        secondary="strategy_indicators",
-        back_populates="indicators"
-    )
+   # strategies = relationship(
+   #      "Strategies",
+   #      secondary="strategy_indicators",
+   #      back_populates="indicators"
+   #  )
 
     strategy_indicators = relationship("StrategyIndicators", back_populates="indicator")
 
@@ -74,7 +76,7 @@ class Files(Base):
     path = Column(String)
     name = Column(String)
     file_type = Column(Enum(FileTypeEnum))
-
+    # strategy = relationship("strategies", back_populates="files")
 
 # class Pairs(Base):
 #     __tablename__ = "pairs"
