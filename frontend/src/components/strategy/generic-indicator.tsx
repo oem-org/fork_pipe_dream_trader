@@ -21,15 +21,15 @@ export default function GenericIndicator({ indicatorId, settings_schema, setting
 	const [errors, setErrors] = useState<Record<string, string>>({});
 
 	const { strategyId } = useStrategyStore();
-	const { mutateAsync: updateIndicator = useUpdateIndicator(strategyId)
+	const { mutateAsync: updateIndicator } = useUpdateIndicator(strategyId);
 
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-			setFormData({
-				...formData,
-				[e.target.name]: e.target.value,
-			});
-		};
+		setFormData({
+			...formData,
+			[e.target.name]: e.target.value,
+		});
+	};
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
@@ -77,7 +77,7 @@ export default function GenericIndicator({ indicatorId, settings_schema, setting
 		} else {
 			setErrors({});
 			delete convertedFormData.errors
-			const data = updateIndicator(indicatorId, convertedFormData)
+			const data = updateIndicator({ indicatorId, settings: convertedFormData })
 			console.log(data)
 			console.log('Form submitted successfully with data:', convertedFormData);
 		}
