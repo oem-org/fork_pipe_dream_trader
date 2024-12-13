@@ -2,8 +2,7 @@
 from sqlalchemy.orm import Session
 
 from ..models import Indicators
-from .data_indicators.ao import ao
-from .data_indicators.rsi import rsi
+from ..indicators import ao, rsi
 
 
 def indicators_seeder(session: Session):
@@ -15,16 +14,18 @@ def indicators_seeder(session: Session):
     try:
         for indicator_dict in indicator_data:
             kind = indicator_dict.get("kind", "")
-            settings = indicator_dict.get("default_settings", {})
+            default_settings = indicator_dict.get("default_settings", {})
             chart_style = indicator_dict.get("chart_style", "")
             description = indicator_dict.get("description", "")
+            settings_schema = indicator_dict.get("settings_schema", "")
             print(indicator_dict)
             existing_indicator = session.query(Indicators).filter_by(kind=kind).first()
 
             if not existing_indicator:
                 new_indicator = Indicators(
                     kind=kind,
-                    default_settings=settings,
+                    default_settings=default_settings,
+                    settings_schema=settings_schema,
                     chart_style=chart_style,
                     description=description,
                 )

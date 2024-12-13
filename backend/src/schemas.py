@@ -1,13 +1,35 @@
 from enum import Enum
-from pydantic import BaseModel
+from typing import Any, Dict, Optional, Union, List
 
-from pydantic import BaseModel, Field
-from typing import Optional, Any, Dict
+from pydantic import BaseModel
 
 
 class FileTypeEnum(Enum):
     CSV = "csv"
     JSON = "json"
+
+
+class DataSourceEnum(Enum):
+    FILE = "file"
+    DATABASE = "database"
+
+
+class FileSourceRequest(BaseModel):
+    fk_file_id: int
+    timeperiod: Optional[str]
+
+
+class DatabaseSourceRequest(BaseModel):
+    table: str
+    pair: str
+    timeperiod: Optional[str]
+
+
+class StrategyRequest(BaseModel):
+    name: str
+    description: str
+    data_source: Union[FileSourceRequest, DatabaseSourceRequest]
+
 
 class FileSchema(BaseModel):
     id: int
@@ -15,24 +37,31 @@ class FileSchema(BaseModel):
     name: str
     file_type: FileTypeEnum
 
+
 class StrategySchema(BaseModel):
     id: int
     name: str
     description: Optional[str] = None
     fk_user_id: int
-    indicators: Optional[Dict] = None  
-    data_source: Optional[Dict] = None  
+    data_source: Optional[Dict] = None
     model_config = {"from_attributes": True}
+
+
+class StrategyIndicatorSchema(BaseModel):
+    id: int
+    name: str
+    fk_strategy_id: int
+    fk_indicator_id: int
+    settings: Dict
 
 class StrategyResponseSchema(BaseModel):
     id: int
     title: str
     description: Optional[str] = None
     fk_user_id: int
-    indicators: Optional[Any] = None  
+    indicators: Optional[Any] = None
     data_source: Optional[Any] = None
     model_config = {"from_attributes": True}
-
 
 
 class ChartDataRequest(BaseModel):

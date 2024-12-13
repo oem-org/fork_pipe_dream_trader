@@ -1,7 +1,7 @@
 
 import { useQuery } from "@tanstack/react-query"
 import { getAllPairsDbApi } from "../apiClientInstances"
-//import Strategy from "../models/Strategy"
+//import {Strategy} from "../models/Strategy"
 import Pair from "@/interfaces/Pair"
 // import {GridItemClass} from "../models/GridItem"
 

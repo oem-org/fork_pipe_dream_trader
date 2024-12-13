@@ -8,9 +8,9 @@ import { queryClient } from "@/main";
 export default function TopNav() {
   const { logout } = useAuthStore()
   return (
-    <nav className="bg-gray-800 p-3">
+    <nav className="bg-gray-800 p-3 z-30">
       <ul className="flex flex-row items-center justify-between">
-        <div className="flex flex-row"> {/* Corrected the comma to space */}
+        <div className="flex flex-row">
           <li className="text-white text-xl">MyApp</li>
           <NavItem to="/" label="Dashboard" />
           <NavItem to="/data" label="Data" />

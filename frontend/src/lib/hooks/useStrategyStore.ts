@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import Strategy from "../../interfaces/Strategy"
+import { Strategy } from "../../interfaces/Strategy"
 
 interface StrategyStore {
 	strategies: Strategy[]

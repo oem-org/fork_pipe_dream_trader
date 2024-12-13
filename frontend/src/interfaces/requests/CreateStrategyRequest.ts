@@ -1,4 +1,11 @@
-import Strategy from "../Strategy";  // Import the Strategy interface
+import { FileSource, DatabaseSource } from "../Strategy";
 
-export default interface CreateStrategyRequest extends Omit<Strategy, 'id'> {
+
+
+
+export interface CreateStrategyRequest {
+	name: string;
+	description: string;
+	data_source: FileSource | DatabaseSource;
+	indicators?: Record<string, any>;
 }

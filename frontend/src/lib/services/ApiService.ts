@@ -3,13 +3,15 @@ import axios, { AxiosInstance } from "axios";
 class ApiService {
 	protected axiosInstance: AxiosInstance;
 	protected endpoint: string;
+	protected model: string;
 	protected headers: Record<string, string>;
 
-	constructor(endpoint: string, headers: Record<string, string>) {
+	constructor(endpoint: string, headers: Record<string, string>, model: string = "") {
 		const url = 'http://localhost:8000'
 
 		this.axiosInstance = axios.create({ baseURL: url });
 		this.endpoint = endpoint;
+		this.model = model;
 		this.headers = headers;
 	}
 
@@ -18,6 +20,7 @@ class ApiService {
 		if (user) {
 			try {
 				const token = JSON.parse(user);
+				console.log(token)
 				if (token && token.token_type && token.access_token) {
 					return {
 						"Authorization": `${token.token_type} ${token.access_token}`,
@@ -32,11 +35,33 @@ class ApiService {
 		return {};
 	}
 
-	protected getHeaders(): Record<string, string> {
+	protected async getHeaders(): Promise<Record<string, string>> {
 		return {
 			...this.headers,
 			...this.getAuthorizationHeader(),
 		};
+	}
+
+}
+
+
+export class GetAllRelationService<R> extends ApiService {
+	async getAll(id: number): Promise<R[]> {
+		console.log(this.getHeaders())
+		try {
+			const response = await this.axiosInstance.get<R[]>(
+
+				`${this.endpoint}/${id}/${this.model}`,
+				{
+					headers: await this.getHeaders(),
+				});
+			console.log(response.data)
+			return response.data;
+		} catch (error) {
+			console.error("Error in get all");
+
+			throw error;
+		}
 	}
 
 }
@@ -46,11 +71,11 @@ export class GetAllService<R> extends ApiService {
 		console.log(this.getHeaders())
 		try {
 			const response = await this.axiosInstance.get<R[]>(this.endpoint, {
-				headers: this.getHeaders(),
+				headers: await this.getHeaders(),
 			});
 			return response.data;
 		} catch (error) {
-			console.error(error);
+			console.error("Error in get all");
 
 			throw error;
 		}
@@ -59,57 +84,18 @@ export class GetAllService<R> extends ApiService {
 }
 
 
-export class GetWithParamsService<T, R> extends ApiService {
-	async getWithParams(id: number, params?: T): Promise<R> {
-		try {
-			const response = await this.axiosInstance.get<R>(`${this.endpoint}/${id}/`, {
-				params,
-				headers: this.getHeaders(),
-			});
-			return response.data;
-		} catch (error) {
-			console.error(error)
-			throw error;
-		}
-	}
-}
-
-export class GetWithQueryService<R> extends ApiService {
-	async getQueryString(id: any, queryString: string): Promise<R> {
-		try {
-			const response = await this.axiosInstance.get<R>(`${this.endpoint}/?${queryString}=${id}`, {
-				headers: this.getHeaders(),
-			});
-			return response.data;
-		} catch (error) {
-			console.error(error)
-			throw error;
-		}
-	}
-}
-
-export class GetService<R> extends ApiService {
-	async get(id: number): Promise<R> {
-		try {
-			const response = await this.axiosInstance.get<R>(`${this.endpoint}/${id}/`, {
-				headers: this.getHeaders(),
-			});
-
-			return response.data;
-		} catch (error) {
-			console.error(error);
-
-			throw error;
-		}
-	}
-}
-
-export class PostService<T, R> extends ApiService {
-	async post(data: T): Promise<R> {
+export class PostRelationService<T, R> extends ApiService {
+	async post(id: number, data: T): Promise<R> {
+		console.log('post data', data)
+		console.log('post data', data)
+		console.log('post data', data)
+		console.log('post data', data)
+		console.log('post data', data)
+		console.log('post data', data)
 		console.log('post data', data)
 		try {
-			const response = await this.axiosInstance.post<R>(this.endpoint, data, {
-				headers: this.getHeaders(),
+			const response = await this.axiosInstance.post<R>(`${this.endpoint}/${id}/${this.model}`, data, {
+				headers: await this.getHeaders(),
 			});
 
 			return response.data;
@@ -120,11 +106,105 @@ export class PostService<T, R> extends ApiService {
 	}
 }
 
+export class GetWithParamsService<T, R> extends ApiService {
+	async get(id: number, params?: T): Promise<R> {
+		try {
+			const response = await this.axiosInstance.get<R>(`${this.endpoint}/${id}/`,
+				{
+					// query string parameters
+					params,
+					headers: await this.getHeaders(),
+				}
+			);
+			return response.data;
+		} catch (error) {
+			console.error("Error in with params")
+			throw error;
+		}
+	}
+}
+
+export class GetWithQueryService<R> extends ApiService {
+	async getQueryString(queryString: string): Promise<R> {
+		try {
+			const response = await this.axiosInstance.get<R>(`${this.endpoint}/?${queryString}`, {
+				headers: await this.getHeaders(),
+			});
+			return response.data;
+		} catch (error) {
+			console.error("Error in get string query")
+			throw error;
+		}
+	}
+}
+
+export class GetService<R> extends ApiService {
+	async get(id: number): Promise<R> {
+		try {
+			const response = await this.axiosInstance.get<R>(`${this.endpoint}/${id}/`, {
+				headers: await this.getHeaders(),
+			});
+
+			return response.data;
+		} catch (error) {
+			console.error("Error in get ");
+
+			throw error;
+		}
+	}
+}
+
+
+
+//export class PostWithIdServicevT, R> extends ApiService {
+//	async post(id: number,  ,data: T): Promise<R> {
+//		console.log('post data', data)
+//		try {
+//			const response = await this.axiosInstance.post<R>(`${this.endpoint}/${id}/`, data, {
+//				headers: await this.getHeaders(),
+//			});
+//
+//			return response.data;
+//		} catch (error) {
+//			console.log("PostService throwing an error")
+//			throw error;
+//		}
+//	}
+//}
+
+export class PostService<T, R> extends ApiService {
+	async post(data: T): Promise<R> {
+		console.log('post data', data)
+		try {
+			const response = await this.axiosInstance.post<R>(this.endpoint, data, {
+				headers: await this.getHeaders(),
+			});
+
+			return response.data;
+		} catch (error) {
+			console.log("PostService throwing an error")
+			throw error;
+		}
+	}
+}
+export class DeleteRelationService extends ApiService {
+	async delete(id: number, modelId: number): Promise<void> {
+		try {
+			await this.axiosInstance.delete(`${this.endpoint}/${id}/${this.model}/${modelId}`, {
+				headers: await this.getHeaders(),
+			});
+		} catch (error) {
+			console.error(error);
+
+			throw error;
+		}
+	}
+}
 export class DeleteService extends ApiService {
 	async delete(id: number): Promise<void> {
 		try {
 			await this.axiosInstance.delete(`${this.endpoint}/${id}`, {
-				headers: this.getHeaders(),
+				headers: await this.getHeaders(),
 			});
 		} catch (error) {
 			console.error(error);
@@ -134,16 +214,33 @@ export class DeleteService extends ApiService {
 	}
 }
 
-export class UpdateClient<T, R> extends ApiService {
-	async update(id: number, data: T): Promise<R> {
+
+export class UpdateService<T, R> extends ApiService {
+	async put(id: number, data: T): Promise<R> {
 		try {
-			const response = await this.axiosInstance.put<R>(`${this.endpoint}/${id}/`, data, {
-				headers: this.headers,
+			const response = await this.axiosInstance.put<R>(`${this.endpoint}/${id}`, data, {
+				headers: await this.getHeaders(),
 			});
 
 			return response.data;
 		} catch (error) {
-			console.error(error);
+			console.error("Error in update");
+
+			throw error;
+		}
+	}
+}
+
+export class UpdateRelationService<T, R> extends ApiService {
+	async put(id: number, modelId: number, data: T): Promise<R> {
+		try {
+			const response = await this.axiosInstance.put<R>(`${this.endpoint}/${id}/${this.model}/${modelId}`, data, {
+				headers: await this.getHeaders(),
+			});
+
+			return response.data;
+		} catch (error) {
+			console.error("Error in update");
 
 			throw error;
 		}
