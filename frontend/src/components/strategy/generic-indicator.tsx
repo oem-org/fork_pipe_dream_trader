@@ -3,23 +3,33 @@ import { Button } from '../shared/buttons/button';
 
 import { isFloat, addDecimal } from '@/lib/utils/numeric_utils';
 
+import { useUpdateIndicator } from '@/lib/hooks/useUpdateIndicator';
+
+import extractFormData from '@/lib/utils/generics/extractFormData';
+import useStrategyStore from '@/lib/hooks/useStrategyStore';
+
 
 interface Props {
+	indicatorId: number,
 	settings: Record<string, any>;
 	settings_schema: Record<string, any>;
 }
 
 
-export default function GenericIndicator({ settings_schema, settings }: Props) {
+export default function GenericIndicator({ indicatorId, settings_schema, settings }: Props) {
 	const [formData, setFormData] = useState<Record<string, any>>(settings);
 	const [errors, setErrors] = useState<Record<string, string>>({});
 
+	const { strategyId } = useStrategyStore();
+	const { mutateAsync: updateIndicator = useUpdateIndicator(strategyId)
+
+
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setFormData({
-			...formData,
-			[e.target.name]: e.target.value,
-		});
-	};
+			setFormData({
+				...formData,
+				[e.target.name]: e.target.value,
+			});
+		};
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
@@ -66,6 +76,9 @@ export default function GenericIndicator({ settings_schema, settings }: Props) {
 			setErrors(convertedFormData.errors);
 		} else {
 			setErrors({});
+			delete convertedFormData.errors
+			const data = updateIndicator(indicatorId, convertedFormData)
+			console.log(data)
 			console.log('Form submitted successfully with data:', convertedFormData);
 		}
 	};
@@ -169,7 +182,7 @@ export default function GenericIndicator({ settings_schema, settings }: Props) {
 						</div>
 					);
 				})}
-				<Button type="submit">Submit</Button>
+				<Button type='submit'> Submit</Button>
 			</form>
 		</div>
 	);

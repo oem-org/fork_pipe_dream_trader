@@ -56,7 +56,7 @@ export default function IndicatorSection() {
 					{strategyIndicators.map((indicator) => (
 						<li key={indicator.id}>
 
-							<GenericIndicator settings_schema={JSON.parse(indicator.settings_schema)} settings={indicator.settings} />
+							<GenericIndicator indicatorId={indicator.id} settings_schema={JSON.parse(indicator.settings_schema)} settings={indicator.settings} />
 							<Button onClick={() => deleteIndicatorMutation(indicator.id)}>
 								{indicator.id}
 

@@ -10,8 +10,6 @@ import File from "@/interfaces/File";
 import Timeseries from "@/interfaces/Timeseries";
 import getFilesQuery from "@/lib/queries/getFilesQuery";
 import { getTimeseriesApi, postStrategyIndicatorsApi } from "@/lib/apiClientInstances";
-import getIndicatorsQuery from "@/lib/queries/getIndicatorsQuery";
-import getStrategyIndicatorsQuery from "@/lib/queries/getStrategyIndicatorsQuery";
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
 
 import IndicatorSection from "@/components/strategy/indicator-section";

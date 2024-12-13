@@ -17,7 +17,7 @@ export const useAddIndicator = (paramId: number) => {
 		mutationFn: (indicator: Indicator) => addIndicator(indicator, paramId),
 		onSuccess: () => {
 			// Invalidate cache to refetch indicators
-			queryClient.invalidateQueries(["strategyIndicators"]);
+			queryClient.invalidateQueries({ queryKey: ["strategyIndicators"] });
 		},
 		onError: (error: unknown) => {
 			console.error("Failed to add indicator:", error);
