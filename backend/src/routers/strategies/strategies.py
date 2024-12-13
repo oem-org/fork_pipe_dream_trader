@@ -1,20 +1,17 @@
 import logging
 from typing import Any, Dict, List, Optional
 
-from pandas.io.common import uses_relative
 
-from fastapi import APIRouter, HTTPException, Path, Query
-from passlib.context import CryptContext
-from pydantic import BaseModel, Field
-from sqlalchemy import or_
+from fastapi import APIRouter, HTTPException, Path
+from pydantic import BaseModel
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import load_only
 from starlette import status
-from sqlalchemy.orm import Session, joinedload  
+from sqlalchemy.orm import joinedload  
 
 from ...dependencies import db_dependency, user_dependency
 from ...models import Strategies, StrategyIndicators
-from ...schemas import DataSourceEnum, StrategyRequest, StrategySchema
+from ...schemas import  StrategyRequest, StrategySchema
 from ...utils.debugging.print_db_object import print_db_object
 from ...utils.exceptions import handle_db_error, handle_not_found_error
 
@@ -213,9 +210,9 @@ async def read_all_strategy_indicators(user: user_dependency, db: db_dependency,
         instrumented_indicators = [
             {
                 "id": si.id,
-                "kind": si.indicator.kind,
                 "settings": si.settings,
-                "indicator_id": si.indicator.id,
+                "settings_schema": si.indicator.settings_schema,
+                "fk_indicator_id": si.indicator.id,
             }
             for si in strategy.strategy_indicators
         ]

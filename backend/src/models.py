@@ -25,6 +25,7 @@ class StrategyIndicators(Base):
     fk_strategy_id = Column(Integer, ForeignKey("strategies.id"), primary_key=True)
     fk_indicator_id = Column(Integer, ForeignKey("indicators.id"), primary_key=True)
     settings = Column(JSON, nullable=True)  
+    settings_schema = Column(JSON)
 
     strategy = relationship("Strategies", back_populates="strategy_indicators")
     indicator = relationship("Indicators", back_populates="strategy_indicators")

@@ -55,7 +55,8 @@ export default function IndicatorSection() {
 				<ul className="list-disc pl-4">
 					{strategyIndicators.map((indicator) => (
 						<li key={indicator.id}>
-							<GenericIndicator settings={indicator.settings} />
+
+							<GenericIndicator settings_schema={JSON.parse(indicator.settings_schema)} settings={indicator.settings} />
 							<Button onClick={() => deleteIndicatorMutation(indicator.id)}>
 								{indicator.id}
 

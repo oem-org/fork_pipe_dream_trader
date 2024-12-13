@@ -36,10 +36,8 @@ export default function StrategyPage() {
 
   const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
   const { data: strategies } = getStrategiesQuery();
-  const { data: strategyIndicators, error: siError, isLoading: siIsLoading, refetch: siRefetch } = getStrategyIndicatorsQuery(paramId);
   const { data: files } = getFilesQuery();
 
-  console.log(strategyIndicators, "strategy indicators")
 
 
   useEffect(() => {

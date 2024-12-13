@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query"
 import { getStrategyIndicatorsApi } from "../apiClientInstances"
 import { StrategyIndicator } from "@/interfaces/StrategyIndicator"
 
+
+
 const getStrategyIndicatorsQuery = (strategyId: number) => {
 	const fetchStrategyIndicators = async (): Promise<StrategyIndicator[]> => {
 		try {

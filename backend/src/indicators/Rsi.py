@@ -1,9 +1,24 @@
+import json
 from pydantic import BaseModel, Field
 from typing import Dict, Any
 
-# Define a Pydantic model for the RSI settings
+
 class Rsi(BaseModel):
-    kind: str = "rsi"
+    """
+        Args:
+        close (pd.Series): Series of 'close's
+        length (int): It's period. Default: 14
+        scalar (float): How much to magnify. Default: 100
+        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+            version. Default: True
+        drift (int): The difference period. Default: 1
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    """
     length: int = Field(14)
     scalar: float = Field(100)
     talib: bool = Field(False)
@@ -17,10 +32,13 @@ class Rsi(BaseModel):
 
 rsi_settings = Rsi()
 
+schema = rsi_settings.model_json_schema()
+serialized_schema = json.dumps(schema)
+
 rsi = {
     "kind": "rsi",
-    "default_settings": rsi_settings.dict(),  # Convert the Pydantic model to a dictionary
-    "settings_schema": rsi_settings.schema(), 
+    "default_settings": rsi_settings.dict(),  
+    "settings_schema": serialized_schema, 
     "chart_style": "line_add_pane",
     "description": """Relative Strength Index (RSI)
 
