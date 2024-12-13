@@ -7,12 +7,12 @@ const updateIndicator = async (strategyId: number, indicatorId: number, settings
 	return response;
 };
 
-export const useUpdateIndicator = (paramId: number) => {
+export const useUpdateIndicator = (strategyId: number) => {
 	const queryClient = useQueryClient();
 
 	return useMutation({
 		mutationFn: ({ indicatorId, settings }: { indicatorId: number; settings: any }) =>
-			updateIndicator(indicatorId, paramId, settings),
+			updateIndicator(strategyId, indicatorId, settings),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["strategyIndicators"] });
 		},
