@@ -57,7 +57,7 @@ export const postStrategyApi = new PostService<CreateStrategyRequest, Strategy>(
 
 
 //Timeseries
-export const getTimeseriesApi = new GetWithQueryService<Timeseries[]>('timeseries', {})
+export const getTimeseriesApi = new GetWithQueryService<string>('timeseries', {})
 
 //Files
 export const getAllFilesApi = new GetAllService<File>('files', {})

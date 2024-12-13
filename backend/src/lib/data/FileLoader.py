@@ -81,7 +81,7 @@ class FileLoader:
             self.df["low"] = pd.to_numeric(self.df["low"], errors="coerce")
             self.df["high"] = pd.to_numeric(self.df["high"], errors="coerce")
             self.df["time"] = pd.to_datetime(
-                self.df["time"], unit="ms", errors="coerce"
+                self.df["time"], unit="s", errors="coerce"
             )
 
         except Exception as e:

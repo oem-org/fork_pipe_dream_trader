@@ -4,5 +4,4 @@ export default interface Timeseries {
     high: number;
     low: number;
     close: number;
-    volume?: number;
 }

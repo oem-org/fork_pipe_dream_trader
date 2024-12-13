@@ -12,10 +12,11 @@ import getFilesQuery from "@/lib/queries/getFilesQuery";
 import { getTimeseriesApi, postStrategyIndicatorsApi } from "@/lib/apiClientInstances";
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
 
-
-
 import IndicatorSection from "@/components/strategy/indicator-section";
 import TimeseriesService from "@/lib/services/TimeseriesService";
+import Volume from "@/interfaces/Volume";
+import { volumeData } from "@/components/shared/chart/volume";
+import { priceData2 } from "@/components/shared/chart/priceData2";
 
 
 
@@ -33,6 +34,7 @@ export default function StrategyPage() {
   const [dataSourceType, setDataSourceType] = useState<string>("");
   const [timeperiod, setTimeperiod] = useState<string>("recent");
   const [timeseries, setTimeseries] = useState<Timeseries[]>(priceData);
+  const [volume, setVolume] = useState<Volume[]>(volumeData);
   //const [selectedIndicator, setSelectedIndicator] = useState<number>(0)
 
   const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
@@ -66,15 +68,25 @@ export default function StrategyPage() {
     }
   }, [id]);
 
+  const test = () => {
+    setTimeseries(priceData2)
+  }
+  //TODO:
   const handleFileChange = async (file: File) => {
     setFileId(file.id);
     try {
       const data = await getTimeseriesApi.getQueryString(`file=${file.id}&timeperiod=${timeperiod}`);
       if (!!data) {
-
-        const timeseriesService = new TimeseriesService(data)
-        const ohlc = timeseriesService.getOHLC()
+        const json = JSON.parse(data)
+        const timeseriesService = new TimeseriesService()
+        timeseriesService.processOHLC(json)
+        const ohlc = timeseriesService.ohlc
+        console.log(ohlc)
+        setTimeseries(ohlc)
+        const volume = timeseriesService.volume
+        setVolume(volume)
         console.log(ohlc);
+        console.log(volume);
       }
     } catch (error) {
       console.error(error);
@@ -102,6 +114,7 @@ export default function StrategyPage() {
         <>
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
             <section className="lg:col-span-1 p-4 bg-gray-100 rounded-lg">
+              <button onClick={() => test()}>test</button>
               <h4 className="text-xl font-bold mb-4">{strategy.name}</h4>
               <p>Data Source Type: {dataSourceType}</p>
               <GenericSelect<File>
@@ -128,7 +141,7 @@ export default function StrategyPage() {
                 <p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded transparent-bg">
                   Chart Title
                 </p>
-                <Chart timeseries={timeseries} />
+                <Chart volume={volume} timeseries={timeseries} />
               </div>
             </div>
           </div>
