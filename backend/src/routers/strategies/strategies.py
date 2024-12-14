@@ -47,7 +47,7 @@ async def create_strategy(
     db: db_dependency,
     strategy_request: StrategyRequest,
 ):
-    print(strategy_request,"STRATEGYREQUEST!!!!!!!!!!!!!")
+    print(strategy_request.model_dump(),"STRATEGYREQUEST!!!!!!!!!!!!!")
     try:
         # Create strategy model instance
         strategy_model = Strategies(

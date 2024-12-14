@@ -40,7 +40,7 @@ class Strategies(Base):
     data_source = Column(JSON, nullable=True)
     user = relationship("Users", back_populates="strategies")
     fk_file_id = Column(Integer, ForeignKey("files.id"))
-
+    file = relationship("Files", back_populates="strategies") 
     # file = relationship("files", back_populates="strategies")
     # indicators = relationship(
     #     "Indicators",
@@ -76,6 +76,7 @@ class Files(Base):
     path = Column(String)
     name = Column(String)
     file_type = Column(Enum(FileTypeEnum))
+    strategies = relationship("Strategies", back_populates="file")
     # strategy = relationship("strategies", back_populates="files")
 
 # class Pairs(Base):

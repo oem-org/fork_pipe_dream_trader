@@ -3,10 +3,9 @@ import getStrategyQuery from "@/lib/queries/getStrategyQuery";
 import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
 import { useState, useEffect } from "react";
 import { Chart } from "@/components/shared/chart/chart";
-import { priceData } from "@/components/shared/chart/priceData";
-import GenericSelect from "@/components/shared/lists/generic-select";
 import { Strategy, DatabaseSource, FileSource } from "@/interfaces/Strategy";
 import File from "@/interfaces/File";
+import GenericSelect from "@/components/shared/lists/generic-select";
 import Timeseries from "@/interfaces/Timeseries";
 import getFilesQuery from "@/lib/queries/getFilesQuery";
 import { getTimeseriesApi, postStrategyIndicatorsApi } from "@/lib/apiClientInstances";
@@ -15,7 +14,6 @@ import useStrategyStore from "@/lib/hooks/useStrategyStore";
 import IndicatorSection from "@/components/strategy/indicator-section";
 import TimeseriesService from "@/lib/services/TimeseriesService";
 import Volume from "@/interfaces/Volume";
-import { volumeData } from "@/components/shared/chart/volume";
 import { priceData2 } from "@/components/shared/chart/priceData2";
 
 
@@ -24,7 +22,7 @@ import { priceData2 } from "@/components/shared/chart/priceData2";
 export default function StrategyPage() {
   const { id } = useParams();
   const paramId = id ? parseInt(id) : NaN;
-  const { setStrategyId } = useStrategyStore();
+  const { strategyId, setStrategyId } = useStrategyStore();
 
   // setStrategyId(paramId)
 
@@ -75,7 +73,8 @@ export default function StrategyPage() {
   const handleFileChange = async (file: File) => {
     setFileId(file.id);
     try {
-      const data = await getTimeseriesApi.getQueryString(`file=${file.id}&timeperiod=${timeperiod}`);
+      console.log(strategyId, "str")
+      const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
       if (!!data) {
         const json = JSON.parse(data)
         const timeseriesService = new TimeseriesService()

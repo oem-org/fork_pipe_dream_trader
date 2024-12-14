@@ -17,7 +17,7 @@ interface ChartProps {
 		areaBottomColor?: string;
 	};
 }
-
+// TODO: fix
 export default function ChartCanvas(props: ChartProps): React.ReactElement {
 	const {
 		chartContainerRef,
