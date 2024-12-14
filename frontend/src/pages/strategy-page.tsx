@@ -34,14 +34,29 @@ export default function StrategyPage() {
   const { data: strategies } = getStrategiesQuery();
   const { data: files } = getFilesQuery();
 
+  function parseJsonStrings(obj: Record<string, any>) {
+    for (const key in obj) {
+      try {
+        const parsedValue = JSON.parse(obj[key]);
+
+        // Replace the string value with the parsed JSON object
+        obj[key] = parsedValue;
+      } catch (error) {
+        // Log a warning if the string is not valid JSON
+        console.warn(`Key "${key}" contains invalid JSON:`, obj[key]);
+      }
+    }
+    return obj; // Return the updated object
+  }
+
+
   async function LoadChart() {
     try {
       if (strategyId) {
         console.log(strategyId, "LOOOOOOOOOOOOOOOOOOOL");
         const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
-        console.log("adrtttttttt", data)
-        const timeseriesData = JSON.parse(data);
-
+        console.log(parseJsonStrings(data))
+        // Attempt to parse the JSON string
         console.log("THE DATA", timeseriesData);
         //const timeseriesData = JSON.parse(data.timeseries);
         //console.log("KEYS", timeseriesData.keys());

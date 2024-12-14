@@ -63,27 +63,46 @@ class IndicatorLoader:
             name="indicators",
         ta=self.indicators
         )
-
+        
+        self.df.set_index(pd.DatetimeIndex(self.df["time"]), inplace=True)
         # (2) Run the Strategy
         self.df.ta.strategy(MyStrategy)
         # print(test.head(1))
-
+        
         self.columns = self.df.columns.tolist()
+
 
     def split_dataframe(self):
         """
-        Create dataframes, with the same index, for each indicator to be loaded by the frontend separately,
-        and store them in a dictionary, with the column name as the key, as JSON.
+        Create dataframes with the same index for each indicator to be loaded by the frontend separately.
+        Store them in a dictionary, with the column name as the key, as JSON.
+        Also create a combined JSON for specific columns: 'time', 'open', 'high', 'low', 'close'.
         """
         json_dfs = {}
 
-        for col in self.df.columns:
-            thecol = self.df[[col]]
+        # Ensure columns exist for the combined OHLC JSON
+        required_columns = {"time", "open", "high", "low", "close"}
+        if required_columns.issubset(set(self.df.columns)):
+            # Create a DataFrame with the required columns
+            ohlc_df = self.df[list(required_columns)]
             
+            # Convert the combined DataFrame to JSON
+            json_dfs["ohlc"] = ohlc_df.to_json(orient="index")
+
+        for col in self.df.columns:
+            if col in {"time", "tradecount", "symbol"}:
+                continue  # Skip these columns
+
+            # Include the 'time' column and the specific column
+            thecol = self.df[["time", col]]
+
+            # Convert the DataFrame to JSON
             col_json = thecol.to_json(orient="index")
             
+            # Add the JSON to the dictionary with the column name as the key
             json_dfs[col] = col_json
 
+        # Print all key names in the dictionary
         print("Column Names (Keys):")
         for key in json_dfs.keys():
             print(key)
