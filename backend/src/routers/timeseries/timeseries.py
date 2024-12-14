@@ -69,12 +69,6 @@ async def read_all(
                 print(f"Rows with duplicate indices:\n{df.loc[duplicate_indices]}")
 
             print(indicatorLoader.df.head())
-            print('that json')
-            print('that json')
-            print('that json')
-            print('that json')
-            print('that json')
-            print('that json')
             json = indicatorLoader.df.to_json(orient="index")
             print('that json')
             print(json)

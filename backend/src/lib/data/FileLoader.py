@@ -55,11 +55,6 @@ class FileLoader:
         Loads data into the DataFrame. This method can be called by subclasses
         for any file reading operation.
         """
-        print("load data")
-        print("load data")
-        print("load data")
-        print("load data")
-        print("load data")
         try:
             if self.file_type == FileTypeEnum.JSON:
                 self.df = pd.read_json(self.file_path)
@@ -67,6 +62,7 @@ class FileLoader:
                 self.df = pd.read_csv(self.file_path)
             
                 self.df.columns = self.df.columns.str.lower().str.strip()
+                print("first head")
                 timestamps = self.df['unix'].head(10)
                 print(timestamps)
             # Convert timestamps to Unix timestamp (seconds since the epoch)
@@ -77,7 +73,7 @@ class FileLoader:
 
             # Display the result
                 # print("Unix Timestamps:", unix_timestamps)
-                # print("Valid Timevtamp Length Check:", valid_length_check)
+                # print("Valid Tigggtamp Length Check:", valid_length_check)
             column_mapping = {
                 "unix": "time",
                 # "timestamp": "time",
@@ -96,8 +92,8 @@ class FileLoader:
             self.df["close"] = pd.to_numeric(self.df["close"], errors="coerce")
             self.df["low"] = pd.to_numeric(self.df["low"], errors="coerce")
             self.df["high"] = pd.to_numeric(self.df["high"], errors="coerce")
-            # self.df["time"] = pd.to_datetime(
-            #     self.df["time"], unit="ms", errors="coerce"
+            # self.df["time"] = pd.to_davetime(
+            #     self.df["time"], unit="s", errors="coerce"
             # )
         except Exception as e:
             raise Exception(f"Error reading file: {e}")

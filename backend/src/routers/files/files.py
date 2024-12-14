@@ -73,8 +73,8 @@ async def save_uploaded_file(db: db_dependency, file: UploadFile):
     FastAPI automatically reads the file and populates UploadFile.
     UploadFile comes with file, filename, size and headers as instance attributes
     -------------------------------------------------------------------
-    Saves to disk if validation passes otherwise retures a list of broken
-    rows
+    Will saves to disk if validation passes otherwise retures a list of broken
+    rows in the error message
 
     -------------------------------------------------------------------
     FastApi dont have max file size so depends on the server

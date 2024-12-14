@@ -19,9 +19,9 @@ class FileValidator(FileLoader):
         # missing_fields = self.df[['time', 'volume', 'open']].isna().any(axis=1)
 
         # Check for missing or invalid timestamps
-        invalid_time = self.df['time'].isna() | ~self.df['time'].apply(
-            lambda x: isinstance(x, (int, float)) and len(str(int(x))) in [10, 13]
-        )
+        # invalid_time = self.df['time'].isna() | ~self.df['time'].apply(
+        #     lambda x: isinstance(x, (int, float)) and len(str(int(x))) in [10, 13]
+        # )
 
         invalid_volume = self.df['volume'] < 0
 
@@ -33,16 +33,12 @@ class FileValidator(FileLoader):
         invalid_high = ~self.df['high'].apply(lambda x: isinstance(x, (int, float)))
 
         # Combine all invalid conditions into one condition with bitwise OR
-        invalid_rows = invalid_time | invalid_volume | invalid_open | invalid_close | invalid_low | invalid_high
+        invalid_rows = invalid_volume | invalid_open | invalid_close | invalid_low | invalid_high
         print("INVALED")
-        print(invalid_rows, "invalid ")
+        print(invalid_rows.head(1), "invalid ")
         # | invalid_timestamp_length
-        print("INDEX")
         duplicate_indices = self.df.index[self.df.index.duplicated()].tolist()
-        print(duplicate_indices, "duplicate indexes")
-        print(self.df.head(4))
         if duplicate_indices:
-            print(f"Duplicate indices found: {duplicate_indices}")
             print(f"Rows with duplicate indices:\n{self.df.loc[duplicate_indices]}")
             return False
         for index in self.df[invalid_rows].index:
@@ -66,7 +62,7 @@ class FileValidator(FileLoader):
                 error_message.append("Invalid high value")
 
             errors.append((index, ", ".join(error_message)))
-            print(errors)
+            print(len(errors))
         if len(errors) == 0:
             return True
 
