@@ -97,6 +97,7 @@ class FileLoader:
             self.df["close"] = pd.to_numeric(self.df["close"], errors="coerce")
             self.df["low"] = pd.to_numeric(self.df["low"], errors="coerce")
             self.df["high"] = pd.to_numeric(self.df["high"], errors="coerce")
+            self.df.set_index(pd.DatetimeIndex(self.df["time"]), inplace=True)
             # self.df["time"] = pd.to_davetime(
             #     self.df["time"], unit="s", errors="coerce"
             # )

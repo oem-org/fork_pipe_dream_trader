@@ -11,29 +11,6 @@ from ...models import Files, Strategies, StrategyIndicators  # Assuming you have
 from ...schemas import FileSchema  # Assuming you have a schema for the File
 from ...utils.exceptions import handle_db_error, handle_not_found_error
 
-dummy = [
-    {
-        "kind": "ao",
-        "default_settings": {
-            "fast": {"type": "int", "value": 5},
-            "slow": {"type": "int", "value": 34},
-            "offset": {"type": "int", "value": 0},
-        },
-    },
-    {
-        "kind": "rsi",
-        "default_settings": {
-            "length": {"type": "int", "value": 14},
-            "scalar": {"type": "float", "value": 100},
-            "talib": {"type": "bool", "value": False},
-            "drift": {"type": "int", "value": 1},
-            "offset": {"type": "int", "value": 0},
-        },
-    },
-]
-
-
-
 
 router = APIRouter(prefix='/timeseries', tags=['chart'])
 
@@ -77,16 +54,23 @@ async def read_all(
             fileLoader = FileLoader(path)
             fileLoader.load_or_reload()
             # print(fileLoader.df)
-            settings_dict = {
-            f"indicator_{ind.id}": ind.settings
-            for ind in strategyModel.strategy_indicators
-            if ind.settings is not None
-            }
-            print(settings_dict)
-            indicatorLoader = IndicatorLoader(fileLoader.df, dummy)
+            all_indicator_settings = [
+                ind.settings
+                for ind in strategyModel.strategy_indicators
+                if ind.settings is not None
+            ]
+            print(all_indicator_settings)
+            indicatorLoader = IndicatorLoader(fileLoader.df, all_indicator_settings)
+            
             indicatorLoader.load_indicators()
+            # print(split)
             # Json stucture {timestamp:{data}}
+            # indicatorLoader.df = indicatorLoader.df.applymap(str)
+            # 
             json = indicatorLoader.df.to_json(orient="index")
+            # split["timeseries"] = json
+            # split = indicatorLoader.split_dataframe()
+            
             return json
     except Exception as e:
         handle_db_error(e, "Unexpected error occurred while fetching the file data")

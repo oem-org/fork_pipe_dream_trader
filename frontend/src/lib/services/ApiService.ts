@@ -20,7 +20,6 @@ class ApiService {
 		if (user) {
 			try {
 				const token = JSON.parse(user);
-				console.log(token)
 				if (token && token.token_type && token.access_token) {
 					return {
 						"Authorization": `${token.token_type} ${token.access_token}`,

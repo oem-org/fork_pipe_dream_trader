@@ -16,16 +16,11 @@ import TimeseriesService from "@/lib/services/TimeseriesService";
 import Volume from "@/interfaces/Volume";
 import { priceData2 } from "@/components/shared/chart/priceData2";
 
-
-
-
 export default function StrategyPage() {
   const { id } = useParams();
   const paramId = id ? parseInt(id) : NaN;
   const { strategyId, setStrategyId } = useStrategyStore();
-
-  // setStrategyId(paramId)
-
+  const isChartLoaded = true;
   const navigate = useNavigate();
 
   const [fileId, setFileId] = useState<number>(0);
@@ -33,26 +28,49 @@ export default function StrategyPage() {
   const [timeperiod, setTimeperiod] = useState<string>("recent");
   const [timeseries, setTimeseries] = useState<Timeseries[]>([]);
   const [volume, setVolume] = useState<Volume[]>([]);
-  //const [selectedIndicator, setSelectedIndicator] = useState<number>(0)
+  //const [isChartLoaded, setIsChartLoaded] = useState(false); // New state to control chart loading
 
   const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
   const { data: strategies } = getStrategiesQuery();
   const { data: files } = getFilesQuery();
 
+  async function LoadChart() {
+    try {
+      if (strategyId) {
+        console.log(strategyId, "LOOOOOOOOOOOOOOOOOOOL");
+        const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
+        console.log("adrtttttttt", data)
+        const timeseriesData = JSON.parse(data);
 
+        console.log("THE DATA", timeseriesData);
+        //const timeseriesData = JSON.parse(data.timeseries);
+        //console.log("KEYS", timeseriesData.keys());
 
-  useEffect(() => {
-    setStrategyId(paramId)
-
-  }, [])
-
-
-  useEffect(() => {
-    if (strategy) {
-      //siRefetch();
+        const timeseriesService = new TimeseriesService();
+        await timeseriesService.processOHLC(timeseriesData);
+        console.log("here")
+        const ohlc = timeseriesService.ohlc;
+        setTimeseries(ohlc);
+        const volume = timeseriesService.volume;
+        setVolume(volume);
+        console.log("volume", ohlc);
+        console.log("ohlc", volume);
+        //setIsChartLoaded(true); // Mark chart as loaded
+      }
+    } catch (error) {
+      console.error(error);
     }
-  }, []);
+  }
 
+  useEffect(() => {
+    if (strategyId) {
+      LoadChart();
+    }
+  }, [strategyId]); // Dependency on strategyId
+
+  useEffect(() => {
+    setStrategyId(paramId);
+  }, [paramId, setStrategyId]);
 
   useEffect(() => {
     if (strategy) {
@@ -67,36 +85,17 @@ export default function StrategyPage() {
   }, [id]);
 
   const test = () => {
-    setTimeseries(priceData2)
-  }
-  //TODO:
-  const handleFileChange = async (file: File) => {
-    setFileId(file.id);
-    try {
-      console.log(strategyId, "str")
-      const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
-      if (!!data) {
-        const json = JSON.parse(data)
-        const timeseriesService = new TimeseriesService()
-        timeseriesService.processOHLC(json)
-        const ohlc = timeseriesService.ohlc
-        setTimeseries(ohlc)
-        const volume = timeseriesService.volume
-        setVolume(volume)
-        console.log("volume", ohlc);
-        console.log("ohlc", volume);
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    setTimeseries(priceData2);
   };
 
-
+  const handleFileChange = async (file: File) => {
+    setFileId(file.id);
+    await LoadChart();
+  };
 
   const handleStrategyChange = (strategy: Strategy) => {
     navigate(`/strategy/${strategy.id}`);
   };
-
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -134,13 +133,17 @@ export default function StrategyPage() {
                 searchEnabled={true}
               />
             </section>
-            <div className="lg:col-span-3 h-[400px] md:h-[600px]">
-              <div className="relative w-full h-full bg-white rounded-lg overflow-hidden">
-                <p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded transparent-bg">
-                  Chart Title
-                </p>
-                <Chart volume={volume} timeseries={timeseries} />
-              </div>
+            <div className="lg:col-span-3">
+              {isChartLoaded ? (
+                <div className="relative w-full h-[400px] md:h-[600px] bg-white rounded-lg overflow-hidden">
+                  <p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded transparent-bg">
+                    Chart Title
+                  </p>
+                  <Chart volume={volume} timeseries={timeseries} />
+                </div>
+              ) : (
+                <p>Loading chart...</p>
+              )}
             </div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">

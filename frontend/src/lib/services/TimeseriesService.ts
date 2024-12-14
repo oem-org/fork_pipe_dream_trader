@@ -12,13 +12,15 @@ export default class TimeseriesService {
 
 	// Lightweight charts accept UTCtimestamp, BuisnessDay or buisness day string in ISO format
 	// https://tradingview.github.io/lightweight-charts/docs/api#time
-	processOHLC(rawData: Record<string, any>) {
+	async processOHLC(rawData: Record<string, any>) {
 		this.ohlc = [];
 		this.volume = [];
 
 		// Javascript references to the same string object in both ohlc and volume
 		Object.values(rawData).forEach((data) => {
 			// Format time to 'YYYY-MM-DD HH:mm:ss'
+			console.log(data);
+
 			//const formattedTime = new Date(data.time).toISOString().split('T').join(' ').split('.')[0];
 
 			this.ohlc.push({

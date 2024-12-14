@@ -207,7 +207,7 @@ async def read_all_strategy_indicators(user: user_dependency, db: db_dependency,
 
         print(f"Strategy indicators: {strategy.strategy_indicators}")
 
-        instrumented_indicators = [
+        indicators = [
             {
                 "id": si.id,
                 "settings": si.settings,
@@ -218,9 +218,8 @@ async def read_all_strategy_indicators(user: user_dependency, db: db_dependency,
         ]
 
         # Debug: Print final response
-        print(f"Instrumented indicators: {instrumented_indicators}")
 
-        return instrumented_indicators
+        return indicators
 
     except Exception as e:
         # Debug: Log the exception details

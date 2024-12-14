@@ -22,8 +22,11 @@ from .seeders.indicators_seeder import indicators_seeder
 from .logger import logger
 from .utils.sync_file_paths import sync_file_paths
 from .indicators.Ao import Ao 
-
+from .dependencies import user_dependency
 import json
+
+
+
 
 current_directory = Path(__file__).parent
 parent_folder = current_directory.parent
@@ -33,32 +36,6 @@ session = SessionLocal()
 scheduler = AsyncIOScheduler(timezone=utc)
 Base.metadata.create_all(bind=engine)
 
-
-ao_settings = Ao()
-
-# Debug schema generation
-schema = ao_settings.model_json_schema()
-
-print("Generated Schema:")
-print(json.dumps(schema, indent=4))  # Ensure schema is correct
-
-# Serialize schema for database storage
-serialized_schema = json.dumps(schema)
-
-print("Serialized Schema for DB:")
-print(serialized_schema)
-
-# Example dictionary to be stored
-ao = {
-    "kind": "ao",
-    "default_settings": ao_settings.dict(),
-    "settings": serialized_schema,
-    "chart_style": "histogram",
-    "description": "..."
-}
-
-print("Final AO Object:")
-print(json.dumps(ao, indent=4)) 
 
 
 @asynccontextmanager
@@ -71,6 +48,25 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+
+@app.on_event("startup")
+async def startup_event():
+    app.state.user_cache = {}  # Initialize cache in the app state
+
+
+# @app.get("/set/{key}/{value}")
+# def set_value(key: str, value: str, user: user_dependency
+#     if user_id not in app.state.user_cache:
+#         app.state.user_cache[user_id] = {}
+#     app.state.user_cache[user_id][key] = value
+#     return {"message": "Key-value set", "user_id": user_id, "key": key, "value": value}
+#
+# @app.get("/get/{key}")
+# def get_value(key: str, user_id: str = Depends(get_current_user)):
+#     if user_id in app.state.user_cache and key in app.state.user_cache[user_id]:
+#         return {"user_id": user_id, "key": key, "value": app.state.user_cache[user_id][key]}
+#     raise HTTPException(status_code=404, detail="Key not found for this user")
 
 # @scheduler.scheduled_job('cron', minute="*")
 # async def fetch_current_time():
