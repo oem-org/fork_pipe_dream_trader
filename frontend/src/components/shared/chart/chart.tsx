@@ -10,6 +10,9 @@ interface ChartProps {
 	volume: Volume[]
 }
 
+// Lightweight charts accept UTCtimestamp, BuisnessDay or buisness day string in ISO format
+// https://tradingview.github.io/lightweight-charts/docs/api#time
+
 // Time settings
 //https://github.com/tradingview/lightweight-charts/blob/v3.7.0/docs/time-scale.md#time-scale-options
 export function Chart({ timeseries, volume }: ChartProps) {

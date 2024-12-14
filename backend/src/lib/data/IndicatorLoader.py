@@ -12,7 +12,7 @@ class IndicatorLoader:
     def __init__(self, df: pd.DataFrame, indicators: List[Dict]):
         self.df = df
         self.indicators = indicators
-        # self.columns = []
+        self.columns = []
 
     # def _column_names(self):
     #
@@ -75,34 +75,34 @@ class IndicatorLoader:
         """
         Create dataframes with the same index for each indicator to be loaded by the frontend separately.
         Store them in a dictionary, with the column name as the key, as JSON.
-        Also create a combined JSON for specific columns: 'time', 'open', 'high', 'low', 'close'.
+        Also creates a combined JSON for specific columns: 'time', 'open', 'high', 'low', 'close'.
         """
         json_dfs = {}
 
         print(self.df.head(2))        
-        # Ensure columns exist for the combined OHLC JSON
         required_columns = {"time", "open", "high", "low", "close"}
+        
         if required_columns.issubset(set(self.df.columns)):
-            # Create a DataFrame with the required columns
+            
+            # Grab columns specified in list
             ohlc_df = self.df[list(required_columns)]
             
-            # Convert the combined DataFrame to JSON
             json_dfs["ohlc"] = ohlc_df.to_json(orient="index")
-
+            
+            # Pass the total column names for constructing charts later
+            # json_dfs["columns"] = json.dumps(self.columns) 
         for col in self.df.columns:
             if col in {"time", "tradecount", "symbol"}:
-                continue  # Skip these columns
+                continue  
 
             # Include the 'time' column and the specific column
             thecol = self.df[["time", col]]
 
-            # Convert the DataFrame to JSON
             col_json = thecol.to_json(orient="index")
             
             # Add the JSON to the dictionary with the column name as the key
             json_dfs[col] = col_json
 
-        # Print all key names in the dictionary
         print("Column Names (Keys):")
         for key in json_dfs.keys():
             print(key)

@@ -46,7 +46,6 @@ class ApiService {
 
 export class GetAllRelationService<R> extends ApiService {
 	async getAll(id: number): Promise<R[]> {
-		console.log(this.getHeaders())
 		try {
 			const response = await this.axiosInstance.get<R[]>(
 
@@ -54,7 +53,6 @@ export class GetAllRelationService<R> extends ApiService {
 				{
 					headers: await this.getHeaders(),
 				});
-			console.log(response.data)
 			return response.data;
 		} catch (error) {
 			console.error("Error in get all");
@@ -67,7 +65,6 @@ export class GetAllRelationService<R> extends ApiService {
 
 export class GetAllService<R> extends ApiService {
 	async getAll(): Promise<R[]> {
-		console.log(this.getHeaders())
 		try {
 			const response = await this.axiosInstance.get<R[]>(this.endpoint, {
 				headers: await this.getHeaders(),
@@ -85,13 +82,6 @@ export class GetAllService<R> extends ApiService {
 
 export class PostRelationService<T, R> extends ApiService {
 	async post(id: number, data: T): Promise<R> {
-		console.log('post data', data)
-		console.log('post data', data)
-		console.log('post data', data)
-		console.log('post data', data)
-		console.log('post data', data)
-		console.log('post data', data)
-		console.log('post data', data)
 		try {
 			const response = await this.axiosInstance.post<R>(`${this.endpoint}/${id}/${this.model}`, data, {
 				headers: await this.getHeaders(),
