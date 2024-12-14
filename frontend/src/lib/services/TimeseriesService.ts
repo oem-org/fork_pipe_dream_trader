@@ -1,28 +1,56 @@
+//import { IndicatorBase } from "@/interfaces/indicators/IndicatorBase";
 import Timeseries from "@/interfaces/Timeseries";
-import Volume from "@/interfaces/Volume";
+import { Volume, VolumeBackend } from "@/interfaces/Volume";
 
 export default class TimeseriesService {
 	public ohlc: Timeseries[];
 	public volume: Volume[];
+	//public ao: IndicatorBase[];
 
 	constructor() {
 		this.ohlc = [];
 		this.volume = [];
+		//this.ao = [];
+		//this.indicators = {}
 	}
 
 	// Lightweight charts accept UTCtimestamp, BuisnessDay or buisness day string in ISO format
 	// https://tradingview.github.io/lightweight-charts/docs/api#time
-	async processOHLC(rawData: Record<string, any>) {
+
+	//async processBulk(obj: Record<string, any>) {
+	//	const allIndicators: Record<string, any> = {}; // Create an object to store the results
+	//	for (const key in obj) {
+	//		if (obj.hasOwnProperty(key)) {
+	//			const indicator = [];
+	//			// Iterate over the values of the object (assuming each key maps to an array)
+	//			obj[key].forEach((data: any) => {
+	//				indicator.push({
+	//					time: data.time,
+	//					value: data[key], // Use the key to get the corresponding value
+	//				});
+	//			});
+	//			// Store the processed data in the allIndicators object with the key name as identifier
+	//			allIndicators[key] = indicator;
+	//		}
+	//	}
+	//	return allIndicators; // Return the object with the processed data
+	//}
+
+	async processVolume(volume: VolumeBackend[]) {
+		Object.values(volume).forEach((data) => {
+
+			this.volume.push({
+				time: data.time,
+				value: data.volume,
+			});
+		});
+	}
+
+	async processOhlc(ohlc: Timeseries[]) {
 		this.ohlc = [];
 		this.volume = [];
 
-		// Javascript references to the same string object in both ohlc and volume
-		Object.values(rawData).forEach((data) => {
-			// Format time to 'YYYY-MM-DD HH:mm:ss'
-			console.log(data);
-
-			//const formattedTime = new Date(data.time).toISOString().split('T').join(' ').split('.')[0];
-
+		Object.values(ohlc).forEach((data) => {
 			this.ohlc.push({
 				time: data.time,
 				open: data.open,
@@ -31,10 +59,6 @@ export default class TimeseriesService {
 				close: data.close,
 			});
 
-			this.volume.push({
-				time: data.time,
-				value: data.volume,
-			});
 		});
 	}
 }

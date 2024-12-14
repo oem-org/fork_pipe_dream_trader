@@ -13,14 +13,13 @@ import useStrategyStore from "@/lib/hooks/useStrategyStore";
 
 import IndicatorSection from "@/components/strategy/indicator-section";
 import TimeseriesService from "@/lib/services/TimeseriesService";
-import Volume from "@/interfaces/Volume";
+import { Volume } from "@/interfaces/Volume";
 import { priceData2 } from "@/components/shared/chart/priceData2";
 
 export default function StrategyPage() {
   const { id } = useParams();
   const paramId = id ? parseInt(id) : NaN;
   const { strategyId, setStrategyId } = useStrategyStore();
-  const isChartLoaded = true;
   const navigate = useNavigate();
 
   const [fileId, setFileId] = useState<number>(0);
@@ -28,7 +27,7 @@ export default function StrategyPage() {
   const [timeperiod, setTimeperiod] = useState<string>("recent");
   const [timeseries, setTimeseries] = useState<Timeseries[]>([]);
   const [volume, setVolume] = useState<Volume[]>([]);
-  //const [isChartLoaded, setIsChartLoaded] = useState(false); // New state to control chart loading
+  const [isChartLoaded, setIsChartLoaded] = useState(false); // New state to control chart loading
 
   const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
   const { data: strategies } = getStrategiesQuery();
@@ -49,28 +48,23 @@ export default function StrategyPage() {
     return obj; // Return the updated object
   }
 
-
+  // TODO:
   async function LoadChart() {
     try {
       if (strategyId) {
-        console.log(strategyId, "LOOOOOOOOOOOOOOOOOOOL");
         const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
-        console.log(parseJsonStrings(data))
+        const parsed = parseJsonStrings(data)
         // Attempt to parse the JSON string
-        console.log("THE DATA", timeseriesData);
         //const timeseriesData = JSON.parse(data.timeseries);
         //console.log("KEYS", timeseriesData.keys());
-
+        console.log(parsed.RSI_14)
         const timeseriesService = new TimeseriesService();
-        await timeseriesService.processOHLC(timeseriesData);
-        console.log("here")
-        const ohlc = timeseriesService.ohlc;
-        setTimeseries(ohlc);
-        const volume = timeseriesService.volume;
-        setVolume(volume);
-        console.log("volume", ohlc);
-        console.log("ohlc", volume);
-        //setIsChartLoaded(true); // Mark chart as loaded
+        await timeseriesService.processOhlc(parsed.ohlc);
+        await timeseriesService.processVolume(parsed.volume);
+        //await timeseriesService.processBulk(parsed)
+        setTimeseries(timeseriesService.ohlc)
+        setVolume(timeseriesService.volume)
+        setIsChartLoaded(true); // Mark chart as loaded
       }
     } catch (error) {
       console.error(error);

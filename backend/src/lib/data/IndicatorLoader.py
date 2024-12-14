@@ -68,7 +68,6 @@ class IndicatorLoader:
         # (2) Run the Strategy
         self.df.ta.strategy(MyStrategy)
         # print(test.head(1))
-        
         self.columns = self.df.columns.tolist()
 
 
@@ -80,6 +79,7 @@ class IndicatorLoader:
         """
         json_dfs = {}
 
+        print(self.df.head(2))        
         # Ensure columns exist for the combined OHLC JSON
         required_columns = {"time", "open", "high", "low", "close"}
         if required_columns.issubset(set(self.df.columns)):

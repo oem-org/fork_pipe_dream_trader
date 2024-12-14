@@ -62,14 +62,7 @@ class FileLoader:
                 self.df = pd.read_csv(self.file_path)
             
                 self.df.columns = self.df.columns.str.lower().str.strip()
-                print("first head######################################################3")
-                print("first head######################################################3")
-                print("first head######################################################3")
-                print("first head######################################################3")
-                print("first head######################################################3")
-                print("first head######################################################3")
                 timestamps = self.df['unix'].head(1)
-                print(timestamps)
             # Convert timestamps to Unix timestamp (seconds since the epoch)
             #     unix_timestamps = timestamps.apply(lambda x: int(x.timestamp()) if pd.notna(x) else None)
             #

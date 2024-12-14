@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { CandlestickData } from 'lightweight-charts';
 import ChartCanvas from './chart-canvas';
 import Timeseries from '../../../interfaces/Timeseries'
-import Volume from '@/interfaces/Volume';
+import { Volume } from '@/interfaces/Volume';
 
 
 interface ChartProps {

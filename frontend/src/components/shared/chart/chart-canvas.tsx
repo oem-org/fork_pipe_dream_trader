@@ -2,7 +2,7 @@ import { createChart, CrosshairMode, ColorType, IChartApi } from 'lightweight-ch
 import { useEffect, useRef, useState } from 'react'
 import React from 'react'
 import Timeseries from '../../../interfaces/Timeseries'
-import Volume from '@/interfaces/Volume'
+import { Volume } from '@/interfaces/Volume'
 
 
 interface ChartProps {
