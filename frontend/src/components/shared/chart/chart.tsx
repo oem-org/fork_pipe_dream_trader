@@ -10,8 +10,8 @@ interface ChartProps {
 	volume: Volume[]
 }
 
-
-
+// Time settings
+//https://github.com/tradingview/lightweight-charts/blob/v3.7.0/docs/time-scale.md#time-scale-options
 export function Chart({ timeseries, volume }: ChartProps) {
 	const customColors = {
 		backgroundColor: '#f5f5f5',

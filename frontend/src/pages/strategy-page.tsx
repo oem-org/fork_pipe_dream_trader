@@ -33,8 +33,8 @@ export default function StrategyPage() {
   const [fileId, setFileId] = useState<number>(0);
   const [dataSourceType, setDataSourceType] = useState<string>("");
   const [timeperiod, setTimeperiod] = useState<string>("recent");
-  const [timeseries, setTimeseries] = useState<Timeseries[]>(priceData);
-  const [volume, setVolume] = useState<Volume[]>(volumeData);
+  const [timeseries, setTimeseries] = useState<Timeseries[]>([]);
+  const [volume, setVolume] = useState<Volume[]>([]);
   //const [selectedIndicator, setSelectedIndicator] = useState<number>(0)
 
   const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
@@ -81,12 +81,11 @@ export default function StrategyPage() {
         const timeseriesService = new TimeseriesService()
         timeseriesService.processOHLC(json)
         const ohlc = timeseriesService.ohlc
-        console.log(ohlc)
         setTimeseries(ohlc)
         const volume = timeseriesService.volume
         setVolume(volume)
-        console.log(ohlc);
-        console.log(volume);
+        console.log("volume", ohlc);
+        console.log("ohlc", volume);
       }
     } catch (error) {
       console.error(error);

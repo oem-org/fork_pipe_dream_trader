@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react'
 import React from 'react'
 import Timeseries from '../../../interfaces/Timeseries'
 import Volume from '@/interfaces/Volume'
-import { volumeData } from './volume'
 
 
 interface ChartProps {
@@ -23,6 +22,7 @@ export default function ChartCanvas(props: ChartProps): React.ReactElement {
 	const {
 		chartContainerRef,
 		data,
+		volume,
 		colors: {
 			backgroundColor = '#253248',
 			lineColor = '#2962FF',
@@ -88,6 +88,7 @@ export default function ChartCanvas(props: ChartProps): React.ReactElement {
 				//},
 				timeScale: {
 					borderColor: '#485c7b',
+					timeVisible: true,
 				},
 
 
@@ -129,7 +130,7 @@ export default function ChartCanvas(props: ChartProps): React.ReactElement {
 					bottom: 0.001,
 				},
 			});
-			volumeSeries.setData(volumeData);
+			volumeSeries.setData(volume);
 
 			candleSeries.setData(data);
 

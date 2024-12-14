@@ -28,8 +28,9 @@ class IndicatorLoader:
         # )
         # self.df = self.df.ta.study(Indicators)
         self.df.set_index(pd.DatetimeIndex(self.df["time"]), inplace=True)
-
-# Calculate Returns and append to the df DataFrame
+        print("indicators####################  ")
+        print(self.df.head(1))
+        # Calculate Retu,rns and append to the df DataFrame
         self.df.ta.log_return(cumulative=True, append=True)
         self.df.ta.percent_return(cumulative=True, append=True)
 

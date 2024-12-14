@@ -47,7 +47,7 @@ class FileLoader:
                 f"Pickle file not found, loading data from original file: {self.file_path}"
             )
             self.load_data()
-            self.df.to_pickle(pickle_file_path)
+            # self.df.to_pickle(pickle_file_path)
             print(f"Data saved as pickle file: {pickle_file_path}")
 
     def load_data(self) -> None:
@@ -62,8 +62,13 @@ class FileLoader:
                 self.df = pd.read_csv(self.file_path)
             
                 self.df.columns = self.df.columns.str.lower().str.strip()
-                print("first head")
-                timestamps = self.df['unix'].head(10)
+                print("first head######################################################3")
+                print("first head######################################################3")
+                print("first head######################################################3")
+                print("first head######################################################3")
+                print("first head######################################################3")
+                print("first head######################################################3")
+                timestamps = self.df['unix'].head(1)
                 print(timestamps)
             # Convert timestamps to Unix timestamp (seconds since the epoch)
             #     unix_timestamps = timestamps.apply(lambda x: int(x.timestamp()) if pd.notna(x) else None)

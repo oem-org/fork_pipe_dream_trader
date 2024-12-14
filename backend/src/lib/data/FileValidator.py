@@ -39,7 +39,6 @@ class FileValidator(FileLoader):
         # | invalid_timestamp_length
         duplicate_indices = self.df.index[self.df.index.duplicated()].tolist()
         if duplicate_indices:
-            print(f"Rows with duplicate indices:\n{self.df.loc[duplicate_indices]}")
             return False
         for index in self.df[invalid_rows].index:
             row = self.df.loc[index]

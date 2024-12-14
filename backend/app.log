@@ -1,2 +1,1 @@
-2024-12-14 12:32:42,482 - apscheduler.scheduler - INFO - Scheduler started
-2024-12-14 12:32:57,545 - root - ERROR - Unexpected error occurred while fetching the file data: DataFrame index must be unique for orient='index'.
+2024-12-14 12:58:20,395 - apscheduler.scheduler - INFO - Scheduler started
