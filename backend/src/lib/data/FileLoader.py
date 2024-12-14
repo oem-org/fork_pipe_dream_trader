@@ -55,16 +55,32 @@ class FileLoader:
         Loads data into the DataFrame. This method can be called by subclasses
         for any file reading operation.
         """
+        print("load data")
+        print("load data")
+        print("load data")
+        print("load data")
+        print("load data")
         try:
             if self.file_type == FileTypeEnum.JSON:
                 self.df = pd.read_json(self.file_path)
             elif self.file_type == FileTypeEnum.CSV:
                 self.df = pd.read_csv(self.file_path)
+            
+                self.df.columns = self.df.columns.str.lower().str.strip()
+                timestamps = self.df['unix'].head(10)
+                print(timestamps)
+            # Convert timestamps to Unix timestamp (seconds since the epoch)
+            #     unix_timestamps = timestamps.apply(lambda x: int(x.timestamp()) if pd.notna(x) else None)
+            #
+            # # Check if the Unix timestamps are 10 digits (valid for seconds-based Unix timestamps)
+            #     valid_length_check = unix_timestamps.apply(lambda x: len(str(x)) == 10 if x is not None else None)
 
-            self.df.columns = self.df.columns.str.lower().str.strip()
+            # Display the result
+                # print("Unix Timestamps:", unix_timestamps)
+                # print("Valid Timevtamp Length Check:", valid_length_check)
             column_mapping = {
                 "unix": "time",
-                "timestamp": "time",
+                # "timestamp": "time",
                 "o": "open",
                 "h": "high",
                 "l": "low",
@@ -74,16 +90,15 @@ class FileLoader:
                 columns=lambda col: column_mapping.get(col, col), inplace=True
             )
 
-            # Coerce inserts NaN or NaT if it gets bad row, instead of raising a exception, so we can idetify excatly which rows are bad
+            # Coerce inserts NaN or NaT if it gets bad row, instead of raising a exception, so its possible to identify excatly which rows are bad
             self.df["volume"] = pd.to_numeric(self.df["volume"], errors="coerce")
             self.df["open"] = pd.to_numeric(self.df["open"], errors="coerce")
             self.df["close"] = pd.to_numeric(self.df["close"], errors="coerce")
             self.df["low"] = pd.to_numeric(self.df["low"], errors="coerce")
             self.df["high"] = pd.to_numeric(self.df["high"], errors="coerce")
-            self.df["time"] = pd.to_datetime(
-                self.df["time"], unit="s", errors="coerce"
-            )
-
+            # self.df["time"] = pd.to_datetime(
+            #     self.df["time"], unit="ms", errors="coerce"
+            # )
         except Exception as e:
             raise Exception(f"Error reading file: {e}")
 

@@ -90,14 +90,22 @@ async def save_uploaded_file(db: db_dependency, file: UploadFile):
         fileValidation = FileValidator(file_path)
         print(fileValidation.df.head())
         validated = fileValidation.validate()
-
+        print(validated, "validation check")
+        print(validated)
+        print(validated)
+        print(validated)
+        print(validated)
+        print(validated)
+        print(validated)
         if validated == True:
             name = Path(file_path).name
             saved_file = Files(
                 path=file_path, name=name, file_type=fileValidation.file_type
             )
-            db.add(saved_file)
-            db.commit()
+
+            os.remove(fileValidation.file_path)
+            # db.add(saved_file)
+            # db.commit()
         else:
             os.remove(fileValidation.file_path)
             handle_not_validated_file_error(

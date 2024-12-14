@@ -12,17 +12,19 @@ class FileValidator(FileLoader):
         Validate the DataFrame with vectorized operators for speed
         """
         self.load_data()  # Load the data first
-        
+
         errors = []
 
-        # timestamp_lengths = self.df['time'].apply(lambda x: len(str(int(x))) if pd.notna(x) else None)
-        # print(f"Timestamp Lengths: {timestamp_lengths.unique()}") 
-
         # Missing or invalid fields
-        missing_fields = self.df[['time', 'volume', 'open']].isna().any(axis=1)
-        
+        # missing_fields = self.df[['time', 'volume', 'open']].isna().any(axis=1)
+
+        # Check for missing or invalid timestamps
+        invalid_time = self.df['time'].isna() | ~self.df['time'].apply(
+            lambda x: isinstance(x, (int, float)) and len(str(int(x))) in [10, 13]
+        )
+
         invalid_volume = self.df['volume'] < 0
-        
+
         # Create a dataframe of same size with booleans
         # Bitwise NOT: ~ will flip the boolean values
         invalid_open = ~self.df['open'].apply(lambda x: isinstance(x, (int, float)))
@@ -30,22 +32,27 @@ class FileValidator(FileLoader):
         invalid_low = ~self.df['low'].apply(lambda x: isinstance(x, (int, float)))
         invalid_high = ~self.df['high'].apply(lambda x: isinstance(x, (int, float)))
 
-        # Check for timestamps that don't have the same number of digits
-        # invalid_timestamp_length = ~self.df['time'].apply(lambda x: len(str(int(x))) in [10, 13])
-
         # Combine all invalid conditions into one condition with bitwise OR
-        invalid_rows = missing_fields | invalid_volume | invalid_open | invalid_close | invalid_low | invalid_high 
-
+        invalid_rows = invalid_time | invalid_volume | invalid_open | invalid_close | invalid_low | invalid_high
+        print("INVALED")
+        print(invalid_rows, "invalid ")
         # | invalid_timestamp_length
-
+        print("INDEX")
+        duplicate_indices = self.df.index[self.df.index.duplicated()].tolist()
+        print(duplicate_indices, "duplicate indexes")
+        print(self.df.head(4))
+        if duplicate_indices:
+            print(f"Duplicate indices found: {duplicate_indices}")
+            print(f"Rows with duplicate indices:\n{self.df.loc[duplicate_indices]}")
+            return False
         for index in self.df[invalid_rows].index:
             row = self.df.loc[index]
             error_message = []
 
             if pd.isna(row['time']):
                 error_message.append("Missing or invalid timestamp")
-            elif not (len(str(int(row['time']))) in [10, 13]):
-                error_message.append(f"Timestamp length is invalid (actual length: {len(str(int(row['time'])))} digits)")
+            # elif not (len(str(int(row['time']))) in [10, 13]):
+            #     error_message.append(f"Timestamp length is invalid (actual length: {len(str(int(row['time'])))} digits)")
 
             if pd.isna(row['volume']) or row['volume'] < 0:
                 error_message.append("Invalid volume")
@@ -59,10 +66,10 @@ class FileValidator(FileLoader):
                 error_message.append("Invalid high value")
 
             errors.append((index, ", ".join(error_message)))
-
+            print(errors)
         if len(errors) == 0:
             return True
-        
+
         self.errors = errors
         return False
     
