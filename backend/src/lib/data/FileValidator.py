@@ -6,7 +6,7 @@ class FileValidator(FileLoader):
     def __init__(self, file_path: str):
         super().__init__(file_path)  # Inherit from FileLoader
         self.errors = {}
-
+    # TODO: fix validation
     def validate(self) -> bool:
         """
         Validate the DataFrame with vectorized operators for speed
