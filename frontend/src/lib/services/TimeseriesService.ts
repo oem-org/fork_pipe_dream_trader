@@ -2,6 +2,8 @@
 import Timeseries from "@/interfaces/Timeseries";
 import { Volume, VolumeBackend } from "@/interfaces/Volume";
 import { findStringIndex } from "../utils/string-utils";
+import Histogram from "@/components/shared/chart/histogram";
+
 
 
 export default class TimeseriesService {
@@ -21,7 +23,18 @@ export default class TimeseriesService {
 		console.log(column, "column");
 
 		for (let key in chartStyles) {
-			console.log(key, "KEEEEEEEEEEEEEEEEEY");
+			// Key is dataframe column name fx "RSI_14" 
+			// The value stored in the key is chart style	
+			switch (chartStyles[key]) {
+				case "histogram":
+					const histogram = new Histogram(this.indicators[key])
+					histogram.setName(`${key}`)
+					break;
+				default:
+					break;
+			}
+			console.log(chartStyles[key])
+			console.log(this.indicators[key])
 
 		}
 	}
