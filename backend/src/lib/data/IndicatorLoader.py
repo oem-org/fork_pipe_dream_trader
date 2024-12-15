@@ -72,9 +72,8 @@ class IndicatorLoader:
 
     def split_dataframe(self):
         """
-        Create dataframes with the same index for each indicator to be loaded by the frontend separately.
-        Store them in a dictionary, with the column name as the key, as JSON.
-        Also creates a combined JSON for specific columns: 'time', 'open', 'high', 'low', 'close'.
+        Create JSON strings to store dataframes of each indicator. column name and trading par
+        Also creates a combined JSON string for specific columns: 'time', 'open', 'high', 'low', 'close'.
         """
         json_dfs = {}
 
@@ -87,24 +86,27 @@ class IndicatorLoader:
             ohlc_df = self.df[list(required_columns)]
 
             json_dfs["ohlc"] = ohlc_df.to_json(orient="index")
-            json_dfs["columns"] = json.dumps(self.columns)
-            # Pass the total column names for constructing charts later
-            # json_dfs["columns"] = json.dumps(self.columns)
-
+            print("after" , self.df.columns) 
+            print("after" , self.df.columns) 
+            print("after" , self.df.columns) 
+            print("after" , self.df.columns) 
+            print("after" , self.df.columns) 
+            print("after" , self.df.columns) 
+            print("after" , self.df.columns) 
             # Get the curreny pair
             json_dfs["pair"] = json.dumps(self.df['symbol'].iloc[0])
             columns_to_drop = ['high', 'low', 'close', 'open','tradecount','symbol','date','CUMPCTRET_1','CUMLOGRET_1']
 
             # Drop the columns if they exist
             columns_to_drop = [col for col in columns_to_drop if col in self.df.columns]
-
             self.df = self.df.drop(columns=columns_to_drop)
-
+            
+            json_dfs["columns"] = json.dumps(self.df.columns.tolist())
         for col in self.df.columns:
             if col in {"time"}:
                 continue
 
-            # Include the 'time' column and the specific column
+            # Include the 'time' column and the specific column to store
             thecol = self.df[["time", col]]
 
             col_json = thecol.to_json(orient="index")

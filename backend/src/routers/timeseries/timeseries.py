@@ -62,14 +62,7 @@ async def read_all(
             print(all_indicator_settings)
             indicatorLoader = IndicatorLoader(fileLoader.df, all_indicator_settings)
             
-            
             indicatorLoader.load_indicators()
-            # print(split)
-            # Json stucture {timestamp:{data}}
-            # indicatorLoader.df = indicatorLoader.df.applymap(str)
-            # 
-            # json = indicatorLoader.df.to_json(orient="index")
-            # split["timeseries"] = json
             json = indicatorLoader.split_dataframe()
             
             return json

@@ -65,7 +65,7 @@ export default function StrategyPage() {
         console.log(parsed.ohlc)
         delete parsed.volume;
         console.log(parsed.volume, "delete")
-        await timeseriesService.processBulk(parsed)
+        await timeseriesService.processBulk(parsed, parsed.columns)
         setTimeseries(timeseriesService.ohlc)
         setVolume(timeseriesService.volume)
         setIsChartLoaded(true); // Mark chart as loaded
