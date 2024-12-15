@@ -8,7 +8,7 @@ import File from "@/interfaces/File";
 import GenericSelect from "@/components/shared/lists/generic-select";
 import Timeseries from "@/interfaces/Timeseries";
 import getFilesQuery from "@/lib/queries/getFilesQuery";
-import { getTimeseriesApi, postStrategyIndicatorsApi } from "@/lib/apiClientInstances";
+import { getTimeseriesApi, putStrategyApi } from "@/lib/apiClientInstances";
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
 
 import IndicatorSection from "@/components/strategy/indicator-section";
@@ -54,22 +54,19 @@ export default function StrategyPage() {
       if (strategyId) {
         const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
         const parsed = parseJsonStrings(data)
-        // Attempt to parse the JSON string
-        //const timeseriesData = JSON.parse(data.timeseries);
-        //console.log("KEYS", timeseriesData.keys());
+
         const timeseriesService = new TimeseriesService();
         await timeseriesService.processOhlc(parsed.ohlc);
         await timeseriesService.processVolume(parsed.volume);
-        console.log(parsed.ohlc);
+
         delete parsed.ohlc;
-        console.log(parsed.ohlc)
         delete parsed.volume;
-        console.log(parsed.volume, "delete")
+
         await timeseriesService.processBulk(parsed, parsed.columns)
+
         setTimeseries(timeseriesService.ohlc)
         setVolume(timeseriesService.volume)
         setIsChartLoaded(true); // Mark chart as loaded
-        console.log(parsed.columns)
       }
     } catch (error) {
       console.error(error);
@@ -105,6 +102,7 @@ export default function StrategyPage() {
   const handleFileChange = async (file: File) => {
     setFileId(file.id);
     await LoadChart();
+
   };
 
   const handleStrategyChange = (strategy: Strategy) => {

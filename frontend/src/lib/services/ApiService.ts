@@ -204,7 +204,7 @@ export class DeleteService extends ApiService {
 }
 
 
-export class UpdateService<T, R> extends ApiService {
+export class PutService<T, R> extends ApiService {
 	async put(id: number, data: T): Promise<R> {
 		try {
 			const response = await this.axiosInstance.put<R>(`${this.endpoint}/${id}`, data, {
@@ -220,7 +220,7 @@ export class UpdateService<T, R> extends ApiService {
 	}
 }
 
-export class UpdateRelationService<T, R> extends ApiService {
+export class PutRelationService<T, R> extends ApiService {
 	async put(id: number, modelId: number, data: T): Promise<R> {
 		try {
 			const response = await this.axiosInstance.put<R>(`${this.endpoint}/${id}/${this.model}/${modelId}`, data, {

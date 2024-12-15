@@ -13,7 +13,7 @@ class IndicatorLoader:
         self.df = df
         self.indicators = indicators
         self.columns = []
-
+         
     # def _column_names(self):
     #
     #     head = self.df.head(100)

@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS bin1s (
 SELECT create_hypertable('bin1s', 'time', if_not_exists => TRUE);
 
 CREATE INDEX ix_symbol_time ON bin1s (symbol, time DESC);
-
+.
 CREATE MATERIALIZED VIEW ohlc_data_1minute
 WITH (timescaledb.continuous) AS
 SELECT symbol,

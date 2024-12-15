@@ -6,10 +6,9 @@ import { Strategy } from "../interfaces/Strategy"
 import IndicatorRequest from "@/interfaces/requests/UpdateIndicatorRequest"
 import Indicator from "../interfaces/Indicator"
 import File from "@/interfaces/File"
-import { PostRelationService, PostService, DeleteRelationService, UpdateRelationService, GetAllService, DeleteService, GetWithParamsService, GetWithQueryService, GetAllRelationService, } from "./services/ApiService"
+import { PostRelationService, PutService, PostService, DeleteRelationService, PutRelationService, GetAllService, DeleteService, GetWithParamsService, GetWithQueryService, GetAllRelationService, } from "./services/ApiService"
 import TimeseriesRequest from "@/interfaces/requests/TimeseriesRequest"
 import Timeseries from "@/interfaces/Timeseries"
-import useStrategyIndicatorStore from "./hooks/useStrategyIndicatorsStore"
 // import UploadFileRequest from "../interfaces/requests/UploadFileRequest"
 // Class for GET requests
 
@@ -49,11 +48,14 @@ export const postStrategyIndicatorsApi = new PostRelationService<Record<string, 
 export const deleteStrategyIndicatorsApi = new DeleteRelationService('strategy', jsonHeader, 'indicator')
 
 
-export const putStrategyIndicatorsApi = new UpdateRelationService<Record<string, any>, StrategyIndicator>('strategy', jsonHeader, 'indicator')
+export const putStrategyIndicatorsApi = new PutRelationService<Record<string, any>, StrategyIndicator>('strategy', jsonHeader, 'indicator')
 //Strategy
 export const getAllStrategiesApi = new GetAllService<Strategy>('strategy', {})
 export const getStrategyApi = new GetWithParamsService<number, Strategy>('strategy', {})
 export const postStrategyApi = new PostService<CreateStrategyRequest, Strategy>('strategy', jsonHeader)
+export const putStrategyApi = new PutService<Strategy, Strategy>('strategy', jsonHeader)
+
+
 
 
 //Timeseries
