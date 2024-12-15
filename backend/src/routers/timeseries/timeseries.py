@@ -24,15 +24,6 @@ async def read_all(
     strategy: str = Query(None),
     pair: str = Query(None)  
 ):
-    data = {
-        "strategy": strategy,
-        "timeperiod": timeperiod,
-        "table": table,
-        "pair": pair
-    }
-
-
-    print(data, "query data")
     try:
         print(strategy)
         strategyModel = db.query(Strategies).filter(Strategies.id == strategy).first()
@@ -56,7 +47,6 @@ async def read_all(
             # print(fileLoader.df)
             
             chart_styles = [{"chart_style": si.indicator.chart_style, "kind": si.indicator.kind} for si in strategyModel.strategy_indicators if si.indicator]
-            print(chart_styles, "CHART STYLE!!!!!!!!!!!!!!!!")
             all_indicator_settings = [
                 ind.settings
                 for ind in strategyModel.strategy_indicators

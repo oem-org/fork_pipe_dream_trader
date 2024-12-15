@@ -37,8 +37,8 @@ export const createUserApi = new PostService<CreateUserFormRequest, CreateUserRe
 
 // Indicators
 export const getAllIndicatorsApi = new GetAllService<Indicator>('indicators', {})
-export const postIndicatorApi = new PostService<IndicatorRequest, void>('indicators', jsonHeader)
-//
+export const postIndicatorNames = new PostService<IndicatorRequest, void>('indicators/chart', jsonHeader)
+
 
 
 // StrategyIndicators

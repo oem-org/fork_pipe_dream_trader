@@ -62,15 +62,20 @@ export default function StrategyPage() {
       if (strategyId) {
         const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
         const parsed = parseJsonStrings(data)
+        console.log(parsed, "parsed");
 
         const timeseriesService = new TimeseriesService();
         await timeseriesService.processOhlc(parsed.ohlc);
         await timeseriesService.processVolume(parsed.volume);
+        const columns = parsed.columns
+        const chartStyle = parsed.chart_style
 
         delete parsed.ohlc;
         delete parsed.volume;
+        delete parsed.chart_style;
+        delete parsed.columns;
 
-        await timeseriesService.processBulk(parsed, parsed.columns)
+        await timeseriesService.processBulk(parsed, columns, chartStyle)
 
         setTimeseries(timeseriesService.ohlc)
         setVolume(timeseriesService.volume)
