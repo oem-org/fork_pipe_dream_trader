@@ -8,6 +8,7 @@ import { Volume } from '@/interfaces/Volume'
 interface ChartProps {
 	chartContainerRef: React.RefObject<HTMLDivElement>;
 	data: Timeseries[];
+	indicators: Array<string>
 	volume: Volume[];
 	colors?: {
 		backgroundColor?: string;
@@ -117,21 +118,21 @@ export default function ChartCanvas(props: ChartProps): React.ReactElement {
 			//newSeries.setData(data);
 
 
-			const volumeSeries = chartRef.current.addHistogramSeries({
-				priceFormat: {
-					type: 'volume',
-				},
-				priceScaleId: '',
-			});
-			volumeSeries.priceScale().applyOptions({
-				// 
-				scaleMargins: {
-					top: 0.8,
-					bottom: 0.001,
-				},
-			});
-			volumeSeries.setData(volume);
-
+			//const volumeSeries = chartRef.current.addHistogramSeries({
+			//	priceFormat: {
+			//		type: 'volume',
+			//	},
+			//	priceScaleId: '',
+			//});
+			//volumeSeries.priceScale().applyOptions({
+			//	// 
+			//	scaleMargins: {
+			//		top: 0.8,
+			//		bottom: 0.001,
+			//	},
+			//});
+			//volumeSeries.setData(volume);
+			//
 			candleSeries.setData(data);
 
 			window.addEventListener('resize', handleResize);

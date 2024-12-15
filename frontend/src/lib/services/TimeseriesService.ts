@@ -16,12 +16,14 @@ export default class TimeseriesService {
 		this.ohlc = [];
 		this.volume = [];
 		this.indicators = {}
+
 	}
 
 
 	updateChart(chartStyles: Record<string, any>, column: Array<string>) {
 		console.log(column, "column");
-
+		const histograms = []
+		const lineSeries = []
 		for (let key in chartStyles) {
 			// Key is dataframe column name fx "RSI_14" 
 			// The value stored in the key is chart style	
@@ -29,17 +31,21 @@ export default class TimeseriesService {
 				case "histogram":
 					const histogram = new Histogram(this.indicators[key])
 					histogram.setName(`${key}`)
+					histograms.push(histogram)
 					break;
 				default:
 					break;
 			}
+
 			console.log(chartStyles[key])
 			console.log(this.indicators[key])
 
 		}
+
+		return { "histograms": histograms, "lineSeries": lineSeries }
 	}
 
-
+	// TODO: add types
 	async processBulk(indicatorsTimeseries: Record<string, any>) {
 		// Saved time and value for each KeyName corrosponding to the dataframe columns
 		const notAllowedKeys = ["time", "volume pols", "columns", "pair"];

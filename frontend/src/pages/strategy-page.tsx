@@ -10,15 +10,12 @@ import Timeseries from "@/interfaces/Timeseries";
 import getFilesQuery from "@/lib/queries/getFilesQuery";
 import { getTimeseriesApi, putStrategyApi } from "@/lib/apiClientInstances";
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
-
 import IndicatorSection from "@/components/strategy/indicator-section";
 import TimeseriesService from "@/lib/services/TimeseriesService";
 import { Volume } from "@/interfaces/Volume";
 import { priceData2 } from "@/components/shared/chart/priceData2";
 import { Button } from "@/components/shared/buttons/button";
-import Histogram from "@/components/shared/chart/histogram";
-import ChartService from "@/lib/services/ChartService";
-
+import { GenericIndicator } from "@/interfaces/GenericIndicator";
 
 export default function StrategyPage() {
   const { id } = useParams();
@@ -35,6 +32,8 @@ export default function StrategyPage() {
   const [timeperiod, setTimeperiod] = useState<string>("recent");
   const [timeseries, setTimeseries] = useState<Timeseries[]>([]);
   const [volume, setVolume] = useState<Volume[]>([]);
+  const [histograms, setHistograms] = useState<GenericIndicator[]>([]);
+  const [lineSeries, setLineSeries] = useState<GenericIndicator[]>([]);
   const [isChartLoaded, setIsChartLoaded] = useState(false); // New state to control chart loading
 
   const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
@@ -78,7 +77,7 @@ export default function StrategyPage() {
 
         await timeseriesService.processBulk(parsed)
         //const chartService = new ChartService(timeseriesService.indicators, chartStyle) 
-        timeseriesService.updateChart(chartStyle, columns)
+        const indicators = timeseriesService.updateChart(chartStyle, columns)
         setTimeseries(timeseriesService.ohlc)
         setVolume(timeseriesService.volume)
         setIsChartLoaded(true); // Mark chart as loaded
