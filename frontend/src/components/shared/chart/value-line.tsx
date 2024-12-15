@@ -1,8 +1,9 @@
-import { useChartStore } from "@/lib/hooks/useChartStore";
+
+
 
 import { IChartApi } from 'lightweight-charts';
 
-class Histogram {
+class LineSeries {
 	public data: any[];
 
 	constructor(data: any[]) {
@@ -10,22 +11,20 @@ class Histogram {
 	}
 
 	create(chart: IChartApi, topMargin: number, bottomMargin: number) {
-
-		const histogram = chart.addHistogramSeries({
-
-			priceFormat: { type: 'volume' },
-			priceScaleId: '',
+		const lineSeries = chart.addLineSeries({
+			color: '#FF0000',
+			priceLineVisible: false,
 		});
-
-		histogram.priceScale().applyOptions({
+		lineSeries.priceScale().applyOptions({
 			scaleMargins: {
 				top: topMargin,
 				bottom: bottomMargin,
 			},
 		});
 
-		histogram.setData(this.data);
+		lineSeries.setData(this.data);
 	}
 }
 
-export default Histogram;
+export default LineSeries;
+

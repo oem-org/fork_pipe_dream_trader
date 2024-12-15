@@ -19,7 +19,6 @@ class FileLoader:
         elif self.file_path.endswith(".json"):
             return FileTypeEnum.JSON
         else:
-            print(self.file_path)
             return None
 
     def load_or_reload(self):
@@ -36,10 +35,8 @@ class FileLoader:
 
         pickle_file_path = new_folder / original_file_path.with_suffix(".pkl").name
         
-        print(pickle_file_path)
 
         if pickle_file_path.exists():
-            print("LOADING DATA FROM PICKLE")
             print(f"Loading data from pickle file: {pickle_file_path}")
             self.df = pd.read_pickle(pickle_file_path)
         else:
@@ -62,7 +59,6 @@ class FileLoader:
                 self.df = pd.read_csv(self.file_path)
             
                 self.df.columns = self.df.columns.str.lower().str.strip()
-                timestamps = self.df['unix'].head(1)
             # Convert timestamps to Unix timestamp (seconds since the epoch)
             #     unix_timestamps = timestamps.apply(lambda x: int(x.timestamp()) if pd.notna(x) else None)
             #

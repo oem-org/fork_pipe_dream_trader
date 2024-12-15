@@ -1,3 +1,4 @@
+from logging import raiseExceptions
 from pathlib import Path
 from typing import Dict, List
 import pandas as pd
@@ -14,70 +15,30 @@ class IndicatorLoader:
         self.indicators = indicators
         self.columns = []
          
-    # def _column_names(self):
-    #
-    #     head = self.df.head(100)
-    #
-    #     ao_settings = Ao()
-    #     MyStrategy = ta.Strategy(
-    #         name="DCSMA10",
-    #         ta=[ao_settings.dict()],
-    #     )
-    #
-    #     test = head.ta.strategy(MyStrategy)
-    #
-    #
-    #     new_columns = test.columns.tolist()
-    #
-    #     print("Columns Before:", self.columns)
-    #     print("New Columns :", new_columns)
-    #
-    #     common_columns = list(set(self.columns) & set(new_columns))
-    #
-    #     # Print or return the common columns
-    #     print("Common Columns:", common_columns)
-    #     # Debug: Print the columns before and after
-    #     print("Columns Before:", self.columns)
-    #     print("New Columns :", test)
     #
     def load_indicators(self):
 
-        # Indicators = ta.Study(
-        #     name="DCSMA10",
-        #     ta=[
-        #         {"kind": "ohlc4"},
-        #         {"kind": "sma", "length": 10},
-        #         {"kind": "donchian", "lower_length": 10, "upper_length": 15},
-        #         {"kind": "ema", "close": "OHLC4", "length": 10, "suffix": "OHLC4"},
-        #     ]
-        # )
-        # self.df = self.df.ta.study(Indicators)
-        # self._column_names()
 
         self.df.ta.log_return(cumulative=True, append=True)
         self.df.ta.percent_return(cumulative=True, append=True)
 
-        self.df.columns
-
-        MyStrategy = ta.Strategy(
+        Strategy = ta.Strategy(
             name="indicators",
         ta=self.indicators
         )
 
         self.df.set_index(pd.DatetimeIndex(self.df["time"]), inplace=True)
-        # (2) Run the Strategy
-        self.df.ta.strategy(MyStrategy)
-        # print(test.head(1))
+        
+        self.df.ta.strategy(Strategy)
 
 
-    def split_dataframe(self):
+    def split_dataframe(self) -> dict:
         """
         Create JSON strings to store dataframes of each indicator. column name and trading par
         Also creates a combined JSON string for specific columns: 'time', 'open', 'high', 'low', 'close'.
         """
         json_dfs = {}
 
-        print(self.df.head(2))
         required_columns = {"time", "open", "high", "low", "close"}
 
         if required_columns.issubset(set(self.df.columns)):
@@ -86,22 +47,17 @@ class IndicatorLoader:
             ohlc_df = self.df[list(required_columns)]
 
             json_dfs["ohlc"] = ohlc_df.to_json(orient="index")
-            print("after" , self.df.columns) 
-            print("after" , self.df.columns) 
-            print("after" , self.df.columns) 
-            print("after" , self.df.columns) 
-            print("after" , self.df.columns) 
-            print("after" , self.df.columns) 
-            print("after" , self.df.columns) 
+
             # Get the curreny pair
             json_dfs["pair"] = json.dumps(self.df['symbol'].iloc[0])
+            
             columns_to_drop = ['high', 'low', 'close', 'open','tradecount','symbol','date','CUMPCTRET_1','CUMLOGRET_1']
-
-            # Drop the columns if they exist
             columns_to_drop = [col for col in columns_to_drop if col in self.df.columns]
             self.df = self.df.drop(columns=columns_to_drop)
             
             json_dfs["columns"] = json.dumps(self.df.columns.tolist())
+
+            self.columns = self.df.columns.tolist()
         for col in self.df.columns:
             if col in {"time"}:
                 continue
@@ -114,11 +70,31 @@ class IndicatorLoader:
             # Add the JSON to the dictionary with the column name as the key
             json_dfs[col] = col_json
 
-        print("Column Names (Keys):")
-        for key in json_dfs.keys():
-            print(key)
 
         return json_dfs
+
+
+    def connect_chart_style(self, chart_styles):
+        matched_styles = {}
+
+        print("Columns:", self.columns)
+        for column in self.columns:
+            base_column = column.split('_')[0].lower()  # Normalize case and handle splitting
+            print(f"Processing column: {base_column}")
+            for obj in chart_styles:
+                print (obj, "obj")
+                print(f"Matching {base_column} with {obj['kind'].lower()}")
+                if base_column == obj['kind'].lower():  # Ensure comparison is case-insensitive
+                    matched_styles[column] = obj['chart_style']
+                    print(f"Matched {base_column} with style {obj['chart_style']}")
+
+        print("Matched styles:", matched_styles)
+        return matched_styles
+        # matching_style = list(filter(lambda style: style["name"] == column, chart_styles))
+                # if matching_style:
+                #     matched_styles[column] = matching_style[0]["style"]
+
+
 
     def get_data(self):
         return self.df

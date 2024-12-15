@@ -50,12 +50,12 @@ class Indicators(Base):
     __tablename__ = "indicators"
 
     id = Column(Integer, primary_key=True, index=True)
-    kind = Column(String)
+    kind = Column(String, unique=True)
     description = Column(String)
     default_settings = Column(JSON)
     settings_schema = Column(JSON)
     chart_style = Column(String)
-    
+
     strategy_indicators = relationship("StrategyIndicators", back_populates="indicator")
 
 class Files(Base):
@@ -74,4 +74,3 @@ class Files(Base):
 #     id = Column(Integer, primary_key=True, index=True)
 #     name = Column(String)
 #     strategies = relationship("Strategies", back_populates="pair")
-#

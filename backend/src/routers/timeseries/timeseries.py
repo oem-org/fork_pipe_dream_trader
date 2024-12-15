@@ -54,6 +54,9 @@ async def read_all(
             fileLoader = FileLoader(path)
             fileLoader.load_or_reload()
             # print(fileLoader.df)
+            
+            chart_styles = [{"chart_style": si.indicator.chart_style, "kind": si.indicator.kind} for si in strategyModel.strategy_indicators if si.indicator]
+            print(chart_styles, "CHART STYLE!!!!!!!!!!!!!!!!")
             all_indicator_settings = [
                 ind.settings
                 for ind in strategyModel.strategy_indicators
@@ -61,10 +64,10 @@ async def read_all(
             ]
             print(all_indicator_settings)
             indicatorLoader = IndicatorLoader(fileLoader.df, all_indicator_settings)
-            
             indicatorLoader.load_indicators()
             json = indicatorLoader.split_dataframe()
-            
+            styles = indicatorLoader.connect_chart_style(chart_styles)
+            print(styles, "styles")
             return json
     except Exception as e:
         handle_db_error(e, "Unexpected error occurred while fetching the file data")
