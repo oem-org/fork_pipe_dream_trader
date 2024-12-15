@@ -8,6 +8,7 @@ import { Volume } from '@/interfaces/Volume';
 interface ChartProps {
 	timeseries: Timeseries[]
 	volume: Volume[]
+	lineSeries: Array<any>
 }
 
 // Lightweight charts accept UTCtimestamp, BuisnessDay or buisness day string in ISO format
@@ -15,7 +16,7 @@ interface ChartProps {
 
 // Time settings
 //https://github.com/tradingview/lightweight-charts/blob/v3.7.0/docs/time-scale.md#time-scale-options
-export function Chart({ timeseries, volume }: ChartProps) {
+export function Chart({ timeseries, volume, histograms }: ChartProps) {
 	const customColors = {
 		backgroundColor: '#f5f5f5',
 		textColor: '#212121',
@@ -33,7 +34,7 @@ export function Chart({ timeseries, volume }: ChartProps) {
 
 	return (
 		<div className="w-full h-full rounded-lg overflow-hidden">
-			<ChartCanvas chartContainerRef={chartContainerRef} data={timeseries} volume={volume} colors={customColors} />
+			<ChartCanvas chartContainerRef={chartContainerRef} histograms={histograms} data={timeseries} volume={volume} colors={customColors} />
 		</div>
 	);
 }

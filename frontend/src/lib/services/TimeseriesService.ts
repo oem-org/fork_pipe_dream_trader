@@ -22,8 +22,8 @@ export default class TimeseriesService {
 
 	updateChart(chartStyles: Record<string, any>, column: Array<string>) {
 		console.log(column, "column");
-		const histograms = []
-		const lineSeries = []
+		const histogramObjs = []
+		const lineSeriesObjs = []
 		for (let key in chartStyles) {
 			// Key is dataframe column name fx "RSI_14" 
 			// The value stored in the key is chart style	
@@ -31,7 +31,7 @@ export default class TimeseriesService {
 				case "histogram":
 					const histogram = new Histogram(this.indicators[key])
 					histogram.setName(`${key}`)
-					histograms.push(histogram)
+					histogramObjs.push(histogram)
 					break;
 				default:
 					break;
@@ -42,7 +42,7 @@ export default class TimeseriesService {
 
 		}
 
-		return { "histograms": histograms, "lineSeries": lineSeries }
+		return { "histogramsObjs": histogramObjs, "lineSeriesObjs": lineSeriesObjs }
 	}
 
 	// TODO: add types

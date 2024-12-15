@@ -8,7 +8,7 @@ import { Volume } from '@/interfaces/Volume'
 interface ChartProps {
 	chartContainerRef: React.RefObject<HTMLDivElement>;
 	data: Timeseries[];
-	indicators: Array<string>
+	histograms: Array<any>
 	volume: Volume[];
 	colors?: {
 		backgroundColor?: string;
@@ -24,6 +24,7 @@ export default function ChartCanvas(props: ChartProps): React.ReactElement {
 		chartContainerRef,
 		data,
 		volume,
+		histograms,
 		colors: {
 			backgroundColor = '#253248',
 			lineColor = '#2962FF',
@@ -108,6 +109,38 @@ export default function ChartCanvas(props: ChartProps): React.ReactElement {
 				wickDownColor: '#838ca1',
 				wickUpColor: '#838ca1',
 			});
+
+			//lineSeries.forEach(line => {
+			//
+			//	console.log("wwwwwwwwwwwwwlineSeries", lineSeries)
+			//	line.create(chartRef.current, 0.8, 0)
+			//});
+			//
+			//
+
+			const histogram = chartRef.current.addHistogramSeries({
+				priceFormat: { type: 'volume' },
+				priceScaleId: '',
+			});
+
+			histogram.priceScale().applyOptions({
+				scaleMargins: {
+					top: 0.8,
+					bottom: 0,
+				},
+			});
+			console.log("histogram", histograms[0].data)
+			histogram.setData(histograms[0].data);
+			console.log("vviiiiiiiiiiiiolume", volume)
+			try {
+				histograms.forEach(line => {
+
+					console.log("wwwwwwwwwwwwwlineSeries", line)
+					line.create(chartRef.current, 0.8, 0)
+				});
+			} catch (error) {
+				console.error(error);
+			}
 
 			//const newSeries = chartRef.current.addAreaSeries({
 			//	lineColor,

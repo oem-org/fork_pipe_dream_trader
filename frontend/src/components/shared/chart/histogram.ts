@@ -1,6 +1,9 @@
 import { IChartApi } from 'lightweight-charts';
+interface ChartHistogram {
+	create(chart: IChartApi, topMargin: number, bottomMargin: number): void
+}
 
-class Histogram {
+class Histogram implements ChartHistogram {
 	public data: any[];
 	private name: string;
 
@@ -10,6 +13,7 @@ class Histogram {
 	}
 
 	create(chart: IChartApi, topMargin: number, bottomMargin: number) {
+		console.log(chart, "chart")
 		const histogram = chart.addHistogramSeries({
 			priceFormat: { type: 'volume' },
 			priceScaleId: '',
