@@ -17,18 +17,26 @@ export default class TimeseriesService {
 	}
 
 
+	updateChart(chartStyles: Record<string, any>, column: Array<string>) {
+		console.log(column, "column");
 
-	async processBulk(obj: Record<string, any>, columns: Array<string>, chartStyle: Record<string, any>) {
+		for (let key in chartStyles) {
+			console.log(key, "KEEEEEEEEEEEEEEEEEY");
+
+		}
+	}
+
+
+	async processBulk(indicatorsTimeseries: Record<string, any>) {
 		// Saved time and value for each KeyName corrosponding to the dataframe columns
 		const notAllowedKeys = ["time", "volume pols", "columns", "pair"];
-		console.log(columns, "inside");
 
-		for (const keyName in obj) {
+		for (const keyName in indicatorsTimeseries) {
 			let indicator = []
 			if (notAllowedKeys.includes(keyName)) {
 				continue;
 			} else {
-				Object.values(obj[keyName]).forEach((data) => {
+				Object.values(indicatorsTimeseries[keyName]).forEach((data) => {
 					indicator.push({
 						time: data.time,
 						value: data[keyName]

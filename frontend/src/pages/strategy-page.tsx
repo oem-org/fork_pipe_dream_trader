@@ -17,7 +17,7 @@ import { Volume } from "@/interfaces/Volume";
 import { priceData2 } from "@/components/shared/chart/priceData2";
 import { Button } from "@/components/shared/buttons/button";
 import Histogram from "@/components/shared/chart/histogram";
-
+import ChartService from "@/lib/services/ChartService";
 
 
 export default function StrategyPage() {
@@ -70,13 +70,15 @@ export default function StrategyPage() {
         const columns = parsed.columns
         const chartStyle = parsed.chart_style
 
+
         delete parsed.ohlc;
         delete parsed.volume;
         delete parsed.chart_style;
         delete parsed.columns;
 
-        await timeseriesService.processBulk(parsed, columns, chartStyle)
-
+        await timeseriesService.processBulk(parsed)
+        //const chartService = new ChartService(timeseriesService.indicators, chartStyle) 
+        timeseriesService.updateChart(chartStyle, columns)
         setTimeseries(timeseriesService.ohlc)
         setVolume(timeseriesService.volume)
         setIsChartLoaded(true); // Mark chart as loaded
