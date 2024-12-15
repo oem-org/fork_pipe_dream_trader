@@ -22,7 +22,7 @@ class IndicatorLoader:
     #     MyStrategy = ta.Strategy(
     #         name="DCSMA10",
     #         ta=[ao_settings.dict()],
-    #     ) 
+    #     )
     #
     #     test = head.ta.strategy(MyStrategy)
     #
@@ -58,17 +58,16 @@ class IndicatorLoader:
         self.df.ta.percent_return(cumulative=True, append=True)
 
         self.df.columns
-       
+
         MyStrategy = ta.Strategy(
             name="indicators",
         ta=self.indicators
         )
-        
+
         self.df.set_index(pd.DatetimeIndex(self.df["time"]), inplace=True)
         # (2) Run the Strategy
         self.df.ta.strategy(MyStrategy)
         # print(test.head(1))
-        self.columns = self.df.columns.tolist()
 
 
     def split_dataframe(self):
@@ -79,27 +78,37 @@ class IndicatorLoader:
         """
         json_dfs = {}
 
-        print(self.df.head(2))        
+        print(self.df.head(2))
         required_columns = {"time", "open", "high", "low", "close"}
-        
+
         if required_columns.issubset(set(self.df.columns)):
-            
+
             # Grab columns specified in list
             ohlc_df = self.df[list(required_columns)]
-            
+
             json_dfs["ohlc"] = ohlc_df.to_json(orient="index")
-            
+            json_dfs["columns"] = json.dumps(self.columns)
             # Pass the total column names for constructing charts later
-            # json_dfs["columns"] = json.dumps(self.columns) 
+            # json_dfs["columns"] = json.dumps(self.columns)
+
+            # Get the curreny pair
+            json_dfs["pair"] = json.dumps(self.df['symbol'].iloc[0])
+            columns_to_drop = ['high', 'low', 'close', 'open','tradecount','symbol','date','CUMPCTRET_1','CUMLOGRET_1']
+
+            # Drop the columns if they exist
+            columns_to_drop = [col for col in columns_to_drop if col in self.df.columns]
+
+            self.df = self.df.drop(columns=columns_to_drop)
+
         for col in self.df.columns:
-            if col in {"time", "tradecount", "symbol"}:
-                continue  
+            if col in {"time"}:
+                continue
 
             # Include the 'time' column and the specific column
             thecol = self.df[["time", col]]
 
             col_json = thecol.to_json(orient="index")
-            
+
             # Add the JSON to the dictionary with the column name as the key
             json_dfs[col] = col_json
 

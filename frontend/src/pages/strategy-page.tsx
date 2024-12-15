@@ -57,7 +57,6 @@ export default function StrategyPage() {
         // Attempt to parse the JSON string
         //const timeseriesData = JSON.parse(data.timeseries);
         //console.log("KEYS", timeseriesData.keys());
-        console.log(parsed.RSI_14)
         const timeseriesService = new TimeseriesService();
         await timeseriesService.processOhlc(parsed.ohlc);
         await timeseriesService.processVolume(parsed.volume);
@@ -70,6 +69,7 @@ export default function StrategyPage() {
         setTimeseries(timeseriesService.ohlc)
         setVolume(timeseriesService.volume)
         setIsChartLoaded(true); // Mark chart as loaded
+        console.log(parsed.columns)
       }
     } catch (error) {
       console.error(error);

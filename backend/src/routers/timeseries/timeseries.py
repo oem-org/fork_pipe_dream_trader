@@ -62,7 +62,6 @@ async def read_all(
             print(all_indicator_settings)
             indicatorLoader = IndicatorLoader(fileLoader.df, all_indicator_settings)
             
-            time_volume = indicatorLoader.df.to_json(orient="index")
             
             indicatorLoader.load_indicators()
             # print(split)
@@ -73,7 +72,6 @@ async def read_all(
             # split["timeseries"] = json
             json = indicatorLoader.split_dataframe()
             
-            json['time_volume'] = time_volume
             return json
     except Exception as e:
         handle_db_error(e, "Unexpected error occurred while fetching the file data")
