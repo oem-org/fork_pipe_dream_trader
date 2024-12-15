@@ -1,14 +1,14 @@
-import { createChart, CrosshairMode, ColorType, IChartApi } from 'lightweight-charts'
-import { useEffect, useRef, useState } from 'react'
-import React from 'react'
-import Timeseries from '../../../interfaces/Timeseries'
-import { Volume } from '@/interfaces/Volume'
-
+import { createChart, CrosshairMode, ColorType, IChartApi } from 'lightweight-charts';
+import { useEffect, useRef, useState } from 'react';
+import React from 'react';
+import Timeseries from '../../../interfaces/Timeseries';
+import { Volume } from '@/interfaces/Volume';
+import { useChartStore } from '@/lib/hooks/useChartStore';
 
 interface ChartProps {
 	chartContainerRef: React.RefObject<HTMLDivElement>;
 	data: Timeseries[];
-	histograms: Array<any>
+	histograms: Array<any>;
 	volume: Volume[];
 	colors?: {
 		backgroundColor?: string;
@@ -18,7 +18,7 @@ interface ChartProps {
 		areaBottomColor?: string;
 	};
 }
-// TODO: fix
+
 export default function ChartCanvas(props: ChartProps): React.ReactElement {
 	const {
 		chartContainerRef,
@@ -39,7 +39,7 @@ export default function ChartCanvas(props: ChartProps): React.ReactElement {
 		height: 0,
 	});
 
-	const chartRef = useRef<IChartApi | null>(null);
+	const { chartRef, setChartRef } = useChartStore(); // Use the chart store
 
 	const handleResize = () => {
 		if (chartContainerRef.current) {
@@ -63,45 +63,30 @@ export default function ChartCanvas(props: ChartProps): React.ReactElement {
 				setChartSize({ width: newWidth, height: newHeight });
 			}
 
-			chartRef.current = createChart(chartContainerRef.current, {
-				//layout: {
-				//	background: { type: ColorType.Solid, color: backgroundColor },
-				//	textColor,
-				//},
-
-
+			// Create the chart instance and store it in the global Zustand store
+			const chartInstance = createChart(chartContainerRef.current, {
 				layout: {
-					background: { type: ColorType.Solid, color: "black" },
+					background: { type: ColorType.Solid, color: 'black' },
 					textColor: 'white',
 				},
 				grid: {
-					vertLines: {
-						color: '#334158',
-					},
-					horzLines: {
-						color: '#334158',
-					},
+					vertLines: { color: '#334158' },
+					horzLines: { color: '#334158' },
 				},
-				crosshair: {
-					mode: CrosshairMode.Normal,
-				},
-				//priceScale: {
-				//	borderColor: '#485c7b',
-				//},
+				crosshair: { mode: CrosshairMode.Normal },
 				timeScale: {
 					borderColor: '#485c7b',
 					timeVisible: true,
 				},
-
-
 				width: newWidth,
 				height: newHeight,
 			});
 
-			chartRef.current.timeScale().fitContent();
+			chartInstance.timeScale().fitContent();
+			setChartRef(chartInstance); // Store the chart globally
 
-
-			const candleSeries = chartRef.current.addCandlestickSeries({
+			// Add candlestick series
+			const candleSeries = chartInstance.addCandlestickSeries({
 				upColor: '#4bffb5',
 				downColor: '#ff4976',
 				borderDownColor: '#ff4976',
@@ -109,76 +94,33 @@ export default function ChartCanvas(props: ChartProps): React.ReactElement {
 				wickDownColor: '#838ca1',
 				wickUpColor: '#838ca1',
 			});
+			candleSeries.setData(data);
 
-			//lineSeries.forEach(line => {
-			//
-			//	console.log("wwwwwwwwwwwwwlineSeries", lineSeries)
-			//	line.create(chartRef.current, 0.8, 0)
-			//});
-			//
-			//
-
-			const histogram = chartRef.current.addHistogramSeries({
+			// Add histogram series for volume
+			const histogram = chartInstance.addHistogramSeries({
 				priceFormat: { type: 'volume' },
 				priceScaleId: '',
 			});
-
 			histogram.priceScale().applyOptions({
-				scaleMargins: {
-					top: 0.8,
-					bottom: 0,
-				},
+				scaleMargins: { top: 0.8, bottom: 0 },
 			});
-			console.log("histogram", histograms[0].data)
-			histogram.setData(histograms[0].data);
-			console.log("vviiiiiiiiiiiiolume", volume)
-			try {
-				histograms.forEach(line => {
-
-					console.log("wwwwwwwwwwwwwlineSeries", line)
-					line.create(chartRef.current, 0.8, 0)
-				});
-			} catch (error) {
-				console.error(error);
-			}
-
-			//const newSeries = chartRef.current.addAreaSeries({
-			//	lineColor,
-			//	topColor: areaTopColor,
-			//	bottomColor: areaBottomColor,
-			//});
-			//
-			//newSeries.setData(data);
-
-
-			//const volumeSeries = chartRef.current.addHistogramSeries({
-			//	priceFormat: {
-			//		type: 'volume',
-			//	},
-			//	priceScaleId: '',
-			//});
-			//volumeSeries.priceScale().applyOptions({
-			//	// 
-			//	scaleMargins: {
-			//		top: 0.8,
-			//		bottom: 0.001,
-			//	},
-			//});
-			//volumeSeries.setData(volume);
-			//
-			candleSeries.setData(data);
+			histogram.setData(volume);
 
 			window.addEventListener('resize', handleResize);
 
+			// Cleanup
 			return () => {
 				window.removeEventListener('resize', handleResize);
-				if (chartRef.current) {
-					chartRef.current.remove();
+				if (chartInstance) {
+					chartInstance.remove();
 				}
+				setChartRef(null); // Clear the global store
 			};
 		}
 	}, [
+		chartContainerRef,
 		data,
+		volume,
 		backgroundColor,
 		lineColor,
 		textColor,
@@ -188,11 +130,5 @@ export default function ChartCanvas(props: ChartProps): React.ReactElement {
 		chartSize.height,
 	]);
 
-	return (
-		<div
-			className="w-full h-full"
-			ref={chartContainerRef}
-		/>
-	);
+	return <div className="w-full h-full" ref={chartContainerRef} />;
 }
-
