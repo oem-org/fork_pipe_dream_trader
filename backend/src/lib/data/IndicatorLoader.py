@@ -14,6 +14,7 @@ class IndicatorLoader:
         self.df = df
         self.indicators = indicators
         self.columns = []
+        self.response = {}
          
     #
     def load_indicators(self):
@@ -32,7 +33,7 @@ class IndicatorLoader:
         self.df.ta.strategy(Strategy)
 
 
-    def split_dataframe(self) -> dict:
+    def split_dataframe(self):
         """
         Create JSON strings to store dataframes of each indicator. column name and trading par
         Also creates a combined JSON string for specific columns: 'time', 'open', 'high', 'low', 'close'.
@@ -69,27 +70,31 @@ class IndicatorLoader:
 
             # Add the JSON to the dictionary with the column name as the key
             json_dfs[col] = col_json
+            
+            self.response = json_dfs
 
-
-        return json_dfs
 
 
     def connect_chart_style(self, chart_styles):
+        """
+        Connect auto generated column names with a chart style
+        """
         matched_styles = {}
 
         print("Columns:", self.columns)
         for column in self.columns:
-            base_column = column.split('_')[0].lower()  # Normalize case and handle splitting
+            base_column = column.split('_')[0].lower()  
             print(f"Processing column: {base_column}")
             for obj in chart_styles:
                 print (obj, "obj")
                 print(f"Matching {base_column} with {obj['kind'].lower()}")
-                if base_column == obj['kind'].lower():  # Ensure comparison is case-insensitive
+                if base_column == obj['kind'].lower():  
                     matched_styles[column] = obj['chart_style']
                     print(f"Matched {base_column} with style {obj['chart_style']}")
 
         print("Matched styles:", matched_styles)
-        return matched_styles
+
+        self.response['chart_style'] = json.dumps(matched_styles)
         # matching_style = list(filter(lambda style: style["name"] == column, chart_styles))
                 # if matching_style:
                 #     matched_styles[column] = matching_style[0]["style"]
