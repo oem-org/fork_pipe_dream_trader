@@ -17,19 +17,20 @@ import useChartStore from "@/lib/hooks/useChartStore";
 export default function IndicatorSection() {
 
 	const { strategyId, setStrategyId } = useStrategyStore();
-	const { addIndicator, removeIndicator, } = useChartStore()
 	const { mutateAsync: addIndicatorMutation } = useAddIndicator(strategyId);
 	const { mutateAsync: deleteIndicatorMutation } = useDeleteIndicator(strategyId);
 
 	const { data: strategyIndicators, error: siError, isLoading: siIsLoading, refetch: siRefetch } = getStrategyIndicatorsQuery(strategyId);
-	const { data: indicators } = getIndicatorsQuery();
+	const { data: indicatorSettings } = getIndicatorsQuery();
+
+	const { addIndicator, removeIndicator, indicators, lineSeriesIndicators, histogramIndicators } = useChartStore()
 
 
+	console.log(indicators, "88888888888888888888888888")
 
 	const handleIndicatorChange = async (indicator: Indicator) => {
 		try {
-			// Use the destructured mutateAsync
-
+			// Using the destructured mutateAsync
 			const response = await addIndicatorMutation(indicator);
 			console.log("Indicator added successfully:", response);
 
@@ -61,7 +62,7 @@ export default function IndicatorSection() {
 
 		<h4 className="text-xl font-bold mb-4">Indicators</h4>
 		<GenericSelect<Indicator>
-			data={indicators || []}
+			data={indicatorSettings || []}
 			keyExtractor={(indicator) => indicator.id}
 			nameExtractor={(indicator) => indicator.kind}
 			onSelect={handleIndicatorChange}
@@ -72,9 +73,9 @@ export default function IndicatorSection() {
 
 		<div className="mt-4">
 			<h5 className="text-lg font-semibold mb-2">Loaded Indicators</h5>
-			{siIsLoading && <p>Loading indicators...</p>}
+			{siIsLoading && <p>Loading indicatorSettings...</p>}
 			{siError && siError instanceof Error && (
-				<p className="text-red-500">Error loading indicators: {siError.message}</p>
+				<p className="text-red-500">Error loading indicatorSettings: {siError.message}</p>
 			)}
 			{!siIsLoading && !siError && strategyIndicators && strategyIndicators.length > 0 ? (
 				<ul className="list-disc pl-4">
@@ -87,6 +88,7 @@ export default function IndicatorSection() {
 								{indicator.id}
 
 							</Button>
+							<Button></Button>
 						</li>
 					))}
 				</ul>
@@ -96,4 +98,9 @@ export default function IndicatorSection() {
 		</div>
 
 	</>)
+}
+
+
+function build(id: number) {
+
 }

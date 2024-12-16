@@ -61,15 +61,14 @@ export default function StrategyPage() {
       if (strategyId) {
         const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
         const parsed = parseJsonStrings(data)
-        console.log(parsed, "parsed");
 
         const timeseriesService = new TimeseriesService();
-        console.log("aggggggg")
         await timeseriesService.processOhlc(parsed.ohlc);
         await timeseriesService.processVolume(parsed.volume);
         const columns = parsed.columns
-        const chartStyle = parsed.indicator_info
-        console.log(chartStyle, "chart fffff style");
+
+        // indicatorsInfo structure {RSI_14:{"chart_style":"histogram", "id":1}...}
+        const indicatorInfo = parsed.indicator_info
 
 
         delete parsed.ohlc;
@@ -78,12 +77,10 @@ export default function StrategyPage() {
         delete parsed.columns;
 
         await timeseriesService.processBulk(parsed)
-        console.log("ntttttttttttttttttttttttttttttt");
 
-        //const chartService = new ChartService(timeseriesService.indicators, chartStyle)
-        timeseriesService.updateChart(chartStyle, columns)
+        //const chartService = new ChartService(timeseriesService.indicators, indicatorInfo)
+        timeseriesService.updateChart(indicatorInfo)
 
-        console.log(timeseriesService.ohlc, "chart")
         setTimeseries(timeseriesService.ohlc)
         setVolume(timeseriesService.volume)
         setIsChartLoaded(true); // Mark chart as loaded

@@ -16,37 +16,28 @@ export default class TimeseriesService {
 		this.indicators = {};
 	}
 
-	updateChart(indicatorInfo: Record<string, any>, column: Array<string>) {
-		console.log("Ttttttttttttttttttterteratnearsntairenstearnteiarntaeirntaeirnst");
+	updateChart(indicatorInfo: Record<string, any>) {
 
 		// Must access the fresh non reactive state of the store
 		//
-		const { setHistogramIndicators, setLineSeriesIndicators } = useChartStore.getState();
-		console.log(column, "column");
+		const { setIndicators } = useChartStore.getState();
 
-		const histogramIndicators = [];
-		const lineSeriesIndicators = [];
+		const mappedIndicators = [];
+		//const lineSeriesIndicators = [];
+		//const mappedIndicators = [];
 
 		for (let key in indicatorInfo) {
 			// Key is dataframe column name fx "RSI_14"
-			// The value stored in the key is chart style
-			switch (indicatorInfo[key]) {
-				case "histogram":
-					histogramIndicators.push({ "name": `${key}`, "id": indicatorInfo[key].id, "data": this.indicators[key] });  // Fixed template literal
-					break;
-				default:
-					lineSeriesIndicators.push({ "name": `${key}`, "id": indicatorInfo[key].id, "data": this.indicators[key] });  // Fixed template literal
-					break;
-			}
-			console.log(indicatorInfo, "IINFYYYYYYYY");
+			// The value stored in the key is chart styl
 
-			console.log(indicatorInfo[key]);
+			mappedIndicators.push({ "name": `${key}`, "chartStyle": indicatorInfo[key].indicator_info, "id": indicatorInfo[key].id, "data": this.indicators[key] });  // Fixed template literal
+
+
 			console.log(this.indicators[key]);
 		}
 
-		setHistogramIndicators(histogramIndicators);
-		setLineSeriesIndicators(lineSeriesIndicators);
-		//return { "histogramIndicators": histogramIndicators, "lineSeriesIndicators": lineSeriesIndicators }
+		console.log("aaaaaaaaaaaaaaaaaaaaaaaindiCAT", mappedIndicators);
+		//setIndicators(mappedIndicators)
 	}
 
 	// TODO: add types

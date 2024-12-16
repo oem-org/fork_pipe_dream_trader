@@ -6,7 +6,6 @@ export default function getFilesQuery() {
 	const fetchFiles = async (): Promise<File[]> => {
 		try {
 			const files: File[] = await getAllFilesApi.getAll()
-			console.log(files)
 			return files
 		} catch (error) {
 			//console.error(error)
