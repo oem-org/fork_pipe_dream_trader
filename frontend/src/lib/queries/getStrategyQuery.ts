@@ -7,7 +7,6 @@ export default function getStrategyQuery(id: number) {
 	const fetchStrategy = async (): Promise<Strategy> => {
 		try {
 			const strategy = await getStrategyApi.get(id)
-			console.log(strategy, "GET STRATEGY QUERY")
 			return strategy
 		} catch (error) {
 			throw new Error("Failed to fetch strategy")

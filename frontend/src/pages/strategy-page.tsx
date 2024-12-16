@@ -33,7 +33,7 @@ export default function StrategyPage() {
   const [timeseries, setTimeseries] = useState<Timeseries[]>([]);
   const [volume, setVolume] = useState<Volume[]>([]);
   const [histograms, setHistograms] = useState<any>([]);
-  const [lineSeriesData, setLineSeries] = useState<GenericIndicator[]>([]);
+  const [lineSeries, setLineSeries] = useState<GenericIndicator[]>([]);
   const [isChartLoaded, setIsChartLoaded] = useState(false); // New state to control chart loading
 
   const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
@@ -64,6 +64,7 @@ export default function StrategyPage() {
         console.log(parsed, "parsed");
 
         const timeseriesService = new TimeseriesService();
+        console.log("aggggggg")
         await timeseriesService.processOhlc(parsed.ohlc);
         await timeseriesService.processVolume(parsed.volume);
         const columns = parsed.columns
@@ -76,11 +77,12 @@ export default function StrategyPage() {
         delete parsed.columns;
 
         await timeseriesService.processBulk(parsed)
-        //const chartService = new ChartService(timeseriesService.indicators, chartStyle) 
-        const objects = timeseriesService.updateChart(chartStyle, columns)
-        console.log(histograms, "LINEEEEEEEEEEEEEEEEEEEEEEEEE")
-        setLineSeries(objects.lineSeriesObjs)
-        setHistograms(objects.histogramsObjs)
+        console.log("ntttttttttttttttttttttttttttttt");
+
+        //const chartService = new ChartService(timeseriesService.indicators, chartStyle)
+        timeseriesService.updateChart(chartStyle, columns)
+
+        console.log(timeseriesService.ohlc, "chart")
         setTimeseries(timeseriesService.ohlc)
         setVolume(timeseriesService.volume)
         setIsChartLoaded(true); // Mark chart as loaded
@@ -173,7 +175,7 @@ export default function StrategyPage() {
                     <p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded transparent-bg">
                       Chart Title
                     </p>
-                    <Chart volume={volume} timeseries={timeseries} histograms={histograms} />
+                    <Chart volume={volume} timeseries={timeseries} />
                   </div>
                 </div>) : (
                 <p>Loading chart...</p>

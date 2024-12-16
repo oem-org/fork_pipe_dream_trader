@@ -1,81 +1,77 @@
-//import { IndicatorBase } from "@/interfaces/indicators/IndicatorBase";
+import { IndicatorBase } from "@/interfaces/indicators/IndicatorBase";
 import Timeseries from "@/interfaces/Timeseries";
 import { Volume, VolumeBackend } from "@/interfaces/Volume";
 import { findStringIndex } from "../utils/string-utils";
 import Histogram from "@/components/shared/chart/histogram";
-
-
+import useChartStore from "../hooks/useChartStore";
 
 export default class TimeseriesService {
 	public ohlc: Timeseries[];
 	public volume: Volume[];
-	public indicators: Record<string, any>
-	//public ao: IndicatorBase[];
+	public indicators: Record<string, any>;
 
 	constructor() {
 		this.ohlc = [];
 		this.volume = [];
-		this.indicators = {}
-
+		this.indicators = {};
 	}
 
-
 	updateChart(chartStyles: Record<string, any>, column: Array<string>) {
+		console.log("Ttttttttttttttttttterteratnearsntairenstearnteiarntaeirntaeirnst");
+
+		const { setHistogramIndicators, setLineSeriesIndicators } = useChartStore();
 		console.log(column, "column");
-		const histogramObjs = []
-		const lineSeriesObjs = []
+
+		const histogramIndicators = [];
+		const lineSeriesIndicators = [];
+
 		for (let key in chartStyles) {
-			// Key is dataframe column name fx "RSI_14" 
-			// The value stored in the key is chart style	
+			// Key is dataframe column name fx "RSI_14"
+			// The value stored in the key is chart style
 			switch (chartStyles[key]) {
 				case "histogram":
-					const histogram = new Histogram(this.indicators[key])
-					histogram.setName(`${key}`)
-					histogramObjs.push(histogram)
+					histogramIndicators.push({ "name": `${key}`, "data": this.indicators[key] });  // Fixed template literal
 					break;
 				default:
+					lineSeriesIndicators.push({ "name": `${key}`, "data": this.indicators[key] });  // Fixed template literal
 					break;
 			}
 
-			console.log(chartStyles[key])
-			console.log(this.indicators[key])
-
+			console.log(chartStyles[key]);
+			console.log(this.indicators[key]);
 		}
 
-		return { "histogramsObjs": histogramObjs, "lineSeriesObjs": lineSeriesObjs }
+		setHistogramIndicators(histogramIndicators);
+		setLineSeriesIndicators(lineSeriesIndicators);
+		//return { "histogramIndicators": histogramIndicators, "lineSeriesIndicators": lineSeriesIndicators }
 	}
 
 	// TODO: add types
 	async processBulk(indicatorsTimeseries: Record<string, any>) {
-		// Saved time and value for each KeyName corrosponding to the dataframe columns
+		// Saved time and value for each KeyName corresponding to the dataframe columns
 		const notAllowedKeys = ["time", "volume pols", "columns", "pair"];
 
 		for (const keyName in indicatorsTimeseries) {
-			let indicator = []
+			let indicator = [];
 			if (notAllowedKeys.includes(keyName)) {
 				continue;
 			} else {
 				Object.values(indicatorsTimeseries[keyName]).forEach((data) => {
 					indicator.push({
 						time: data.time,
-						value: data[keyName]
+						value: data[keyName],
 					});
 				});
 
-				this.indicators[keyName] = indicator
+				this.indicators[keyName] = indicator;
 			}
 		}
 		console.log("FINALLY");
-
 		console.log("INDICATORS!!!!!!!", this.indicators);
-
 	}
-
-
 
 	async processVolume(volume: VolumeBackend[]) {
 		Object.values(volume).forEach((data) => {
-
 			this.volume.push({
 				time: data.time,
 				value: data.volume,
@@ -94,7 +90,6 @@ export default class TimeseriesService {
 				low: data.low,
 				close: data.close,
 			});
-
 		});
 	}
 }

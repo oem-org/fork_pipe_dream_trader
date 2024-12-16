@@ -9,17 +9,22 @@ import { Button } from "@/components/shared/buttons/button";
 import GenericIndicator from "./generic-indicator";
 
 import { SquareX } from 'lucide-react';
+import useChartStore from "@/lib/hooks/useChartStore";
+
+
 
 
 export default function IndicatorSection() {
 
 	const { strategyId, setStrategyId } = useStrategyStore();
-
+	const { addIndicator, removeIndicator, } = useChartStore()
 	const { mutateAsync: addIndicatorMutation } = useAddIndicator(strategyId);
 	const { mutateAsync: deleteIndicatorMutation } = useDeleteIndicator(strategyId);
 
 	const { data: strategyIndicators, error: siError, isLoading: siIsLoading, refetch: siRefetch } = getStrategyIndicatorsQuery(strategyId);
 	const { data: indicators } = getIndicatorsQuery();
+
+
 
 	const handleIndicatorChange = async (indicator: Indicator) => {
 		try {
@@ -33,6 +38,24 @@ export default function IndicatorSection() {
 
 
 	return (<>
+
+		<button
+			onClick={() =>
+				addIndicator('SMA', [
+					{ time: '2022-01-01', value: 50 },
+					{ time: '2022-01-02', value: 52 },
+				])
+			}
+			className="mr-2 px-4 py-2 bg-blue-500 text-white rounded"
+		>
+			Add SMA
+		</button>
+		<button
+			onClick={() => removeIndicator('SMA')}
+			className="px-4 py-2 bg-red-500 text-white rounded"
+		>
+			Remove SMA
+		</button>
 
 		<h4 className="text-xl font-bold mb-4">Indicators</h4>
 		<GenericSelect<Indicator>
