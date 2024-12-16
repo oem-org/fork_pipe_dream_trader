@@ -85,12 +85,10 @@ export default function StrategyPage() {
         setMappedIndicators(mapped)
         setTimeseries(timeseriesService.ohlc); // Update OHLC
         setVolume(timeseriesService.volume);  // Update Volume
-        setIndicators(mappedIndicators);     // Update Indicators
       }
     } catch (error) {
       console.error("Error loading chart:", error);
     } finally {
-      setIsChartLoaded(true); // Ensure loading state is updated
     }
   }, [strategyId, timeperiod]);
 
@@ -103,8 +101,10 @@ export default function StrategyPage() {
 
   useEffect(() => {
 
-    console.log
+    setIndicators(mappedIndicators);     // Update Indicators
+    console.log(mappedIndicators, "DDDDD")
 
+    setIsChartLoaded(true); // Ensure loading state is updated
   }, [mappedIndicators])
 
 
@@ -177,7 +177,7 @@ export default function StrategyPage() {
               />
             </section>
             <div className="lg:col-span-3">
-              {true ? (
+              {isChartLoaded ? (
                 <div
                   className={`flex ${isRow ? 'flex-row' : 'flex-col'
                     }`}

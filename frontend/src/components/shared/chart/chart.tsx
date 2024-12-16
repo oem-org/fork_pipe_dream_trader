@@ -1,4 +1,4 @@
-import React, { memo, useRef } from 'react';
+import React, { memo, useRef, useEffect } from 'react';
 import ChartCanvas from './chart-canvas';
 import Timeseries from '../../../interfaces/Timeseries';
 import { Volume } from '@/interfaces/Volume';
@@ -13,6 +13,12 @@ interface ChartProps {
 
 function ChartMemo({ timeseries, volume, indicators, setIndicators }: ChartProps) {
 	// will only rerender if props change
+
+	useEffect(() => {
+		console.log(indicators, "HOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+
+	}, [])
+
 
 	const chartContainerRef = useRef<HTMLDivElement>(null);
 
