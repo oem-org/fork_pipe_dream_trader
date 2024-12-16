@@ -8,104 +8,35 @@ import File from "@/interfaces/File";
 import GenericSelect from "@/components/shared/lists/generic-select";
 import Timeseries from "@/interfaces/Timeseries";
 import getFilesQuery from "@/lib/queries/getFilesQuery";
-import { getTimeseriesApi, putStrategyApi } from "@/lib/apiClientInstances";
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
 import IndicatorSection from "@/components/strategy/indicator-section";
-import TimeseriesService from "@/lib/services/TimeseriesService";
-import { Volume } from "@/interfaces/Volume";
 import { priceData2 } from "@/components/shared/chart/priceData2";
 import { Button } from "@/components/shared/buttons/button";
-import { GenericIndicator } from "@/interfaces/GenericIndicator";
-import { useCallback } from "react";
-
-import { IndicatorChart } from '@/interfaces/IndicatorChart';
 export default function StrategyPage() {
   const { id } = useParams();
   const paramId = id ? parseInt(id) : NaN;
-  const { strategyId, setStrategyId } = useStrategyStore();
+  const { setStrategyId } = useStrategyStore();
   const navigate = useNavigate();
 
   const [isRow, setIsRow] = useState(true);
 
-  //const { setIndicators } = useChartStore();
 
   const [fileId, setFileId] = useState<number>(0);
   const [dataSourceType, setDataSourceType] = useState<string>("");
-  const [timeperiod, setTimeperiod] = useState<string>("recent");
   const [timeseries, setTimeseries] = useState<Timeseries[]>([]);
-  const [volume, setVolume] = useState<Volume[]>([]);
-  const [histograms, setHistograms] = useState<any>([]);
-  const [lineSeries, setLineSeries] = useState<GenericIndicator[]>([]);
   const [isChartLoaded, setIsChartLoaded] = useState(false); // New state to control chart loading
 
-  const [indicators, setIndicators] = useState<IndicatorChart[]>([]);
 
-  const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
+  const { data: strategy, error, isError, isLoading } = getStrategyQuery(paramId);
   const { data: strategies } = getStrategiesQuery();
   const { data: files } = getFilesQuery();
 
 
-  const [mappedIndicators, setMappedIndicators] = useState<IndicatorChart[]>([])
-  function parseJsonStrings(obj: Record<string, any>) {
-    for (const key in obj) {
-      try {
-        const parsedValue = JSON.parse(obj[key]);
-
-        // Replace the string value with the parsed JSON object
-        obj[key] = parsedValue;
-      } catch (error) {
-        // Log a warning if the string is not valid JSON
-        console.warn(`Key "${key}" contains invalid JSON:`, obj[key]);
-      }
-    }
-    return obj; // Return the updated object
-  }
 
   // TODO:
-  const loadChart = useCallback(async () => {
-    try {
-      setIsChartLoaded(false)
-      if (strategyId) {
-        const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
-        const parsed = parseJsonStrings(data);
-
-        const timeseriesService = new TimeseriesService();
-        await timeseriesService.processOhlc(parsed.ohlc);
-        await timeseriesService.processVolume(parsed.volume);
-
-        const indicatorInfo = parsed.indicator_info;
-
-        delete parsed.ohlc;
-        delete parsed.volume;
-        delete parsed.indicator_info;
-
-        await timeseriesService.processBulk(parsed);
-
-        const mapped = await timeseriesService.updateChart(indicatorInfo);
-        setMappedIndicators(mapped)
-        setTimeseries(timeseriesService.ohlc); // Update OHLC
-        setVolume(timeseriesService.volume);  // Update Volume
-      }
-    } catch (error) {
-      console.error("Error loading chart:", error);
-    } finally {
-    }
-  }, [strategyId, timeperiod]);
-
-  useEffect(() => {
-    if (strategyId) {
-      loadChart();
-    }
-  }, [strategyId, loadChart]); // Dependency on strategyId
 
 
-  useEffect(() => {
 
-    setIndicators(mappedIndicators);     // Update Indicators
-    console.log(mappedIndicators, "DDDDD")
-
-    setIsChartLoaded(true); // Ensure loading state is updated
-  }, [mappedIndicators])
 
 
 
@@ -113,17 +44,7 @@ export default function StrategyPage() {
     setStrategyId(paramId);
   }, [paramId]);
 
-  //useEffect(() => {
-  //  if (strategy) {
-  //    console.log(timeseries);
-  //  }
-  //}, [strategy, timeperiod]);
 
-  useEffect(() => {
-    if (id) {
-      refetch();
-    }
-  }, [id]);
 
   const test = () => {
     setTimeseries(priceData2);
@@ -131,7 +52,6 @@ export default function StrategyPage() {
 
   const handleFileChange = async (file: File) => {
     setFileId(file.id);
-    await loadChart();
 
   };
 
@@ -177,20 +97,16 @@ export default function StrategyPage() {
               />
             </section>
             <div className="lg:col-span-3">
-              {isChartLoaded ? (
-                <div
-                  className={`flex ${isRow ? 'flex-row' : 'flex-col'
-                    }`}
-                >
-                  <div className="relative w-full h-[400px] md:h-[600px] bg-white rounded-lg overflow-hidden">
-                    <p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded transparent-bg">
-
-                    </p>
-                    <Chart volume={volume} timeseries={timeseries} indicators={indicators} setIndicators={setIndicators} />
-                  </div>
-                </div>) : (
-                <p>Loading chart...</p>
-              )}
+              <div
+                className={`flex ${isRow ? 'flex-row' : 'flex-col'}`}
+              >
+                <div className="relative w-full h-[400px] md:h-[600px] bg-white rounded-lg overflow-hidden">
+                  <p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded transparent-bg">
+                    {/* Any additional content like loading or info can go here */}
+                  </p>
+                  <Chart />
+                </div>
+              </div>
             </div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
