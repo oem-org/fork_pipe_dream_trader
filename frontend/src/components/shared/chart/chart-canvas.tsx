@@ -3,12 +3,13 @@ import { createChart, ColorType, IChartApi, ISeriesApi, LineStyle, LineData } fr
 import React from 'react';
 import Timeseries from '../../../interfaces/Timeseries';
 import { Volume } from '@/interfaces/Volume';
+import { IndicatorChart } from '@/interfaces/IndicatorChart';
 
 interface ChartCanvasProps {
 	chartContainerRef: React.RefObject<HTMLDivElement>;
 	data: Timeseries[];
 	volume: Volume[];
-	indicators: { name: string; data: LineData[] }[]; // List of active indicators
+	indicators: IndicatorChart[]; // List of active indicators
 	colors?: {
 		backgroundColor?: string;
 		textColor?: string;

@@ -4,13 +4,16 @@ import { IndicatorChart } from '@/interfaces/IndicatorChart';
 interface ChartStore {
 	histogramIndicators: Array<IndicatorChart>;
 	lineSeriesIndicators: Array<IndicatorChart>;
-	// indicators structure: [{ name: "RSI_14", id: 123, data: [...] }]
 	indicators: Array<IndicatorChart>;
 	setHistogramIndicators: (indicators: Array<IndicatorChart>) => void;
 	setLineSeriesIndicators: (indicators: Array<IndicatorChart>) => void;
 	setIndicators: (indicators: Array<IndicatorChart>) => void;
 	addIndicator: (indicator: IndicatorChart) => void;
 	removeIndicator: (name: string) => void;
+	addLineSeriesIndicator: (indicator: IndicatorChart) => void;
+	removeLineSeriesIndicator: (name: string) => void;
+	addHistogramIndicator: (indicator: IndicatorChart) => void;
+	removeHistogramIndicator: (name: string) => void;
 }
 
 const useChartStore = create<ChartStore>((set) => ({
@@ -51,6 +54,48 @@ const useChartStore = create<ChartStore>((set) => ({
 	removeIndicator: (name: string) =>
 		set((state) => ({
 			indicators: state.indicators.filter((indicator) => indicator.name !== name),
+		})),
+
+	// Add and remove actions for lineSeriesIndicators
+	addLineSeriesIndicator: (indicator: IndicatorChart) =>
+		set((state) => ({
+			lineSeriesIndicators: [
+				...state.lineSeriesIndicators,
+				{
+					name: indicator.name,
+					id: indicator.id,
+					chartStyle: indicator.chartStyle,
+					data: indicator.data,
+				},
+			],
+		})),
+
+	removeLineSeriesIndicator: (name: string) =>
+		set((state) => ({
+			lineSeriesIndicators: state.lineSeriesIndicators.filter(
+				(indicator) => indicator.name !== name
+			),
+		})),
+
+	// Add and remove actions for histogramIndicators
+	addHistogramIndicator: (indicator: IndicatorChart) =>
+		set((state) => ({
+			histogramIndicators: [
+				...state.histogramIndicators,
+				{
+					name: indicator.name,
+					id: indicator.id,
+					chartStyle: indicator.chartStyle,
+					data: indicator.data,
+				},
+			],
+		})),
+
+	removeHistogramIndicator: (name: string) =>
+		set((state) => ({
+			histogramIndicators: state.histogramIndicators.filter(
+				(indicator) => indicator.name !== name
+			),
 		})),
 }));
 

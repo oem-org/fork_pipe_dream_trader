@@ -86,7 +86,7 @@ export default function StrategyPage() {
 
         setTimeseries(timeseriesService.ohlc)
         console.log(mappedIndicators, "maaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-        //setIndicators(mappedIndicators)
+        setIndicators(mappedIndicators)
         setVolume(timeseriesService.volume)
         setIsChartLoaded(true); // Mark chart as loaded
       }

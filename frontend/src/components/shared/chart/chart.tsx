@@ -19,8 +19,6 @@ interface ChartProps {
 
 export function Chart({ timeseries, volume }: { timeseries: Timeseries[]; volume: Volume[] }) {
 	const chartContainerRef = useRef<HTMLDivElement>(null);
-	const { indicators } = useChartStore()
-	console.log(indicators, "indcatorsssssssssssssssssssss")
 	//const [indicators, setIndicators] = useState<{ name: string; data: any[] }[]>([]);
 	//const addIndicator = (name: string, data: any[]) => {
 	//	setIndicators((prev) => [...prev, { name, data }]);
@@ -29,6 +27,22 @@ export function Chart({ timeseries, volume }: { timeseries: Timeseries[]; volume
 	//const removeIndicator = (name: string) => {
 	//	setIndicators((prev) => prev.filter((indicator) => indicator.name !== name));
 	//};
+	const { indicators, addHistogramIndicator, addLineSeriesIndicator, lineSeriesIndicators } = useChartStore()
+	indicators.forEach((indicator) => {
+		switch (indicator.chartStyle) {
+			case "histogram":
+				addHistogramIndicator(indicator)
+				break;
+
+			case "line_add_pane":
+				addLineSeriesIndicator(indicator)
+				break;
+
+			default:
+				break;
+		}
+	})
+	console.log(lineSeriesIndicators, "lineAddddd");
 
 	return (
 		<>
@@ -39,7 +53,7 @@ export function Chart({ timeseries, volume }: { timeseries: Timeseries[]; volume
 					chartContainerRef={chartContainerRef}
 					data={timeseries}
 					volume={volume}
-					indicators={indicators}
+					indicators={lineSeriesIndicators}
 				/>
 			</div>
 		</>);
