@@ -16,9 +16,9 @@ import { Volume } from "@/interfaces/Volume";
 import { priceData2 } from "@/components/shared/chart/priceData2";
 import { Button } from "@/components/shared/buttons/button";
 import { GenericIndicator } from "@/interfaces/GenericIndicator";
-import useChartStore from "@/lib/hooks/useChartStore";
 import { useCallback } from "react";
 
+import { IndicatorChart } from '@/interfaces/IndicatorChart';
 export default function StrategyPage() {
   const { id } = useParams();
   const paramId = id ? parseInt(id) : NaN;
@@ -26,7 +26,6 @@ export default function StrategyPage() {
   const navigate = useNavigate();
 
   const [isRow, setIsRow] = useState(true);
-
 
   //const { setIndicators } = useChartStore();
 
@@ -39,7 +38,7 @@ export default function StrategyPage() {
   const [lineSeries, setLineSeries] = useState<GenericIndicator[]>([]);
   const [isChartLoaded, setIsChartLoaded] = useState(false); // New state to control chart loading
 
-  const [indicators, setIndicators] = useState([]);
+  const [indicators, setIndicators] = useState<IndicatorChart[]>([]);
 
   const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
   const { data: strategies } = getStrategiesQuery();
@@ -104,7 +103,7 @@ export default function StrategyPage() {
 
   useEffect(() => {
     setStrategyId(paramId);
-  }, [paramId, setStrategyId]);
+  }, [paramId]);
 
   useEffect(() => {
     if (strategy) {
@@ -179,7 +178,7 @@ export default function StrategyPage() {
                     <p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded transparent-bg">
 
                     </p>
-                    <Chart volume={volume} timeseries={timeseries} />
+                    <Chart volume={volume} timeseries={timeseries} indicators={indicators} setIndicators={setIndicators} />
                   </div>
                 </div>) : (
                 <p>Loading chart...</p>
