@@ -38,9 +38,9 @@ serialized_schema = json.dumps(schema)
 
 rsi = {
     "kind": "rsi",
-    "default_settings": rsi_settings.dict(),  
-    "settings_schema": serialized_schema, 
-    "chart_style": "line_add_pane",
+    "default_settings": rsi_settings.dict(),
+    "settings_schema": serialized_schema,
+    "indicator_info": "line_add_pane",
     "description": """Relative Strength Index (RSI)
 
     The Relative Strength Index is popular momentum oscillator used to measure the

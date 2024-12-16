@@ -20,7 +20,7 @@ class IndicatorSchema(BaseModel):
     kind: str
     description: str
     default_settings: Dict
-    chart_style: str
+    indicator_info: str
 
     model_config = {"from_attributes": True}
 

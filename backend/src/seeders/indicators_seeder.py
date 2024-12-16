@@ -15,7 +15,7 @@ def indicators_seeder(session: Session):
         for indicator_dict in indicator_data:
             kind = indicator_dict.get("kind", "")
             default_settings = indicator_dict.get("default_settings", {})
-            chart_style = indicator_dict.get("chart_style", "")
+            indicator_info = indicator_dict.get("indicator_info", "")
             description = indicator_dict.get("description", "")
             settings_schema = indicator_dict.get("settings_schema", "")
             print(indicator_dict)
@@ -26,7 +26,7 @@ def indicators_seeder(session: Session):
                     kind=kind,
                     default_settings=default_settings,
                     settings_schema=settings_schema,
-                    chart_style=chart_style,
+                    indicator_info=indicator_info,
                     description=description,
                 )
                 session.add(new_indicator)

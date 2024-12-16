@@ -6,7 +6,7 @@ rsi = {
         "drift": {"type": "int", "value": 1},
         "offset": {"type": "int", "value": 0},
     },
-    "chart_style": "line_add_pane",
+    "indicator_info": "line_add_pane",
     "description": """Relative Strength Index (RSI)
 
     The Relative Strength Index is popular momentum oscillator used to measure the

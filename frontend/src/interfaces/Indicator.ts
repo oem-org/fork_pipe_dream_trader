@@ -4,5 +4,5 @@ export default interface Indicator {
     kind: string
     description: string
     default_settings: string
-    chart_style: string
-} 
+    indicator_info: string
+}

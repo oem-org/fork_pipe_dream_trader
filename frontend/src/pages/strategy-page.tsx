@@ -68,13 +68,13 @@ export default function StrategyPage() {
         await timeseriesService.processOhlc(parsed.ohlc);
         await timeseriesService.processVolume(parsed.volume);
         const columns = parsed.columns
-        const chartStyle = parsed.chart_style
+        const chartStyle = parsed.indicator_info
         console.log(chartStyle, "chart fffff style");
 
 
         delete parsed.ohlc;
         delete parsed.volume;
-        delete parsed.chart_style;
+        delete parsed.indicator_info;
         delete parsed.columns;
 
         await timeseriesService.processBulk(parsed)

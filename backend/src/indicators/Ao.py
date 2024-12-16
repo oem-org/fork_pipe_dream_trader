@@ -28,9 +28,9 @@ serialized_schema = json.dumps(schema)
 
 ao = {
     "kind": "ao",
-    "default_settings": ao_settings.dict(),  
-    "settings_schema": serialized_schema, 
-    "chart_style": "histogram",
+    "default_settings": ao_settings.dict(),
+    "settings_schema": serialized_schema,
+    "indicator_info": "histogram",
     "description": """Awesome Oscillator (AO)
 
     The Awesome Oscillator is an indicator used to measure a security's momentum.

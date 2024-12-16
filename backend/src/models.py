@@ -21,10 +21,10 @@ class StrategyIndicators(Base):
     __tablename__ = "strategy_indicators"
 
 
-    id = Column(Integer, primary_key=True, autoincrement=True)  
+    id = Column(Integer, primary_key=True, autoincrement=True)
     fk_strategy_id = Column(Integer, ForeignKey("strategies.id"), primary_key=True)
     fk_indicator_id = Column(Integer, ForeignKey("indicators.id"), primary_key=True)
-    settings = Column(JSON, nullable=True)  
+    settings = Column(JSON, nullable=True)
     settings_schema = Column(JSON)
 
     strategy = relationship("Strategies", back_populates="strategy_indicators")
@@ -40,7 +40,7 @@ class Strategies(Base):
     data_source = Column(JSON, nullable=True)
     user = relationship("Users", back_populates="strategies")
     fk_file_id = Column(Integer, ForeignKey("files.id"))
-    file = relationship("Files", back_populates="strategies") 
+    file = relationship("Files", back_populates="strategies")
 
     # strategy is the name of the relationship on the StrategyIndicators side.
     strategy_indicators = relationship("StrategyIndicators", back_populates="strategy")
@@ -54,7 +54,7 @@ class Indicators(Base):
     description = Column(String)
     default_settings = Column(JSON)
     settings_schema = Column(JSON)
-    chart_style = Column(String)
+    indicator_info = Column(String)
 
     strategy_indicators = relationship("StrategyIndicators", back_populates="indicator")
 
