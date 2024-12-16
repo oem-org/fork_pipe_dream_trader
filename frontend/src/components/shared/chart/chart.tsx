@@ -1,14 +1,14 @@
 import ChartCanvas from './chart-canvas';
 import Timeseries from '../../../interfaces/Timeseries'
 import { Volume } from '@/interfaces/Volume';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useChartStore from '@/lib/hooks/useChartStore';
 import { IndicatorChart } from '@/interfaces/IndicatorChart';
 
 export function Chart({ timeseries, volume }: { timeseries: Timeseries[]; volume: Volume[] }) {
 	const chartContainerRef = useRef<HTMLDivElement>(null);
 	const { indicators, lineSeriesIndicators, histogramIndicators, setLineSeriesIndicators, setHistogramIndicators, addHistogramIndicator, addLineSeriesIndicator } = useChartStore();
-
+	const [test, setTest] = useState();
 
 
 	useEffect(() => {
@@ -79,13 +79,15 @@ export function Chart({ timeseries, volume }: { timeseries: Timeseries[]; volume
 		},
 	];
 
+	setTest(indicatorstest)
+
 	return (
 		<div className="w-full h-full">
 			<ChartCanvas
 				chartContainerRef={chartContainerRef}
 				data={timeseries}
 				volume={volume}
-				indicators={indicatorstest} // Pass both line and histogram indicators to the chart
+				indicators={test} // Pass both line and histogram indicators to the chart
 			/>
 		</div>
 	);

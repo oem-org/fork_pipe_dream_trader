@@ -3,13 +3,12 @@ import { createChart, ColorType, IChartApi, ISeriesApi, LineStyle, LineData } fr
 import React from 'react';
 import Timeseries from '../../../interfaces/Timeseries';
 import { Volume } from '@/interfaces/Volume';
-import { IndicatorChart } from '@/interfaces/IndicatorChart';
 
 interface ChartCanvasProps {
 	chartContainerRef: React.RefObject<HTMLDivElement>;
 	data: Timeseries[];
 	volume: Volume[];
-	indicators: IndicatorChart[]; // List of active indicators
+	indicators: { name: string; data: LineData[] }[]; // List of active indicators
 	colors?: {
 		backgroundColor?: string;
 		textColor?: string;
@@ -41,6 +40,7 @@ export default function ChartCanvas({
 				timeScale: { borderColor: '#485c7b', timeVisible: true },
 			});
 
+			// Add the main candlestick series
 			const candleSeries = chartRef.current.addCandlestickSeries({
 				upColor: '#4bffb5',
 				downColor: '#ff4976',
@@ -52,18 +52,20 @@ export default function ChartCanvas({
 
 			candleSeries.setData(data);
 
+			// Add the volume series
 			const volumeSeries = chartRef.current.addHistogramSeries({
 				priceFormat: { type: 'volume' },
 				priceScaleId: '',
 			});
 
 			volumeSeries.priceScale().applyOptions({
-				scaleMargins: { top: 0.8, bottom: 0.06 },
+				scaleMargins: { top: 0.8, bottom: 0.001 },
 			});
 
 			volumeSeries.setData(volume);
 		}
 
+		// Cleanup chart on unmount
 		return () => {
 			if (chartRef.current) {
 				chartRef.current.remove();
@@ -80,13 +82,12 @@ export default function ChartCanvas({
 				if (!seriesRefs.current[indicator.name]) {
 					// Create a new line series for the indicator
 					const lineSeries = chartRef.current.addLineSeries({
-						color: '#FFF00', // Example: different colors for indicators
+						color: indicator.name === 'SMA' ? '#FFD700' : '#FF4500', // Example: different colors for indicators
 						lineWidth: 2,
 						lineStyle: LineStyle.Solid,
 					});
 
 					lineSeries.setData(indicator.data);
-					console.log(indicator.data, "indicator data")
 					seriesRefs.current[indicator.name] = lineSeries; // Save reference
 				}
 			});
