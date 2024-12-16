@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { memo, useRef, useState } from 'react';
 import ChartCanvas from './chart-canvas';
 import Timeseries from '../../../interfaces/Timeseries';
 import { Volume } from '@/interfaces/Volume';
@@ -12,10 +12,11 @@ interface ChartProps {
 
 }
 
+
 export function Chart({ timeseries, volume, indicators, setIndicators }: ChartProps) {
 	//const [indicators, setIndicators] = useState<{ name: string; data: any[] }[]>([]);
 	const chartContainerRef = useRef<HTMLDivElement>(null);
-
+	//console.log(indicators, "cheeeeeeeeeeeeeeeeeeck")
 	const addIndicator = (indicator: IndicatorChart) => {
 		setIndicators((prev) => [...prev, { name: indicator.name, id: indicator.id, chartStyle: indicator.chartStyle, data: indicator.data }]);
 	};

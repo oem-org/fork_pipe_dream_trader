@@ -44,6 +44,8 @@ export default function StrategyPage() {
   const { data: strategies } = getStrategiesQuery();
   const { data: files } = getFilesQuery();
 
+
+  const [mappedIndicators, setMappedIndicators] = useState<IndicatorChart[]>([])
   function parseJsonStrings(obj: Record<string, any>) {
     for (const key in obj) {
       try {
@@ -61,39 +63,36 @@ export default function StrategyPage() {
 
   // TODO:
   const loadChart = useCallback(async () => {
-
     try {
+      setIsChartLoaded(false)
       if (strategyId) {
         const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
-        const parsed = parseJsonStrings(data)
+        const parsed = parseJsonStrings(data);
 
         const timeseriesService = new TimeseriesService();
         await timeseriesService.processOhlc(parsed.ohlc);
         await timeseriesService.processVolume(parsed.volume);
 
-        // indicatorsInfo structure {RSI_14:{"chart_style":"histogram", "id":1}...}
-        const indicatorInfo = parsed.indicator_info
-
+        const indicatorInfo = parsed.indicator_info;
 
         delete parsed.ohlc;
         delete parsed.volume;
         delete parsed.indicator_info;
 
-        await timeseriesService.processBulk(parsed)
+        await timeseriesService.processBulk(parsed);
 
-        //const chartService = new ChartService(timeseriesService.indicators, indicatorInfo)
-        const mappedIndicators = await timeseriesService.updateChart(indicatorInfo)
-
-        setTimeseries(timeseriesService.ohlc)
-        console.log(mappedIndicators, "mapped indicators")
-        setIndicators(mappedIndicators)
-        setVolume(timeseriesService.volume)
-        setIsChartLoaded(true); // Mark chart as loaded
+        const mapped = await timeseriesService.updateChart(indicatorInfo);
+        setMappedIndicators(mapped)
+        setTimeseries(timeseriesService.ohlc); // Update OHLC
+        setVolume(timeseriesService.volume);  // Update Volume
+        //setIndicators(mappedIndicators);     // Update Indicators
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error loading chart:", error);
+    } finally {
+      setIsChartLoaded(true); // Ensure loading state is updated
     }
-  }, [strategyId])
+  }, [strategyId, timeperiod]);
 
   useEffect(() => {
     if (strategyId) {
@@ -101,15 +100,24 @@ export default function StrategyPage() {
     }
   }, [strategyId, loadChart]); // Dependency on strategyId
 
+
+  useEffect(() => {
+
+    console.log
+
+  }, [mappedIndicators])
+
+
+
   useEffect(() => {
     setStrategyId(paramId);
   }, [paramId]);
 
-  useEffect(() => {
-    if (strategy) {
-      console.log(timeseries);
-    }
-  }, [strategy, timeperiod]);
+  //useEffect(() => {
+  //  if (strategy) {
+  //    console.log(timeseries);
+  //  }
+  //}, [strategy, timeperiod]);
 
   useEffect(() => {
     if (id) {
@@ -123,7 +131,7 @@ export default function StrategyPage() {
 
   const handleFileChange = async (file: File) => {
     setFileId(file.id);
-    await LoadChart();
+    await loadChart();
 
   };
 
@@ -169,7 +177,7 @@ export default function StrategyPage() {
               />
             </section>
             <div className="lg:col-span-3">
-              {isChartLoaded ? (
+              {true ? (
                 <div
                   className={`flex ${isRow ? 'flex-row' : 'flex-col'
                     }`}
