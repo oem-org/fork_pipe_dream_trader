@@ -1,24 +1,26 @@
-import React, { memo, useRef, useState } from 'react';
+import React, { memo, useRef } from 'react';
 import ChartCanvas from './chart-canvas';
 import Timeseries from '../../../interfaces/Timeseries';
 import { Volume } from '@/interfaces/Volume';
 import { IndicatorChart } from '@/interfaces/IndicatorChart';
 
 interface ChartProps {
-	timeseries: Timeseries[],
-	volume: Volume[],
-	indicators: IndicatorChart[]
+	timeseries: Timeseries[];
+	volume: Volume[];
+	indicators: IndicatorChart[];
 	setIndicators: React.Dispatch<React.SetStateAction<IndicatorChart[]>>;
-
 }
 
+function ChartMemo({ timeseries, volume, indicators, setIndicators }: ChartProps) {
+	// will only rerender if props change
 
-export function Chart({ timeseries, volume, indicators, setIndicators }: ChartProps) {
-	//const [indicators, setIndicators] = useState<{ name: string; data: any[] }[]>([]);
 	const chartContainerRef = useRef<HTMLDivElement>(null);
-	//console.log(indicators, "cheeeeeeeeeeeeeeeeeeck")
+
 	const addIndicator = (indicator: IndicatorChart) => {
-		setIndicators((prev) => [...prev, { name: indicator.name, id: indicator.id, chartStyle: indicator.chartStyle, data: indicator.data }]);
+		setIndicators((prev) => [
+			...prev,
+			{ name: indicator.name, id: indicator.id, chartStyle: indicator.chartStyle, data: indicator.data },
+		]);
 	};
 
 	const removeIndicator = (name: string) => {
@@ -31,10 +33,13 @@ export function Chart({ timeseries, volume, indicators, setIndicators }: ChartPr
 				<button
 					onClick={() =>
 						addIndicator({
-							name: "SMA", id: 1, chartStyle: "line", data: [
+							name: 'SMA',
+							id: 1,
+							chartStyle: 'line',
+							data: [
 								{ time: '2022-01-01', value: 50 },
 								{ time: '2022-01-02', value: 52 },
-							]
+							],
 						})
 					}
 					className="mr-2 px-4 py-2 bg-blue-500 text-white rounded"
@@ -57,3 +62,6 @@ export function Chart({ timeseries, volume, indicators, setIndicators }: ChartPr
 		</div>
 	);
 }
+
+
+export const Chart = memo(ChartMemo);

@@ -85,7 +85,7 @@ export default function StrategyPage() {
         setMappedIndicators(mapped)
         setTimeseries(timeseriesService.ohlc); // Update OHLC
         setVolume(timeseriesService.volume);  // Update Volume
-        //setIndicators(mappedIndicators);     // Update Indicators
+        setIndicators(mappedIndicators);     // Update Indicators
       }
     } catch (error) {
       console.error("Error loading chart:", error);
