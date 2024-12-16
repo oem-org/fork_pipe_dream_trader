@@ -28,7 +28,7 @@ export default function StrategyPage() {
   const [isRow, setIsRow] = useState(true);
 
 
-  const { setIndicators } = useChartStore.getState();
+  const { setIndicators } = useChartStore();
 
   const [fileId, setFileId] = useState<number>(0);
   const [dataSourceType, setDataSourceType] = useState<string>("");
@@ -85,8 +85,8 @@ export default function StrategyPage() {
         const mappedIndicators = await timeseriesService.updateChart(indicatorInfo)
 
         setTimeseries(timeseriesService.ohlc)
-        console.log(mappedIndicators, "maaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-        setIndicators(mappedIndicators)
+        console.log(mappedIndicators, "mapped indicators")
+        //setIndicators(mappedIndicators)
         setVolume(timeseriesService.volume)
         setIsChartLoaded(true); // Mark chart as loaded
       }
@@ -176,7 +176,7 @@ export default function StrategyPage() {
                 >
                   <div className="relative w-full h-[400px] md:h-[600px] bg-white rounded-lg overflow-hidden">
                     <p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded transparent-bg">
-                      Chart Title
+
                     </p>
                     <Chart volume={volume} timeseries={timeseries} />
                   </div>
