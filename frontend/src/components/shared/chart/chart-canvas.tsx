@@ -80,12 +80,13 @@ export default function ChartCanvas({
 				if (!seriesRefs.current[indicator.name]) {
 					// Create a new line series for the indicator
 					const lineSeries = chartRef.current.addLineSeries({
-						color: indicator.name === 'SMA' ? '#FFD700' : '#FF4500', // Example: different colors for indicators
+						color: '#FFF00', // Example: different colors for indicators
 						lineWidth: 2,
 						lineStyle: LineStyle.Solid,
 					});
 
 					lineSeries.setData(indicator.data);
+					console.log(indicator.data, "indicator data")
 					seriesRefs.current[indicator.name] = lineSeries; // Save reference
 				}
 			});
