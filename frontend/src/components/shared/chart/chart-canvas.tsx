@@ -8,7 +8,7 @@ interface ChartCanvasProps {
 	chartContainerRef: React.RefObject<HTMLDivElement>;
 	data: Timeseries[];
 	volume: Volume[];
-	indicators: { name: string; data: any[] }[]; // List of active indicators
+	indicators: { name: string; data: LineData[] }[]; // List of active indicators
 	colors?: {
 		backgroundColor?: string;
 		textColor?: string;

@@ -1,28 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import ChartCanvas from './chart-canvas';
 import Timeseries from '../../../interfaces/Timeseries';
 import { Volume } from '@/interfaces/Volume';
-import useChartStore from '@/lib/hooks/useChartStore';
-
 
 export function Chart({ timeseries, volume }: { timeseries: Timeseries[]; volume: Volume[] }) {
+	const [indicators, setIndicators] = useState<{ name: string; data: any[] }[]>([]);
 	const chartContainerRef = useRef<HTMLDivElement>(null);
-	const { indicators, addIndicator } = useChartStore((state) => ({
-		indicators: state.indicators,
-		addIndicator: state.addIndicator,
-		//removeIndicator: state.removeIndicator,
-	}));
 
-	// Add initial SMA indicator on mount
-	useEffect(() => {
-		//addIndicator('SMA2',
-		//	[
-		//		{ time: '2022-03-01', value: 50 },
-		//		{ time: '2022-03-02', value: 52 },
-		//	],
-		//);
-	}, []);
-	let indicators2 = []
+	const addIndicator = (name: string, data: any[]) => {
+		setIndicators((prev) => [...prev, { name, data }]);
+	};
+
+	const removeIndicator = (name: string) => {
+		setIndicators((prev) => prev.filter((indicator) => indicator.name !== name));
+	};
+
 	return (
 		<div className="w-full h-full">
 			<div className="mb-4">
@@ -37,24 +29,19 @@ export function Chart({ timeseries, volume }: { timeseries: Timeseries[]; volume
 				>
 					Add SMA
 				</button>
+				<button
+					onClick={() => removeIndicator('SMA')}
+					className="px-4 py-2 bg-red-500 text-white rounded"
+				>
+					Remove SMA
+				</button>
 			</div>
-
-
 			<ChartCanvas
 				chartContainerRef={chartContainerRef}
 				data={timeseries}
 				volume={volume}
-				indicators={indicators2}
+				indicators={indicators}
 			/>
 		</div>
 	);
 }
-
-
-
-//<button
-//	onClick={() => removeIndicator('SMA')}
-//	className="px-4 py-2 bg-red-500 text-white rounded"
-//>
-//	Remove SMA
-//</button>

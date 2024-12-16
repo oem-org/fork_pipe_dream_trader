@@ -17,7 +17,7 @@ import { priceData2 } from "@/components/shared/chart/priceData2";
 import { Button } from "@/components/shared/buttons/button";
 import { GenericIndicator } from "@/interfaces/GenericIndicator";
 import useChartStore from "@/lib/hooks/useChartStore";
-
+import { useCallback } from "react";
 
 export default function StrategyPage() {
   const { id } = useParams();
@@ -28,7 +28,7 @@ export default function StrategyPage() {
   const [isRow, setIsRow] = useState(true);
 
 
-  const { setIndicators } = useChartStore();
+  //const { setIndicators } = useChartStore();
 
   const [fileId, setFileId] = useState<number>(0);
   const [dataSourceType, setDataSourceType] = useState<string>("");
@@ -38,6 +38,8 @@ export default function StrategyPage() {
   const [histograms, setHistograms] = useState<any>([]);
   const [lineSeries, setLineSeries] = useState<GenericIndicator[]>([]);
   const [isChartLoaded, setIsChartLoaded] = useState(false); // New state to control chart loading
+
+  const [indicators, setIndicators] = useState([]);
 
   const { data: strategy, error, isError, isLoading, refetch } = getStrategyQuery(paramId);
   const { data: strategies } = getStrategiesQuery();
@@ -59,7 +61,8 @@ export default function StrategyPage() {
   }
 
   // TODO:
-  async function LoadChart() {
+  const loadChart = useCallback(async () => {
+
     try {
       if (strategyId) {
         const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
@@ -68,7 +71,6 @@ export default function StrategyPage() {
         const timeseriesService = new TimeseriesService();
         await timeseriesService.processOhlc(parsed.ohlc);
         await timeseriesService.processVolume(parsed.volume);
-        const columns = parsed.columns
 
         // indicatorsInfo structure {RSI_14:{"chart_style":"histogram", "id":1}...}
         const indicatorInfo = parsed.indicator_info
@@ -77,7 +79,6 @@ export default function StrategyPage() {
         delete parsed.ohlc;
         delete parsed.volume;
         delete parsed.indicator_info;
-        delete parsed.columns;
 
         await timeseriesService.processBulk(parsed)
 
@@ -86,20 +87,20 @@ export default function StrategyPage() {
 
         setTimeseries(timeseriesService.ohlc)
         console.log(mappedIndicators, "mapped indicators")
-        //setIndicators(mappedIndicators)
+        setIndicators(mappedIndicators)
         setVolume(timeseriesService.volume)
         setIsChartLoaded(true); // Mark chart as loaded
       }
     } catch (error) {
       console.error(error);
     }
-  }
+  }, [strategyId])
 
   useEffect(() => {
     if (strategyId) {
-      LoadChart();
+      loadChart();
     }
-  }, [strategyId]); // Dependency on strategyId
+  }, [strategyId, loadChart]); // Dependency on strategyId
 
   useEffect(() => {
     setStrategyId(paramId);
