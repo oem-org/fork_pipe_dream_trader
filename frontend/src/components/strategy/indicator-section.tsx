@@ -28,8 +28,9 @@ export default function IndicatorSection() {
 
 	const handleIndicatorChange = async (indicator: Indicator) => {
 		try {
-			const response = await addIndicatorMutation(indicator); // Use the destructured mutateAsync
-			console.log("Indicator added successfully:", response);
+			// Use the destructured mutateAsync
+
+			const response = await addIndicatorMutation(indicator); console.log("Indicator added successfully:", response);
 
 		} catch (error) {
 			console.error("Error adding indicator:", error);
@@ -80,6 +81,7 @@ export default function IndicatorSection() {
 						<li key={indicator.id}>
 
 							<GenericIndicator indicatorId={indicator.id} settings_schema={JSON.parse(indicator.settings_schema)} settings={indicator.settings} />
+
 							<Button onClick={() => deleteIndicatorMutation(indicator.id)}>
 								{indicator.id}
 

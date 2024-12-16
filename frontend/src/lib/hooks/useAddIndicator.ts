@@ -18,9 +18,11 @@ export const useAddIndicator = (paramId: number) => {
 		onSuccess: () => {
 			// Invalidate cache to refetch indicators
 			queryClient.invalidateQueries({ queryKey: ["strategyIndicators"] });
+			return true;
 		},
 		onError: (error: unknown) => {
 			console.error("Failed to add indicator:", error);
+			return false
 		},
 	});
 };

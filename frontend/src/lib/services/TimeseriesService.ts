@@ -19,7 +19,7 @@ export default class TimeseriesService {
 	updateChart(chartStyles: Record<string, any>, column: Array<string>) {
 		console.log("Ttttttttttttttttttterteratnearsntairenstearnteiarntaeirntaeirnst");
 
-		// Must access the state of the store to avoid reredring issus of using react hooks
+		// Must access the fresh non reactive state of the store
 		//
 		const { setHistogramIndicators, setLineSeriesIndicators } = useChartStore.getState();
 		console.log(column, "column");

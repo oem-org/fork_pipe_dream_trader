@@ -48,7 +48,6 @@ export default function GenericIndicator({ indicatorId, settings_schema, setting
 					} else if (property.type === 'number') {
 						isFloat(value)
 						const convertedValue = parseFloat(value);
-						console.log(convertedValue, "olololololl")
 						if (!isFloat(value) && isFloat(convertedValue)) {
 							console.log(value, "trst")
 							acc.errors[key] = `${property.title || key} trimming valus into a float`;
