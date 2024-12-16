@@ -1,4 +1,7 @@
 
+                    <p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded transparent-bg">
+                      Chart Title
+                    </p>
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";

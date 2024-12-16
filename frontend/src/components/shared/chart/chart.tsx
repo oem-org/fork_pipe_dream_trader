@@ -1,40 +1,47 @@
-import { useRef } from 'react';
-import { CandlestickData } from 'lightweight-charts';
+import React, { useRef, useState } from 'react';
 import ChartCanvas from './chart-canvas';
-import Timeseries from '../../../interfaces/Timeseries'
+import Timeseries from '../../../interfaces/Timeseries';
 import { Volume } from '@/interfaces/Volume';
 
-
-interface ChartProps {
-	timeseries: Timeseries[]
-	volume: Volume[]
-}
-
-// Lightweight charts accept UTCtimestamp, BuisnessDay or buisness day string in ISO format
-// https://tradingview.github.io/lightweight-charts/docs/api#time
-
-// Time settings
-//https://github.com/tradingview/lightweight-charts/blob/v3.7.0/docs/time-scale.md#time-scale-options
-export function Chart({ timeseries, volume }: ChartProps) {
-	const customColors = {
-		backgroundColor: '#f5f5f5',
-		textColor: '#212121',
-		upColor: '#26a69a',
-		downColor: '#ef5350',
-		borderUpColor: '#26a69a',
-		borderDownColor: '#ef5350',
-		wickUpColor: '#26a69a',
-		wickDownColor: '#ef5350',
-	};
-
+export function Chart({ timeseries, volume }: { timeseries: Timeseries[]; volume: Volume[] }) {
+	const [indicators, setIndicators] = useState<{ name: string; data: any[] }[]>([]);
 	const chartContainerRef = useRef<HTMLDivElement>(null);
 
-	console.log('Chart component rendered with data:', timeseries);
+	const addIndicator = (name: string, data: any[]) => {
+		setIndicators((prev) => [...prev, { name, data }]);
+	};
+
+	const removeIndicator = (name: string) => {
+		setIndicators((prev) => prev.filter((indicator) => indicator.name !== name));
+	};
 
 	return (
-		<div className="w-full h-full rounded-lg overflow-hidden">
-			<ChartCanvas chartContainerRef={chartContainerRef} data={timeseries} volume={volume} colors={customColors} />
+		<div className="w-full h-full">
+			<div className="mb-4">
+				<button
+					onClick={() =>
+						addIndicator('SMA', [
+							{ time: '2022-01-01', value: 50 },
+							{ time: '2022-01-02', value: 52 },
+						])
+					}
+					className="mr-2 px-4 py-2 bg-blue-500 text-white rounded"
+				>
+					Add SMA
+				</button>
+				<button
+					onClick={() => removeIndicator('SMA')}
+					className="px-4 py-2 bg-red-500 text-white rounded"
+				>
+					Remove SMA
+				</button>
+			</div>
+			<ChartCanvas
+				chartContainerRef={chartContainerRef}
+				data={timeseries}
+				volume={volume}
+				indicators={indicators}
+			/>
 		</div>
 	);
 }
-

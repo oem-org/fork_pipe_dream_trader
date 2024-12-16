@@ -1,104 +1,46 @@
-import { createChart, CrosshairMode, ColorType, IChartApi } from 'lightweight-charts'
-import { useEffect, useRef, useState } from 'react'
-import React from 'react'
-import Timeseries from '../../../interfaces/Timeseries'
-import { Volume } from '@/interfaces/Volume'
+import { useEffect, useRef, useState } from 'react';
+import { createChart, ColorType, IChartApi, ISeriesApi, LineStyle, LineData } from 'lightweight-charts';
+import React from 'react';
+import Timeseries from '../../../interfaces/Timeseries';
+import { Volume } from '@/interfaces/Volume';
 
-
-interface ChartProps {
+interface ChartCanvasProps {
 	chartContainerRef: React.RefObject<HTMLDivElement>;
 	data: Timeseries[];
 	volume: Volume[];
+	indicators: { name: string; data: LineData[] }[]; // List of active indicators
 	colors?: {
 		backgroundColor?: string;
-		lineColor?: string;
 		textColor?: string;
-		areaTopColor?: string;
-		areaBottomColor?: string;
 	};
 }
-// TODO: fix
-export default function ChartCanvas(props: ChartProps): React.ReactElement {
-	const {
-		chartContainerRef,
-		data,
-		volume,
-		colors: {
-			backgroundColor = '#253248',
-			lineColor = '#2962FF',
-			textColor = 'black',
-			areaTopColor = '#2962FF',
-			areaBottomColor = 'rgba(41, 98, 255, 0.28)',
-		} = {},
-	} = props;
 
-	const [chartSize, setChartSize] = useState<{ width: number; height: number }>({
-		width: 0,
-		height: 0,
-	});
-
+export default function ChartCanvas({
+	chartContainerRef,
+	data,
+	volume,
+	indicators,
+	colors: { backgroundColor = '#253248', textColor = 'white' } = {},
+}: ChartCanvasProps): React.ReactElement {
 	const chartRef = useRef<IChartApi | null>(null);
-
-	const handleResize = () => {
-		if (chartContainerRef.current) {
-			const newWidth = chartContainerRef.current.clientWidth;
-			const newHeight = chartContainerRef.current.clientHeight;
-			if (newWidth !== chartSize.width || newHeight !== chartSize.height) {
-				setChartSize({
-					width: newWidth,
-					height: newHeight,
-				});
-			}
-		}
-	};
+	const seriesRefs = useRef<{ [key: string]: ISeriesApi<'Line'> }>({}); // Track indicator series
 
 	useEffect(() => {
-		if (chartContainerRef.current) {
-			const newWidth = chartContainerRef.current.clientWidth;
-			const newHeight = chartContainerRef.current.clientHeight;
-
-			if (newWidth !== chartSize.width || newHeight !== chartSize.height) {
-				setChartSize({ width: newWidth, height: newHeight });
-			}
-
+		if (!chartRef.current && chartContainerRef.current) {
+			// Initialize the chart
 			chartRef.current = createChart(chartContainerRef.current, {
-				//layout: {
-				//	background: { type: ColorType.Solid, color: backgroundColor },
-				//	textColor,
-				//},
-
-
 				layout: {
 					background: { type: ColorType.Solid, color: "black" },
-					textColor: 'white',
+					textColor,
 				},
 				grid: {
-					vertLines: {
-						color: '#334158',
-					},
-					horzLines: {
-						color: '#334158',
-					},
+					vertLines: { color: '#334158' },
+					horzLines: { color: '#334158' },
 				},
-				crosshair: {
-					mode: CrosshairMode.Normal,
-				},
-				//priceScale: {
-				//	borderColor: '#485c7b',
-				//},
-				timeScale: {
-					borderColor: '#485c7b',
-					timeVisible: true,
-				},
-
-
-				width: newWidth,
-				height: newHeight,
+				timeScale: { borderColor: '#485c7b', timeVisible: true },
 			});
 
-			chartRef.current.timeScale().fitContent();
-
-
+			// Add the main candlestick series
 			const candleSeries = chartRef.current.addCandlestickSeries({
 				upColor: '#4bffb5',
 				downColor: '#ff4976',
@@ -108,57 +50,57 @@ export default function ChartCanvas(props: ChartProps): React.ReactElement {
 				wickUpColor: '#838ca1',
 			});
 
-			//const newSeries = chartRef.current.addAreaSeries({
-			//	lineColor,
-			//	topColor: areaTopColor,
-			//	bottomColor: areaBottomColor,
-			//});
-			//
-			//newSeries.setData(data);
-
-
-			const volumeSeries = chartRef.current.addHistogramSeries({
-				priceFormat: {
-					type: 'volume',
-				},
-				priceScaleId: '',
-			});
-			volumeSeries.priceScale().applyOptions({
-				// 
-				scaleMargins: {
-					top: 0.8,
-					bottom: 0.001,
-				},
-			});
-			volumeSeries.setData(volume);
-
 			candleSeries.setData(data);
 
-			window.addEventListener('resize', handleResize);
+			// Add the volume series
+			const volumeSeries = chartRef.current.addHistogramSeries({
+				priceFormat: { type: 'volume' },
+				priceScaleId: '',
+			});
 
-			return () => {
-				window.removeEventListener('resize', handleResize);
-				if (chartRef.current) {
-					chartRef.current.remove();
-				}
-			};
+			volumeSeries.priceScale().applyOptions({
+				scaleMargins: { top: 0.8, bottom: 0.001 },
+			});
+
+			volumeSeries.setData(volume);
 		}
-	}, [
-		data,
-		backgroundColor,
-		lineColor,
-		textColor,
-		areaTopColor,
-		areaBottomColor,
-		chartSize.width,
-		chartSize.height,
-	]);
 
-	return (
-		<div
-			className="w-full h-full"
-			ref={chartContainerRef}
-		/>
-	);
+		// Cleanup chart on unmount
+		return () => {
+			if (chartRef.current) {
+				chartRef.current.remove();
+				chartRef.current = null;
+			}
+		};
+	}, [chartContainerRef, data, volume, backgroundColor, textColor]);
+
+	// Handle adding/removing indicators
+	useEffect(() => {
+		if (chartRef.current) {
+			// Add new indicators
+			indicators.forEach((indicator) => {
+				if (!seriesRefs.current[indicator.name]) {
+					// Create a new line series for the indicator
+					const lineSeries = chartRef.current.addLineSeries({
+						color: indicator.name === 'SMA' ? '#FFD700' : '#FF4500', // Example: different colors for indicators
+						lineWidth: 2,
+						lineStyle: LineStyle.Solid,
+					});
+
+					lineSeries.setData(indicator.data);
+					seriesRefs.current[indicator.name] = lineSeries; // Save reference
+				}
+			});
+
+			// Remove indicators not in the state
+			Object.keys(seriesRefs.current).forEach((name) => {
+				if (!indicators.find((indicator) => indicator.name === name)) {
+					chartRef.current?.removeSeries(seriesRefs.current[name]);
+					delete seriesRefs.current[name];
+				}
+			});
+		}
+	}, [indicators]);
+
+	return <div className="w-full h-full" ref={chartContainerRef} />;
 }
-
