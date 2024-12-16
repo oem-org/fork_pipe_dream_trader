@@ -5,6 +5,7 @@ import { IndicatorChart } from '@/interfaces/IndicatorChart';
 interface ChartStore {
 	histogramIndicators: Array<IndicatorChart>;
 	lineSeriesIndicators: Array<IndicatorChart>;
+	// indidators [{name: RSI_14, data:[] }] 
 	indicators: Array<IndicatorChart>;
 	setHistogramIndicators: (indicators: Array<IndicatorChart>) => void;
 	setLineSeriesIndicators: (indicators: Array<IndicatorChart>) => void;

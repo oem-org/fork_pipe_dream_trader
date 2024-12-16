@@ -30,7 +30,8 @@ export default function IndicatorSection() {
 		try {
 			// Use the destructured mutateAsync
 
-			const response = await addIndicatorMutation(indicator); console.log("Indicator added successfully:", response);
+			const response = await addIndicatorMutation(indicator);
+			console.log("Indicator added successfully:", response);
 
 		} catch (error) {
 			console.error("Error adding indicator:", error);

@@ -89,11 +89,11 @@ class IndicatorLoader:
                 print (obj, "obj")
                 print(f"Matching {base_column} with {obj['kind'].lower()}")
                 if base_column == obj['kind'].lower():  
-                    matched_styles[column] = obj['chart_style']
+                    matched_styles[column] = { "chart_style": obj['chart_style'], "id": obj['id'] }
                     print(f"Matched {base_column} with style {obj['chart_style']}")
 
         print("Matched styles:", matched_styles)
-
+        print("echart styles", chart_styles)
         self.response['chart_style'] = json.dumps(matched_styles)
         # matching_style = list(filter(lambda style: style["name"] == column, chart_styles))
                 # if matching_style:

@@ -2,16 +2,16 @@ import Histogram from "@/components/shared/chart/histogram"
 
 
 export default class ChartService {
-	private chartStyles: Record<string, any>
+	private indicatorInfo: Record<string, any>
 	private indicatorData: Record<string, any>
 
-	constructor(chartStyles: Record<string, any>, indicatorData: Record<string, any>) {
-		this.chartStyles = chartStyles
+	constructor(indicatorInfo: Record<string, any>, indicatorData: Record<string, any>) {
+		this.indicatorInfo = indicatorInfo
 		this.indicatorData = indicatorData
 	}
 
 	addIndicators() {
-		for (let key in this.chartStyles) {
+		for (let key in this.indicatorInfo) {
 			console.log(key, "KEEEEEEEEEEEEEEEEEY");
 
 		}

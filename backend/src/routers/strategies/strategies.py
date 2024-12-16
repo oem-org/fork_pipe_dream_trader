@@ -252,7 +252,7 @@ def add_indicator_to_strategy(
     db.add(strategy_indicator)
     db.commit()
     db.refresh(strategy_indicator)
-    return {"message":"nenen"}
+    return {"message":"success"}
 
 @router.delete("/{strategy_id}/indicator/{indicator_id}")
 def remove_indicator_from_strategy(

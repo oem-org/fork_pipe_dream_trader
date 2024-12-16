@@ -16,7 +16,7 @@ export default class TimeseriesService {
 		this.indicators = {};
 	}
 
-	updateChart(chartStyles: Record<string, any>, column: Array<string>) {
+	updateChart(indicatorInfo: Record<string, any>, column: Array<string>) {
 		console.log("Ttttttttttttttttttterteratnearsntairenstearnteiarntaeirntaeirnst");
 
 		// Must access the fresh non reactive state of the store
@@ -27,19 +27,20 @@ export default class TimeseriesService {
 		const histogramIndicators = [];
 		const lineSeriesIndicators = [];
 
-		for (let key in chartStyles) {
+		for (let key in indicatorInfo) {
 			// Key is dataframe column name fx "RSI_14"
 			// The value stored in the key is chart style
-			switch (chartStyles[key]) {
+			switch (indicatorInfo[key]) {
 				case "histogram":
-					histogramIndicators.push({ "name": `${key}`, "data": this.indicators[key] });  // Fixed template literal
+					histogramIndicators.push({ "name": `${key}`, "id": indicatorInfo[key].id, "data": this.indicators[key] });  // Fixed template literal
 					break;
 				default:
-					lineSeriesIndicators.push({ "name": `${key}`, "data": this.indicators[key] });  // Fixed template literal
+					lineSeriesIndicators.push({ "name": `${key}`, "id": indicatorInfo[key].id, "data": this.indicators[key] });  // Fixed template literal
 					break;
 			}
+			console.log(indicatorInfo, "IINFYYYYYYYY");
 
-			console.log(chartStyles[key]);
+			console.log(indicatorInfo[key]);
 			console.log(this.indicators[key]);
 		}
 

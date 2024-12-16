@@ -46,12 +46,13 @@ async def read_all(
             fileLoader.load_or_reload()
             # print(fileLoader.df)
             
-            chart_styles = [{"chart_style": si.indicator.chart_style, "kind": si.indicator.kind} for si in strategyModel.strategy_indicators if si.indicator]
+            chart_styles = [{"chart_style": si.indicator.chart_style, "kind": si.indicator.kind, "id": si.id} for si in strategyModel.strategy_indicators if si.indicator]
             all_indicator_settings = [
                 ind.settings
                 for ind in strategyModel.strategy_indicators
                 if ind.settings is not None
             ]
+
             print(all_indicator_settings)
             indicatorLoader = IndicatorLoader(fileLoader.df, all_indicator_settings)
             indicatorLoader.load_indicators()
