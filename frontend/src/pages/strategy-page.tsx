@@ -16,6 +16,8 @@ import { Volume } from "@/interfaces/Volume";
 import { priceData2 } from "@/components/shared/chart/priceData2";
 import { Button } from "@/components/shared/buttons/button";
 import { GenericIndicator } from "@/interfaces/GenericIndicator";
+import useChartStore from "@/lib/hooks/useChartStore";
+
 
 export default function StrategyPage() {
   const { id } = useParams();
@@ -26,6 +28,7 @@ export default function StrategyPage() {
   const [isRow, setIsRow] = useState(true);
 
 
+  const { setIndicators } = useChartStore.getState();
 
   const [fileId, setFileId] = useState<number>(0);
   const [dataSourceType, setDataSourceType] = useState<string>("");
@@ -79,9 +82,11 @@ export default function StrategyPage() {
         await timeseriesService.processBulk(parsed)
 
         //const chartService = new ChartService(timeseriesService.indicators, indicatorInfo)
-        timeseriesService.updateChart(indicatorInfo)
+        const mappedIndicators = await timeseriesService.updateChart(indicatorInfo)
 
         setTimeseries(timeseriesService.ohlc)
+        console.log(mappedIndicators, "maaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        //setIndicators(mappedIndicators)
         setVolume(timeseriesService.volume)
         setIsChartLoaded(true); // Mark chart as loaded
       }

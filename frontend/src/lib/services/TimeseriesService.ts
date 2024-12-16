@@ -5,6 +5,7 @@ import { findStringIndex } from "../utils/string-utils";
 import Histogram from "@/components/shared/chart/histogram";
 import useChartStore from "../hooks/useChartStore";
 
+
 export default class TimeseriesService {
 	public ohlc: Timeseries[];
 	public volume: Volume[];
@@ -16,11 +17,10 @@ export default class TimeseriesService {
 		this.indicators = {};
 	}
 
-	updateChart(indicatorInfo: Record<string, any>) {
+	async updateChart(indicatorInfo: Record<string, any>) {
 
 		// Must access the fresh non reactive state of the store
 		//
-		const { setIndicators } = useChartStore.getState();
 
 		const mappedIndicators = [];
 		//const lineSeriesIndicators = [];
@@ -37,7 +37,7 @@ export default class TimeseriesService {
 		}
 
 		console.log("aaaaaaaaaaaaaaaaaaaaaaaindiCAT", mappedIndicators);
-		//setIndicators(mappedIndicators)
+		return mappedIndicators
 	}
 
 	// TODO: add types

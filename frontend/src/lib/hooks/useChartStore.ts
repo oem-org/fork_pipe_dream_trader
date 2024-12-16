@@ -1,17 +1,15 @@
 import { create } from 'zustand';
-
 import { IndicatorChart } from '@/interfaces/IndicatorChart';
 
 interface ChartStore {
 	histogramIndicators: Array<IndicatorChart>;
 	lineSeriesIndicators: Array<IndicatorChart>;
-	// indidators structur: [{name: RSI_14, id: data:[] }...] 
-	// id corrosponding to connected StategyIndicator model
+	// indicators structure: [{ name: "RSI_14", id: 123, data: [...] }]
 	indicators: Array<IndicatorChart>;
 	setHistogramIndicators: (indicators: Array<IndicatorChart>) => void;
 	setLineSeriesIndicators: (indicators: Array<IndicatorChart>) => void;
 	setIndicators: (indicators: Array<IndicatorChart>) => void;
-	addIndicator: (name: string, data: any[]) => void;
+	addIndicator: (indicator: IndicatorChart) => void;
 	removeIndicator: (name: string) => void;
 }
 
@@ -37,9 +35,17 @@ const useChartStore = create<ChartStore>((set) => ({
 			indicators,
 		})),
 
-	addIndicator: (name: string, data: any[]) =>
+	addIndicator: (indicator: IndicatorChart) =>
 		set((state) => ({
-			indicators: [...state.indicators, { name, data }],
+			indicators: [
+				...state.indicators,
+				{
+					name: indicator.name,
+					id: indicator.id,
+					chartStyle: indicator.chartStyle,
+					data: indicator.data,
+				},
+			],
 		})),
 
 	removeIndicator: (name: string) =>

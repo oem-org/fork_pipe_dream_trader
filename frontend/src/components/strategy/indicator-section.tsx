@@ -23,10 +23,10 @@ export default function IndicatorSection() {
 	const { data: strategyIndicators, error: siError, isLoading: siIsLoading, refetch: siRefetch } = getStrategyIndicatorsQuery(strategyId);
 	const { data: indicatorSettings } = getIndicatorsQuery();
 
-	const { addIndicator, removeIndicator, indicators, lineSeriesIndicators, histogramIndicators } = useChartStore()
+	//const { addIndicator, removeIndicator, indicators, lineSeriesIndicators, histogramIndicators } = useChartStore()
 
 
-	console.log(indicators, "88888888888888888888888888")
+	//console.log(indicators, "88888888888888888888888888")
 
 	const handleIndicatorChange = async (indicator: Indicator) => {
 		try {
@@ -42,23 +42,6 @@ export default function IndicatorSection() {
 
 	return (<>
 
-		<button
-			onClick={() =>
-				addIndicator('SMA', [
-					{ time: '2022-01-01', value: 50 },
-					{ time: '2022-01-02', value: 52 },
-				])
-			}
-			className="mr-2 px-4 py-2 bg-blue-500 text-white rounded"
-		>
-			Add SMA
-		</button>
-		<button
-			onClick={() => removeIndicator('SMA')}
-			className="px-4 py-2 bg-red-500 text-white rounded"
-		>
-			Remove SMA
-		</button>
 
 		<h4 className="text-xl font-bold mb-4">Indicators</h4>
 		<GenericSelect<Indicator>
@@ -101,6 +84,20 @@ export default function IndicatorSection() {
 }
 
 
-function build(id: number) {
-
-}
+//<button
+//	onClick={() =>
+//		addIndicator('SMA', [
+//			{ time: '2022-01-01', value: 50 },
+//			{ time: '2022-01-02', value: 52 },
+//		])
+//	}
+//	className="mr-2 px-4 py-2 bg-blue-500 text-white rounded"
+//>
+//	Add SMA
+//</button>
+//<button
+//	onClick={() => removeIndicator('SMA')}
+//	className="px-4 py-2 bg-red-500 text-white rounded"
+//>
+//	Remove SMA
+//</button>
