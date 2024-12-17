@@ -1,10 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import { createChart, ColorType, IChartApi, ISeriesApi, LineStyle, LineData } from 'lightweight-charts';
+import { useEffect, useRef } from 'react';
+import { createChart, ColorType, IChartApi, ISeriesApi, LineStyle } from 'lightweight-charts';
 import React from 'react';
 import Timeseries from '../../../interfaces/Timeseries';
 import { Volume } from '@/interfaces/Volume';
-import { gg } from './json';
 import { LineSeries } from '@/interfaces/types/LineSeries';
+
+// Sources:
+// https://github.com/JeppeOEM/dashboard_frontend_exam/blob/main/src/components/charting/ChartComponent.tsx
+
 
 interface ChartCanvasProps {
 	chartContainerRef: React.RefObject<HTMLDivElement>;
@@ -25,8 +28,7 @@ export default function ChartCanvas({
 	colors: { backgroundColor = '#253248', textColor = 'white' } = {},
 }: ChartCanvasProps): React.ReactElement {
 	const chartRef = useRef<IChartApi | null>(null);
-	const seriesRefs = useRef<{ [key: string]: ISeriesApi<'Line'> }>({}); // Track indicator series
-	const [chartReady, setChartReady] = useState(false)
+	const seriesRefs = useRef<{ [key: string]: ISeriesApi<'Line'> }>({});
 
 	useEffect(() => {
 		if (!chartRef.current && chartContainerRef.current) {
@@ -54,10 +56,9 @@ export default function ChartCanvas({
 						});
 
 						lineSeries.setData(indicator.data);
-						seriesRefs.current[indicator.name] = lineSeries; // Save reference
+						seriesRefs.current[indicator.name] = lineSeries;
 					}
 				});
-
 			}
 
 			const candleSeries = chartRef.current.addCandlestickSeries({

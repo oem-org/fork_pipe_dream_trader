@@ -9,19 +9,17 @@ import useStrategyStore from '@/lib/hooks/useStrategyStore';
 import { getTimeseriesApi } from '@/lib/apiClientInstances';
 import { parseJsonStrings } from '@/lib/utils/object-utils';
 import { IndicatorChart } from '@/interfaces/IndicatorChart';
-import { LineSeries } from '@/interfaces/types/LineSeries';
-import { LineData } from 'lightweight-charts';
 export default function Charts() {
 	let timeperiod = "recent"
 	const { strategyId } = useStrategyStore()
 	const [timeseries, setTimeseries] = useState<Timeseries[]>([]);
 	const [volume, setVolume] = useState<Volume[]>([]);
-	const [histograms, setHistograms] = useState<any>([])
-	const [lineSeries, setLineSeries] = useState<any>([])
-	const [indicators, setIndicators] = useState<{ name: string; charStyle: string, id: number, data: LineData[] }[]>([]);
+	const [histograms, setHistograms] = useState<IndicatorChart[]>([])
+	const [lineSeries, setLineSeries] = useState<IndicatorChart[]>([])
+	const [indicators, setIndicators] = useState<IndicatorChart[]>([]);
 
-	const histogramsRefs = useRef<(HTMLDivElement | null)[]>([]);
-	const lineSeriesRefs = useRef<(HTMLDivElement | null)[]>([]);
+	const histogramsRefs = useRef<(HTMLDivElement)[]>([]);
+	const lineSeriesRefs = useRef<(HTMLDivElement)[]>([]);
 
 
 	useEffect(() => {
@@ -39,8 +37,8 @@ export default function Charts() {
 			const mapped = await timeseriesService.updateChart(indicatorInfo);
 			setIndicators(mapped)
 
-			setTimeseries(timeseriesService.ohlc); // Update OHLC
-			setVolume(timeseriesService.volume);  // Update Volume
+			setTimeseries(timeseriesService.ohlc);
+			setVolume(timeseriesService.volume);
 		}
 		loadData()
 
@@ -48,8 +46,8 @@ export default function Charts() {
 
 
 	useEffect(() => {
-		let hist = []
-		let line = []
+		const hist: IndicatorChart[] = [];
+		const line: IndicatorChart[] = [];
 		indicators.forEach((indicator) => {
 			if (indicator.chartStyle === "histogram") {
 				hist.push(indicator)
@@ -67,7 +65,7 @@ export default function Charts() {
 		lineSeriesRefs.current = line.map((_, index) => lineSeriesRefs.current[index] || React.createRef());
 
 	}, [indicators])
-
+	//TODO: add line color to backend
 	return (
 		<>
 			{histograms.map((histogram, index) => (
