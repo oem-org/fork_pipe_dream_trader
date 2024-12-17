@@ -23,6 +23,11 @@ export default function Charts() {
 	const chartContainerRef2 = useRef<HTMLDivElement>(null);
 	const [indicators, setIndicators] = useState<{ name: string; color: "string", data: LineSeries[] }[]>([]);
 
+	const chartRefs = [useRef<HTMLDivElement>(null), useRef<HTMLDivElement>(null)];
+	const histogramsRefs = useRef<(HTMLDivElement | null)[]>([]); // Create ref array for histograms
+	const lineSeriesRefs = useRef<(HTMLDivElement | null)[]>([]); // Create ref array for line series
+
+
 	useEffect(() => {
 		async function loadData() {
 			const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
@@ -38,11 +43,8 @@ export default function Charts() {
 			const mapped = await timeseriesService.updateChart(indicatorInfo);
 			setIndicators(mapped)
 
-			//loadIndicators(mapped)
-			console.log(strategyId, "IDDD", mapped)
 			setTimeseries(timeseriesService.ohlc); // Update OHLC
 			setVolume(timeseriesService.volume);  // Update Volume
-
 		}
 		loadData()
 
@@ -53,24 +55,65 @@ export default function Charts() {
 		let hist = []
 		let line = []
 		indicators.forEach((indicator) => {
-			if (indicator.chartStyle === "histogram")
+			if (indicator.chartStyle === "histogram") {
 				hist.push(indicator)
-			if (indicator.chartStyle === "line_add_pane")
+			}
+			if (indicator.chartStyle === "line_add_pane") {
 				line.push(indicator)
+			}
 		})
 		setHistograms(hist)
 		setLineSeries(line)
-		console.log("hist", hist);
+
+		// Dynamically create refs for each histogram
+		histogramsRefs.current = hist.map((_, index) => histogramsRefs.current[index] || React.createRef());
+		// Dynamically create refs for each line series
+		lineSeriesRefs.current = line.map((_, index) => lineSeriesRefs.current[index] || React.createRef());
 
 	}, [indicators])
 
 	return (
-
-
 		<>
-			<Chart indicators={lineSeries} chartContainerRef={chartContainerRef1} volume={volume} timeseries={timeseries} />
-			<ChartHistogram chartContainerRef={chartContainerRef2} volume={volume} />
+			{histograms.map((histogram, index) => (
+				<div className='w-full h-full' key={index} ref={histogramsRefs.current[index]}>
+					<ChartHistogram
+						chartContainerRef={histogramsRefs.current[index]}
+						volume={volume}
+						// Pass necessary data specific to each histogram
+						histogramData={histogram.data}  // assuming you have data to pass
+					/>
+				</div>
+			))}
+
+			{/* Dynamic Line Series */}
+			{lineSeries.map((line, index) => (
+				<div className='w-full h-1/4' key={index} ref={lineSeriesRefs.current[index]}>
+					<Chart
+						indicators={[line]}  // Pass each line indicator to the Chart component
+						chartContainerRef={lineSeriesRefs.current[index]}
+						volume={volume}
+						timeseries={timeseries}
+					/>
+				</div>
+			))}
 		</>
 	)
 }
 
+
+//{/* Main Chart with OHLC */}
+//<Chart
+//	indicators={lineSeries}
+//	chartContainerRef={chartRefs[0]}
+//	volume={volume}
+//	timeseries={timeseries}
+///>
+//
+//{/* Main Volume Chart */}
+//<ChartHistogram
+//	chartContainerRef={chartRefs[1]}
+//	volume={volume}
+///>
+//
+//{/* Dynamic Histograms */}
+//

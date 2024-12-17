@@ -98,12 +98,8 @@ export default function StrategyPage() {
               />
             </section>
             <div className="lg:col-span-3">
-              <div
-                className={`flex ${isRow ? 'flex-row' : 'flex-col'}`}
-              >
-                <div className="relative w-full h-[800px] md:h-[600px] bg-white rounded-lg ">
-                  <Charts />
-                </div>
+              <div className="relative w-full h-[800px] md:h-[600px] bg-white rounded-lg ">
+                <Charts />
               </div>
             </div>
           </div>

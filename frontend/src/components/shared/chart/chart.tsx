@@ -18,53 +18,15 @@ interface ChartProps {
 }
 
 export function Chart({ indicators, timeseries, chartContainerRef, volume }: ChartProps) {
-	//let timeperiod = "recent"
-	//const { strategyId } = useStrategyStore()
-	//const [key, setKey] = useState(0);
-	//const [mapped, setMapped] = useState<IndicatorChart[]>([])
-	////const [timeseries, setTimeseries] = useState<Timeseries[]>([]);
-	////const [volume, setVolume] = useState<Volume[]>([]);
-	//const [histograms, setHistograms] = useState<any>([])
-	//
-	////const [indicators, setIndicators] = useState<{ name: string; data: any[] }[]>([]);
-	//
-	//
-	//const reloadChart = () => {
-	//	setKey(prevKey => prevKey + 1); // Increment the key to trigger a remount
-	//};
-
-
-
-
-	//const addIndicator = (name: string, color: string, data: any[]) => {
-	//	setIndicators((prev) => [...prev, { name, color, data }]);
-	//};
-
-	//const removeIndicator = (name: string) => {
-	//	setIndicators((prev) => prev.filter((indicator) => indicator.name !== name));
-	//};
-
-	//function updateIndicator(id: number) {
-	//
-	//}
-	//
-	//function loadIndicators(mapped: IndicatorChart[]) {
-	//
-	//	mapped.forEach(indicator => {
-	//		addIndicator(indicator.name, "hotpink", indicator.data)
-	//	});
-	//}
 
 	return (
-		<div className="w-full h-full">
-			<ChartCanvas
-				chartContainerRef={chartContainerRef}
-				data={timeseries}
-				volume={volume}
-				indicators={indicators}
-			/>
+		<ChartCanvas
+			chartContainerRef={chartContainerRef}
+			data={timeseries}
+			volume={volume}
+			indicators={indicators}
+		/>
 
-		</div>
 	);
 }
 
