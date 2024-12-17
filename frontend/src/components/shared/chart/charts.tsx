@@ -75,7 +75,7 @@ export default function Charts() {
 	return (
 		<>
 			{histograms.map((histogram, index) => (
-				<div className='w-full h-full' key={index} ref={histogramsRefs.current[index]}>
+				<div className='w-full h-80' key={index} >
 					<ChartHistogram
 						chartContainerRef={histogramsRefs.current[index]}
 						volume={volume}
@@ -87,7 +87,7 @@ export default function Charts() {
 
 			{/* Dynamic Line Series */}
 			{lineSeries.map((line, index) => (
-				<div className='w-full h-1/4' key={index} ref={lineSeriesRefs.current[index]}>
+				<div className='w-full h-80' key={index} >
 					<Chart
 						indicators={[line]}  // Pass each line indicator to the Chart component
 						chartContainerRef={lineSeriesRefs.current[index]}
