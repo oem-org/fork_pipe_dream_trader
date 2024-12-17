@@ -27,6 +27,10 @@ export default function ChartCanvas({
 	const chartRef = useRef<IChartApi | null>(null);
 	const seriesRefs = useRef<{ [key: string]: ISeriesApi<'Line'> }>({}); // Track indicator series
 	const [chartReady, setChartReady] = useState(false)
+
+
+	console.log(indicators, "INDICators")
+
 	useEffect(() => {
 		if (!chartRef.current && chartContainerRef.current) {
 			// Initialize the chart
@@ -43,6 +47,33 @@ export default function ChartCanvas({
 			});
 
 			// Add the main candlestick series
+			//setChartReady(true);
+
+
+			if (chartRef.current) {
+				indicators.forEach((indicator) => {
+					if (!seriesRefs.current[indicator.name]) {
+						const lineSeries = chartRef.current.addLineSeries({
+							color: indicator.lineColor,
+							lineWidth: 2,
+							lineStyle: LineStyle.Solid,
+							priceScaleId: "line",
+						});
+
+						lineSeries.setData(indicator.data);
+						seriesRefs.current[indicator.name] = lineSeries; // Save reference
+					}
+				});
+
+				//// Remove indicators not in the state
+				//Object.keys(seriesRefs.current).forEach((name) => {
+				//	if (!indicators.find((indicator) => indicator.name === name)) {
+				//		chartRef.current?.removeSeries(seriesRefs.current[name]);
+				//		delete seriesRefs.current[name];
+				//	}
+				//});
+			}
+
 			const candleSeries = chartRef.current.addCandlestickSeries({
 				upColor: '#4bffb5',
 				downColor: '#ff4976',
@@ -65,7 +96,6 @@ export default function ChartCanvas({
 			});
 
 			volumeSeries.setData(volume);
-			//setChartReady(true);
 		}
 
 		// Cleanup chart on unmount
@@ -78,31 +108,31 @@ export default function ChartCanvas({
 	}, [chartContainerRef, data, volume, backgroundColor, textColor]);
 
 	// Handle adding/removing indicators
-	useEffect(() => {
-		if (chartRef.current) {
-			indicators.forEach((indicator) => {
-				if (!seriesRefs.current[indicator.name]) {
-					const lineSeries = chartRef.current.addLineSeries({
-						color: indicator.lineColor,
-						lineWidth: 2,
-						lineStyle: LineStyle.Solid,
-						priceScaleId: "line",
-					});
-
-					lineSeries.setData(indicator.data);
-					seriesRefs.current[indicator.name] = lineSeries; // Save reference
-				}
-			});
-
-			// Remove indicators not in the state
-			Object.keys(seriesRefs.current).forEach((name) => {
-				if (!indicators.find((indicator) => indicator.name === name)) {
-					chartRef.current?.removeSeries(seriesRefs.current[name]);
-					delete seriesRefs.current[name];
-				}
-			});
-		}
-	}, [indicators, volume, data]);
+	//useEffect(() => {
+	//	if (chartRef.current) {
+	//		indicators.forEach((indicator) => {
+	//			if (!seriesRefs.current[indicator.name]) {
+	//				const lineSeries = chartRef.current.addLineSeries({
+	//					color: indicator.lineColor,
+	//					lineWidth: 2,
+	//					lineStyle: LineStyle.Solid,
+	//					priceScaleId: "line",
+	//				});
+	//
+	//				lineSeries.setData(indicator.data);
+	//				seriesRefs.current[indicator.name] = lineSeries; // Save reference
+	//			}
+	//		});
+	//
+	//		// Remove indicators not in the state
+	//		Object.keys(seriesRefs.current).forEach((name) => {
+	//			if (!indicators.find((indicator) => indicator.name === name)) {
+	//				chartRef.current?.removeSeries(seriesRefs.current[name]);
+	//				delete seriesRefs.current[name];
+	//			}
+	//		});
+	//	}
+	//}, [chartContainerRef, data, volume, backgroundColor, textColor, indicators]);
 
 	return <div className="w-full h-full" ref={chartContainerRef} />;
 }

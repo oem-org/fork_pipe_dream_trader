@@ -71,7 +71,6 @@ export default function IndicatorSection() {
 								{indicator.id}
 
 							</Button>
-							<Button></Button>
 						</li>
 					))}
 				</ul>

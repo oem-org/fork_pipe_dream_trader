@@ -30,7 +30,9 @@ export function Chart() {
 			delete parsed.indicator_info;
 			await timeseriesService.processBulk(parsed);
 			const mapped = await timeseriesService.updateChart(indicatorInfo);
-			setMapped(mapped)
+			setIndicators(mapped)
+
+			loadIndicators(mapped)
 			console.log(strategyId, "IDDD")
 			setTimeseries(timeseriesService.ohlc); // Update OHLC
 			setVolume(timeseriesService.volume);  // Update Volume
@@ -41,20 +43,19 @@ export function Chart() {
 	}, [strategyId])
 	let sma = "SMA"
 	let arr = []
-	useEffect(() => {
-		if (mapped && mapped.length > 0) {
-
-			console.log(mapped[0].data, "mapped");
-			arr = mapped[0].data
-			setTest(arr)
-			loadIndicators(mapped)
-			console.log(volume, "volumen")
-			console.log(timeseries, "timeseries")
-		} else {
-			console.log("mapped is empty or undefined");
-		}
-
-	}, [mapped])
+	//useEffect(() => {
+	//	if (mapped && mapped.length > 0) {
+	//
+	//		console.log(mapped[0].data, "mapped");
+	//		arr = mapped[0].data
+	//		setTest(arr)
+	//		console.log(volume, "volumen")
+	//		console.log(timeseries, "timeseries")
+	//	} else {
+	//		console.log("mapped is empty or undefined");
+	//	}
+	//
+	//}, [mapped])
 
 	//function printIds(objects: IndicatorChart[]) {
 	//	objects.forEach(obj => {
@@ -83,9 +84,9 @@ export function Chart() {
 
 	function loadIndicators(mapped: IndicatorChart[]) {
 
-		mapped.forEach(indicator => {
-			addIndicator(indicator.name, "hotpink", indicator.data)
-		});
+		//mapped.forEach(indicator => {
+		//	addIndicator(indicator.name, "hotpink", indicator.data)
+		//});
 	}
 
 	return (
@@ -118,12 +119,16 @@ export function Chart() {
 				</button>
 			</div>
 
-			<ChartCanvas
-				chartContainerRef={chartContainerRef}
-				data={timeseries}
-				volume={volume}
-				indicators={indicators}
-			/>
+			{
+				true && (
+					<ChartCanvas
+						chartContainerRef={chartContainerRef}
+						data={timeseries}
+						volume={volume}
+						indicators={indicators}
+					/>
+				)
+			}
 		</div>
 	);
 }

@@ -101,9 +101,6 @@ export default function StrategyPage() {
                 className={`flex ${isRow ? 'flex-row' : 'flex-col'}`}
               >
                 <div className="relative w-full h-[400px] md:h-[600px] bg-white rounded-lg overflow-hidden">
-                  <p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded transparent-bg">
-                    {/* Any additional content like loading or info can go here */}
-                  </p>
                   <Chart />
                 </div>
               </div>
@@ -125,3 +122,9 @@ export default function StrategyPage() {
     </div>
   );
 }
+
+
+//title
+//<p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded transparent-bg">
+//  {/* Any additional content like loading or info can go here */}
+//</p>
