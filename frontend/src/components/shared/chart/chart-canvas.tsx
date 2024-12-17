@@ -4,13 +4,13 @@ import React from 'react';
 import Timeseries from '../../../interfaces/Timeseries';
 import { Volume } from '@/interfaces/Volume';
 import { gg } from './json';
-
+import { LineSeries } from '@/interfaces/types/LineSeries';
 
 interface ChartCanvasProps {
 	chartContainerRef: React.RefObject<HTMLDivElement>;
 	data: Timeseries[];
 	volume: Volume[];
-	indicators: { name: string; lineColor: string, data: LineData[] }[]; // List of active indicators
+	indicators: { name: string; lineColor: string, data: LineSeries[] }[]; // List of active indicators
 	colors?: {
 		backgroundColor?: string;
 		textColor?: string;
