@@ -1,4 +1,5 @@
 import { Chart } from './chart'
+import ChartCanvas from './chart-canvas';
 import ChartHistogram from './chart-histogram';
 import React, { useEffect, useRef, useState } from 'react';
 import Timeseries from '../../../interfaces/Timeseries';
@@ -80,7 +81,7 @@ export default function Charts() {
 						chartContainerRef={histogramsRefs.current[index]}
 						volume={volume}
 						// Pass necessary data specific to each histogram
-						histogramData={histogram.data}  // assuming you have data to pass
+						histogramData={histogram.data}
 					/>
 				</div>
 			))}
@@ -88,11 +89,11 @@ export default function Charts() {
 			{/* Dynamic Line Series */}
 			{lineSeries.map((line, index) => (
 				<div className='w-full h-80' key={index} >
-					<Chart
+					<ChartCanvas
 						indicators={[line]}  // Pass each line indicator to the Chart component
 						chartContainerRef={lineSeriesRefs.current[index]}
 						volume={volume}
-						timeseries={timeseries}
+						data={timeseries}
 					/>
 				</div>
 			))}
