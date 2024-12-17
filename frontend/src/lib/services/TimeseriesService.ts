@@ -1,10 +1,6 @@
-import { IndicatorBase } from "@/interfaces/indicators/IndicatorBase";
 import Timeseries from "@/interfaces/Timeseries";
 import { Volume, VolumeBackend } from "@/interfaces/Volume";
-import { findStringIndex } from "../utils/string-utils";
-import Histogram from "@/components/shared/chart/histogram";
-import useChartStore from "../hooks/useChartStore";
-
+import { IndicatorChart } from "@/interfaces/IndicatorChart";
 
 export default class TimeseriesService {
 	public ohlc: Timeseries[];
@@ -19,24 +15,17 @@ export default class TimeseriesService {
 
 	async updateChart(indicatorInfo: Record<string, any>) {
 
-		// Must access the fresh non reactive state of the store
-		//
-
-		const mappedIndicators = [];
-		//const lineSeriesIndicators = [];
-		//const mappedIndicators = [];
+		const mappedIndicators: IndicatorChart[] = [];
 
 		for (let key in indicatorInfo) {
 			// Key is dataframe column name fx "RSI_14"
 			// The value stored in the key is chart styl
 
-			mappedIndicators.push({ "name": `${key}`, "chartStyle": indicatorInfo[key].indicator_info, "id": indicatorInfo[key].id, "data": this.indicators[key] });  // Fixed template literal
+			mappedIndicators.push({ "name": `${key}`, "chartStyle": indicatorInfo[key].indicator_info, "id": indicatorInfo[key].id, "data": this.indicators[key] });
 
-
-			console.log(this.indicators[key]);
 		}
 
-		console.log("aaaaaaaaaaaaaaaaaaaaaaaindiCAT", mappedIndicators);
+		console.log("Mapped Indicators", mappedIndicators);
 		return mappedIndicators
 	}
 
@@ -45,7 +34,6 @@ export default class TimeseriesService {
 		// Saved time and value for each KeyName corresponding to the dataframe columns
 		const notAllowedKeys = ["time", "volume pols", "columns", "pair"];
 
-		console.log(indicatorsTimeseries, "indicator timeseries")
 		for (const keyName in indicatorsTimeseries) {
 
 			let indicator = [];
@@ -62,7 +50,6 @@ export default class TimeseriesService {
 				this.indicators[keyName] = indicator;
 			}
 		}
-		console.log("FINALLY");
 		console.log("INDICATORS!!!!!!!", this.indicators);
 	}
 

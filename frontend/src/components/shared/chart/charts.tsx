@@ -10,23 +10,18 @@ import { getTimeseriesApi } from '@/lib/apiClientInstances';
 import { parseJsonStrings } from '@/lib/utils/object-utils';
 import { IndicatorChart } from '@/interfaces/IndicatorChart';
 import { LineSeries } from '@/interfaces/types/LineSeries';
-
+import { LineData } from 'lightweight-charts';
 export default function Charts() {
 	let timeperiod = "recent"
 	const { strategyId } = useStrategyStore()
-	const [key, setKey] = useState(0);
-	const [mapped, setMapped] = useState<IndicatorChart[]>([])
 	const [timeseries, setTimeseries] = useState<Timeseries[]>([]);
 	const [volume, setVolume] = useState<Volume[]>([]);
 	const [histograms, setHistograms] = useState<any>([])
 	const [lineSeries, setLineSeries] = useState<any>([])
-	const chartContainerRef1 = useRef<HTMLDivElement>(null);
-	const chartContainerRef2 = useRef<HTMLDivElement>(null);
-	const [indicators, setIndicators] = useState<{ name: string; color: "string", data: LineSeries[] }[]>([]);
+	const [indicators, setIndicators] = useState<{ name: string; charStyle: string, id: number, data: LineData[] }[]>([]);
 
-	const chartRefs = [useRef<HTMLDivElement>(null), useRef<HTMLDivElement>(null)];
-	const histogramsRefs = useRef<(HTMLDivElement | null)[]>([]); // Create ref array for histograms
-	const lineSeriesRefs = useRef<(HTMLDivElement | null)[]>([]); // Create ref array for line series
+	const histogramsRefs = useRef<(HTMLDivElement | null)[]>([]);
+	const lineSeriesRefs = useRef<(HTMLDivElement | null)[]>([]);
 
 
 	useEffect(() => {
@@ -80,7 +75,7 @@ export default function Charts() {
 					<ChartHistogram
 						chartContainerRef={histogramsRefs.current[index]}
 						volume={volume}
-						// Pass necessary data specific to each histogram
+						// Pass only 1 array of data
 						histogramData={histogram.data}
 					/>
 				</div>
@@ -89,7 +84,8 @@ export default function Charts() {
 			{lineSeries.map((line, index) => (
 				<div className='w-full h-80' key={index} >
 					<ChartCanvas
-						indicators={[line]}  // Pass each line indicator to the Chart component
+						// Pass list of lineSeries
+						indicators={[line]}
 						chartContainerRef={lineSeriesRefs.current[index]}
 						volume={volume}
 						data={timeseries}

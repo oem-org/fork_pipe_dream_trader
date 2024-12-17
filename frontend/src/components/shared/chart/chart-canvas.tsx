@@ -10,7 +10,7 @@ interface ChartCanvasProps {
 	chartContainerRef: React.RefObject<HTMLDivElement>;
 	data: Timeseries[];
 	volume: Volume[];
-	indicators: { name: string; lineColor: string, data: LineSeries[] }[]; // List of active indicators
+	indicators: LineSeries[];
 	colors?: {
 		backgroundColor?: string;
 		textColor?: string;
@@ -28,12 +28,8 @@ export default function ChartCanvas({
 	const seriesRefs = useRef<{ [key: string]: ISeriesApi<'Line'> }>({}); // Track indicator series
 	const [chartReady, setChartReady] = useState(false)
 
-
-	console.log(indicators, "INDICators")
-
 	useEffect(() => {
 		if (!chartRef.current && chartContainerRef.current) {
-			// Initialize the chart
 			chartRef.current = createChart(chartContainerRef.current, {
 				layout: {
 					background: { type: ColorType.Solid, color: "black" },
@@ -45,10 +41,6 @@ export default function ChartCanvas({
 				},
 				timeScale: { borderColor: '#485c7b', timeVisible: true },
 			});
-
-
-			// Add the main candlestick series
-			//setChartReady(true);
 
 
 			if (chartRef.current) {
@@ -66,13 +58,6 @@ export default function ChartCanvas({
 					}
 				});
 
-				//// Remove indicators not in the state
-				//Object.keys(seriesRefs.current).forEach((name) => {
-				//	if (!indicators.find((indicator) => indicator.name === name)) {
-				//		chartRef.current?.removeSeries(seriesRefs.current[name]);
-				//		delete seriesRefs.current[name];
-				//	}
-				//});
 			}
 
 			const candleSeries = chartRef.current.addCandlestickSeries({
@@ -86,7 +71,6 @@ export default function ChartCanvas({
 
 			candleSeries.setData(data);
 
-			// Add the volume series
 			const volumeSeries = chartRef.current.addHistogramSeries({
 				priceFormat: { type: 'volume' },
 				priceScaleId: '',
@@ -108,33 +92,6 @@ export default function ChartCanvas({
 			}
 		};
 	}, [indicators, chartContainerRef, data, volume, backgroundColor, textColor]);
-
-	// Handle adding/removing indicators
-	//useEffect(() => {
-	//	if (chartRef.current) {
-	//		indicators.forEach((indicator) => {
-	//			if (!seriesRefs.current[indicator.name]) {
-	//				const lineSeries = chartRef.current.addLineSeries({
-	//					color: indicator.lineColor,
-	//					lineWidth: 2,
-	//					lineStyle: LineStyle.Solid,
-	//					priceScaleId: "line",
-	//				});
-	//
-	//				lineSeries.setData(indicator.data);
-	//				seriesRefs.current[indicator.name] = lineSeries; // Save reference
-	//			}
-	//		});
-	//
-	//		// Remove indicators not in the state
-	//		Object.keys(seriesRefs.current).forEach((name) => {
-	//			if (!indicators.find((indicator) => indicator.name === name)) {
-	//				chartRef.current?.removeSeries(seriesRefs.current[name]);
-	//				delete seriesRefs.current[name];
-	//			}
-	//		});
-	//	}
-	//}, [chartContainerRef, data, volume, backgroundColor, textColor, indicators]);
 
 	return <div className="w-full h-full" ref={chartContainerRef} />;
 }

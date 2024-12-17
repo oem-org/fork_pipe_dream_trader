@@ -32,15 +32,6 @@ export default function StrategyPage() {
   const { data: strategies } = getStrategiesQuery();
   const { data: files } = getFilesQuery();
 
-
-
-  // TODO:
-
-
-
-
-
-
   useEffect(() => {
     setStrategyId(paramId);
   }, [paramId]);
