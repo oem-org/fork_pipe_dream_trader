@@ -3,6 +3,8 @@ import { createChart, ColorType, IChartApi, ISeriesApi, LineStyle, LineData } fr
 import React from 'react';
 import Timeseries from '../../../interfaces/Timeseries';
 import { Volume } from '@/interfaces/Volume';
+import { gg } from './json';
+
 
 interface ChartCanvasProps {
 	chartContainerRef: React.RefObject<HTMLDivElement>;

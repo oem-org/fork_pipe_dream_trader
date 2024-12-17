@@ -7,7 +7,7 @@ import useStrategyStore from '@/lib/hooks/useStrategyStore';
 import { getTimeseriesApi } from '@/lib/apiClientInstances';
 import { parseJsonStrings } from '@/lib/utils/object-utils';
 import { IndicatorChart } from '@/interfaces/IndicatorChart';
-
+import { gg } from './json';
 
 export function Chart() {
 	let timeperiod = "recent"
@@ -16,7 +16,7 @@ export function Chart() {
 	const [mapped, setMapped] = useState<IndicatorChart[]>([])
 	const [timeseries, setTimeseries] = useState<Timeseries[]>([]);
 	const [volume, setVolume] = useState<Volume[]>([]);
-
+	const [test, setTest] = useState<any>([])
 	useEffect(() => {
 		async function loadData() {
 			const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
@@ -31,6 +31,7 @@ export function Chart() {
 			await timeseriesService.processBulk(parsed);
 			const mapped = await timeseriesService.updateChart(indicatorInfo);
 			setMapped(mapped)
+			console.log(strategyId, "IDDD")
 			setTimeseries(timeseriesService.ohlc); // Update OHLC
 			setVolume(timeseriesService.volume);  // Update Volume
 
@@ -39,11 +40,21 @@ export function Chart() {
 
 	}, [strategyId])
 
+	let sma = "SMA"
+	let arr = []
 	useEffect(() => {
-		console.log(mapped, "mapped");
+		if (mapped && mapped.length > 0) {
 
+			console.log(mapped[0].data, "mapped");
+			arr = mapped[0].data
+			setTest(arr)
+			console.log(volume, "volumen")
+			console.log(timeseries, "timeseries")
+		} else {
+			console.log("mapped is empty or undefined");
+		}
 
-	}, [mapped, volume, timeseries])
+	}, [mapped])
 
 
 
@@ -65,10 +76,7 @@ export function Chart() {
 			<div className="mb-4">
 				<button
 					onClick={() =>
-						addIndicator('SMA', [
-							{ time: '2022-01-01', value: 50 },
-							{ time: '2022-01-02', value: 52 },
-						])
+						addIndicator(sma, gg)
 					}
 					className="mr-2 px-4 py-2 bg-blue-500 text-white rounded"
 				>
@@ -90,3 +98,13 @@ export function Chart() {
 		</div>
 	);
 }
+
+
+
+//onClick={() =>
+//	addIndicator(test, [
+//		{ time: '2022-01-01', value: 50 },
+//		{ time: '2022-01-02', value: 52 },
+//	])
+//}
+//
