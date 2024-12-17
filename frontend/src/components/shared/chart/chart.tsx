@@ -7,7 +7,6 @@ import useStrategyStore from '@/lib/hooks/useStrategyStore';
 import { getTimeseriesApi } from '@/lib/apiClientInstances';
 import { parseJsonStrings } from '@/lib/utils/object-utils';
 import { IndicatorChart } from '@/interfaces/IndicatorChart';
-import { gg } from './json';
 
 export function Chart() {
 	let timeperiod = "recent"
@@ -17,6 +16,7 @@ export function Chart() {
 	const [timeseries, setTimeseries] = useState<Timeseries[]>([]);
 	const [volume, setVolume] = useState<Volume[]>([]);
 	const [test, setTest] = useState<any>([])
+
 	useEffect(() => {
 		async function loadData() {
 			const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
@@ -39,7 +39,6 @@ export function Chart() {
 		loadData()
 
 	}, [strategyId])
-
 	let sma = "SMA"
 	let arr = []
 	useEffect(() => {
@@ -48,6 +47,7 @@ export function Chart() {
 			console.log(mapped[0].data, "mapped");
 			arr = mapped[0].data
 			setTest(arr)
+			loadIndicators(mapped)
 			console.log(volume, "volumen")
 			console.log(timeseries, "timeseries")
 		} else {
@@ -56,27 +56,55 @@ export function Chart() {
 
 	}, [mapped])
 
-
-
-
+	//function printIds(objects: IndicatorChart[]) {
+	//	objects.forEach(obj => {
+	//		if ('id' in obj) {
+	//			console.log(obj.id);
+	//		} else {
+	//			console.log("Object does not have an 'id' property.");
+	//		}
+	//	});
+	//}
 
 	const [indicators, setIndicators] = useState<{ name: string; data: any[] }[]>([]);
 	const chartContainerRef = useRef<HTMLDivElement>(null);
 
-	const addIndicator = (name: string, data: any[]) => {
-		setIndicators((prev) => [...prev, { name, data }]);
+	const addIndicator = (name: string, color: string, data: any[]) => {
+		setIndicators((prev) => [...prev, { name, color, data }]);
 	};
 
-	const removeIndicator = (name: string) => {
-		setIndicators((prev) => prev.filter((indicator) => indicator.name !== name));
-	};
+	//const removeIndicator = (name: string) => {
+	//	setIndicators((prev) => prev.filter((indicator) => indicator.name !== name));
+	//};
+
+	function updateIndicator(id: number) {
+
+	}
+
+	function loadIndicators(mapped: IndicatorChart[]) {
+
+		mapped.forEach(indicator => {
+			addIndicator(indicator.name, "hotpink", indicator.data)
+		});
+	}
 
 	return (
 		<div className="w-full h-full">
+			<div>
+				{mapped.map((indicators) => (
+					<button
+						key={indicators.id}
+						id={indicators.id.toString()}
+						onClick={() => updateIndicator(indicators.id)}
+					>
+						{indicators.name}
+					</button>
+				))}
+			</div>
 			<div className="mb-4">
 				<button
 					onClick={() =>
-						addIndicator(sma, gg)
+						addIndicator(sma, "hotpink", test)
 					}
 					className="mr-2 px-4 py-2 bg-blue-500 text-white rounded"
 				>
@@ -89,6 +117,7 @@ export function Chart() {
 					Remove SMA
 				</button>
 			</div>
+
 			<ChartCanvas
 				chartContainerRef={chartContainerRef}
 				data={timeseries}
@@ -98,8 +127,6 @@ export function Chart() {
 		</div>
 	);
 }
-
-
 
 //onClick={() =>
 //	addIndicator(test, [

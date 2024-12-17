@@ -10,7 +10,7 @@ interface ChartCanvasProps {
 	chartContainerRef: React.RefObject<HTMLDivElement>;
 	data: Timeseries[];
 	volume: Volume[];
-	indicators: { name: string; data: LineData[] }[]; // List of active indicators
+	indicators: { name: string; lineColor: string, data: LineData[] }[]; // List of active indicators
 	colors?: {
 		backgroundColor?: string;
 		textColor?: string;
@@ -26,7 +26,7 @@ export default function ChartCanvas({
 }: ChartCanvasProps): React.ReactElement {
 	const chartRef = useRef<IChartApi | null>(null);
 	const seriesRefs = useRef<{ [key: string]: ISeriesApi<'Line'> }>({}); // Track indicator series
-
+	const [chartReady, setChartReady] = useState(false)
 	useEffect(() => {
 		if (!chartRef.current && chartContainerRef.current) {
 			// Initialize the chart
@@ -65,6 +65,7 @@ export default function ChartCanvas({
 			});
 
 			volumeSeries.setData(volume);
+			//setChartReady(true);
 		}
 
 		// Cleanup chart on unmount
@@ -79,14 +80,13 @@ export default function ChartCanvas({
 	// Handle adding/removing indicators
 	useEffect(() => {
 		if (chartRef.current) {
-			// Add new indicators
 			indicators.forEach((indicator) => {
 				if (!seriesRefs.current[indicator.name]) {
-					// Create a new line series for the indicator
 					const lineSeries = chartRef.current.addLineSeries({
-						color: indicator.name === 'SMA' ? '#FFD700' : '#FF4500', // Example: different colors for indicators
+						color: indicator.lineColor,
 						lineWidth: 2,
 						lineStyle: LineStyle.Solid,
+						priceScaleId: "line",
 					});
 
 					lineSeries.setData(indicator.data);
@@ -102,7 +102,7 @@ export default function ChartCanvas({
 				}
 			});
 		}
-	}, [indicators]);
+	}, [indicators, volume, data]);
 
 	return <div className="w-full h-full" ref={chartContainerRef} />;
 }

@@ -45,7 +45,9 @@ export default class TimeseriesService {
 		// Saved time and value for each KeyName corresponding to the dataframe columns
 		const notAllowedKeys = ["time", "volume pols", "columns", "pair"];
 
+		console.log(indicatorsTimeseries, "indicator timeseries")
 		for (const keyName in indicatorsTimeseries) {
+
 			let indicator = [];
 			if (notAllowedKeys.includes(keyName)) {
 				continue;

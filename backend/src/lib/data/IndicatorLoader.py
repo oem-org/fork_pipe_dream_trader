@@ -16,9 +16,7 @@ class IndicatorLoader:
         self.columns = []
         self.response = {}
 
-    #
     def load_indicators(self):
-
 
         self.df.ta.log_return(cumulative=True, append=True)
         self.df.ta.percent_return(cumulative=True, append=True)
@@ -31,7 +29,9 @@ class IndicatorLoader:
         self.df.set_index(pd.DatetimeIndex(self.df["time"]), inplace=True)
 
         self.df.ta.strategy(Strategy)
-
+        
+        # Remove all the empty rows from the start of each column
+        self.df.dropna(inplace=True)
 
     def split_dataframe(self):
         """
