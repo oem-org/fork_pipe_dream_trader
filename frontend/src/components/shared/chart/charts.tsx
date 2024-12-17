@@ -1,5 +1,5 @@
 import { Chart } from './chart'
-
+import ChartHistogram from './chart-histogram';
 import React, { useEffect, useRef, useState } from 'react';
 import Timeseries from '../../../interfaces/Timeseries';
 import { Volume } from '@/interfaces/Volume';
@@ -18,9 +18,10 @@ export default function Charts() {
 	const [timeseries, setTimeseries] = useState<Timeseries[]>([]);
 	const [volume, setVolume] = useState<Volume[]>([]);
 	const [histograms, setHistograms] = useState<any>([])
+	const [lineSeries, setLineSeries] = useState<any>([])
 	const chartContainerRef1 = useRef<HTMLDivElement>(null);
 	const chartContainerRef2 = useRef<HTMLDivElement>(null);
-	const [indicators, setIndicators] = useState<{ name: string; data: LineSeries[] }[]>([]);
+	const [indicators, setIndicators] = useState<{ name: string; color: "string", data: LineSeries[] }[]>([]);
 
 	useEffect(() => {
 		async function loadData() {
@@ -46,12 +47,29 @@ export default function Charts() {
 		loadData()
 
 	}, [strategyId])
+
+
+	useEffect(() => {
+		let hist = []
+		let line = []
+		indicators.forEach((indicator) => {
+			if (indicator.chartStyle === "histogram")
+				hist.push(indicator)
+			if (indicator.chartStyle === "line_add_pane")
+				line.push(indicator)
+		})
+		setHistograms(hist)
+		setLineSeries(line)
+		console.log("hist", hist);
+
+	}, [indicators])
+
 	return (
 
 
 		<>
-			<Chart indicators={indicators} chartContainerRef={chartContainerRef1} volume={volume} timeseries={timeseries} />
-			<Chart indicators={indicators} chartContainerRef={chartContainerRef2} volume={volume} timeseries={timeseries} />
+			<Chart indicators={lineSeries} chartContainerRef={chartContainerRef1} volume={volume} timeseries={timeseries} />
+			<ChartHistogram chartContainerRef={chartContainerRef2} volume={volume} />
 		</>
 	)
 }

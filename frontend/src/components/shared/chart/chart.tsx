@@ -33,16 +33,6 @@ export function Chart({ indicators, timeseries, chartContainerRef, volume }: Cha
 	//	setKey(prevKey => prevKey + 1); // Increment the key to trigger a remount
 	//};
 
-	//useEffect(() => {
-	//	let hist = []
-	//	indicators.forEach((indicator) => {
-	//		if (indicator.chartStyle === "histogram")
-	//			hist.push(indicator)
-	//	})
-	//	setHistograms(hist)
-	//	console.log("hist", hist);
-	//
-	//}, [indicators])
 
 
 

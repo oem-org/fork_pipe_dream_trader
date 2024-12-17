@@ -8,6 +8,7 @@ import { gg } from './json';
 
 
 interface ChartCanvasProps {
+	chartContainerRef: React.RefObject<HTMLDivElement>;
 	volume: Volume[];
 	colors?: {
 		backgroundColor?: string;
@@ -17,10 +18,10 @@ interface ChartCanvasProps {
 
 export default function ChartHistogram({
 	volume,
+	chartContainerRef,
 	colors: { backgroundColor = '#253248', textColor = 'white' } = {},
 }: ChartCanvasProps): React.ReactElement {
 
-	const chartContainerRef = useRef<HTMLDivElement>(null);
 	const chartRef = useRef<IChartApi | null>(null);
 
 
@@ -48,7 +49,7 @@ export default function ChartHistogram({
 			});
 
 			volumeSeries.priceScale().applyOptions({
-				scaleMargins: { top: 0.8, bottom: 0.001 },
+				scaleMargins: { top: 0.08, bottom: 0 },
 			});
 
 			volumeSeries.setData(volume);
@@ -64,5 +65,5 @@ export default function ChartHistogram({
 	}, [chartContainerRef, volume, backgroundColor, textColor]);
 
 
-	return <div className="w-full h-full" ref={chartContainerRef} />;
+	return <div className="w-full h-1/3" ref={chartContainerRef} />;
 }

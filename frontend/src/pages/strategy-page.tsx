@@ -101,7 +101,7 @@ export default function StrategyPage() {
               <div
                 className={`flex ${isRow ? 'flex-row' : 'flex-col'}`}
               >
-                <div className="relative w-full h-[400px] md:h-[600px] bg-white rounded-lg ">
+                <div className="relative w-full h-[800px] md:h-[600px] bg-white rounded-lg ">
                   <Charts />
                 </div>
               </div>
