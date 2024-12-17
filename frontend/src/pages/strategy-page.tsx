@@ -98,9 +98,7 @@ export default function StrategyPage() {
               />
             </section>
             <div className="lg:col-span-3">
-              <div className="relative w-full h- bg-white rounded-lg ">
-                <Charts />
-              </div>
+              <Charts />
             </div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">

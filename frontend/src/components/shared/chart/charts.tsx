@@ -76,7 +76,7 @@ export default function Charts() {
 	return (
 		<>
 			{histograms.map((histogram, index) => (
-				<div className='w-full h-80' key={index} >
+				<div className='w-full h-40' key={index} >
 					<ChartHistogram
 						chartContainerRef={histogramsRefs.current[index]}
 						volume={volume}
@@ -86,7 +86,6 @@ export default function Charts() {
 				</div>
 			))}
 
-			{/* Dynamic Line Series */}
 			{lineSeries.map((line, index) => (
 				<div className='w-full h-80' key={index} >
 					<ChartCanvas

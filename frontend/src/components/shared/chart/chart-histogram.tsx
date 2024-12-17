@@ -65,5 +65,5 @@ export default function ChartHistogram({
 	}, [chartContainerRef, volume, backgroundColor, textColor]);
 
 
-	return <div className="w-full h-1/3" ref={chartContainerRef} />;
+	return <div className="w-full h-full" ref={chartContainerRef} />;
 }
