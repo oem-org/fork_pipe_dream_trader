@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ChartCanvas from './chart-canvas';
+import ChartHistogram from './chart-histogram';
 import Timeseries from '../../../interfaces/Timeseries';
 import { Volume } from '@/interfaces/Volume';
 import TimeseriesService from '@/lib/services/TimeseriesService';
@@ -11,12 +12,20 @@ import { IndicatorChart } from '@/interfaces/IndicatorChart';
 export function Chart() {
 	let timeperiod = "recent"
 	const { strategyId } = useStrategyStore()
-
+	const [key, setKey] = useState(0);
 	const [mapped, setMapped] = useState<IndicatorChart[]>([])
 	const [timeseries, setTimeseries] = useState<Timeseries[]>([]);
 	const [volume, setVolume] = useState<Volume[]>([]);
-	const [test, setTest] = useState<any>([])
+	const [histograms, setHistograms] = useState<any>([])
 
+	const chartContainerRef = useRef<HTMLDivElement>(null);
+
+
+	const reloadChart = () => {
+		setKey(prevKey => prevKey + 1); // Increment the key to trigger a remount
+	};
+
+	const [indicators, setIndicators] = useState<{ name: string; data: any[] }[]>([]);
 	useEffect(() => {
 		async function loadData() {
 			const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
@@ -33,7 +42,7 @@ export function Chart() {
 			setIndicators(mapped)
 
 			loadIndicators(mapped)
-			console.log(strategyId, "IDDD")
+			console.log(strategyId, "IDDD", mapped)
 			setTimeseries(timeseriesService.ohlc); // Update OHLC
 			setVolume(timeseriesService.volume);  // Update Volume
 
@@ -41,8 +50,43 @@ export function Chart() {
 		loadData()
 
 	}, [strategyId])
+
+	useEffect(() => {
+		let hist = []
+		indicators.forEach((indicator) => {
+			if (indicator.chartStyle === "histogram")
+				hist.push(indicator)
+		})
+		setHistograms(hist)
+		console.log("hist", hist);
+
+	}, [indicators])
+
+
+
 	let sma = "SMA"
 	let arr = []
+
+	let t = [{
+		"time": 1621382400000,
+		"value": 2.5017735294
+	},
+	{
+		"time": 1621468800000,
+		"value": 5.3788264706
+	},
+	{
+		"time": 1621555200000,
+		"value": 9.3206029412
+	},
+	{
+		"time": 1621641600000,
+		"value": 3.2980470588
+	},
+	{
+		"time": 1621728000000,
+		"value": 3.3684176471
+	},]
 	//useEffect(() => {
 	//	if (mapped && mapped.length > 0) {
 	//
@@ -67,8 +111,6 @@ export function Chart() {
 	//	});
 	//}
 
-	const [indicators, setIndicators] = useState<{ name: string; data: any[] }[]>([]);
-	const chartContainerRef = useRef<HTMLDivElement>(null);
 
 	const addIndicator = (name: string, color: string, data: any[]) => {
 		setIndicators((prev) => [...prev, { name, color, data }]);
@@ -84,13 +126,16 @@ export function Chart() {
 
 	function loadIndicators(mapped: IndicatorChart[]) {
 
-		//mapped.forEach(indicator => {
-		//	addIndicator(indicator.name, "hotpink", indicator.data)
-		//});
+		mapped.forEach(indicator => {
+			addIndicator(indicator.name, "hotpink", indicator.data)
+		});
 	}
 
 	return (
 		<div className="w-full h-full">
+			<button onClick={reloadChart} className="px-4 py-2 bg-green-500 text-white rounded">
+				Reload Chart
+			</button>
 			<div>
 				{mapped.map((indicators) => (
 					<button
@@ -105,7 +150,7 @@ export function Chart() {
 			<div className="mb-4">
 				<button
 					onClick={() =>
-						addIndicator(sma, "hotpink", test)
+						addIndicator(sma, "hotpink", t)
 					}
 					className="mr-2 px-4 py-2 bg-blue-500 text-white rounded"
 				>
@@ -118,17 +163,13 @@ export function Chart() {
 					Remove SMA
 				</button>
 			</div>
+			<ChartCanvas key={key}
+				chartContainerRef={chartContainerRef}
+				data={timeseries}
+				volume={volume}
+				indicators={indicators}
+			/>
 
-			{
-				true && (
-					<ChartCanvas
-						chartContainerRef={chartContainerRef}
-						data={timeseries}
-						volume={volume}
-						indicators={indicators}
-					/>
-				)
-			}
 		</div>
 	);
 }

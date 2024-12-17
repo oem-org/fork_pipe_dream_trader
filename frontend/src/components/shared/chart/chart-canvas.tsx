@@ -46,6 +46,7 @@ export default function ChartCanvas({
 				timeScale: { borderColor: '#485c7b', timeVisible: true },
 			});
 
+
 			// Add the main candlestick series
 			//setChartReady(true);
 
@@ -103,9 +104,10 @@ export default function ChartCanvas({
 			if (chartRef.current) {
 				chartRef.current.remove();
 				chartRef.current = null;
+				seriesRefs.current = {}
 			}
 		};
-	}, [chartContainerRef, data, volume, backgroundColor, textColor]);
+	}, [indicators, chartContainerRef, data, volume, backgroundColor, textColor]);
 
 	// Handle adding/removing indicators
 	//useEffect(() => {

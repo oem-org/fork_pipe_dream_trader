@@ -12,6 +12,7 @@ import useStrategyStore from "@/lib/hooks/useStrategyStore";
 import IndicatorSection from "@/components/strategy/indicator-section";
 import { priceData2 } from "@/components/shared/chart/priceData2";
 import { Button } from "@/components/shared/buttons/button";
+import Charts from "@/components/shared/chart/charts";
 export default function StrategyPage() {
   const { id } = useParams();
   const paramId = id ? parseInt(id) : NaN;
@@ -101,7 +102,7 @@ export default function StrategyPage() {
                 className={`flex ${isRow ? 'flex-row' : 'flex-col'}`}
               >
                 <div className="relative w-full h-[400px] md:h-[600px] bg-white rounded-lg overflow-hidden">
-                  <Chart />
+                  <Charts />
                 </div>
               </div>
             </div>
