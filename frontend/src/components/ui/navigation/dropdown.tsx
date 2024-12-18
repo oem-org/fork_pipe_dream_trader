@@ -7,9 +7,17 @@ interface DropdownProps {
   label?: string;
   animation: boolean;
   direction?: 'left' | 'right';
+  textColor?: string;  // New prop for text color
 }
 
-export default function Dropdown({ icon: Icon, label, animation, children, direction = 'left' }: DropdownProps) {
+export default function Dropdown({
+  icon: Icon,
+  label,
+  animation,
+  children,
+  direction = 'left',
+  textColor = 'text-white' // Default text color is white
+}: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLLIElement>(null);
 
@@ -34,7 +42,7 @@ export default function Dropdown({ icon: Icon, label, animation, children, direc
         onClick={toggleDropdown}
         onMouseEnter={() => setIsOpen(true)}
         onFocus={() => setIsOpen(true)}
-        className="flex items-center text-white rounded hover:bg-gray-700"
+        className={`flex items-center ${textColor} rounded hover:bg-gray-700`}
       >
         {Icon && <Icon className="h-5 w-5 mr-2" />}
         {label && <span className="mr-2">{label}</span>}
@@ -48,7 +56,7 @@ export default function Dropdown({ icon: Icon, label, animation, children, direc
 
       {(isOpen || dropdownRef.current?.matches(':hover')) && (
         <ul
-          className={`absolute ${direction === 'right' ? 'right-0' : 'left-0'} w-48 bg-gray-800 text-white mt-2 rounded-md shadow-lg py-2 z-10`}
+          className={`absolute ${direction === 'right' ? 'right-0' : 'left-0'} w-48 bg-gray-800 ${textColor} mt-2 rounded-md shadow-lg py-2 z-10`}
           onMouseLeave={() => setIsOpen(false)}
         >
           {children}

@@ -11,6 +11,10 @@ import IndicatorSection from "@/components/strategy/indicator-section";
 import { Button } from "@/components/ui/buttons/button";
 import Charts from "@/components/ui/chart/charts";
 import Modal from "@/components/ui/modal";
+import { SettingsIcon } from "lucide-react";
+import Dropdown from "@/components/ui/navigation/dropdown";
+
+
 
 export default function StrategyPage() {
   const { id } = useParams();
@@ -57,35 +61,45 @@ export default function StrategyPage() {
         <>
           <section className="grid grid-cols-1 lg:grid-cols-4 gap-4">
             <article className="lg:col-span-1 p-4 bg-gray-100 rounded-lg">
-              <h4 className="text-xl font-bold mb-4">{strategy.name}</h4>
-              <Button onClick={() => toggleModal()}>Information</Button>
+              <div className="flex flex-row justify-between">
+                <h4 className="text-xl font-bold mb-4">{strategy.name}</h4>
+                <Button onClick={() => toggleModal()}>Information</Button>
+
+                <Dropdown icon={SettingsIcon} animation={false} direction="right">
+                  <button onClick={() => { }} className="block text-white px-4 py-2">Rename</button>
+                  <button onClick={() => { }} className="block text-white px-4 py-2">Delete</button>
+                </Dropdown>
+
+              </div>
               <Modal onClose={toggleModal} isOpen={isModalOpen} title={"Description"}>
-                <section>
-                  <pre class="whitespace-pre-wrap break-words p-4 rounded-md">
-                    {strategy.description}
-                  </pre>
-
-                </section>
+                <pre class="whitespace-pre-wrap break-words p-4">
+                  {strategy.description}
+                </pre>
               </Modal>
-
-              <GenericSelect<File>
-                data={files || []}
-                keyExtractor={(file) => file.id}
-                nameExtractor={(file) => file.name}
-                onSelect={handleFileChange}
-                renderItem={(file) => <span>{file.name}</span>}
-                title="Select or search"
-                searchEnabled={true}
-              />
-              <GenericSelect<Strategy>
-                data={strategies || []}
-                keyExtractor={(strategy) => strategy.id}
-                nameExtractor={(strategy) => strategy.name}
-                onSelect={handleStrategyChange}
-                renderItem={(strategy) => <span>{strategy.name}</span>}
-                title="Select or search"
-                searchEnabled={true}
-              />
+              <article>
+                <h4 className=".h4">Change file</h4>
+                <GenericSelect<File>
+                  data={files || []}
+                  keyExtractor={(file) => file.id}
+                  nameExtractor={(file) => file.name}
+                  onSelect={handleFileChange}
+                  renderItem={(file) => <span>{file.name}</span>}
+                  title="Select or search"
+                  searchEnabled={true}
+                />
+              </article>
+              <article>
+                <h4 className=".h4">Change strategy</h4>
+                <GenericSelect<Strategy>
+                  data={strategies || []}
+                  keyExtractor={(strategy) => strategy.id}
+                  nameExtractor={(strategy) => strategy.name}
+                  onSelect={handleStrategyChange}
+                  renderItem={(strategy) => <span>{strategy.name}</span>}
+                  title="Select or search"
+                  searchEnabled={true}
+                />
+              </article>
             </article>
             <div className="lg:col-span-3">
               <Charts />
