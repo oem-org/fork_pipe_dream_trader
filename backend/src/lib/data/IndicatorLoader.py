@@ -5,7 +5,6 @@ import pandas as pd
 import pandas_ta as ta
 import json
 from ...indicators import *
-import io
 
 import contextlib
 
@@ -31,17 +30,23 @@ class IndicatorLoader:
         self.df.ta.log_return(cumulative=True, append=True)
         self.df.ta.percent_return(cumulative=True, append=True)
 
-        Strategy = ta.Strategy(
-            name="indicators",
-        ta=self.indicators
-        )
+        print("THE INDICATORS", self.indicators)
+        print("THE INDICATORS", self.indicators)
+        print("THE INDICATORS", self.indicators)
+        print("THE INDICATORS", self.indicators)
+        print("THE INDICATORS", self.indicators)
+        if len(self.indicators) > 0:
+            Strategy = ta.Strategy(
+                name="indicators",
+            ta=self.indicators
+            )
 
-        self.df.set_index(pd.DatetimeIndex(self.df["time"]), inplace=True)
+            # self.df.set_index(pd.DatetimeIndex(self.df["time"]), inplace=True)
 
-        self.df.ta.strategy(Strategy)
+            self.df.ta.strategy(Strategy)
 
-        # Remove all the empty rows from the start of each column
-        self.df.dropna(inplace=True)
+            # Remove all the empty rows from the start of each column
+            self.df.dropna(inplace=True)
 
     def split_dataframe(self):
         """

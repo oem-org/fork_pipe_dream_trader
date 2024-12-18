@@ -44,7 +44,7 @@ export default function GenericSelect<T>({
 
 		if (query.trim() !== "") {
 			const filteredItems = data.filter((item) =>
-				item.name.toLowerCase().includes(query.toLowerCase())
+				nameExtractor(item).toLowerCase().includes(query.toLowerCase())
 			);
 			setFilteredData(filteredItems);
 		} else {

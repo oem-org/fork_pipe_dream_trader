@@ -1,4 +1,3 @@
-import { Chart } from './chart'
 import ChartCanvas from './chart-canvas';
 import ChartHistogram from './chart-histogram';
 import React, { useEffect, useRef, useState } from 'react';
@@ -20,7 +19,7 @@ export default function Charts() {
 
 	const histogramsRefs = useRef<(HTMLDivElement)[]>([]);
 	const lineSeriesRefs = useRef<(HTMLDivElement)[]>([]);
-
+	const emptyChartRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		async function loadData() {
@@ -79,17 +78,29 @@ export default function Charts() {
 				</div>
 			))}
 
-			{lineSeries.map((line, index) => (
-				<div className='w-full h-80' key={index} >
+			{lineSeries.length > 0 ? (
+				lineSeries.map((line, index) => (
+					<div className='w-full h-80' key={index}>
+						<ChartCanvas
+							// Pass list of lineSeries
+							indicators={[line]}
+							chartContainerRef={lineSeriesRefs.current[index]}
+							volume={volume}
+							data={timeseries}
+						/>
+					</div>
+				))
+			) : (
+				<div className='w-full h-80' key="empty">
 					<ChartCanvas
 						// Pass list of lineSeries
-						indicators={[line]}
-						chartContainerRef={lineSeriesRefs.current[index]}
+						indicators={[]}
+						chartContainerRef={emptyChartRef}
 						volume={volume}
 						data={timeseries}
 					/>
 				</div>
-			))}
+			)}
 		</>
 	)
 }

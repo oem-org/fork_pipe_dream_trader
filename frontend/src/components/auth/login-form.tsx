@@ -16,7 +16,7 @@ export default function LoginForm() {
 		const success = await sendFormData<boolean>(e, login, setError, setLoading);
 
 		if (success) {
-			navigate('/strategy');
+			navigate('/');
 		}
 	}
 

@@ -15,16 +15,6 @@ from ...utils.print_values_db_object import print_db_object
 router = APIRouter(prefix="/indicators", tags=["indicators"])
 
 
-class IndicatorSchema(BaseModel):
-    id: int
-    kind: str
-    description: str
-    default_settings: Dict
-    indicator_info: str
-
-    model_config = {"from_attributes": True}
-
-
 @router.get("", status_code=status.HTTP_200_OK, response_model=List[IndicatorSchema])
 def get_indicators(db: db_dependency) -> Any:
     """Return a list of available indicators  to add to a strategy chart."""

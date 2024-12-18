@@ -39,6 +39,14 @@ class FileSchema(BaseModel):
     file_type: FileTypeEnum
 
 
+class IndicatorSchema(BaseModel):
+    id: int
+    kind: str
+    default_settings: Dict
+    indicator_info: str
+
+    model_config = {"from_attributes": True}
+
 class StrategySchema(BaseModel):
     id: int
     name: str

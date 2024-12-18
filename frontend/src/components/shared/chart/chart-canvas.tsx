@@ -44,8 +44,9 @@ export default function ChartCanvas({
 				timeScale: { borderColor: '#485c7b', timeVisible: true },
 			});
 
+			console.log(indicators, "CHART INDICATORS")
 
-			if (chartRef.current) {
+			if (chartRef.current && indicators.length > 0) {
 				indicators.forEach((indicator) => {
 					if (!seriesRefs.current[indicator.name]) {
 						const lineSeries = chartRef.current.addLineSeries({

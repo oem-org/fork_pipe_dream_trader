@@ -52,7 +52,7 @@ async def read_all(
                 if ind.settings is not None
             ]
 
-            print(all_indicator_settings)
+            print("IDNICATOR SETTINGS!!!!!!!!!!!!",all_indicator_settings)
             indicatorLoader = IndicatorLoader(fileLoader.df, all_indicator_settings)
             indicatorLoader.load_indicators()
             indicatorLoader.split_dataframe()

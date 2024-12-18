@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import TopNav from "@/components/shared/navigation/top-nav/top-nav";
-import Candle from "@/components/shared/chart/"
 
 function RootPage() {
 

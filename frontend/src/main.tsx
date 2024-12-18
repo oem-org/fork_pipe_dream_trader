@@ -13,6 +13,7 @@ import CreateStrategyPage from "./pages/create-strategy-page.tsx";
 import SelectStrategyPage from "./pages/select-strategy-page.tsx";
 import ProtectedRoute from "./components/auth/protected-route.tsx";
 import DataPage from "./pages/data-page.tsx";
+import HomePage from "./pages/home-page.tsx";
 
 
 export const queryClient = new QueryClient({
@@ -35,6 +36,9 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       {
+        index: true, // This sets the default child for "/"
+        element: <HomePage />,
+      }, {
         path: "data",
         element: <DataPage />,
       },

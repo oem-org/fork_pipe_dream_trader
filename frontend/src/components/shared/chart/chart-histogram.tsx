@@ -1,10 +1,8 @@
 
-import { useEffect, useRef, useState } from 'react';
-import { createChart, ColorType, IChartApi, ISeriesApi, LineStyle, LineData } from 'lightweight-charts';
+import { useEffect, useRef } from 'react';
+import { createChart, ColorType, IChartApi } from 'lightweight-charts';
 import React from 'react';
-import Timeseries from '../../../interfaces/Timeseries';
 import { Volume } from '@/interfaces/Volume';
-import { gg } from './json';
 
 
 interface ChartCanvasProps {
@@ -27,7 +25,6 @@ export default function ChartHistogram({
 
 	useEffect(() => {
 		if (!chartRef.current && chartContainerRef.current) {
-			// Initialize the chart
 			chartRef.current = createChart(chartContainerRef.current, {
 				layout: {
 					background: { type: ColorType.Solid, color: "black" },
@@ -40,9 +37,6 @@ export default function ChartHistogram({
 				timeScale: { borderColor: '#485c7b', timeVisible: true },
 			});
 
-
-
-			// Add the volume series
 			const volumeSeries = chartRef.current.addHistogramSeries({
 				priceFormat: { type: 'volume' },
 				priceScaleId: '',

@@ -1,45 +1,45 @@
-
 import React, { useState, useEffect } from "react";
+
 import { ChevronDown, SearchIcon } from 'lucide-react';
 
-interface NamedItem {
-	name: string;
-}
-
-interface GenericSelectProps<T extends NamedItem> {
+interface GenericTableProps<T> {
 	data: T[];
 	keyExtractor: (item: T) => string | number;
 	onSelect: (item: T) => void;
 	renderItem: (item: T) => React.ReactNode;
 	title: string;
 	searchEnabled: boolean;
+	nameExtractor: (item: T) => string
 }
 
 
-export default function GenericSelect<T extends NamedItem>({
+export default function GenericTable<T>({
 	data,
 	keyExtractor,
 	onSelect,
 	renderItem,
 	title,
 	searchEnabled,
-}: GenericSelectProps<T>) {
+	nameExtractor
+
+}: GenericTableProps<T>) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [currentTitle, setCurrentTitle] = useState<string>(title);
 	const [isHovered, setIsHovered] = useState(false);
 	const [filteredData, setFilteredData] = useState<T[]>(data);
 	const [searchQuery, setSearchQuery] = useState("");
 
-	const handleSelection = (item: T) => {
+	const handleSelection = (item: T, e: React.MouseEvent<HTMLButtonElement>) => {
 		onSelect(item);
-		setCurrentTitle(item.name);
+		setCurrentTitle(nameExtractor(item));
 		setIsOpen(false);
 		setSearchQuery("")
+		e.preventDefault()
 	};
 
 	const handleSearch = (query: string, e: React.ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
-		e.stopPropagation(); // Prevent interaction from bubbling to parent form
+		e.stopPropagation();
 		setSearchQuery(query);
 
 		if (query.trim() !== "") {
@@ -48,12 +48,12 @@ export default function GenericSelect<T extends NamedItem>({
 			);
 			setFilteredData(filteredItems);
 		} else {
-			setFilteredData(data); // Reset to all items if the query is empty
+			setFilteredData(data);
 		}
 	};
 
 	useEffect(() => {
-		setFilteredData(data); // Reset filtered data if the original data changes
+		setFilteredData(data);
 	}, [data]);
 
 	return (
@@ -71,7 +71,7 @@ export default function GenericSelect<T extends NamedItem>({
 					<p
 						onClick={(e) => {
 							e.preventDefault();
-							e.stopPropagation(); // Prevent interaction from bubbling to parent form
+							e.stopPropagation();
 							setIsOpen(!isOpen);
 						}}
 						className="flex-grow p-4 font-semibold cursor-pointer"
@@ -115,7 +115,8 @@ function Search({
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setQuery(event.target.value);
-		onSearch(event.target.value, event); // Pass event to prevent bubbling
+		// Pass event to prevent bubbling
+		onSearch(event.target.value, event);
 	};
 
 	return (
@@ -143,7 +144,8 @@ function ToggleData({ setIsOpen, isOpen }: ToggleDataProps) {
 			className="p-4 flex justify-between items-center rounded-md transition-colors duration-200"
 			onClick={(e) => {
 				e.preventDefault();
-				e.stopPropagation(); // Prevent interaction from bubbling to parent form
+				// Prevent interaction from bubbling to parent form
+				e.stopPropagation();
 				setIsOpen(!isOpen);
 			}}
 		>
