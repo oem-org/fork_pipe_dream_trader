@@ -7,10 +7,6 @@ import IndicatorRequest from "@/interfaces/requests/UpdateIndicatorRequest"
 import Indicator from "../interfaces/Indicator"
 import File from "@/interfaces/File"
 import { PostRelationService, PutService, PostService, DeleteRelationService, PutRelationService, GetAllService, DeleteService, GetWithParamsService, GetWithQueryService, GetAllRelationService, } from "./services/ApiService"
-import TimeseriesRequest from "@/interfaces/requests/TimeseriesRequest"
-import Timeseries from "@/interfaces/Timeseries"
-// import UploadFileRequest from "../interfaces/requests/UploadFileRequest"
-// Class for GET requests
 
 import { StrategyIndicator, UpdateStrategyIndicatorRequest } from "@/interfaces/StrategyIndicator"
 import { CreateStrategyRequest } from "@/interfaces/requests/CreateStrategyRequest"
@@ -54,6 +50,7 @@ export const getAllStrategiesApi = new GetAllService<Strategy>('strategy', {})
 export const getStrategyApi = new GetWithParamsService<number, Strategy>('strategy', {})
 export const postStrategyApi = new PostService<CreateStrategyRequest, Strategy>('strategy', jsonHeader)
 export const putStrategyApi = new PutService<Strategy, Strategy>('strategy', jsonHeader)
+export const deleteStrategyApi = new DeleteService<number>('strategy', jsonHeader)
 
 
 

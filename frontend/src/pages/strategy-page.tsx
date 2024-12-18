@@ -13,13 +13,13 @@ import Charts from "@/components/ui/chart/charts";
 import Modal from "@/components/ui/modal";
 import { SettingsIcon } from "lucide-react";
 import Dropdown from "@/components/ui/navigation/dropdown";
-
+import { useDeleteStrategy } from "@/lib/hooks/useDeleteStrategy";
 
 
 export default function StrategyPage() {
   const { id } = useParams();
   const paramId = id ? parseInt(id) : NaN;
-  const { setStrategyId } = useStrategyStore();
+  const { strategyId, setStrategyId } = useStrategyStore();
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,6 +34,9 @@ export default function StrategyPage() {
   const { data: strategy, error, isError, isLoading } = getStrategyQuery(paramId);
   const { data: strategies } = getStrategiesQuery();
   const { data: files } = getFilesQuery();
+
+  const { mutateAsync: deleteStrategyMutation } = useDeleteStrategy();
+
 
   useEffect(() => {
     setStrategyId(paramId);
@@ -65,12 +68,17 @@ export default function StrategyPage() {
                 <h4 className="text-xl font-bold mb-4">{strategy.name}</h4>
                 <Button onClick={() => toggleModal()}>Information</Button>
 
-                <Dropdown icon={SettingsIcon} animation={false} direction="right">
+                <Dropdown textColor="text-black" icon={SettingsIcon} animation={false} direction="right">
                   <button onClick={() => { }} className="block text-white px-4 py-2">Rename</button>
                   <button onClick={() => { }} className="block text-white px-4 py-2">Delete</button>
                 </Dropdown>
 
               </div>
+
+              <Button onClick={() => { deleteStrategyMutation(strategy.id) }}>Delete Strategy</Button>
+              <Modal onClose={toggleModal} isOpen={isModalOpen} title={"Delete strategy"}>
+              </Modal>
+
               <Modal onClose={toggleModal} isOpen={isModalOpen} title={"Description"}>
                 <pre class="whitespace-pre-wrap break-words p-4">
                   {strategy.description}

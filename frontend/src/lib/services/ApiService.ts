@@ -189,8 +189,8 @@ export class DeleteRelationService extends ApiService {
 		}
 	}
 }
-export class DeleteService extends ApiService {
-	async delete(id: number): Promise<void> {
+export class DeleteService<T> extends ApiService {
+	async delete(id: T): Promise<void> {
 		try {
 			await this.axiosInstance.delete(`${this.endpoint}/${id}`, {
 				headers: await this.getHeaders(),
