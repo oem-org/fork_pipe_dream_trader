@@ -80,6 +80,14 @@ class FileLoader:
                 columns=lambda col: column_mapping.get(col, col), inplace=True
             )
 
+    
+            if "time" in self.df.columns:
+                self.df["time"] = pd.to_numeric(self.df["time"])
+                self.df["time"] = self.df["time"].apply(
+                    lambda x: x / 1000 if pd.notna(x) and len(str(int(x))) == 13 else x
+                )
+
+
             # Coerce inserts NaN or NaT if it gets bad row, instead of raising a exception, so its possible to identify excatly which rows are bad
             self.df["volume"] = pd.to_numeric(self.df["volume"], errors="coerce")
             self.df["open"] = pd.to_numeric(self.df["open"], errors="coerce")
