@@ -13,7 +13,9 @@ file_name = "help_output.txt"
 
 with open(file_name, "w") as file:
     with contextlib.redirect_stdout(file):
-        help(ta.sma)
+        help(ta.ema)
+        help(ta.bbands)
+        help(ta.kc)
 
 print(f"Help output saved to {file_name}")
 

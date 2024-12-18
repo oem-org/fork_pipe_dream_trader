@@ -51,7 +51,6 @@ class Indicators(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     kind = Column(String, unique=True)
-    description = Column(String)
     default_settings = Column(JSON)
     settings_schema = Column(JSON)
     indicator_info = Column(String)
