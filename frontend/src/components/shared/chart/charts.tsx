@@ -1,4 +1,5 @@
 import ChartCanvas from './chart-canvas';
+import ChartLine from './chart-line';
 import ChartHistogram from './chart-histogram';
 import React, { useEffect, useRef, useState } from 'react';
 import Timeseries from '../../../interfaces/Timeseries';
@@ -15,9 +16,11 @@ export default function Charts() {
 	const [volume, setVolume] = useState<Volume[]>([]);
 	const [histograms, setHistograms] = useState<IndicatorChart[]>([])
 	const [lineSeries, setLineSeries] = useState<IndicatorChart[]>([])
+	const [lineSeriesPanes, setLineSeriesPanes] = useState<IndicatorChart[]>([])
 	const [indicators, setIndicators] = useState<IndicatorChart[]>([]);
 
 	const histogramsRefs = useRef<(HTMLDivElement)[]>([]);
+	const lineSeriesPanesRefs = useRef<(HTMLDivElement)[]>([]);
 	const lineSeriesRefs = useRef<(HTMLDivElement)[]>([]);
 	const emptyChartRef = useRef<HTMLDivElement>(null);
 
@@ -45,38 +48,33 @@ export default function Charts() {
 
 
 	useEffect(() => {
-		const hist: IndicatorChart[] = [];
-		const line: IndicatorChart[] = [];
+		const hists: IndicatorChart[] = [];
+		const lines: IndicatorChart[] = [];
+		const linePanes: IndicatorChart[] = [];
 		indicators.forEach((indicator) => {
 			if (indicator.chartStyle === "histogram") {
-				hist.push(indicator)
+				hists.push(indicator)
 			}
 			if (indicator.chartStyle === "line_add_pane") {
-				line.push(indicator)
+				linePanes.push(indicator)
+			}
+			if (indicator.chartStyle === "line") {
+				lines.push(indicator)
 			}
 		})
-		setHistograms(hist)
-		setLineSeries(line)
+		setHistograms(hists)
+		setLineSeries(lines)
+		setLineSeriesPanes(linePanes)
 
-		// Dynamically create refs for each histogram
-		histogramsRefs.current = hist.map((_, index) => histogramsRefs.current[index] || React.createRef());
-		// Dynamically create refs for each line series
-		lineSeriesRefs.current = line.map((_, index) => lineSeriesRefs.current[index] || React.createRef());
+		histogramsRefs.current = hists.map((_, index) => histogramsRefs.current[index] || React.createRef());
+		lineSeriesRefs.current = lines.map((_, index) => lineSeriesRefs.current[index] || React.createRef());
+		lineSeriesPanesRefs.current = linePanes.map((_, index) => lineSeriesPanesRefs.current[index] || React.createRef());
 
 	}, [indicators])
 	//TODO: add line color to backend
 	return (
 		<>
-			{histograms.map((histogram, index) => (
-				<div className='w-full h-40' key={index} >
-					<ChartHistogram
-						chartContainerRef={histogramsRefs.current[index]}
-						volume={volume}
-						// Pass only 1 array of data
-						histogramData={histogram.data}
-					/>
-				</div>
-			))}
+
 
 			{lineSeries.length > 0 ? (
 				lineSeries.map((line, index) => (
@@ -101,6 +99,29 @@ export default function Charts() {
 					/>
 				</div>
 			)}
+
+
+			{lineSeriesPanes.map((lineSeriesPane, index) => (
+				<div className='w-full h-40' key={index} >
+					<ChartLine
+						chartContainerRef={lineSeriesPanesRefs.current[index]}
+						// Pass only 1 array of data
+						data={lineSeriesPane.data}
+					/>
+				</div>
+			))}
+
+
+			{histograms.map((histogram, index) => (
+				<div className='w-full h-40' key={index} >
+					<ChartHistogram
+						chartContainerRef={histogramsRefs.current[index]}
+						// Pass only 1 array of data
+						data={histogram.data}
+					/>
+				</div>
+			))}
+
 		</>
 	)
 }

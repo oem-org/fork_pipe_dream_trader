@@ -2,10 +2,9 @@
 import { useEffect, useRef } from 'react';
 import { createChart, ColorType, IChartApi } from 'lightweight-charts';
 import React from 'react';
-
 import { LineData } from 'lightweight-charts';
 
-interface ChartCanvasProps {
+interface ChartLineProps {
 	chartContainerRef: React.RefObject<HTMLDivElement>;
 	data: LineData[];
 	colors?: {
@@ -14,11 +13,11 @@ interface ChartCanvasProps {
 	};
 }
 
-export default function ChartHistogram({
+export default function ChartLine({
 	data,
 	chartContainerRef,
 	colors: { backgroundColor = '#253248', textColor = 'white' } = {},
-}: ChartCanvasProps): React.ReactElement {
+}: ChartLineProps): React.ReactElement {
 
 	const chartRef = useRef<IChartApi | null>(null);
 
@@ -37,16 +36,17 @@ export default function ChartHistogram({
 				timeScale: { borderColor: '#485c7b', timeVisible: true },
 			});
 
-			const histogram = chartRef.current.addHistogramSeries({
-				priceFormat: { type: 'volume' },
+			// Documentation:
+			// https://tradingview.github.io/lightweight-charts/docs/api/interfaces/IChartApiBase#addlineseries
+			const lineSeries = chartRef.current.addLineSeries({
 				priceScaleId: '',
 			});
 
-			histogram.priceScale().applyOptions({
+			lineSeries.priceScale().applyOptions({
 				scaleMargins: { top: 0.08, bottom: 0 },
 			});
 
-			histogram.setData(data);
+			lineSeries.setData(data);
 		}
 
 		// Cleanup chart on unmount

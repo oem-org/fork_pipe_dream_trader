@@ -41,7 +41,7 @@ export default function ChartCanvas({
 					vertLines: { color: '#334158' },
 					horzLines: { color: '#334158' },
 				},
-				timeScale: { borderColor: '#485c7b', timeVisible: true },
+				timeScale: { borderColor: '#485c7b', timeVisible: true, ticksVisible: true },
 			});
 
 			console.log(indicators, "CHART INDICATORS")
@@ -73,14 +73,18 @@ export default function ChartCanvas({
 
 			candleSeries.setData(data);
 
+
 			const volumeSeries = chartRef.current.addHistogramSeries({
 				priceFormat: { type: 'volume' },
-				priceScaleId: '',
+				priceScaleId: 'volume',
+				color: '#26a69a',
 			});
 
-			volumeSeries.priceScale().applyOptions({
+			chartRef.current.priceScale('volume').applyOptions({
 				scaleMargins: { top: 0.8, bottom: 0.001 },
+				borderVisible: false,
 			});
+
 
 			volumeSeries.setData(volume);
 		}
