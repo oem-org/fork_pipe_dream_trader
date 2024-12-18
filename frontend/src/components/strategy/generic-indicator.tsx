@@ -33,7 +33,6 @@ export default function GenericIndicator({ indicatorId, settingsSchema, settings
 
 	const toggleModal = () => setIsModalOpen(!isModalOpen);
 
-	console.log(settingsSchema, "FOOOOOORM");
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -191,12 +190,12 @@ export default function GenericIndicator({ indicatorId, settingsSchema, settings
 	return (
 		<div className='flex flex-col border rounded-lg p-4'>
 			<Modal onClose={toggleModal} isOpen={isModalOpen} title={`Indicator: ${formData['kind']}`}>
-				<article>
+				<section>
 					<pre class="whitespace-pre-wrap break-words p-4 rounded-md">
 						{settingsSchema.description}
 					</pre>
 
-				</article>
+				</section>
 			</Modal>
 			<div className='flex flex-row justify-between'>
 				<div className='flex flex-row'>

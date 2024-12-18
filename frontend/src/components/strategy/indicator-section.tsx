@@ -4,21 +4,17 @@ import Indicator from "@/interfaces/Indicator";
 import getStrategyIndicatorsQuery from "@/lib/queries/getStrategyIndicatorsQuery";
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
 import { useAddIndicator } from "@/lib/hooks/useAddIndicator";
-import { useDeleteIndicator } from "@/lib/hooks/useDeleteIndicator";
-import { Button } from "@/components/ui/buttons/button";
 import GenericIndicator from "./generic-indicator";
 
-import { SquareX } from 'lucide-react';
-import useChartStore from "@/lib/hooks/useChartStore";
 
 
 
 
 export default function IndicatorSection() {
 
-	const { strategyId, setStrategyId } = useStrategyStore();
+	const { strategyId } = useStrategyStore();
 	const { mutateAsync: addIndicatorMutation } = useAddIndicator(strategyId);
-	const { data: strategyIndicators, error: siError, isLoading: siIsLoading, refetch: siRefetch } = getStrategyIndicatorsQuery(strategyId);
+	const { data: strategyIndicators, error: siError, isLoading: siIsLoading } = getStrategyIndicatorsQuery(strategyId);
 	const { data: indicatorSettings } = getIndicatorsQuery();
 
 	const handleIndicatorChange = async (indicator: Indicator) => {

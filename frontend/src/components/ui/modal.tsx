@@ -1,4 +1,6 @@
 import React from 'react';
+import { Button } from './buttons/button';
+
 
 interface ModalProps {
 	title: string;
@@ -27,6 +29,11 @@ export default function Modal({ title, isOpen, onClose, children }: ModalProps) 
 					<div className="p-4">
 						<div className="text-gray-700">{children}</div>
 					</div>
+					<div className='p-6'>
+
+						<Button onClick={onClose}>Close</Button>
+					</div>
+
 				</div>
 			</div>
 		</section>

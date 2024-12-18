@@ -10,6 +10,7 @@ import useStrategyStore from "@/lib/hooks/useStrategyStore";
 import IndicatorSection from "@/components/strategy/indicator-section";
 import { Button } from "@/components/ui/buttons/button";
 import Charts from "@/components/ui/chart/charts";
+import Modal from "@/components/ui/modal";
 
 export default function StrategyPage() {
   const { id } = useParams();
@@ -17,7 +18,9 @@ export default function StrategyPage() {
   const { setStrategyId } = useStrategyStore();
   const navigate = useNavigate();
 
-  const [isRow, setIsRow] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
 
 
   const [fileId, setFileId] = useState<number>(0);
@@ -52,11 +55,19 @@ export default function StrategyPage() {
     <div className="container mx-auto px-4 space-y-6">
       {strategy ? (
         <>
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-            <section className="lg:col-span-1 p-4 bg-gray-100 rounded-lg">
-              <Button onClick={() => setIsRow(!isRow)}>Toggle </Button>
+          <section className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+            <article className="lg:col-span-1 p-4 bg-gray-100 rounded-lg">
               <h4 className="text-xl font-bold mb-4">{strategy.name}</h4>
-              <p>Data Source Type: {dataSourceType}</p>
+              <Button onClick={() => toggleModal()}>Information</Button>
+              <Modal onClose={toggleModal} isOpen={isModalOpen} title={"Description"}>
+                <section>
+                  <pre class="whitespace-pre-wrap break-words p-4 rounded-md">
+                    {strategy.description}
+                  </pre>
+
+                </section>
+              </Modal>
+
               <GenericSelect<File>
                 data={files || []}
                 keyExtractor={(file) => file.id}
@@ -75,20 +86,20 @@ export default function StrategyPage() {
                 title="Select or search"
                 searchEnabled={true}
               />
-            </section>
+            </article>
             <div className="lg:col-span-3">
               <Charts />
             </div>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-            <section className="lg:col-span-3 p-4 bg-gray-100 rounded-lg">
+          </section>
+          <section className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+            <div className="lg:col-span-3 p-4 bg-gray-100 rounded-lg">
               <IndicatorSection />
-            </section>
+            </div>
             <section className="lg:col-span-1 p-4 bg-gray-100 rounded-lg">
               <h4 className="text-xl font-bold mb-4">Backtest</h4>
               <p>This section contains backtest results for the strategy.</p>
             </section>
-          </div>
+          </section>
         </>
       ) : (
         <p>Strategy not found.</p>
