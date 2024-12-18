@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Button } from '../shared/buttons/button';
+import { Button } from '../ui/buttons/button';
 import { isFloat, addDecimal } from '@/lib/utils/numeric-utils';
 import { useUpdateIndicator } from '@/lib/hooks/useUpdateIndicator';
 import { useDeleteIndicator } from '@/lib/hooks/useDeleteIndicator';
 import useStrategyStore from '@/lib/hooks/useStrategyStore';
 import { SquareX } from 'lucide-react';
-import Modal from '../shared/modal';
+import Modal from '../ui/modal';
 
 interface Props {
 	indicatorId: number,

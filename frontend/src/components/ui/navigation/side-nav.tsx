@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import NavLinks from "./nav-links";
-import StrategyList from "@/components/shared/lists/generic-select";
+import StrategyList from "@/components/ui/lists/generic-select";
 import FileList from "@/components/files/file-list";
 //import useAuthStore from "../../../lib/hooks/useAuthStore";
 

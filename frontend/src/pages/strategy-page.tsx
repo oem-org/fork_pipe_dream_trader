@@ -4,12 +4,12 @@ import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
 import { useState, useEffect } from "react";
 import { Strategy, DatabaseSource, FileSource } from "@/interfaces/Strategy";
 import File from "@/interfaces/File";
-import GenericSelect from "@/components/shared/lists/generic-select";
+import GenericSelect from "@/components/ui/lists/generic-select";
 import getFilesQuery from "@/lib/queries/getFilesQuery";
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
 import IndicatorSection from "@/components/strategy/indicator-section";
-import { Button } from "@/components/shared/buttons/button";
-import Charts from "@/components/shared/chart/charts";
+import { Button } from "@/components/ui/buttons/button";
+import Charts from "@/components/ui/chart/charts";
 
 export default function StrategyPage() {
   const { id } = useParams();

@@ -1,4 +1,4 @@
-import Histogram from "@/components/shared/chart/histogram"
+import Histogram from "@/components/ui/chart/histogram"
 
 
 export default class ChartService {

@@ -1,5 +1,5 @@
-import { Input } from '../shared/forms/input';
-import { Button } from '../shared/buttons/button';
+import { Input } from '../ui/forms/input';
+import { Button } from '../ui/buttons/button';
 import useAuthStore from '../../lib/hooks/useAuthStore';
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';

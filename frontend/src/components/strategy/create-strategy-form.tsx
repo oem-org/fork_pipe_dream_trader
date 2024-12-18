@@ -1,5 +1,5 @@
 import { useState } from "react";
-import GenericSelect from "../shared/lists/generic-select";
+import GenericSelect from "../ui/lists/generic-select";
 import { Strategy } from "@/interfaces/Strategy";
 import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
 import getFilesQuery from "@/lib/queries/getFilesQuery";

@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import TopNav from "@/components/shared/navigation/top-nav/top-nav";
+import TopNav from "@/components/ui/navigation/top-nav/top-nav";
 
 function RootPage() {
 

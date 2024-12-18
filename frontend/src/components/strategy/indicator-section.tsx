@@ -1,11 +1,11 @@
-import GenericSelect from "@/components/shared/lists/generic-select";
+import GenericSelect from "@/components/ui/lists/generic-select";
 import getIndicatorsQuery from "@/lib/queries/getIndicatorsQuery";
 import Indicator from "@/interfaces/Indicator";
 import getStrategyIndicatorsQuery from "@/lib/queries/getStrategyIndicatorsQuery";
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
 import { useAddIndicator } from "@/lib/hooks/useAddIndicator";
 import { useDeleteIndicator } from "@/lib/hooks/useDeleteIndicator";
-import { Button } from "@/components/shared/buttons/button";
+import { Button } from "@/components/ui/buttons/button";
 import GenericIndicator from "./generic-indicator";
 
 import { SquareX } from 'lucide-react';

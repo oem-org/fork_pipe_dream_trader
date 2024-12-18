@@ -1,4 +1,4 @@
-import GenericSelect from "@/components/shared/lists/generic-select";
+import GenericSelect from "@/components/ui/lists/generic-select";
 import {Strategy} from "@/interfaces/Strategy";
 import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
 import { useState } from "react";
