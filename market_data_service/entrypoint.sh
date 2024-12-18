@@ -1,16 +1,10 @@
 echo "Starting market data service"
 #!/bin/sh
 # run time enviroment
-echo $RTE
-echo $RTE
-echo $RTE
-echo $RTE
-echo $RTE
-echo $RTE
-echo $RTE
 
 case "$RTE" in
     dev )
+        python main.py
         ;;
     test )
         echo "Test mode"

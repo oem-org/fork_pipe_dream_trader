@@ -32,11 +32,21 @@ export default function IndicatorSection() {
 		}
 	};
 
+	interface SettingsSchema {
+		description: string,
+		properties: Record<string, any>,
+		title: string,
+		type: Record<string, any>,
+	}
 
-	return (<>
+	// The raw schema contains a object with unparsed strings
+	function parseSettings(rawSchema: any): SettingsSchema {
+		const settingsSchema = JSON.parse(rawSchema)
+		return settingsSchema
+	}
 
-
-		<h4 className="text-xl font-bold mb-4">Indicators</h4>
+	return (<section>
+		<h2 className="h2 mb-4">Indicators</h2>
 		<GenericSelect<Indicator>
 			data={indicatorSettings || []}
 			keyExtractor={(indicator) => indicator.id}
@@ -46,21 +56,19 @@ export default function IndicatorSection() {
 			title="Select or search"
 			searchEnabled={true}
 		/>
-
+		<hr className="my-6" />
 		<div className="mt-4">
-			<h5 className="text-lg font-semibold mb-2">Loaded Indicators</h5>
+			<h3 className="h2 mb-2">Loaded Indicators</h3>
 			{siIsLoading && <p>Loading indicatorSettings...</p>}
 			{siError && siError instanceof Error && (
 				<p className="text-red-500">Error loading indicatorSettings: {siError.message}</p>
 			)}
-			{!siIsLoading && !siError && strategyIndicators && strategyIndicators.length > 0 ? (
+			{!siIsLoading && !siError && strategyIndicators ? (
 
-				<ul className="list-disc pl-4">
+				<ul>
 					{strategyIndicators.map((indicator) => (
 						<li key={indicator.id}>
-
-							<GenericIndicator indicatorId={indicator.id} settings_schema={JSON.parse(indicator.settings_schema)} settings={indicator.settings} />
-
+							<GenericIndicator indicatorId={indicator.id} settingsSchema={parseSettings(indicator.settings_schema)} settings={indicator.settings} />
 						</li>
 					))}
 				</ul>
@@ -69,5 +77,5 @@ export default function IndicatorSection() {
 			)}
 		</div>
 
-	</>)
+	</section>)
 }

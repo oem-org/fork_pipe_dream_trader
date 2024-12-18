@@ -4,17 +4,17 @@ import { isFloat, addDecimal } from '@/lib/utils/numeric-utils';
 import { useUpdateIndicator } from '@/lib/hooks/useUpdateIndicator';
 import { useDeleteIndicator } from '@/lib/hooks/useDeleteIndicator';
 import useStrategyStore from '@/lib/hooks/useStrategyStore';
-import { Delete } from 'lucide-react';
-
+import { SquareX } from 'lucide-react';
+import Modal from '../shared/modal';
 
 interface Props {
 	indicatorId: number,
 	settings: Record<string, any>;
-	settings_schema: Record<string, any>;
+	settingsSchema: Record<string, any>;
 }
 
 // TODO: inputs go back to default when empty and the inputs move
-export default function GenericIndicator({ indicatorId, settings_schema, settings }: Props) {
+export default function GenericIndicator({ indicatorId, settingsSchema, settings }: Props) {
 	const [formData, setFormData] = useState<Record<string, any>>(settings);
 	const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -29,12 +29,18 @@ export default function GenericIndicator({ indicatorId, settings_schema, setting
 			[e.target.name]: e.target.value,
 		});
 	};
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const toggleModal = () => setIsModalOpen(!isModalOpen);
+
+	console.log(settingsSchema, "FOOOOOORM");
+
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
 		const convertedFormData = Object.entries(formData).reduce(
 			(acc, [key, value]) => {
-				const property = settings_schema.properties[key];
+				const property = settingsSchema.properties[key];
 
 				if (property) {
 					if (property.type === 'integer') {
@@ -68,7 +74,7 @@ export default function GenericIndicator({ indicatorId, settings_schema, setting
 			},
 			{ errors: {} } as { [key: string]: any; errors: Record<string, string> }
 		);
-
+		// TODO: fix errors type error
 		if (Object.keys(convertedFormData.errors).length > 0) {
 			setErrors(convertedFormData.errors);
 		} else {
@@ -88,7 +94,7 @@ export default function GenericIndicator({ indicatorId, settings_schema, setting
 			return null;
 		}
 
-		// These fields depends on if the Ta-Lib C-library is enabled or not
+		// These fields depends on, if the Ta-Lib C-library is enabled or not
 		if (key === 'ddof') {
 			return null;
 		}
@@ -183,21 +189,31 @@ export default function GenericIndicator({ indicatorId, settings_schema, setting
 	};
 
 	return (
-		<article className='flex flex-col border rounded-lg'>
-			<div className='flex flex-row justify-between'>
-				<h4 className='h4'>{formData["kind"]}</h4>
+		<div className='flex flex-col border rounded-lg p-4'>
+			<Modal onClose={toggleModal} isOpen={isModalOpen} title={`Indicator: ${formData['kind']}`}>
+				<article>
+					<pre class="whitespace-pre-wrap break-words p-4 rounded-md">
+						{settingsSchema.description}
+					</pre>
 
-				<Button className="bg-red-500" onClick={() => deleteIndicatorMutation(indicatorId)}>
+				</article>
+			</Modal>
+			<div className='flex flex-row justify-between'>
+				<div className='flex flex-row'>
+					<h3 className='h3 font-bold mr-4'>{formData["kind"]}</h3>
+					<Button onClick={() => toggleModal()}>Information</Button>
+				</div>
+				<button className="mb-4 appearance-none" onClick={() => deleteIndicatorMutation(indicatorId)}>
 					<div className="flex items-center space-x-2">
-						<span >delete</span>
-						<Delete />
+						<span >Delete</span>
+						<SquareX />
 					</div>
-				</Button>
+				</button>
 			</div>
 			<hr className='py-1' />
 			<form className='flex flex-row justify-between' onSubmit={handleSubmit}>
-				<div className='flex flex-row'>
-					{Object.entries(settings_schema.properties).map(([key, property]) => {
+				<div className='flex flex-row space-x-2'>
+					{Object.entries(settingsSchema.properties).map(([key, property]) => {
 						return (<>
 							{renderInputField(key, property as Record<string, any>)}
 
@@ -206,7 +222,7 @@ export default function GenericIndicator({ indicatorId, settings_schema, setting
 
 					}
 				</div>
-				<Button className='mt-auto mb-3' type='submit'> Submit</Button>
+				<Button className='mt-auto ml-3 mb-2' type='submit'> Submit</Button>
 			</form>
-		</article>);
+		</div>);
 }

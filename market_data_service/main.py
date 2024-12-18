@@ -1,5 +1,5 @@
 import asyncio
-from timescale.PullToDatabase import BinanceWebsocket
+from streams.BinanceWebsocket import BinanceWebsocket
 import logging.config
 
 logging.config.fileConfig("log_config_websocket.ini")

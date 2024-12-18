@@ -33,7 +33,7 @@ export default function GenericSelect<T>({
 		onSelect(item);
 		setCurrentTitle(nameExtractor(item));
 		setIsOpen(false);
-		setSearchQuery("")
+		setSearchQuery("");
 		e.preventDefault()
 	};
 

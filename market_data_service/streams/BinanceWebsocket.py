@@ -4,7 +4,7 @@ import pandas as pd
 import websockets
 from binance.client import Client
 import psycopg2
-from timescale.BaseDatabase import BaseDatabase
+from .BaseWebsocket import BaseDatabase
 from typing import Dict, Optional
 import logging
 
