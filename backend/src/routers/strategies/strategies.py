@@ -11,7 +11,7 @@ from sqlalchemy.orm import joinedload
 
 from ...dependencies import db_dependency, user_dependency
 from ...models import Strategies, StrategyIndicators
-from ...schemas import  StrategyRequest, StrategySchema
+from ...schemas import UpdateStrategyRequest, CreateStrategyRequest, StrategySchema
 from ...utils.debugging.print_db_object import print_db_object
 from ...utils.exceptions import handle_db_error, handle_not_found_error
 
@@ -44,7 +44,7 @@ class Token(BaseModel):
 async def create_strategy(
     user: user_dependency,
     db: db_dependency,
-    strategy_request: StrategyRequest,
+    strategy_request: CreateStrategyRequest,
 ):
     try:
         # Create strategy model instance
@@ -123,11 +123,11 @@ async def read_strategy(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.put("/{strategy_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.put("/{strategy_id}", status_code=status.HTTP_200_OK)
 async def update_strategy(
     user: user_dependency,
     db: db_dependency,
-    strategy_request: StrategyRequest,
+    strategy_request: UpdateStrategyRequest,
     strategy_id: int = Path(gt=0),
 ):
     try:
@@ -146,6 +146,8 @@ async def update_strategy(
             setattr(strategy_model, key, value)
 
         db.commit()
+        print("updated strategy", data)
+        return data
 
     except SQLAlchemyError as e:
         db.rollback()

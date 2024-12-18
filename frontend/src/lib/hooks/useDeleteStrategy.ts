@@ -15,8 +15,8 @@ export const useDeleteStrategy = () => {
 	return useMutation({
 		mutationFn: (strategyId: number) => deleteStrategy(strategyId),
 		onSuccess: () => {
-			// Invalidate cache to refetch indicators
 			queryClient.invalidateQueries({ queryKey: ["strategies"] });
+			queryClient.invalidateQueries({ queryKey: ["strategy"] });
 		},
 		onError: (error: unknown) => {
 			console.error("Failed to delete strategy:", error);

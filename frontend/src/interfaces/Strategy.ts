@@ -15,7 +15,7 @@ export interface Strategy {
     name: string;
     fk_file_id?: number;
     description: string;
-    data_source: FileSource | DatabaseSource;
-    timeperiod: string;
-    indicators?: Record<string, any>;
+    data_source?: FileSource | DatabaseSource;
+    timeperiod?: string;
 }
+

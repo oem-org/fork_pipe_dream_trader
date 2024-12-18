@@ -14,6 +14,7 @@ import Modal from "@/components/ui/modal";
 import { SettingsIcon } from "lucide-react";
 import Dropdown from "@/components/ui/navigation/dropdown";
 import { useDeleteStrategy } from "@/lib/hooks/useDeleteStrategy";
+import { useUpdateStrategy } from "@/lib/hooks/useUpdateStrategy";
 
 
 export default function StrategyPage() {
@@ -36,6 +37,7 @@ export default function StrategyPage() {
   const { data: files } = getFilesQuery();
 
   const { mutateAsync: deleteStrategyMutation } = useDeleteStrategy();
+  const { mutateAsync: updateStrategyMutation } = useUpdateStrategy();
 
 
   useEffect(() => {
@@ -44,6 +46,12 @@ export default function StrategyPage() {
 
   const handleFileChange = async (file: File) => {
     setFileId(file.id);
+    if (strategy) {
+      strategy.fk_file_id = file.id
+      const resp = await updateStrategyMutation(strategy);
+      console.log(resp);
+
+    }
   };
 
   const handleStrategyChange = (strategy: Strategy) => {

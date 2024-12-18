@@ -25,7 +25,16 @@ class DatabaseSourceRequest(BaseModel):
     timeperiod: Optional[str]
 
 
-class StrategyRequest(BaseModel):
+
+class UpdateStrategyRequest(BaseModel):
+    id: int
+    name: str
+    description: str
+    data_source: Union[FileSourceRequest, DatabaseSourceRequest]
+    fk_file_id: Optional[int]
+
+
+class CreateStrategyRequest(BaseModel):
     name: str
     description: str
     data_source: Union[FileSourceRequest, DatabaseSourceRequest]
