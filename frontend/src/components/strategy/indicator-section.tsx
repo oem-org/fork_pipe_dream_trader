@@ -18,15 +18,8 @@ export default function IndicatorSection() {
 
 	const { strategyId, setStrategyId } = useStrategyStore();
 	const { mutateAsync: addIndicatorMutation } = useAddIndicator(strategyId);
-	const { mutateAsync: deleteIndicatorMutation } = useDeleteIndicator(strategyId);
-
 	const { data: strategyIndicators, error: siError, isLoading: siIsLoading, refetch: siRefetch } = getStrategyIndicatorsQuery(strategyId);
 	const { data: indicatorSettings } = getIndicatorsQuery();
-
-	//const { addIndicator, removeIndicator, indicators, lineSeriesIndicators, histogramIndicators } = useChartStore()
-
-
-	//console.log(indicators, "88888888888888888888888888")
 
 	const handleIndicatorChange = async (indicator: Indicator) => {
 		try {
@@ -61,16 +54,13 @@ export default function IndicatorSection() {
 				<p className="text-red-500">Error loading indicatorSettings: {siError.message}</p>
 			)}
 			{!siIsLoading && !siError && strategyIndicators && strategyIndicators.length > 0 ? (
+
 				<ul className="list-disc pl-4">
 					{strategyIndicators.map((indicator) => (
 						<li key={indicator.id}>
 
 							<GenericIndicator indicatorId={indicator.id} settings_schema={JSON.parse(indicator.settings_schema)} settings={indicator.settings} />
 
-							<Button onClick={() => deleteIndicatorMutation(indicator.id)}>
-								{indicator.id}
-
-							</Button>
 						</li>
 					))}
 				</ul>
@@ -81,22 +71,3 @@ export default function IndicatorSection() {
 
 	</>)
 }
-
-
-//<button
-//	onClick={() =>
-//		addIndicator('SMA', [
-//			{ time: '2022-01-01', value: 50 },
-//			{ time: '2022-01-02', value: 52 },
-//		])
-//	}
-//	className="mr-2 px-4 py-2 bg-blue-500 text-white rounded"
-//>
-//	Add SMA
-//</button>
-//<button
-//	onClick={() => removeIndicator('SMA')}
-//	className="px-4 py-2 bg-red-500 text-white rounded"
-//>
-//	Remove SMA
-//</button>

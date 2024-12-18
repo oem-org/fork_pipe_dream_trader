@@ -42,6 +42,8 @@ export default function ChartCanvas({
 					horzLines: { color: '#334158' },
 				},
 				timeScale: { borderColor: '#485c7b', timeVisible: true, ticksVisible: true },
+
+
 			});
 
 			console.log(indicators, "CHART INDICATORS")
