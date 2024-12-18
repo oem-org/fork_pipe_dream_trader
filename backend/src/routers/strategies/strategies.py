@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import load_only
 from starlette import status
-from sqlalchemy.orm import joinedload  
+from sqlalchemy.orm import joinedload
 
 from ...dependencies import db_dependency, user_dependency
 from ...models import Strategies, StrategyIndicators
@@ -20,7 +20,6 @@ logging.basicConfig(
     level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
-print(user_dependency)
 router = APIRouter(prefix="/strategy", tags=["strategy"])
 
 
@@ -47,7 +46,6 @@ async def create_strategy(
     db: db_dependency,
     strategy_request: StrategyRequest,
 ):
-    print(strategy_request.model_dump(),"STRATEGYREQUEST!!!!!!!!!!!!!")
     try:
         # Create strategy model instance
         strategy_model = Strategies(
@@ -72,7 +70,6 @@ async def create_strategy(
 @router.get("", status_code=status.HTTP_200_OK, response_model=List[StrategySchema])
 async def read_all(user: user_dependency, db: db_dependency):
     try:
-        print(user)
 
         return (
             db.query(Strategies).filter(Strategies.fk_user_id == user.get("id")).all()
@@ -188,24 +185,21 @@ async def delete_strategy(
 
 @router.get("/{strategy_id}/indicator", status_code=status.HTTP_200_OK)
 async def read_all_strategy_indicators(user: user_dependency, db: db_dependency, strategy_id: int = Path(gt=0)):
-    
+
     try:
         # Query the strategy with eager loading
         strategy = (
             db.query(Strategies)
             .filter(Strategies.id == strategy_id)
-            .filter(Strategies.fk_user_id == user['id'])  
+            .filter(Strategies.fk_user_id == user['id'])
             .options(joinedload(Strategies.strategy_indicators).joinedload(StrategyIndicators.indicator))
             .first()
         )
-        
+
         if not strategy:
             print(f"Strategy with id={strategy_id} not found for user_id={user['id']}")
             handle_not_found_error("Strategy not found")
 
-        print(f"Strategy found: {strategy}")
-
-        print(f"Strategy indicators: {strategy.strategy_indicators}")
 
         indicators = [
             {
@@ -226,7 +220,7 @@ async def read_all_strategy_indicators(user: user_dependency, db: db_dependency,
         print(f"Error occurred: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
-    
+
 
 @router.post("/{strategy_id}/indicator", status_code=200 )
 def add_indicator_to_strategy(
@@ -273,7 +267,7 @@ def remove_indicator_from_strategy(
          )
     if not strategy_indicator:
         raise HTTPException(status_code=404, detail="Indicator not connected to strategy")
-    
+
     db.delete(strategy_indicator)
     db.commit()
     return {"message": "Indicator successfully removed from strategy"}
@@ -303,12 +297,12 @@ async def update_indicator_in_strategy(
         ).first()
 
         print(indicator_id, strategy_id, settings)
-        
+
         print_db_object(strategy_indicator)
-        
+
         if not strategy_indicator:
             raise HTTPException(status_code=404, detail="Indicator not connected to strategy")
-    
+
         strategy_indicator.settings = settings
 
         db.commit()

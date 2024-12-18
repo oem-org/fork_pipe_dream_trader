@@ -30,7 +30,6 @@ def coins_seeder(session: Session):
                 session.add(new_coin)
                 new_coins += 1
                 flag = False
-                print(f"Added new coin: {symbol}")
 
         session.commit()
 

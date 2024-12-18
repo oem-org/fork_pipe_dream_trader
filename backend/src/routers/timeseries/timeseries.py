@@ -25,7 +25,6 @@ async def read_all(
     pair: str = Query(None)
 ):
     try:
-        print(strategy)
         strategyModel = db.query(Strategies).filter(Strategies.id == strategy).first()
 
 

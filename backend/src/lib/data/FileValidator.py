@@ -1,5 +1,5 @@
 from .FileLoader import FileLoader
-import pandas as pd 
+import pandas as pd
 
 
 class FileValidator(FileLoader):
@@ -34,9 +34,6 @@ class FileValidator(FileLoader):
 
         # Combine all invalid conditions into one condition with bitwise OR
         invalid_rows = invalid_volume | invalid_open | invalid_close | invalid_low | invalid_high
-        print("INVALED")
-        print(invalid_rows.head(1), "invalid ")
-        # | invalid_timestamp_length
         duplicate_indices = self.df.index[self.df.index.duplicated()].tolist()
         if duplicate_indices:
             return False
@@ -67,10 +64,10 @@ class FileValidator(FileLoader):
 
         self.errors = errors
         return False
-    
+
     def get_date_range(self):
         """
-        Get the min and max date from the 'time' column 
+        Get the min and max date from the 'time' column
         """
         if self.df.empty:
             return None, None

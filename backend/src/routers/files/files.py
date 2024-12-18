@@ -55,7 +55,6 @@ def get_files(db: db_dependency, file_id: int):
             path = file.file_path
             fileLoader = FileLoader(path)
             fileLoader.df
-            print(fileLoader.df)
         return file
 
     except SQLAlchemyError as e:
@@ -84,11 +83,9 @@ async def save_uploaded_file(db: db_dependency, file: UploadFile):
     file_path = None
     try:
         file_path = save_file(file)
-        print(file_path)
 
         name = Path(file_path).name
         fileValidation = FileValidator(file_path)
-        print(fileValidation.df.head())
         validated = fileValidation.validate()
         print(validated, "validation check")
         if validated == True:

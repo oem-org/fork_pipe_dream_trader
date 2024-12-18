@@ -5,9 +5,17 @@ import pandas as pd
 import pandas_ta as ta
 import json
 from ...indicators import *
+import io
 
-test = Ao(fast=5, slow=34, offset=0)
+import contextlib
 
+file_name = "help_output.txt"
+
+with open(file_name, "w") as file:
+    with contextlib.redirect_stdout(file):
+        help(ta.sma)
+
+print(f"Help output saved to {file_name}")
 
 class IndicatorLoader:
     def __init__(self, df: pd.DataFrame, indicators: List[Dict]):
@@ -29,7 +37,7 @@ class IndicatorLoader:
         self.df.set_index(pd.DatetimeIndex(self.df["time"]), inplace=True)
 
         self.df.ta.strategy(Strategy)
-        
+
         # Remove all the empty rows from the start of each column
         self.df.dropna(inplace=True)
 
@@ -81,23 +89,13 @@ class IndicatorLoader:
         """
         matched_styles = {}
 
-        print("Columns:", self.columns)
         for column in self.columns:
             base_column = column.split('_')[0].lower()
-            print(f"Processing column: {base_column}")
             for obj in indicators_info:
-                print (obj, "obj")
-                print(f"Matching {base_column} with {obj['kind'].lower()}")
                 if base_column == obj['kind'].lower():
                     matched_styles[column] = { "indicator_info": obj['indicator_info'], "id": obj['id'] }
-                    print(f"Matched {base_column} with style {obj['indicator_info']}")
 
-        print("Matched styles:", matched_styles)
-        print("echart styles", indicators_info)
         self.response['indicator_info'] = json.dumps(matched_styles)
-        # matching_style = list(filter(lambda style: style["name"] == column, indicators_info))
-                # if matching_style:
-                #     matched_styles[column] = matching_style[0]["style"]
 
 
 

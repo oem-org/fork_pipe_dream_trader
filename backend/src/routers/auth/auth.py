@@ -27,11 +27,7 @@ from sqlalchemy.exc import SQLAlchemyError
 @router.post("", status_code=status.HTTP_201_CREATED)
 def create_user2(db: db_dependency, create_user_request: CreateUserRequest):
     try:
-        print(
-            create_user_request.password,
-            create_user_request.email,
-            create_user_request.username,
-        )
+
 
         model = Users(
             email=create_user_request.email,

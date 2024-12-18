@@ -7,7 +7,6 @@ from ..indicators import ao, rsi
 
 def indicators_seeder(session: Session):
     indicator_data = [rsi, ao]
-    print(indicator_data)
     new_indicators = 0
     flag = True
 
@@ -18,7 +17,6 @@ def indicators_seeder(session: Session):
             indicator_info = indicator_dict.get("indicator_info", "")
             description = indicator_dict.get("description", "")
             settings_schema = indicator_dict.get("settings_schema", "")
-            print(indicator_dict)
             existing_indicator = session.query(Indicators).filter_by(kind=kind).first()
 
             if not existing_indicator:

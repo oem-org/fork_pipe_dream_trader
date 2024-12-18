@@ -80,5 +80,4 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 def hash_password(plain_password: str) -> str:
     pw = bcrypt_context.hash(plain_password)
-    print(pw)
     return pw

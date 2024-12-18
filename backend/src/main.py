@@ -19,13 +19,12 @@ from .routers.timeseries import timeseries
 from .routers.strategies import strategies
 from .routers.users import users
 from .seeders.indicators_seeder import indicators_seeder
-from .logger import logger
+# custom logging setup
+# from .logger import logger
 from .utils.sync_file_paths import sync_file_paths
-from .indicators.Ao import Ao 
+from .indicators.Ao import Ao
 from .dependencies import user_dependency
 import json
-
-
 
 
 current_directory = Path(__file__).parent
@@ -55,18 +54,6 @@ async def startup_event():
     app.state.user_cache = {}  # Initialize cache in the app state
 
 
-# @app.get("/set/{key}/{value}")
-# def set_value(key: str, value: str, user: user_dependency
-#     if user_id not in app.state.user_cache:
-#         app.state.user_cache[user_id] = {}
-#     app.state.user_cache[user_id][key] = value
-#     return {"message": "Key-value set", "user_id": user_id, "key": key, "value": value}
-#
-# @app.get("/get/{key}")
-# def get_value(key: str, user_id: str = Depends(get_current_user)):
-#     if user_id in app.state.user_cache and key in app.state.user_cache[user_id]:
-#         return {"user_id": user_id, "key": key, "value": app.state.user_cache[user_id][key]}
-#     raise HTTPException(status_code=404, detail="Key not found for this user")
 
 # @scheduler.scheduled_job('cron', minute="*")
 # async def fetch_current_time():

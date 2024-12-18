@@ -82,5 +82,3 @@ rsi = {
     """,
 }
 
-# Now you can print or use the rsi dictionary with the Pydantic model's settings converted into a dictionary
-print(rsi)
