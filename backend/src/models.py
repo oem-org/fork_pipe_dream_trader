@@ -28,6 +28,7 @@ class StrategyIndicators(Base):
     settings_schema = Column(JSON)
 
     strategy = relationship("Strategies", back_populates="strategy_indicators")
+    
     indicator = relationship("Indicators", back_populates="strategy_indicators")
 
 class Strategies(Base):
@@ -43,7 +44,7 @@ class Strategies(Base):
     file = relationship("Files", back_populates="strategies")
 
     # strategy is the name of the relationship on the StrategyIndicators side.
-    strategy_indicators = relationship("StrategyIndicators", back_populates="strategy")
+    strategy_indicators = relationship("StrategyIndicators", back_populates="strategy", cascade="all, delete-orphan" )
 
 
 class Indicators(Base):
@@ -64,8 +65,11 @@ class Files(Base):
     path = Column(String)
     name = Column(String)
     file_type = Column(Enum(FileTypeEnum))
-    strategies = relationship("Strategies", back_populates="file")
-    # strategy = relationship("strategies", back_populates="files")
+    strategies = relationship(
+        "Strategies", 
+        back_populates="file", 
+        cascade="all, delete-orphan"
+    )
 
 # class Pairs(Base):
 #     __tablename__ = "pairs"
