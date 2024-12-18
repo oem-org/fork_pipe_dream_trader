@@ -1,4 +1,4 @@
-export function findStringIndex(stringToFind: string, stringArray: Array<string>) {
+export function findStringIndex(stringToFind: string, stringArray: Array<string>): number {
 
   const index = stringArray.indexOf(stringToFind);
 

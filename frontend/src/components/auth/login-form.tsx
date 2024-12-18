@@ -12,7 +12,7 @@ export default function LoginForm() {
 	const { login } = useAuthStore();
 	const navigate = useNavigate();
 
-	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+	async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
 		const success = await sendFormData<boolean>(e, login, setError, setLoading);
 
 		if (success) {

@@ -31,11 +31,6 @@ class IndicatorLoader:
         self.df.ta.log_return(cumulative=True, append=True)
         self.df.ta.percent_return(cumulative=True, append=True)
 
-        print("THE INDICATORS", self.indicators)
-        print("THE INDICATORS", self.indicators)
-        print("THE INDICATORS", self.indicators)
-        print("THE INDICATORS", self.indicators)
-        print("THE INDICATORS", self.indicators)
         if len(self.indicators) > 0:
             Strategy = ta.Strategy(
                 name="indicators",

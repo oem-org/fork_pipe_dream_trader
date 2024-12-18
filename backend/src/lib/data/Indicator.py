@@ -1,2 +1,0 @@
-class Idicator:
-    pass

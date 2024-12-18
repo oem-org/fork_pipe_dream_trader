@@ -17,7 +17,7 @@ export default function IndicatorSection() {
 	const { data: strategyIndicators, error: siError, isLoading: siIsLoading } = getStrategyIndicatorsQuery(strategyId);
 	const { data: indicatorSettings } = getIndicatorsQuery();
 
-	const handleIndicatorChange = async (indicator: Indicator) => {
+	async function handleIndicatorChange(indicator: Indicator): Promise<void> {
 		try {
 			// Using the destructured mutateAsync
 			const response = await addIndicatorMutation(indicator);

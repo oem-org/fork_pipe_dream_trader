@@ -14,7 +14,7 @@ export default function CreateUserForm() {
 	const { createUser } = useAuthStore();
 	const navigate = useNavigate();
 
-	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+	async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
 		const success = await handleFormSubmit<CreateUserFormRequest, ReturnType>(e, createUser, setError, setLoading);
 		console.log(success)
 		if (success) {

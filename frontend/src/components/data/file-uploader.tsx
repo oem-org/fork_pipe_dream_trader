@@ -7,7 +7,7 @@ export default function FileUploadForm() {
 	const uploader = new UploadService()
 
 
-	async function handleUpload(e: React.FormEvent<HTMLFormElement>) {
+	async function handleUpload(e: React.FormEvent<HTMLFormElement>): Promise<void> {
 		e.preventDefault();
 
 		const formData = new FormData(e.currentTarget);

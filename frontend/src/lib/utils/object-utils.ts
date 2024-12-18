@@ -1,5 +1,5 @@
 
-export function parseJsonStrings(obj: Record<string, any>) {
+export function parseJsonStrings(obj: Record<string, any>): Record<string, any> {
 	for (const key in obj) {
 		try {
 			const parsedValue = JSON.parse(obj[key]);

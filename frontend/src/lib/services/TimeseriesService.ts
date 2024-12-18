@@ -19,8 +19,7 @@ export default class TimeseriesService {
 
 		for (let key in indicatorInfo) {
 			// Key is dataframe column name fx "RSI_14"
-			// The value stored in the key is chart styl
-
+			//
 			mappedIndicators.push({ "name": `${key}`, "chartStyle": indicatorInfo[key].indicator_info, "id": indicatorInfo[key].id, "data": this.indicators[key] });
 
 		}
@@ -30,7 +29,8 @@ export default class TimeseriesService {
 	}
 
 	// TODO: add types
-	async processBulk(indicatorsTimeseries: Record<string, any>) {
+	async processBulk(indicatorsTimeseries: Record<string, any>): Promise<void> {
+
 		// Saved time and value for each KeyName corresponding to the dataframe columns
 		const notAllowedKeys = ["time", "volume pols", "columns", "pair"];
 
@@ -53,7 +53,7 @@ export default class TimeseriesService {
 		console.log("INDICATORS!!!!!!!", this.indicators);
 	}
 
-	async processVolume(volume: VolumeBackend[]) {
+	async processVolume(volume: VolumeBackend[]): Promise<void> {
 		Object.values(volume).forEach((data) => {
 			this.volume.push({
 				time: data.time,
@@ -62,7 +62,7 @@ export default class TimeseriesService {
 		});
 	}
 
-	async processOhlc(ohlc: Timeseries[]) {
+	async processOhlc(ohlc: Timeseries[]): Promise<void> {
 		this.ohlc = [];
 
 		Object.values(ohlc).forEach((data) => {

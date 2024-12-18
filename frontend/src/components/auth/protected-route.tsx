@@ -12,7 +12,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 	useEffect(() => {
-		const verifyAuth = async () => {
+		async function verifyAuth(): Promise<void> {
 			const result = await checkAuth();
 			setIsAuthenticated(result);
 			setIsChecking(false);
