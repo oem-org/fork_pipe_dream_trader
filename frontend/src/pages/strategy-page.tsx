@@ -11,9 +11,8 @@ import IndicatorSection from "@/components/strategy/indicator-section";
 import { Button } from "@/components/ui/buttons/button";
 import Charts from "@/components/ui/chart/charts";
 import Modal from "@/components/ui/modal";
-import { SettingsIcon } from "lucide-react";
-import Dropdown from "@/components/ui/navigation/dropdown";
-import { useDeleteStrategy } from "@/lib/hooks/useDeleteStrategy";
+import SettingsDropdown from "@/components/strategy/settings-dropdown";
+
 import { useUpdateStrategy } from "@/lib/hooks/useUpdateStrategy";
 
 
@@ -23,10 +22,8 @@ export default function StrategyPage() {
   const { strategyId, setStrategyId } = useStrategyStore();
   const navigate = useNavigate();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const toggleModal = () => setIsModalOpen(!isModalOpen);
-
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const toggleInfoModal = () => setIsInfoModalOpen(!isInfoModalOpen);
 
   const [fileId, setFileId] = useState<number>(0);
   const [dataSourceType, setDataSourceType] = useState<string>("");
@@ -36,7 +33,6 @@ export default function StrategyPage() {
   const { data: strategies } = getStrategiesQuery();
   const { data: files } = getFilesQuery();
 
-  const { mutateAsync: deleteStrategyMutation } = useDeleteStrategy();
   const { mutateAsync: updateStrategyMutation } = useUpdateStrategy();
 
 
@@ -65,7 +61,7 @@ export default function StrategyPage() {
   if (isError && error instanceof Error) {
     return <div>Error: {error.message}</div>;
   }
-
+  //TODO: fix hover on settings
   return (
     <div className="container mx-auto px-4 space-y-6">
       {strategy ? (
@@ -74,20 +70,13 @@ export default function StrategyPage() {
             <article className="lg:col-span-1 p-4 bg-gray-100 rounded-lg">
               <div className="flex flex-row justify-between">
                 <h4 className="text-xl font-bold mb-4">{strategy.name}</h4>
-                <Button onClick={() => toggleModal()}>Information</Button>
+                <Button onClick={() => toggleInfoModal()}>Information</Button>
 
-                <Dropdown textColor="text-black" icon={SettingsIcon} animation={false} direction="right">
-                  <button onClick={() => { }} className="block text-white px-4 py-2">Rename</button>
-                  <button onClick={() => { }} className="block text-white px-4 py-2">Delete</button>
-                </Dropdown>
+                <SettingsDropdown strategyId={strategyId} />
 
               </div>
 
-              <Button onClick={() => { deleteStrategyMutation(strategy.id) }}>Delete Strategy</Button>
-              <Modal onClose={toggleModal} isOpen={isModalOpen} title={"Delete strategy"}>
-              </Modal>
-
-              <Modal onClose={toggleModal} isOpen={isModalOpen} title={"Description"}>
+              <Modal onClose={toggleInfoModal} isOpen={isInfoModalOpen} title={"Description"}>
                 <pre class="whitespace-pre-wrap break-words p-4">
                   {strategy.description}
                 </pre>

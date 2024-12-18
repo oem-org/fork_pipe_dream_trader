@@ -37,7 +37,7 @@ export default function Dropdown({
   }, []);
 
   return (
-    <li ref={dropdownRef} className="relative">
+    <li ref={dropdownRef} className="relative list-none">
       <button
         onClick={toggleDropdown}
         onMouseEnter={() => setIsOpen(true)}
