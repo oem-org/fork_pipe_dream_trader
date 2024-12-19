@@ -21,7 +21,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 	}, [checkAuth]);
 
 	if (isChecking) {
-		return <div>Loading...</div>; // Show a loading state while checking authentication
+		return <div>Loading...</div>;
 	}
 
 	if (!isAuthenticated) {

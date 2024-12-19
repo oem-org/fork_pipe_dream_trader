@@ -61,6 +61,7 @@ export default function StrategyPage() {
   if (isError && error instanceof Error) {
     return <div>Error: {error.message}</div>;
   }
+
   //TODO: fix hover on settings
   return (
     <div className="container mx-auto px-4 space-y-6">

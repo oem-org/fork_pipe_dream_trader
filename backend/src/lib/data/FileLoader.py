@@ -34,7 +34,7 @@ class FileLoader:
         new_folder = directory / "pickled_files"
 
         pickle_file_path = new_folder / original_file_path.with_suffix(".pkl").name
-        
+
 
         if pickle_file_path.exists():
             print(f"Loading data from pickle file: {pickle_file_path}")
@@ -57,7 +57,7 @@ class FileLoader:
                 self.df = pd.read_json(self.file_path)
             elif self.file_type == FileTypeEnum.CSV:
                 self.df = pd.read_csv(self.file_path)
-            
+
                 self.df.columns = self.df.columns.str.lower().str.strip()
             # Convert timestamps to Unix timestamp (seconds since the epoch)
             #     unix_timestamps = timestamps.apply(lambda x: int(x.timestamp()) if pd.notna(x) else None)
@@ -80,7 +80,7 @@ class FileLoader:
                 columns=lambda col: column_mapping.get(col, col), inplace=True
             )
 
-    
+
             if "time" in self.df.columns:
                 self.df["time"] = pd.to_numeric(self.df["time"])
                 self.df["time"] = self.df["time"].apply(

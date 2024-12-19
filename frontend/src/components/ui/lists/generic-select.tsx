@@ -11,7 +11,7 @@ interface GenericSelectProps<T> {
 	searchEnabled: boolean;
 	nameExtractor: (item: T) => string
 }
-
+//TODO: when updates the selected strategy disappears
 
 export default function GenericSelect<T>({
 	data,

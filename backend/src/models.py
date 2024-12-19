@@ -43,6 +43,7 @@ class Strategies(Base):
     fk_file_id = Column(Integer, ForeignKey("files.id"))
     file = relationship("Files", back_populates="strategies")
 
+    backtests = relationship("Files", back_populates="strategies")
     # strategy is the name of the relationship on the StrategyIndicators side.
     strategy_indicators = relationship("StrategyIndicators", back_populates="strategy", cascade="all, delete-orphan" )
 
@@ -71,6 +72,15 @@ class Files(Base):
         cascade="all, delete-orphan"
     )
 
+class Backtests(Base):
+    __tablename__ = "backtests"
+    id = Column(Integer, primary_key=True, index=True)
+    conditions = Column(JSON)
+    strategies = relationship(
+        "Strategies", 
+        back_populates="file", 
+        cascade="all, delete-orphan"
+    )
 # class Pairs(Base):
 #     __tablename__ = "pairs"
 #
