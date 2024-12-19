@@ -1,6 +1,6 @@
-from enum import Enum
+from enum import Enum, unique
 
-from sqlalchemy import JSON, Boolean, Column, Enum, ForeignKey, Integer, String
+from sqlalchemy import DateTime, func, JSON, Boolean, Column, Enum, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from .orm_connection import Base
@@ -17,6 +17,24 @@ class Users(Base):
     strategies = relationship("Strategies", back_populates="user")
 
 
+
+class Strategies(Base):
+    __tablename__ = "strategies"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    description = Column(String)
+    fk_user_id = Column(Integer, ForeignKey("users.id"))
+    data_source = Column(JSON, nullable=True)
+    user = relationship("Users", back_populates="strategies")
+    fk_file_id = Column(Integer, ForeignKey("files.id"))
+    file = relationship("Files", back_populates="strategies")
+
+    backtests = relationship("StrategyBacktests", back_populates="strategy", cascade="all, delete-orphan")
+    # strategy is the name of the relationship on the StrategyIndicators side.
+    strategy_indicators = relationship("StrategyIndicators", back_populates="strategy", cascade="all, delete-orphan" )
+
+
 class StrategyIndicators(Base):
     __tablename__ = "strategy_indicators"
 
@@ -31,21 +49,16 @@ class StrategyIndicators(Base):
     
     indicator = relationship("Indicators", back_populates="strategy_indicators")
 
-class Strategies(Base):
-    __tablename__ = "strategies"
 
+class StrategyBacktests(Base):
+    __tablename__ = "strategy_backtests"
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-    description = Column(String)
-    fk_user_id = Column(Integer, ForeignKey("users.id"))
-    data_source = Column(JSON, nullable=True)
-    user = relationship("Users", back_populates="strategies")
-    fk_file_id = Column(Integer, ForeignKey("files.id"))
-    file = relationship("Files", back_populates="strategies")
+    fk_strategy_id = Column(Integer, ForeignKey("strategies.id"), primary_key=True)
+    conditions = Column(JSON)
+    strategy = relationship("Strategies", back_populates="backtests")
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
-    backtests = relationship("Files", back_populates="strategies")
-    # strategy is the name of the relationship on the StrategyIndicators side.
-    strategy_indicators = relationship("StrategyIndicators", back_populates="strategy", cascade="all, delete-orphan" )
 
 
 class Indicators(Base):
@@ -59,11 +72,34 @@ class Indicators(Base):
 
     strategy_indicators = relationship("StrategyIndicators", back_populates="indicator")
 
+class TimescaleTables(Base):
+    __tablename__ = "timescale_tables"  
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+
+    # Define relationship to Pairs with cascade behavior
+    pairs = relationship(
+        "Pairs",
+        back_populates="timescale_table",
+        cascade="all, delete-orphan",
+    )
+
+
+class Pairs(Base):
+    __tablename__ = "pairs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    fk_timescale_table_id = Column(Integer, ForeignKey("timescale_tables.id"))  
+
+    timescale_table = relationship("TimescaleTables", back_populates="pairs")
+
 class Files(Base):
     __tablename__ = "files"
 
     id = Column(Integer, primary_key=True, index=True)
-    path = Column(String)
+    path = Column(String, unique=True)
     name = Column(String)
     file_type = Column(Enum(FileTypeEnum))
     strategies = relationship(
@@ -72,15 +108,7 @@ class Files(Base):
         cascade="all, delete-orphan"
     )
 
-class Backtests(Base):
-    __tablename__ = "backtests"
-    id = Column(Integer, primary_key=True, index=True)
-    conditions = Column(JSON)
-    strategies = relationship(
-        "Strategies", 
-        back_populates="file", 
-        cascade="all, delete-orphan"
-    )
+
 # class Pairs(Base):
 #     __tablename__ = "pairs"
 #

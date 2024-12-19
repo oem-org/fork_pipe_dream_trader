@@ -43,6 +43,7 @@ export default function StrategyPage() {
   const handleFileChange = async (file: File) => {
     setFileId(file.id);
     if (strategy) {
+      console.log(strategy.fk_file_id)
       strategy.fk_file_id = file.id
       const resp = await updateStrategyMutation(strategy);
       console.log(resp);

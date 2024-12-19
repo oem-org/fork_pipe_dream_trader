@@ -55,7 +55,7 @@ export default class UploadService {
 			}
 		} catch (error) {
 			console.error("Error in upload process:", error);
-			//throw error;
+			throw error;
 		}
 	}
 }

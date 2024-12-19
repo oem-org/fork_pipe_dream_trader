@@ -50,7 +50,7 @@ export default function CreateStrategyForm() {
 		setErrors(newErrors);
 		return Object.values(newErrors).every((error) => error === "");
 	};
-	// TODO: clean source type
+	// TODO: clean source type  
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setTouched({
@@ -69,7 +69,7 @@ export default function CreateStrategyForm() {
 
 			if (dataSourceType === DataSourceEnum.FILE) {
 				console.log("data source", dataSource, dataSourceType);
-
+				console.log("FILE ID!!!!!!!!!!!!   ")
 				const strategy = await postStrategyApi.post({
 					name,
 					fk_file_id: fileId,

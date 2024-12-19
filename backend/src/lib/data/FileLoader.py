@@ -1,8 +1,7 @@
 from pathlib import Path
-
 import pandas as pd
 
-from ...schemas import FileTypeEnum
+from ...schemas import FileTypeEnum 
 
 
 class FileLoader:
@@ -20,6 +19,7 @@ class FileLoader:
             return FileTypeEnum.JSON
         else:
             return None
+
 
     def load_or_reload(self):
         """
@@ -59,15 +59,6 @@ class FileLoader:
                 self.df = pd.read_csv(self.file_path)
 
                 self.df.columns = self.df.columns.str.lower().str.strip()
-            # Convert timestamps to Unix timestamp (seconds since the epoch)
-            #     unix_timestamps = timestamps.apply(lambda x: int(x.timestamp()) if pd.notna(x) else None)
-            #
-            # # Check if the Unix timestamps are 10 digits (valid for seconds-based Unix timestamps)
-            #     valid_length_check = unix_timestamps.apply(lambda x: len(str(x)) == 10 if x is not None else None)
-
-            # Display the result
-                # print("Unix Timestamps:", unix_timestamps)
-                # print("Valid Tigggtamp Length Check:", valid_length_check)
             column_mapping = {
                 "unix": "time",
                 # "timestamp": "time",
@@ -86,8 +77,8 @@ class FileLoader:
                 self.df["time"] = self.df["time"].apply(
                     lambda x: x / 1000 if pd.notna(x) and len(str(int(x))) == 13 else x
                 )
-
-
+        
+            
             # Coerce inserts NaN or NaT if it gets bad row, instead of raising a exception, so its possible to identify excatly which rows are bad
             self.df["volume"] = pd.to_numeric(self.df["volume"], errors="coerce")
             self.df["open"] = pd.to_numeric(self.df["open"], errors="coerce")
@@ -101,5 +92,3 @@ class FileLoader:
         except Exception as e:
             raise Exception(f"Error reading file: {e}")
 
-    def get_data(self):
-        return self.df

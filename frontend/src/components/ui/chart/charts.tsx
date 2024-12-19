@@ -28,6 +28,8 @@ export default function Charts() {
 		async function loadData() {
 			const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
 			const parsed = parseJsonStrings(data);
+			console.log(parsed, "parsed");
+
 			const timeseriesService = new TimeseriesService();
 			await timeseriesService.processOhlc(parsed.ohlc);
 			await timeseriesService.processVolume(parsed.volume);
