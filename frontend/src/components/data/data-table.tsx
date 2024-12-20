@@ -14,15 +14,8 @@ export default function DataTable({ id }: TableProps) {
 	useEffect(() => {
 		if (data) {
 			setColumns(data.columns);
-			setRows(JSON.parse(data.data));
-			console.log(typeof rows);
-			Object.keys(rows).map((key) => {
-				const innerObject = rows[key];
-
-				Object.keys(innerObject).map((innerKey) => {
-					console.log(`${innerKey}: ${innerObject[innerKey]}`);
-				});
-			});
+			const parsedData = JSON.parse(data.data);
+			setRows(Object.values(parsedData));
 		}
 	}, [data]);
 
@@ -35,34 +28,40 @@ export default function DataTable({ id }: TableProps) {
 	}
 
 	return (
-		<div>
-			<table className="table-auto border-collapse border border-gray-300 w-full text-left">
-				<thead>
+		<div className="w-full h-[500px] overflow-auto border border-gray-300 rounded-lg">
+			<table className="w-full border-collapse">
+				<thead className="bg-gray-100 sticky top-0 z-10">
 					<tr>
 						{columns.map((column) => (
 							<th
 								key={column}
-								className="border border-gray-300 px-4 py-2 bg-gray-100"
+								className="text-left p-2 border-b border-r border-gray-300"
 							>
-								{column}
+								<div className="max-h-[100px] overflow-y-auto">
+									{column}
+								</div>
 							</th>
 						))}
 					</tr>
 				</thead>
 				<tbody>
-					{Object.keys(rows).map((key) => {
-						const innerObject = rows[key];
-						return (
-							<tr key={key}>
-								{Object.keys(innerObject).map((innerKey) => (
-									<td key={innerKey}>{innerObject[innerKey]}</td>
-								))}
-							</tr>
-						);
-					})}
+					{rows.map((row, rowIndex) => (
+						<tr key={rowIndex} className={rowIndex % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+							{columns.map((column) => (
+								<td
+									key={`${rowIndex}-${column}`}
+									className="p-2 border-b border-r border-gray-300"
+								>
+									<div className="max-h-[100px] overflow-y-auto">
+										{row[column]}
+									</div>
+								</td>
+							))}
+						</tr>
+					))}
 				</tbody>
 			</table>
-		</div >
+		</div>
 	);
 }
 
