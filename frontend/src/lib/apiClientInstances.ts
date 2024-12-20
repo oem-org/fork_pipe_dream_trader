@@ -1,12 +1,13 @@
 import TokenResponse from "../interfaces/responses/TokenResponse"
 // import ApiClientService from "./services/ApiClientService"
+import FileResponse
 import CreateUserResponse from "../interfaces/responses/CreateUserResponse"
 import CreateUserFormRequest from "../interfaces/requests/CreateUserFormRequest"
 import { Strategy } from "../interfaces/Strategy"
 import IndicatorRequest from "@/interfaces/requests/UpdateIndicatorRequest"
 import Indicator from "../interfaces/Indicator"
-import File from "@/interfaces/File"
-import { PostRelationService, PutService, PostService, DeleteRelationService, PutRelationService, GetAllService, DeleteService, GetWithParamsService, GetWithQueryService, GetAllRelationService, } from "./services/ApiService"
+import { File } from "@/interfaces/File"
+import { PostRelationService, PutService, GetService, PostService, DeleteRelationService, PutRelationService, GetAllService, DeleteService, GetWithParamsService, GetWithQueryService, GetAllRelationService, } from "./services/ApiService"
 
 import { StrategyIndicator, UpdateStrategyIndicatorRequest } from "@/interfaces/StrategyIndicator"
 import { CreateStrategyRequest } from "@/interfaces/requests/CreateStrategyRequest"
@@ -60,5 +61,6 @@ export const getTimeseriesApi = new GetWithQueryService<Record<string, any>>('ti
 
 //Files
 export const getAllFilesApi = new GetAllService<File>('file', {})
+export const getFileApi = new GetService<FileResponse>('file', {})
 export const jsonFileApi = new PostService<FormData, any>('file/save', jsonHeader)
 export const csvFileApi = new PostService<FormData, any>('file/save', csvHeader)

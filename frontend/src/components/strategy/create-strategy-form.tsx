@@ -3,7 +3,7 @@ import GenericSelect from "../ui/lists/generic-select";
 import { Strategy } from "@/interfaces/Strategy";
 import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
 import getFilesQuery from "@/lib/queries/getFilesQuery";
-import File from "@/interfaces/File";
+import { File } from "@/interfaces/File";
 import { postStrategyApi } from "@/lib/apiClientInstances";
 import { useNavigate } from 'react-router-dom';
 import { DataSourceEnum } from "@/interfaces/enums/DataSourceEnum";
@@ -50,7 +50,7 @@ export default function CreateStrategyForm() {
 		setErrors(newErrors);
 		return Object.values(newErrors).every((error) => error === "");
 	};
-	// TODO: clean source type  
+	// TODO: clean source type
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setTouched({

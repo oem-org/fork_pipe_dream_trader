@@ -1,6 +1,6 @@
 import { FileTypeEnum } from "./enums/FileTypeEnum";
 
-export default interface File {
+export interface File {
     id: number;
     path: string;
     file_type: FileTypeEnum;

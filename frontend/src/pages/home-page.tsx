@@ -2,7 +2,7 @@ import getFilesQuery from "@/lib/queries/getFilesQuery";
 import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
 import GenericTable from "@/components/ui/lists/generic-table";
 import { Strategy } from "@/interfaces/Strategy";
-import File from "@/interfaces/File";
+import { File} from "@/interfaces/File";
 import { useEffect, useState } from "react";
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
 import { useNavigate } from "react-router-dom";

@@ -1,6 +1,6 @@
 
 import { create } from "zustand"
-import File from "../../interfaces/File"
+import { File }from "../../interfaces/File"
 
 interface FileStore {
 	files: File[]

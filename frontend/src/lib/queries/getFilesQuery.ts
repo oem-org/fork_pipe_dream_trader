@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import { getAllFilesApi } from "../apiClientInstances"
-import File from "../../interfaces/File"
+import { File } from "../../interfaces/File"
 
 export default function getFilesQuery() {
 	const fetchFiles = async (): Promise<File[]> => {

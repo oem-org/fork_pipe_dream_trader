@@ -3,7 +3,7 @@ import getStrategyQuery from "@/lib/queries/getStrategyQuery";
 import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
 import { useState, useEffect } from "react";
 import { Strategy, DatabaseSource, FileSource } from "@/interfaces/Strategy";
-import File from "@/interfaces/File";
+import { File } from "@/interfaces/File";
 import GenericSelect from "@/components/ui/lists/generic-select";
 import getFilesQuery from "@/lib/queries/getFilesQuery";
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
