@@ -1,57 +1,37 @@
-
 import { useEffect, useState } from "react";
+import getFileQuery from "@/lib/queries/getFileQuery";
 
 interface TableProps {
 	id: number;
 }
 
-interface TableColumn {
-	key: string;
-	label: string;
-}
-
-interface TableData {
-	[key: string]: any;
-}
-
 export default function DataTable({ id }: TableProps) {
-	const [columns, setColumns] = useState<TableColumn[]>([]);
-	const [data, setData] = useState<TableData[]>([]);
-	const [loading, setLoading] = useState<boolean>(true);
-	const [error, setError] = useState<string | null>(null);
+	const [columns, setColumns] = useState<string[]>([]);
+	const [rows, setRows] = useState<any[]>([]);
+
+	const { data, error, isError, isLoading } = getFileQuery(id);
 
 	useEffect(() => {
-		const fetchData = async () => {
-			setLoading(true);
-			setError(null);
+		if (data) {
+			setColumns(data.columns);
+			setRows(JSON.parse(data.data));
+			console.log(typeof rows);
+			Object.keys(rows).map((key) => {
+				const innerObject = rows[key];
 
-			try {
-				// Replace this with an actual API call
-				const response = await fetch(`/api/data/${id}`);
-				const result = await response.json();
+				Object.keys(innerObject).map((innerKey) => {
+					console.log(`${innerKey}: ${innerObject[innerKey]}`);
+				});
+			});
+		}
+	}, [data]);
 
-				if (result.columns && result.data) {
-					setColumns(result.columns);
-					setData(result.data);
-				} else {
-					setError("Invalid data format received.");
-				}
-			} catch (err) {
-				setError("Failed to fetch data.");
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		fetchData();
-	}, [id]);
-
-	if (loading) {
+	if (isLoading) {
 		return <div>Loading...</div>;
 	}
 
-	if (error) {
-		return <div>Error: {error}</div>;
+	if (isError) {
+		return <div>Error: {error?.message}</div>;
 	}
 
 	return (
@@ -61,30 +41,28 @@ export default function DataTable({ id }: TableProps) {
 					<tr>
 						{columns.map((column) => (
 							<th
-								key={column.key}
+								key={column}
 								className="border border-gray-300 px-4 py-2 bg-gray-100"
 							>
-								{column.label}
+								{column}
 							</th>
 						))}
 					</tr>
 				</thead>
 				<tbody>
-					{data.map((row, rowIndex) => (
-						<tr key={rowIndex}>
-							{columns.map((column) => (
-								<td
-									key={column.key}
-									className="border border-gray-300 px-4 py-2"
-								>
-									{row[column.key]}
-								</td>
-							))}
-						</tr>
-					))}
+					{Object.keys(rows).map((key) => {
+						const innerObject = rows[key];
+						return (
+							<tr key={key}>
+								{Object.keys(innerObject).map((innerKey) => (
+									<td key={innerKey}>{innerObject[innerKey]}</td>
+								))}
+							</tr>
+						);
+					})}
 				</tbody>
 			</table>
-		</div>
+		</div >
 	);
-};
+}
 

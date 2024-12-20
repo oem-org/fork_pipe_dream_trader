@@ -46,25 +46,32 @@ def get_all_files(db: db_dependency):
 
 
 @router.get("/{file_id}", status_code=status.HTTP_200_OK, response_model=FileResponse)
+
 def get_file(db: db_dependency, file_id: int):
     ##user: user_dependency,
     try:
         file = db.query(Files).get(file_id)
+
+        if not file:
+            handle_not_found_error("No file found")
         
-        data = "No data in file"
-        if file:
-            path = file.path
-            fileLoader = FileLoader(path)
-            fileLoader.load_data()     
-            data = fileLoader.df.to_json(orient="index")
-        return {"file":file, "data":data}
+        path = file.path
+        fileLoader = FileLoader(path)
+        fileLoader.load_data()
+        data = fileLoader.df.to_json(orient="index")
+        
+        if not data or fileLoader.df.empty:
+            handle_not_found_error("No data found in the file")
+        columns = fileLoader.df.columns.tolist()
+
+        return {"file": file, "data": data, "columns": columns}
 
     except SQLAlchemyError as e:
 
         handle_db_error(e, "SQLAlchemy failed feching the file path")
 
     except Exception as e:
-        handle_db_error(e, "Unexpected error occurred while fetching the file path")
+        handle_db_error(e, "Unexpected error occurred while fetching the file")
 
 
 @router.post("/save", status_code=status.HTTP_201_CREATED)
@@ -95,7 +102,7 @@ async def save_uploaded_file(db: db_dependency, file: UploadFile):
             saved_file = Files(
                 path=file_path, name=name, file_type=fileValidation.file_type
             )
-
+            # TODO: check os remove
             # os.remove(fileValidation.file_path)
             db.add(saved_file)
             db.commit()

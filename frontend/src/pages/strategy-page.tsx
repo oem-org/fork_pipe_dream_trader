@@ -29,7 +29,7 @@ export default function StrategyPage() {
   const [dataSourceType, setDataSourceType] = useState<string>("");
 
 
-  const { data: strategy, error, isError, isLoading } = getStrategyQuery(paramId);
+  const { data: strategy, error, isError, isLoading } = getStrategyQuery(strategyId);
   const { data: strategies } = getStrategiesQuery();
   const { data: files } = getFilesQuery();
 

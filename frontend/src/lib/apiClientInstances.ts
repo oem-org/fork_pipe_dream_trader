@@ -1,12 +1,11 @@
 import TokenResponse from "../interfaces/responses/TokenResponse"
 // import ApiClientService from "./services/ApiClientService"
-import FileResponse
 import CreateUserResponse from "../interfaces/responses/CreateUserResponse"
 import CreateUserFormRequest from "../interfaces/requests/CreateUserFormRequest"
 import { Strategy } from "../interfaces/Strategy"
 import IndicatorRequest from "@/interfaces/requests/UpdateIndicatorRequest"
 import Indicator from "../interfaces/Indicator"
-import { File } from "@/interfaces/File"
+import { File, FileResponse } from "@/interfaces/File"
 import { PostRelationService, PutService, GetService, PostService, DeleteRelationService, PutRelationService, GetAllService, DeleteService, GetWithParamsService, GetWithQueryService, GetAllRelationService, } from "./services/ApiService"
 
 import { StrategyIndicator, UpdateStrategyIndicatorRequest } from "@/interfaces/StrategyIndicator"

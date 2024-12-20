@@ -6,3 +6,9 @@ export interface File {
     file_type: FileTypeEnum;
     name: string;
 }
+
+export interface FileResponse {
+    file: File;
+    data: string;
+    columns: Array<string>
+}

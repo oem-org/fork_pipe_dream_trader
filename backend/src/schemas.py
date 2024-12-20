@@ -58,8 +58,9 @@ class FileSchema(BaseModel):
 
 
 class FileResponse(BaseModel):
-    file: Optional[FileSchema]
-    data: Optional[str]
+    file: FileSchema
+    data: str 
+    columns: List[str]
 
 
 class IndicatorSchema(BaseModel):
