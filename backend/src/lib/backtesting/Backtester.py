@@ -1,124 +1,161 @@
-from Conditions import Conditions
-import numpy as np
+from ast import Raise
 import pandas as pd
-#
-#https://github.com/JeppeOEM/CryptoPlatform/blob/main/main_app/trading_engine/Backtest.py
+from pathlib import Path
+import numpy as np
+
+# Source: Idea taken from old project
+# https://github.com/JeppeOEM/CryptoPlatform/blob/main/main_app/trading_engine/Condition.py
+
 class Backtester:
+    def __init__(self, df):
+        self.df = df
 
-    def run(self, df):
+    def _build_expression(self, conds: list) -> str:
+        expression = ""
+        for condition in conds:
+            if isinstance(condition, list):
+                joined = " ".join(condition)
+                expression += f"({joined})"
+            if isinstance(condition, str):
+                expression += f" {condition} "
+
+        return expression
+
+    def run(self) -> pd.DataFrame:
+        """
+        Calculate the max drawdown and profit net loss
         
-        contains_nan = df.isna().any().any()
-        if contains_nan:
-            raise Exception("dataframe contains a NaN")
+        Signal specifies a trade 
         
-        print("GG")
+        The signals are shifted 1 forward to not trigger false early signal
+        Explanation:
+        If a condition triggers a trade with daily candlesticks at 11-12/2023 
+        then it would only be possible to react when the day ends as the candlestick
+        does not exist before.
+        """
+        self.df['signal'] = self.df['buy'] + self.df['sell']
+        
+        signal = self.df[self.df['signal'] != 0].copy()
+        signal['pnl'] = signal['close'].pct_change() * signal['signal'].shift(1)
+        
+        signal['cum_pnl'] = signal['pnl'].cumsum()
+        
+        signal['max_cum_pnl'] = signal['cum_pnl'].cummax()
+        print(signal['pnl'].sum())
+        
+        signal['drawdown'] = signal['max_cum_pnl'] - signal["cum_pnl"]
+        
+        return signal['pnl'].sum(), signal['drawdown'].max()
+
+    def build_conditions(self, side:str , conditions: list):
+        """
+        Buy and sell signals created with a string expression in pandas eval function 
+
+        pandas.eval:
+        https://pandas.pydata.org/docs/reference/api/pandas.eval.html
+
+        """
+        print("Running backtest...")
+        expression = self._build_expression(conditions)
+        print("Expression:", expression)
+
+        df = self.df.copy()
         print(df)
-        buy_signals = df['buy'].values
-        sell_signals = df['sell']
-        # print(buy_signals[:,0])
-        # print("111111111111111111111111111")
-        # print(buy_signals[:,1])
-        try:
-            result_sell = buy_signals[:, 0] == buy_signals[:, 1]
-            print(result_sell,"SELLL")
-            print(result_sell)
-            df['close_trade'] = result_sell
-        except:
-             df['close_trade'] = buy_signals
-        
-        print(df)
-        # try:
-        #     result_buy = df_signal_buy[:, 0] == df_signal_buy[:, 1]
-        #     df['open_trade'] = result_buy
-        # except:
-        #     df['open_trade'] = df_signal_sell
-        #
-        # df = self.analyse(df)
-        # test_cond1 = df.loc[:, 'cond1'].values
-        # test_cond2 = df.loc[:, 'cond2'].values
-        # test_groups = self.groups_from_conditions(test_cond1, test_cond2)
-        # df['groups'] = test_groups
-        #
-        # # sums the PNL pr trade
-        # dfgroup = df.groupby(["groups"], as_index=False)[
-        #     "pnl"].sum()
-        #
-        # dfgroup['cum_pnl'] = dfgroup['pnl'].cumsum()
-        # dfgroup["max_cum_pnl"] = dfgroup["cum_pnl"].cummax()
-        # dfgroup["drawdown"] = dfgroup["max_cum_pnl"] - dfgroup["cum_pnl"]
-        #
-        # return dfgroup["pnl"].sum(), dfgroup["drawdown"].max()
 
-    def filter_signals(self, df, column_prefix):
-        selected_columns = [
-            col for col in df.columns if col.startswith(column_prefix)]
-        filtered_df = df[selected_columns]
-        return filtered_df
-
-    def analyse(self, df):
-        # print(df.head(100))
-        df.reset_index(drop=True, inplace=True)
-        df.dropna(inplace=True)
+        # 1 signals open a trade, -1 close a trade, 0 no signal
 
         try:
-            df['pnl'] = df.close.pct_change()
-        except:
-            print("EMPTY DATAFRAME ERROR")
-            print("Possible uncorrect number of optimization conds")
-            print(df.tail(110))
-            exit()
-        df['cond1'] = np.where(df['open_trade'] == 1, 1, 0)
-        df['cond2'] = np.where(df['close_trade'] == 1, 1, 0)
-        return df
+            if side == "buy":
+                df[f'{side}'] = np.where(
+                    pd.eval(expression), 1, 0
+                )
+            if side == "sell":
+                df[f'{side}'] = np.where(
+                    pd.eval(expression), -1, 0
+                )
+            new_column = df[f'{side}']
+            if side == "buy":
+                self.df['buy'] = new_column
+            if side == "sell":
+                self.df['sell'] = new_column
 
-    def groups_from_conditions(self, cond1, cond2):
-        '''
-        assign a unique non-NaN integer to each group as defined by the rules
-        '''
-        n = len(cond1)
-
-        group_idx = -1
-        groups = np.zeros(n)
-
-        curr_state = 0  # 0 = not in a group, 1 = in a group
-        for n in range(n):
-            if curr_state == 0:
-                # Currently not in a group
-                if cond1[n] == 1:
-                    # Detected start of a group. so:
-                    # switch the state to 1 ie in a group
-                    curr_state = 1
-                    # get a new group_idx
-                    group_idx = group_idx + 1
-                    # assign it to the output for element n
-                    groups[n] = group_idx
-                else:
-                    # no start of the group detected, we are not in a group so mark as NaN
-                    groups[n] = np.NaN
-
-            else:
-                # current_state == 1 so we are in a group
-                if cond2[n] == 1:
-                    # detected end of group -- switch state to 0
-                    curr_state = 0
-                # as we are in a group assign current group_idx. Note that this happens for the element
-                # for which cond2[n] == 1 as well, ie this element is included
-                groups[n] = group_idx
-
-        return groups
+        except Exception as e:
+            print(f"Error evaluating expression: {e}")
+            raise Exception("Error creating condtion strings")
 
 
 
-buy = {"buy": [["df.SMA_10 > 1","&","df.close",">","0.01"],"&","~",["df.SMA_10 > 100"]]}
-sell = {"sell": [["df.SMA_10 < 0.3","&","df.close",">","0.01"],"|",["df.SMA_10 < 2"]]}
+buy = {"buy": [["df.SMA_10 < 1"]]}
+sell = {"sell": [["df.SMA_10 > 1.1"]]}
 
 df = pd.read_pickle("pkl.pkl")
 bt = Conditions(df)
 dfresult = bt.build_conditions("buy", buy['buy'])
 dfresult = bt.build_conditions("sell", sell['sell'])
-dfconds = bt.get_conditions()
-backtester = Backtester()
-backtester.run(dfconds)
+pnl, drawdown = bt.get_conditions()
 
-print(dfresult)
+print(pnl, drawdown)
 
+
+# buy = {"buy": [["df.SMA_10 > 1","&","df.close",">","0.01"],"&","~",["df.SMA_10 > 100"]]}
+# sell = {"sell": [["df.SMA_10 < 0.3","&","df.close",">","0.01"],"|",["df.SMA_10 < 2"]]}
+
+# df = pd.read_pickle("pkl.pkl")
+# bt = Conditions(df)
+# dfresult = bt.build_conditions("buy", buy)
+# dfresult = bt.build_conditions("sell", sell)
+# print(dfresult)
+# expressionsell = "df.SMA_10 > 1"
+# dfresult = bt.run("sell", "SMA_14", expressionsell)
+# print(dfresult)
+# Running the backtest
+
+# print(df.dtypes)
+#
+# #
+#
+#
+#
+# dftest = {
+#     'A': [1.0, 2.0, 3.0, 4.0],
+#     'B': [0.9, 1.9, 2.9, 3.9],
+#     'C': [0.8, 1.8, 1.8, 2.8],
+#     'D': [0.7, 1.7, 1.7, 1.7],
+#     'E': [100.5, 106.0, 102.5, 111.5],
+#     'HIGH':[9994.5, 9996.0, 9992.5, 9991.5],
+#     'Z':[0, 0, 0, 0],
+# }
+#
+#
+# # Create DataFrame
+# tdf = pd.DataFrame(dftest)
+# # Print the DataFrame
+# # print(df)
+#
+#
+# expression = '(tdf.A > tdf.B & tdf.C > tdf.D) & tdf.B < 2' # True
+#                                                     # fail
+# expression2 = '(tdf.A > tdf.B & tdf.C > tdf.D) & ~(tdf.B == 1.9)' # False
+#
+# expression3 = '(tdf.A > tdf.B & tdf.C > tdf.D) & ~(tdf.B == 0.9 | tdf.C == 1.8)' # False
+#
+# expression4 = '(tdf.A > tdf.B & tdf.C > tdf.D) & tdf.B > 0.1' # True
+#                                                     # fail
+# expression5 = '(tdf.A > tdf.B & tdf.C < tdf.D) & ~(tdf.B < 0.1)' # False
+#
+# tdf[f'test_test'] = np.where(
+#                 pd.eval(expression, ), 1, -1
+#             )
+#
+# tdf[f'test_test2'] = np.where(
+#                 pd.eval(expression2, ), 1, -1
+#             )
+# tdf[f'test_test3'] = np.where(
+#                 pd.eval(expression3, ), 1, -1
+#             )
+# tdf[f'test_test4'] = np.where(
+#                 pd.eval(expression4, ), 1, -1
+#             )
+# tdf[f'test_test5'] = np.where(
+#                 pd.eval(expression5, ), 1, -1
+#             )

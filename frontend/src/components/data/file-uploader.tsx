@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import UploadService from "../../lib/services/UploadService";
+import { Button } from "../ui/buttons/button";
 
 export default function FileUploadForm() {
-	const [output, setOutput] = useState<any>(null);
 	const [error, setError] = useState<string | null>(null);
 	const uploader = new UploadService()
 
@@ -15,7 +15,6 @@ export default function FileUploadForm() {
 		try {
 			const result = await uploader.upload(formData);
 
-			setOutput(result);
 
 		} catch (err: any) {
 			setError(err.message);
@@ -24,25 +23,17 @@ export default function FileUploadForm() {
 
 	return (
 		<div>
-			<h2>File Upload</h2>
-			<form onSubmit={handleUpload}>
-				<div>
-					<label htmlFor="fileInput">Select File:</label>
+			<form className="py-2 flex flex-row justify-between" onSubmit={handleUpload}>
+				<div className="flex flex-row">
 					<input name="file"
 						id="fileInput"
 						type="file"
 					/>
 				</div>
-				<button type="submit">Upload</button>
+				<Button variant="outline" >Upload File</Button>
 			</form>
 
-			{error && <div style={{ color: "red" }}>{error}</div>}
-			{output && (
-				<div>
-					<h3>File Content:</h3>
-					<pre>{JSON.stringify(output, null, 2)}</pre>
-				</div>
-			)}
+			{error && <div className="text-error">{error}</div>}
 		</div>
 	);
 }
