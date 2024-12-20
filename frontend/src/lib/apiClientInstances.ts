@@ -59,6 +59,6 @@ export const deleteStrategyApi = new DeleteService<number>('strategy', jsonHeade
 export const getTimeseriesApi = new GetWithQueryService<Record<string, any>>('timeseries', {})
 
 //Files
-export const getAllFilesApi = new GetAllService<File>('files', {})
-export const jsonFileApi = new PostService<FormData, any>('files/save', jsonHeader)
-export const csvFileApi = new PostService<FormData, any>('files/save', csvHeader)
+export const getAllFilesApi = new GetAllService<File>('file', {})
+export const jsonFileApi = new PostService<FormData, any>('file/save', jsonHeader)
+export const csvFileApi = new PostService<FormData, any>('file/save', csvHeader)

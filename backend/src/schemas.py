@@ -57,6 +57,11 @@ class FileSchema(BaseModel):
     file_type: FileTypeEnum
 
 
+class FileResponse(BaseModel):
+    file: Optional[FileSchema]
+    data: Optional[str]
+
+
 class IndicatorSchema(BaseModel):
     id: int
     kind: str

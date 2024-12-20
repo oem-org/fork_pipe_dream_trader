@@ -5,7 +5,7 @@ from pathlib import Path
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.exc import SQLAlchemyError
 from starlette import status
-
+import pandas as pd
 from ...dependencies import db_dependency, user_dependency
 from ...lib.data.FileLoader import FileLoader
 from ...lib.data.FileValidator import FileValidator
@@ -17,7 +17,7 @@ from ...utils.exceptions import (
     handle_not_validated_file_error,
 )
 
-router = APIRouter(prefix="/files", tags=["files"])
+router = APIRouter(prefix="/file", tags=["file"])
 
 
 class FileRequest(BaseModel):
@@ -26,7 +26,7 @@ class FileRequest(BaseModel):
 
 
 
-@router.get("", status_code=status.HTTP_200_OK)
+@router.get("", status_code=status.HTTP_200_OK, response_model=List[FileSchema])
 def get_all_files(db: db_dependency):
     # user: user_dependency,
     try:
@@ -45,17 +45,19 @@ def get_all_files(db: db_dependency):
         handle_db_error(e, "Unexpected error occurred while fetching the file paths")
 
 
-@router.get("/{file_id}", status_code=status.HTTP_200_OK)
-def get_files(db: db_dependency, file_id: int):
+@router.get("/{file_id}", status_code=status.HTTP_200_OK, response_model=FileResponse)
+def get_file(db: db_dependency, file_id: int):
     ##user: user_dependency,
     try:
         file = db.query(Files).get(file_id)
-
+        
+        data = "No data in file"
         if file:
-            path = file.file_path
+            path = file.path
             fileLoader = FileLoader(path)
-            fileLoader.df
-        return file
+            fileLoader.load_data()     
+            data = fileLoader.df.to_json(orient="index")
+        return {"file":file, "data":data}
 
     except SQLAlchemyError as e:
 
