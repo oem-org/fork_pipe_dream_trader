@@ -24,6 +24,7 @@ export default function Charts() {
 	const lineSeriesRefs = useRef<(HTMLDivElement)[]>([]);
 	const emptyChartRef = useRef<HTMLDivElement>(null);
 
+
 	useEffect(() => {
 		async function loadData() {
 			const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);

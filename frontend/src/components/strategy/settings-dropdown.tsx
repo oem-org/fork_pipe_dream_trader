@@ -21,8 +21,8 @@ export default function SettingsDropdown({ strategyId }: SettingsDropdownProps) 
 
 
 		<Dropdown textColor="text-black" icon={SettingsIcon} animation={false} direction="right">
-			<button onClick={() => toggleDeleteModal()} className="block text-white px-4 py-2">Delete</button>
-			<button onClick={() => toggleRenameModal()} className="block text-white px-4 py-2">Rename</button>
+			<button onClick={() => toggleDeleteModal()} className="btn-dropdown">Delete</button>
+			<button onClick={() => toggleRenameModal()} className="btn-dropdown">Rename</button>
 		</Dropdown>
 		<Modal onClose={toggleDeleteModal} isOpen={isDeleteModalOpen} title={"Delete strategy"}>
 			<Button onClick={() => { deleteStrategyMutation(strategyId) }}>Delete Strategy</Button>

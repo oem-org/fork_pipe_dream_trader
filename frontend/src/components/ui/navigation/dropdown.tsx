@@ -56,7 +56,7 @@ export default function Dropdown({
 
       {(isOpen || dropdownRef.current?.matches(':hover')) && (
         <ul
-          className={`absolute ${direction === 'right' ? 'right-0' : 'left-0'} w-48 bg-gray-800 ${textColor} mt-2 rounded-md shadow-lg py-2 z-10`}
+          className={`absolute ${direction === 'right' ? 'right-0' : 'left-0'} w-48 bg-gray-800 ${textColor} mt-2 rounded-md shadow-lg z-10`}
           onMouseLeave={() => setIsOpen(false)}
         >
           {children}

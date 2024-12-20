@@ -70,7 +70,7 @@ async def read_all(
     strategy: str = Query(None),
     pair: str = Query(None)
 ):
-    # strategy refers to the id
+    # strategy refers to the id taken from the query string
     try :
         strategyModel = db.query(Strategies).filter(Strategies.id == strategy).first()
 
@@ -78,34 +78,44 @@ async def read_all(
         if strategyModel:
             print(strategyModel.file)
 
-        # strategy = (
-        #     db.query(Strategies)
-        #     .filter(Strategies.id == strategy)
-        #     .filter(Strategies.fk_user_id == user['id'])
-        #     .options(joinedload(Strategies.strategy_indicators).joinedload(StrategyIndicators.indicator))
-        #     .first()
-        # )
-
         if strategyModel.file:
             path = strategyModel.file.path
             fileLoader = FileLoader(path)
             fileLoader.load_data()
             # print(fileLoader.df)
 
-            indicators_info = [{"indicator_info": si.indicator.indicator_info, "kind": si.indicator.kind, "id": si.id} for si in strategyModel.strategy_indicators if si.indicator]
-            all_indicator_settings = [
-                ind.settings
-                for ind in strategyModel.strategy_indicators
-                if ind.settings is not None
-            ]
+            indicators_info = [{"indicator_info": si.indicator.indicator_info, 
+                                "kind": si.indicator.kind, 
+                                "id": si.id} 
+                                for si in strategyModel.strategy_indicators if si.indicator]
 
-            print("IDNICATOR SETTINGS!!!!!!!!!!!!",all_indicator_settings)
+            all_indicator_settings = [ind.settings
+                                    for ind in strategyModel.strategy_indicators
+                                    if ind.settings is not None]
+
             indicatorLoader = IndicatorLoader(fileLoader.df, all_indicator_settings)
             indicatorLoader.load_indicators()
             indicatorLoader.split_dataframe()
-            indicatorLoader.connect_indicator_info(indicators_info)
+            # Connects dataframe column with StrategyIndicator id
+            info = indicatorLoader.connect_indicator_info(indicators_info)
+             
+            # Update the dataframe_column of StrategyIndicators using the dataframe column mapping
+            # for key, value in info.items():
+            #     print(key, "o")
+            #     print(value['id'],value['df_column'],"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                # strategy_indicator = db.get(StrategyIndicators, value['id'])
+                #
+                # if strategy_indicator:
+                #     strategy_indicator.dataframe_column = value['df_column']
+                #     db.commit()  # Commit the change to the database
+                # else:
+                #     print(f"StrategyIndicator with ID {value[id]} not found")
+                #     handle_not_found_error("StrategyIndicator id not found when trying to update dataframe_column")
+            # # Return the response after updating the StrategyIndicators
+            # return indicatorLoader.response          
             # print(timeframe)
             # indicatorLoader.response['timeframe'] = fileLoader.timeframe
+            
             return indicatorLoader.response
     except Exception as e:
         handle_db_error(e, "Unexpected error occurred while fetching the file data")

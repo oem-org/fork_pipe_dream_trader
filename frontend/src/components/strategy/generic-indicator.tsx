@@ -4,7 +4,7 @@ import { isFloat, addDecimal } from '@/lib/utils/numeric-utils';
 import { useUpdateIndicator } from '@/lib/hooks/useUpdateIndicator';
 import { useDeleteIndicator } from '@/lib/hooks/useDeleteIndicator';
 import useStrategyStore from '@/lib/hooks/useStrategyStore';
-import { SquareX } from 'lucide-react';
+import { SquareX, InfoIcon } from 'lucide-react';
 import Modal from '../ui/modal';
 
 interface Props {
@@ -36,7 +36,7 @@ export default function GenericIndicator({ indicatorId, settingsSchema, settings
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-
+		//TODO: write explanation
 		const convertedFormData = Object.entries(formData).reduce(
 			(acc, [key, value]) => {
 				const property = settingsSchema.properties[key];
@@ -200,7 +200,7 @@ export default function GenericIndicator({ indicatorId, settingsSchema, settings
 			<div className='flex flex-row justify-between'>
 				<div className='flex flex-row'>
 					<h3 className='h3 font-bold mr-4'>{formData["kind"]}</h3>
-					<Button onClick={() => toggleModal()}>Information</Button>
+					<InfoIcon className='cursor-pointer' onClick={() => toggleModal()} />
 				</div>
 				<button className="mb-4 appearance-none" onClick={() => deleteIndicatorMutation(indicatorId)}>
 					<div className="flex items-center space-x-2">
@@ -213,10 +213,10 @@ export default function GenericIndicator({ indicatorId, settingsSchema, settings
 			<form className='flex flex-row justify-between' onSubmit={handleSubmit}>
 				<div className='flex flex-row space-x-2'>
 					{Object.entries(settingsSchema.properties).map(([key, property]) => {
-						return (<>
+						return (<div key={key}>
 							{renderInputField(key, property as Record<string, any>)}
 
-						</>);
+						</div>);
 					})
 
 					}

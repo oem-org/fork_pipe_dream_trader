@@ -41,7 +41,9 @@ class IndicatorLoader:
         self.df.ta.log_return(cumulative=True, append=True)
         self.df.ta.percent_return(cumulative=True, append=True)
 
+
         if len(self.indicators) > 0:
+            print(self.indicators, "aaai ieendicen indicators")
             Strategy = ta.Strategy(
                 name="indicators",
             ta=self.indicators
@@ -54,7 +56,8 @@ class IndicatorLoader:
             # Remove all the empty rows from the start of each column
         self.df.dropna(inplace=True)
         self.determine_time_interval()
-        self.save_pickle("pkl.pkl")
+        # TODO: enable pickle
+        # self.save_pickle("pkl.pkl")
     def split_dataframe(self):
         """
         Create JSON strings to store dataframes of each indicator. column name and trading par
@@ -97,7 +100,7 @@ class IndicatorLoader:
             self.response = json_dfs
 
 
-
+    # TODO: finish time
     def determine_time_interval(self):
         """
         Creates the timeinterval the chart will use 
@@ -131,8 +134,6 @@ class IndicatorLoader:
                     # Interval_seconds is a negative number and a float because of the 
                     # The way diff() compares
 
-                    print(timeframe_seconds)
-                    print(interval_seconds)
                     if interval_seconds + timeframe_seconds == 0:
                         self.timeframe = timeframe
             else:
@@ -141,7 +142,10 @@ class IndicatorLoader:
             raise Exception(f"Error determining time interval: {e}")
     def connect_indicator_info(self, indicators_info):
         """
-        Connect auto generated column names with a chart style
+        Connect auto generated column names with a chart style, id and column name in the dataframe
+        
+        Indicators column names are generated based on their length, so indicators with same lenght will not be saved
+        Example: { RSI_14 : { "indicator_info": line, "id": 1,"df_column:": RSI_14} ... }
         """
         matched_styles = {}
 
@@ -149,10 +153,11 @@ class IndicatorLoader:
             base_column = column.split('_')[0].lower()
             for obj in indicators_info:
                 if base_column == obj['kind'].lower():
-                    matched_styles[column] = { "indicator_info": obj['indicator_info'], "id": obj['id'] }
-        
+                    matched_styles[column] = { "indicator_info": obj['indicator_info'], "id": obj['id'],"df_column:":column}
+        matched_styles_dict = matched_styles
+                     
         self.response['indicator_info'] = json.dumps(matched_styles)
-
+        return matched_styles_dict
 
 
     def get_data(self):

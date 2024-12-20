@@ -50,7 +50,6 @@ export default class TimeseriesService {
 				this.indicators[keyName] = indicator;
 			}
 		}
-		console.log("INDICATORS!!!!!!!", this.indicators);
 	}
 
 	async processVolume(volume: VolumeBackend[]): Promise<void> {

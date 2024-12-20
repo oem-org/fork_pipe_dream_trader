@@ -43,6 +43,8 @@ export default function IndicatorSection() {
 
 	return (<section>
 		<h2 className="h2 mb-4">Indicators</h2>
+
+		<hr className='py-1' />
 		<GenericSelect<Indicator>
 			data={indicatorSettings || []}
 			keyExtractor={(indicator) => indicator.id}
@@ -52,9 +54,8 @@ export default function IndicatorSection() {
 			title="Select or search"
 			searchEnabled={true}
 		/>
-		<hr className="my-6" />
 		<div className="mt-4">
-			<h3 className="h2 mb-2">Loaded Indicators</h3>
+			<h3 className="h3 mb-2">Loaded Indicators</h3>
 			{siIsLoading && <p>Loading indicatorSettings...</p>}
 			{siError && siError instanceof Error && (
 				<p className="text-red-500">Error loading indicatorSettings: {siError.message}</p>
