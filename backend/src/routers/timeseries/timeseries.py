@@ -98,22 +98,20 @@ async def read_all(
             indicatorLoader.split_dataframe()
             # Connects dataframe column with StrategyIndicator id
             info = indicatorLoader.connect_indicator_info(indicators_info)
-             
-            # Update the dataframe_column of StrategyIndicators using the dataframe column mapping
-            # for key, value in info.items():
-            #     print(key, "o")
-            #     print(value['id'],value['df_column'],"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                # strategy_indicator = db.get(StrategyIndicators, value['id'])
-                #
-                # if strategy_indicator:
-                #     strategy_indicator.dataframe_column = value['df_column']
-                #     db.commit()  # Commit the change to the database
-                # else:
-                #     print(f"StrategyIndicator with ID {value[id]} not found")
-                #     handle_not_found_error("StrategyIndicator id not found when trying to update dataframe_column")
-            # # Return the response after updating the StrategyIndicators
-            # return indicatorLoader.response          
-            # print(timeframe)
+            
+            # Key is the name of the database column
+            for key, value in info.items():
+                print(key)
+                print(value['id'])
+
+                strategy_indicator = db.query(StrategyIndicators).filter(StrategyIndicators.id == value['id']).first()
+                print(strategy_indicator, "test")
+                if strategy_indicator:
+                    strategy_indicator.dataframe_column = key
+                    db.commit()  
+                else:
+                    print(f"StrategyIndicator with ID {value[id]} not found")
+            
             # indicatorLoader.response['timeframe'] = fileLoader.timeframe
             
             return indicatorLoader.response

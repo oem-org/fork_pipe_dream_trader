@@ -153,7 +153,7 @@ class IndicatorLoader:
             base_column = column.split('_')[0].lower()
             for obj in indicators_info:
                 if base_column == obj['kind'].lower():
-                    matched_styles[column] = { "indicator_info": obj['indicator_info'], "id": obj['id'],"df_column:":column}
+                    matched_styles[column] = { "indicator_info": obj['indicator_info'], "id": obj['id']}
         matched_styles_dict = matched_styles
                      
         self.response['indicator_info'] = json.dumps(matched_styles)

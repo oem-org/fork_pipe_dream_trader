@@ -6,6 +6,8 @@ from sqlalchemy.orm import relationship
 from .orm_connection import Base
 from .schemas import DataSourceEnum, FileTypeEnum
 
+# SQLAlchemy infers composite keys if model has multiple primary keys
+
 class Users(Base):
     __tablename__ = "users"
 
@@ -40,13 +42,12 @@ class StrategyIndicators(Base):
 
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    fk_strategy_id = Column(Integer, ForeignKey("strategies.id"), primary_key=True)
-    fk_indicator_id = Column(Integer, ForeignKey("indicators.id"), primary_key=True)
+    fk_strategy_id = Column(Integer, ForeignKey("strategies.id"))
+    fk_indicator_id = Column(Integer, ForeignKey("indicators.id"))
     settings = Column(JSON, nullable=True)
-    settings_schema = Column(JSON)
     dataframe_column = Column(String, nullable=True)
-    strategy = relationship("Strategies", back_populates="strategy_indicators")
     
+    strategy = relationship("Strategies", back_populates="strategy_indicators")
     indicator = relationship("Indicators", back_populates="strategy_indicators")
 
 
@@ -102,6 +103,7 @@ class Files(Base):
     path = Column(String, unique=True)
     name = Column(String)
     file_type = Column(Enum(FileTypeEnum))
+    
     strategies = relationship(
         "Strategies", 
         back_populates="file", 
