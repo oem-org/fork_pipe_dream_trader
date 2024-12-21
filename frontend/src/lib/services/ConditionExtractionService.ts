@@ -15,13 +15,13 @@ export default class ConditionExtractionService {
         condition.forEach((inner) => {
           if (typeof inner === "object" && inner !== null) {
             if ("value" in inner) {
-              console.log("Inner object represents a value:", inner);
+              //console.log("Inner object represents a value:", inner);
               this.extract("value", inner['value']);
             } else if ("indicator" in inner) {
-              console.log("Inner object represents an indicator:", inner);
+              //console.log("Inner object represents an indicator:", inner);
               this.extract("indicator", inner['indicator']);
             } else if ("operator" in inner) {
-              console.log("Inner object represents an operator:", inner);
+              //console.log("Inner object represents an operator:", inner);
               this.extract("operator", inner['operator']); // Fixed key spelling from 'oprator' to 'operator'
             } else {
               console.log("Inner object is unknown:", inner);
