@@ -8,7 +8,6 @@ class Bbands(BaseModel):
         Bollinger Bands (BBANDS)
         
         A popular volatility indicator by John Bollinger.
-        
         Sources:
             https://www.tradingview.com/wiki/Bollinger_Bands_(BB)
         
@@ -53,6 +52,7 @@ serialized_schema = json.dumps(schema)
 
 bbands = {
     "kind": "bbands",
+    "name": "Boillinger Bands",
     "default_settings": bbands_settings.dict(),
     "settings_schema": serialized_schema,
     "indicator_info": "line",

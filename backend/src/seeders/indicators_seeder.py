@@ -12,14 +12,16 @@ def indicators_seeder(session: Session):
 
     try:
         for indicator_dict in indicator_data:
-            kind = indicator_dict.get("kind", "")
-            default_settings = indicator_dict.get("default_settings", {})
-            indicator_info = indicator_dict.get("indicator_info", "")
-            settings_schema = indicator_dict.get("settings_schema", "")
+            name = indicator_dict.get("name")
+            kind = indicator_dict.get("kind")
+            default_settings = indicator_dict.get("default_settings")
+            indicator_info = indicator_dict.get("indicator_info")
+            settings_schema = indicator_dict.get("settings_schema")
             existing_indicator = session.query(Indicators).filter_by(kind=kind).first()
 
             if not existing_indicator:
                 new_indicator = Indicators(
+                    name=name,
                     kind=kind,
                     default_settings=default_settings,
                     settings_schema=settings_schema,

@@ -1,10 +1,12 @@
 export interface StrategyIndicator {
     id: number;
+    name: string;
     kind: string
     settings: Record<string, any>
     settings_schema: Record<string, any>
-    fk_strategy_id: number;
-    fk_indicator_id: string;
+    dataframe_column: string,
+    strategyId: number;
+    indicatorId: string;
 }
 
 export type StrategyIndicatorRequest = Omit<StrategyIndicator, 'id'>;

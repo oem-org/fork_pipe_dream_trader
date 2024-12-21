@@ -49,6 +49,7 @@ serialized_schema = json.dumps(schema)
 
 ao = {
     "kind": "ao",
+    "name": "Awesome Oscilliator",
     "default_settings": ao_settings.dict(),
     "settings_schema": serialized_schema,
     "indicator_info": "histogram",

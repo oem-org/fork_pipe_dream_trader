@@ -65,7 +65,7 @@ export default function IndicatorSection() {
 				<ul>
 					{strategyIndicators.map((indicator) => (
 						<li key={indicator.id}>
-							<GenericIndicator indicatorId={indicator.id} settingsSchema={parseSettings(indicator.settings_schema)} settings={indicator.settings} />
+							<GenericIndicator indicatorName={indicator.name} dataframeColumn={indicator.dataframe_column} indicatorId={indicator.id} settingsSchema={parseSettings(indicator.settings_schema)} settings={indicator.settings} />
 						</li>
 					))}
 				</ul>

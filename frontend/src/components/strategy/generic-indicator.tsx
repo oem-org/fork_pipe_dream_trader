@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from 'react'
 import { Button } from '../ui/buttons/button';
 import { isFloat, addDecimal } from '@/lib/utils/numeric-utils';
 import { useUpdateIndicator } from '@/lib/hooks/useUpdateIndicator';
@@ -7,17 +7,19 @@ import useStrategyStore from '@/lib/hooks/useStrategyStore';
 import { SquareX, InfoIcon } from 'lucide-react';
 import Modal from '../ui/modal';
 
-interface Props {
+interface GenericIndicatorProps {
 	indicatorId: number,
+	indicatorName: string,
 	settings: Record<string, any>;
 	settingsSchema: Record<string, any>;
+	dataframeColumn: string;
 }
 
 // TODO: inputs go back to default when empty and the inputs move
-export default function GenericIndicator({ indicatorId, settingsSchema, settings }: Props) {
+export default function GenericIndicator({ indicatorName, dataframeColumn, indicatorId, settingsSchema, settings }: GenericIndicatorProps) {
 	const [formData, setFormData] = useState<Record<string, any>>(settings);
 	const [errors, setErrors] = useState<Record<string, string>>({});
-
+	console.log(dataframeColumn)
 	const { strategyId } = useStrategyStore();
 	const { mutateAsync: updateIndicator } = useUpdateIndicator(strategyId);
 
@@ -89,16 +91,8 @@ export default function GenericIndicator({ indicatorId, settingsSchema, settings
 
 	const renderInputField = (key: string, property: Record<string, any>) => {
 		const { default: defaultValue, title, type } = property;
-		if (key === 'kind') {
-			return null;
-		}
-
-		// These fields depends on, if the Ta-Lib C-library is enabled or not
-		if (key === 'ddof') {
-			return null;
-		}
-
-		if (key === 'talib') {
+		const excludedKeys = ['kind', 'name', 'ddof', 'talib'];
+		if (excludedKeys.includes(key)) {
 			return null;
 		}
 		switch (type) {
@@ -199,7 +193,7 @@ export default function GenericIndicator({ indicatorId, settingsSchema, settings
 			</Modal>
 			<div className='flex flex-row justify-between'>
 				<div className='flex flex-row'>
-					<h3 className='h3 font-bold mr-4'>{formData["kind"]}</h3>
+					<h3 className='h3 font-bold mr-4'>{indicatorName}</h3>
 					<InfoIcon className='cursor-pointer' onClick={() => toggleModal()} />
 				</div>
 				<button className="mb-4 appearance-none" onClick={() => deleteIndicatorMutation(indicatorId)}>

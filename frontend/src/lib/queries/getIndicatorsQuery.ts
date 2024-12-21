@@ -7,7 +7,6 @@ export default function getIndicatorsQuery() {
 	const fetchIndicators = async (): Promise<Indicator[]> => {
 		try {
 			const indicators: Indicator[] = await getAllIndicatorsApi.getAll()
-			console.log(indicators)
 			return indicators
 		} catch (error) {
 			//console.error(error)

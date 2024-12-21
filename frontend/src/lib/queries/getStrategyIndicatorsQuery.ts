@@ -8,11 +8,13 @@ import { StrategyIndicator } from "@/interfaces/StrategyIndicator"
 const getStrategyIndicatorsQuery = (strategyId: number) => {
 	const fetchStrategyIndicators = async (): Promise<StrategyIndicator[]> => {
 		try {
-			const strategies: StrategyIndicator[] = await getStrategyIndicatorsApi.getAll(strategyId)
-			return strategies
+			const strategyIndicators: StrategyIndicator[] = await getStrategyIndicatorsApi.getAll(strategyId)
+			console.log("STRTARSTARSTARSTDAR", strategyIndicators)
+			return strategyIndicators
+
 		} catch (error) {
 			console.log(error)
-			throw new Error("Failed to fetch strategies")
+			throw new Error("Failed to fetch strategyIndicators")
 		}
 	}
 

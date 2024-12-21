@@ -15,6 +15,7 @@ from ...schemas import UpdateStrategyRequest, CreateStrategyRequest, StrategySch
 from ...utils.debugging.print_db_object import print_db_object
 from ...utils.exceptions import handle_db_error, handle_not_found_error
 
+ # TODO: make it impossible to get same name of indicator bug
 # Configure logging
 logging.basicConfig(
     level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(message)s"
@@ -185,6 +186,7 @@ async def delete_strategy(
         handle_db_error(e, "Unexpected error occurred fetching stategy")
 
 
+# TODO: response model
 @router.get("/{strategy_id}/indicator", status_code=status.HTTP_200_OK)
 async def read_all_strategy_indicators(user: user_dependency, db: db_dependency, strategy_id: int = Path(gt=0)):
 
@@ -209,6 +211,8 @@ async def read_all_strategy_indicators(user: user_dependency, db: db_dependency,
                 "settings": si.settings,
                 "settings_schema": si.indicator.settings_schema,
                 "fk_indicator_id": si.indicator.id,
+                "name":si.indicator.name,
+                "dataframe_column": si.dataframe_column,
             }
             for si in strategy.strategy_indicators
         ]

@@ -66,6 +66,7 @@ class Indicators(Base):
     __tablename__ = "indicators"
 
     id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True)
     kind = Column(String, unique=True)
     default_settings = Column(JSON)
     settings_schema = Column(JSON)
