@@ -17,7 +17,6 @@ export default function IndicatorConditionSelect({ initialValue }: IndicatorCond
 
   function handleChange(item: StrategyIndicator) {
     console.log("Selected item:", item);
-    // You can also handle the change logic here, passing the selected item
   }
 
   return (

@@ -10,6 +10,7 @@ export default class ConditionExtractionService {
       if (typeof condition === "string") {
         console.log("Value is a string:", condition);
         this.extract("singleOperator", condition);
+        this.blockEnd()
       } else if (Array.isArray(condition)) {
         condition.forEach((inner) => {
           if (typeof inner === "object" && inner !== null) {
@@ -29,12 +30,14 @@ export default class ConditionExtractionService {
             console.log("Inner value is of a wrong type:", inner);
           }
         });
+        this.blockEnd()
       } else {
         console.log("Value is neither a string nor an array:", condition);
       }
     });
   }
-
+  blockEnd(): void {
+  }
   extract(kind: string, value: string): void {
     console.log(kind, value);
     throw new Error("Method 'extract()' must be implemented in the subclass.");
@@ -48,18 +51,22 @@ export default class ConditionExtractionService {
 
 
 export class BuildConditionsService extends ConditionExtractionService {
-  private mappedConditions: Array<[string, string]>;
+  private mappedConditions: Array<[string, string] | string>;
 
   constructor(conditions: Array<any>) {
     super(conditions);
     this.mappedConditions = [];
   }
 
+  blockEnd(): void {
+    this.mappedConditions.push("blockEnd")
+  }
+
   extract(kind: string, value: string): void {
     this.mappedConditions.push([kind, value]);
   }
 
-  getConditions(): Array<[string, string]> {
+  getConditions(): Array<[string, string] | string> {
     return this.mappedConditions;
   }
 }

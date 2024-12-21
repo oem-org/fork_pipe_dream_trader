@@ -9,7 +9,7 @@ interface OperatorConditionSelectProps {
 export default function OperatorConditionSelect({ initialValue }: OperatorConditionSelectProps) {
   const operators: Operator[] = [{ "id": 1, "name": "=" }, { "id": 2, "name": "<" }, { "id": 3, "name": ">" }, { "id": 4, "name": "|" }]
 
-  const initialObj = operators.find(item => item.name === initialValue);
+  const initialObj = operators.find(operator => operator.name === initialValue);
 
 
   function handleOperatorChange() {
