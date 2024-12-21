@@ -29,7 +29,7 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
           case "indicator":
             return <IndicatorConditionSelect key={index} initialValue={value} />;
           case "operator":
-            return <OperatorConditionSelect key={index}>Operator: {value}</div>;
+            return <OperatorConditionSelect key={index} initialValue={value} />;
           case "value":
             return <InputSmall name="Value" />;
 

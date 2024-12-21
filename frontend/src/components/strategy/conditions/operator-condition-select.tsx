@@ -1,6 +1,5 @@
-import React from 'react'
 import { Operator } from '@/interfaces/Operator'
-import GenericSelect from '../ui/lists/generic-select'
+import GenericSelect from '@/components/ui/lists/generic-select'
 
 interface OperatorConditionSelectProps {
   key: number,
