@@ -2,12 +2,12 @@ import React, { useState } from "react";
 
 interface InputFormProps {
 	title?: string;
-	defaultValue?: string;
+	initialValue?: string;
 	name: string;
 }
 
-export default function InputSmall({ title, defaultValue = "", name }: InputFormProps) {
-	const [inputValue, setInputValue] = useState(defaultValue);
+export default function InputSmall({ title, initialValue = "", name }: InputFormProps) {
+	const [inputValue, setInputValue] = useState(initialValue);
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setInputValue(e.target.value);

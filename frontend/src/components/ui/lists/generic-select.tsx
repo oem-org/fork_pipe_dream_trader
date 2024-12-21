@@ -115,6 +115,7 @@ function Search({
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setQuery(event.target.value);
+		//TODO: research
 		// Pass event to prevent bubbling
 		onSearch(event.target.value, event);
 	};
@@ -144,7 +145,6 @@ function ToggleData({ setIsOpen, isOpen }: ToggleDataProps) {
 			className="p-4 flex justify-between items-center rounded-md transition-colors duration-200"
 			onClick={(e) => {
 				e.preventDefault();
-				// Prevent interaction from bubbling to parent form
 				e.stopPropagation();
 				setIsOpen(!isOpen);
 			}}

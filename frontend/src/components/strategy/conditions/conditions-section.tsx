@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/buttons/button'
 import ConditionSelect from './condition-select'
-import InputSmall from '../ui/forms/input-small'
+import InputSmall from '../../ui/forms/input-small'
 
 
 export default function ConditionsSection() {
@@ -18,7 +18,6 @@ export default function ConditionsSection() {
       <div className='flex flex-row'>
         <ConditionSelect />
       </div>
-      <InputSmall name="Value" />
     </div>
   )
 }

@@ -15,7 +15,7 @@ import { InfoIcon } from "lucide-react";
 import SettingsDropdown from "@/components/strategy/settings-dropdown";
 
 import { useUpdateStrategy } from "@/lib/hooks/useUpdateStrategy";
-import ConditionsSection from "@/components/strategy/conditions-section";
+import ConditionsSection from "@/components/strategy/conditions/conditions-section";
 
 
 export default function StrategyPage() {

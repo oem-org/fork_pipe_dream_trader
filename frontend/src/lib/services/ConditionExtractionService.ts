@@ -1,14 +1,12 @@
-import { Condition } from "@/interfaces/Condition";
-
 export default class ConditionExtractionService {
-  conditions: (Condition[] | string)[];
+  conditions: Array<any>;
 
-  constructor(conditions: (Condition[] | string)[]) {
+  constructor(conditions: Array<any>) {
     this.conditions = conditions;
   }
 
   processConditions() {
-    this.conditions.forEach((condition) => {
+    this.conditions.forEach((condition: Array<any> | string) => {
       if (typeof condition === "string") {
         console.log("Value is a string:", condition);
         this.extract("singleOperator", condition);
@@ -17,50 +15,13 @@ export default class ConditionExtractionService {
           if (typeof inner === "object" && inner !== null) {
             if ("value" in inner) {
               console.log("Inner object represents a value:", inner);
-              this.extract("value", inner.value);
+              this.extract("value", inner['value']);
             } else if ("indicator" in inner) {
               console.log("Inner object represents an indicator:", inner);
-              this.extract("indicator", inner);
+              this.extract("indicator", inner['indicator']);
             } else if ("operator" in inner) {
-import React from "react";
-import BuildConditionInputsService from "@/lib/services/BuildConditionInputsService";
-import SingleOperator from "./SingleOperator";
-
-import Indicator from "./Indicator";
-import Operator from "./Operator";
-import Value from "./Value";
-
-import InputSmall from "../ui/forms/input-small";
-import IndicatorConditionSelect from "./indicator-condition-select";
-
-interface BuildConditionRendererProps {
-  conditions: Array<any>
-}
-
-function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
-  const conditionService = new BuildConditionInputsService(conditions);
-
-  // Use the `extract` method to determine the type
-  const extractedConditions = conditionService.getConditions();
-
-  // Render the appropriate component
-  switch (kind) {
-    case "singleOperator":
-      return <SingleOperator condition={extractedCondition as string} />;
-    case "indicator":
-      return <IndicatorConditionSelect condition={extractedCondition} />;
-    case "operator":
-      return <Operator condition={extractedCondition} />;
-    case "value":
-      return <InputSmall name="Value" />;
-    default:
-      return <div>Unknown condition type</div>;
-  }
-};
-
-export default BuildConditionRenderer;
               console.log("Inner object represents an operator:", inner);
-              this.extract("operator", inner);
+              this.extract("operator", inner['operator']); // Fixed key spelling from 'oprator' to 'operator'
             } else {
               console.log("Inner object is unknown:", inner);
             }
@@ -74,13 +35,31 @@ export default BuildConditionRenderer;
     });
   }
 
-  // Abstract extract method (must be implemented in subclasses or overridden in the class itself)
-  extract(kind: string, value: string) {
-    console.log(kind, value)
+  extract(kind: string, value: string): void {
+    console.log(kind, value);
     throw new Error("Method 'extract()' must be implemented in the subclass.");
   }
+
   getConditions(): Array<any> {
-    throw new Error("Method 'extract()' must be implemented in the subclass.");
+    throw new Error("Method 'getConditions()' must be implemented in the subclass.");
   }
 }
 
+
+
+export class BuildConditionsService extends ConditionExtractionService {
+  private mappedConditions: Array<[string, string]>;
+
+  constructor(conditions: Array<any>) {
+    super(conditions);
+    this.mappedConditions = [];
+  }
+
+  extract(kind: string, value: string): void {
+    this.mappedConditions.push([kind, value]);
+  }
+
+  getConditions(): Array<[string, string]> {
+    return this.mappedConditions;
+  }
+}

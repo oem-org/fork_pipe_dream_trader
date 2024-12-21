@@ -7,9 +7,6 @@ import { useAddIndicator } from "@/lib/hooks/useAddIndicator";
 import GenericIndicator from "./generic-indicator";
 
 
-
-
-
 export default function IndicatorSection() {
 
 	const { strategyId } = useStrategyStore();
