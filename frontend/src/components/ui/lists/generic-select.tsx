@@ -10,6 +10,7 @@ interface GenericSelectProps<T> {
 	title: string;
 	searchEnabled: boolean;
 	nameExtractor: (item: T) => string
+	initialValue?: T | null
 }
 //TODO: when updates the selected strategy disappears
 
@@ -20,7 +21,8 @@ export default function GenericSelect<T>({
 	renderItem,
 	title,
 	searchEnabled,
-	nameExtractor
+	nameExtractor,
+	initialValue,
 
 }: GenericSelectProps<T>) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -51,6 +53,12 @@ export default function GenericSelect<T>({
 			setFilteredData(data);
 		}
 	};
+
+	useEffect(() => {
+		if (initialValue) {
+			setCurrentTitle(nameExtractor(initialValue));
+		}
+	}, [initialValue]);
 
 	useEffect(() => {
 		setFilteredData(data);

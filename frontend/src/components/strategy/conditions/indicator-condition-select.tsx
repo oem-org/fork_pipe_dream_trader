@@ -2,23 +2,26 @@ import getStrategyIndicatorsQuery from "@/lib/queries/getStrategyIndicatorsQuery
 import GenericSelect from "@/components/ui/lists/generic-select";
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
 import { StrategyIndicator } from "@/interfaces/StrategyIndicator";
+import useInitialValue from "@/lib/hooks/useInitialValue";
 interface IndicatorConditionSelectProps {
   initialValue: string;
-  key: number;
+  //key: number;
 }
 
-export default function IndicatorConditionSelect({ key, initialValue }: IndicatorConditionSelectProps) {
+export default function IndicatorConditionSelect({ initialValue }: IndicatorConditionSelectProps) {
 
-  const { strategyId } = useStrategyStore()
+  const { strategyId } = useStrategyStore();
   const { data: indicatorSettings } = getStrategyIndicatorsQuery(strategyId);
 
-  function handleChange() {
-    console.log("click");
-    console.log(initialValue)
+  const findInitialValue = useInitialValue(indicatorSettings || [], initialValue, (indicator) => indicator.dataframe_column);
+
+  function handleChange(item: StrategyIndicator) {
+    console.log("Selected item:", item);
+    // You can also handle the change logic here, passing the selected item
   }
 
   return (
-    <div key={key}>
+    <div >
       <GenericSelect<StrategyIndicator>
         data={indicatorSettings || []}
         keyExtractor={(indicator) => indicator.id}
@@ -27,8 +30,8 @@ export default function IndicatorConditionSelect({ key, initialValue }: Indicato
         renderItem={(indicator) => <span>{indicator.dataframe_column}</span>}
         title="Indicator"
         searchEnabled={false}
+        initialValue={findInitialValue}
       />
     </div>
   );
 };
-

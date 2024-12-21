@@ -55,9 +55,9 @@ export default function StrategyPage() {
     }
   };
 
-  const handleStrategyChange = (strategy: Strategy) => {
-    navigate(`/strategy/${strategy.id}`);
-  };
+  //const handleStrategyChange = (strategy: Strategy) => {
+  //  navigate(`/strategy/${strategy.id}`);
+  //};
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -88,6 +88,20 @@ export default function StrategyPage() {
                   {strategy.description}
                 </pre>
               </Modal>
+
+
+
+              <h4 className=".h4">Change file</h4>
+              <GenericSelect<File>
+                data={files || []}
+                keyExtractor={(file) => file.id}
+                nameExtractor={(file) => file.name}
+                onSelect={handleFileChange}
+                renderItem={(file) => <span>{file.name}</span>}
+                title="Select or search"
+                searchEnabled={true}
+              />
+
             </article>
             <div className="lg:col-span-3">
               <Charts />
@@ -116,18 +130,6 @@ export default function StrategyPage() {
 }
 
 
-//<article>
-//  <h4 className=".h4">Change file</h4>
-//  <GenericSelect<File>
-//    data={files || []}
-//    keyExtractor={(file) => file.id}
-//    nameExtractor={(file) => file.name}
-//    onSelect={handleFileChange}
-//    renderItem={(file) => <span>{file.name}</span>}
-//    title="Select or search"
-//    searchEnabled={true}
-//  />
-//</article>
 //<article>
 //  <h4 className=".h4">Change strategy</h4>
 //  <GenericSelect<Strategy>

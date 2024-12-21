@@ -25,11 +25,11 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
       {mappedConditions.map(([kind, value], index) => {
         switch (kind) {
           case "singleOperator":
-            return <SingleOperator key={index} value={value} />;
+            return <SingleOperator initialValue={value} />;
           case "indicator":
-            return <IndicatorConditionSelect key={index} initialValue={value} />;
+            return <IndicatorConditionSelect initialValue={value} />;
           case "operator":
-            return <OperatorConditionSelect key={index} initialValue={value} />;
+            return <OperatorConditionSelect initialValue={value} />;
           case "value":
             return <InputSmall name="Value" />;
 
