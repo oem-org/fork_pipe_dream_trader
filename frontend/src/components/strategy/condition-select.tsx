@@ -57,6 +57,10 @@ export default function ConditionSelect() {
 
   const { data: indicatorSettings } = getStrategyIndicatorsQuery(strategyId);
 
+  const defaultConds = [[{ "indicator": null }, { "operator": null }, { "value": 1 }], "&", [{ "indicator": null }, { "operator": null }, { "indicator": null }]]
+
+
+
   return (
     <>
 
