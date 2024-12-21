@@ -13,60 +13,20 @@ import { Plus } from 'lucide-react';
 
 export default function ConditionSelect() {
 
-  // Access the cache and filter for `strategyIndicators` entries
-  const { strategyId } = useStrategyStore()
-  function handleIndicatorChange(indicator: StrategyIndicator): void {
-    try {
-      // Using the destructured mutateAsync
-      console.log("Indicator added successfully:", indicator);
+  //const { strategyId } = useStrategyStore()
 
-    } catch (error) {
-      console.error("Error adding indicator:");
-    }
-  };
-  function handleOperatorChange(operator: Operator): void {
-    try {
-      // Using the destructured mutateAsync
-      console.log("Indicator added successfully:", operator);
-
-    } catch (error) {
-      console.error("Error adding indicator:");
-    }
-  }
-
-  function addValueInput() {
-    console.log("val7e");
-
-  }
-  function addIndicatorSelect() {
-    console.log("val7e");
-
-  }
-
-
-  function addOperatorSelect() {
-    console.log("val7e");
-
-  }
   const operators = [{ "id": 1, "name": "=" }, { "id": 2, "name": "<" }];
 
+  //
+  //const { data: indicatorSettings } = getStrategyIndicatorsQuery(strategyId);
 
-  const { data: indicatorSettings } = getStrategyIndicatorsQuery(strategyId);
-
-  const defaultConds = [[{ "indicator": null }, { "operator": null }, { "value": 1 }], "&", [{ "indicator": null }, { "operator": null }, { "indicator": null }]]
+  const defaultConds = [[{ "indicator": "SMA_10" }, { "operator": ">" }, { "value": 1 }], "&", [{ "indicator": "RSI_14" }, { "operator": "=" }, { "indicator": "RSI_10" }]]
 
 
 
   return (
     <>
       <BuildConditionRenderer conditions={defaultConds} />
-      <form>
-        <Dropdown textColor="text-black" icon={Plus} animation={false} direction="right">
-          <button onClick={() => addIndicatorSelect()} className="btn-dropdown">Delete</button>
-          <button onClick={() => addValueInput()} className="btn-dropdown">Rename</button>
-          <button onClick={() => addOperatorSelect()} className="btn-dropdown">Rename</button>
-        </Dropdown>
-      </form>
     </>);
 };
 

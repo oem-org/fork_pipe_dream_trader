@@ -9,7 +9,8 @@
 import { BuildConditionsService } from "@/lib/services/ConditionExtractionService";
 import SingleOperator from "./single-operator";
 import InputSmall from "@/components/ui/forms/input-small";
-
+import IndicatorConditionSelect from "./indicator-condition-select";
+import OperatorConditionSelect from "./operator-condition-select";
 interface BuildConditionRendererProps {
   conditions: Array<any>
 }
@@ -26,9 +27,9 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
           case "singleOperator":
             return <SingleOperator key={index} value={value} />;
           case "indicator":
-            return <div key={index}>Indicator: {value}</div>;
+            return <IndicatorConditionSelect key={index} initialValue={value} />;
           case "operator":
-            return <div key={index}>Operator: {value}</div>;
+            return <OperatorConditionSelect key={index}>Operator: {value}</div>;
           case "value":
             return <InputSmall name="Value" />;
 
