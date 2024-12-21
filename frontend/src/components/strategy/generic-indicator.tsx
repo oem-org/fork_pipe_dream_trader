@@ -185,7 +185,7 @@ export default function GenericIndicator({ indicatorName, dataframeColumn, indic
 		<div className='flex flex-col border rounded-lg p-4'>
 			<Modal onClose={toggleModal} isOpen={isModalOpen} title={`Indicator: ${formData['kind']}`}>
 				<section>
-					<pre class="whitespace-pre-wrap break-words p-4 rounded-md">
+					<pre className="whitespace-pre-wrap break-words p-4 rounded-md">
 						{settingsSchema.description}
 					</pre>
 
@@ -193,7 +193,8 @@ export default function GenericIndicator({ indicatorName, dataframeColumn, indic
 			</Modal>
 			<div className='flex flex-row justify-between'>
 				<div className='flex flex-row'>
-					<h3 className='h3 font-bold mr-4'>{indicatorName}</h3>
+					<h3 className='h3 font-bold mr-2'>{indicatorName}</h3>
+					{dataframeColumn && <p className='text-lg mr-2'>ID: {dataframeColumn}</p>}
 					<InfoIcon className='cursor-pointer' onClick={() => toggleModal()} />
 				</div>
 				<button className="mb-4 appearance-none" onClick={() => deleteIndicatorMutation(indicatorId)}>

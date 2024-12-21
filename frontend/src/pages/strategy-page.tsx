@@ -15,6 +15,7 @@ import { InfoIcon } from "lucide-react";
 import SettingsDropdown from "@/components/strategy/settings-dropdown";
 
 import { useUpdateStrategy } from "@/lib/hooks/useUpdateStrategy";
+import ConditionsSection from "@/components/strategy/conditions-section";
 
 
 export default function StrategyPage() {
@@ -83,7 +84,7 @@ export default function StrategyPage() {
 
               <hr className='py-1' />
               <Modal onClose={toggleInfoModal} isOpen={isInfoModalOpen} title="Description">
-                <pre class="whitespace-pre-wrap break-words p-4">
+                <pre className="whitespace-pre-wrap break-words p-4">
                   {strategy.description}
                 </pre>
               </Modal>
@@ -97,12 +98,7 @@ export default function StrategyPage() {
               <IndicatorSection />
             </div>
             <section className="lg:col-span-3 p-4 bg-gray-100 rounded-lg">
-              <div className="flex flex-row justify-between">
-                <h2 className="h2 mb-4">Strategy</h2>
-                <Button>Add condition</Button>
-              </div>
-              <hr className='py-1' />
-              <p>This section contains backtest results for the strategy.</p>
+              <ConditionsSection />
             </section>
 
             <section className="lg:col-span-2 p-4 bg-gray-100 rounded-lg">
