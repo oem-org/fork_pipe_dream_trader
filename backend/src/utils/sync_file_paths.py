@@ -45,7 +45,7 @@ def add_non_matching_files(db: Session, non_matching_files: dict):
 
 def sync_file_paths(db: Session):
     print("syncing")
-    folder_path = Path.cwd() / "uploaded_files"
+    folder_path = Path.cwd() / "files"
 
     folder_files = {file.name: file for file in folder_path.iterdir() if file.is_file()}
     print(folder_files)

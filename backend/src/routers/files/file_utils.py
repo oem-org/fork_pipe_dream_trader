@@ -6,7 +6,7 @@ import shutil
 import os
 
 def get_file_path(file: UploadFile) -> str:
-    folder_path = Path.cwd() / "uploaded_files"
+    folder_path = Path.cwd() / "files"
     folder_path.mkdir(parents=True, exist_ok=True)
     file_path = folder_path / file.filename
 

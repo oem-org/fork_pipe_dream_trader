@@ -61,6 +61,7 @@ class FileSyncer:
         non_matching_files = {}
         missing_in_folder = {}
 
+        # Compare files in folder and database
         for name, file_path in folder_files.items():
             if name in db_file_map:
                 if file_path.resolve() == db_file_map[name].resolve():

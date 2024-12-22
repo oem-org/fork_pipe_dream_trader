@@ -3,7 +3,7 @@ from logging import exception
 from fastapi import APIRouter, Query, HTTPException
 from ..files.FileLoader import FileLoader
 
-from ...lib.data.IndicatorLoader import IndicatorLoader
+from ..strategies.IndicatorLoader import IndicatorLoader
 from starlette import status
 
 from sqlalchemy.orm import joinedload

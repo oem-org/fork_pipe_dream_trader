@@ -5,7 +5,8 @@ import { Strategy } from "@/interfaces/Strategy";
 import { File } from "@/interfaces/File";
 import { useEffect, useState } from "react";
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/buttons/button";
 
 export default function HomePage() {
   const { data: strategies } = getStrategiesQuery();
@@ -33,7 +34,16 @@ export default function HomePage() {
     <div className="container mx-auto px-4 space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <section className="p-4 bg-gray-100 rounded-lg">
-          <h2 className="h2 mb-4">Strategies</h2>
+          <div className="flex flex-row justify-between">
+
+            <h2 className="h2 mb-4">Strategies</h2>
+            <Link
+              to="/create-strategy"
+              className="btn-primary"
+            >
+              Create new strategy
+            </Link>
+          </div>
           <GenericTable<Strategy>
             data={strategies || []}
             keyExtractor={(strategy) => strategy.id}
@@ -55,15 +65,15 @@ export default function HomePage() {
             searchEnabled={true}
           />
         </section>
-      </div>
+      </div >
 
       {/* Optional Backtest Section (can go below or be added in the same grid) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+      < div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6" >
         <section className="p-4 bg-gray-100 rounded-lg">
           <h4 className="text-xl font-bold mb-4">Backtest</h4>
           {/* Backtest Content Here */}
         </section>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }
