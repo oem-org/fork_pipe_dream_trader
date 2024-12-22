@@ -106,12 +106,12 @@ export default function StrategyPage() {
 
             </article>
             <div className="lg:col-span-3">
-              <Charts key={rerender} strategyId={strategyId} fileId={fileId} />
+              <Charts strategyId={strategyId} fileId={fileId} />
             </div>
           </section>
           <section className="grid grid-cols-1 lg:grid-cols-8 gap-4">
             <div className="lg:col-span-3 p-4 bg-gray-100 rounded-lg">
-              <IndicatorSection setRerender={setRerender} strategyId={strategyId} />
+              <IndicatorSection fileId={fileId} strategyId={strategyId} />
             </div>
             <section className="lg:col-span-3 p-4 bg-gray-100 rounded-lg">
               <ConditionsSection />

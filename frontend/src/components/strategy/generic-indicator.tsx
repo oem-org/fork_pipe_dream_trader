@@ -6,6 +6,7 @@ import { useDeleteIndicator } from '@/lib/hooks/useDeleteIndicator';
 import useStrategyStore from '@/lib/hooks/useStrategyStore';
 import { SquareX, InfoIcon } from 'lucide-react';
 import Modal from '../ui/modal';
+import { queryClient } from '@/main';
 
 interface GenericIndicatorProps {
 	indicatorId: number,
@@ -31,6 +32,7 @@ export default function GenericIndicator({ indicatorName, dataframeColumn, indic
 			...prevFormData,
 			[e.target.name]: e.target.value,
 		}));
+
 	}
 
 	const [isModalOpen, setIsModalOpen] = useState(false);

@@ -5,16 +5,25 @@ import getStrategyIndicatorsQuery from "@/lib/queries/getStrategyIndicatorsQuery
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
 import { useAddIndicator } from "@/lib/hooks/useAddIndicator";
 import GenericIndicator from "./generic-indicator";
-import { useEffect, useCallback, memo } from "react";
+import { useEffect, useCallback, memo, useState } from "react";
+import Timeseries from "@/interfaces/Timeseries";
+import { IndicatorChart } from "@/interfaces/IndicatorChart";
+import { getTimeseriesApi } from "@/lib/apiClientInstances";
+import { parseJsonStrings } from "@/lib/utils/object-utils";
+import TimeseriesService from "@/lib/services/TimeseriesService";
+import { Volume } from "@/interfaces/Volume";
+import { queryClient } from "@/main";
+import { useChartStore } from "@/lib/hooks/useChartStore";
 
 interface IndicatorSectionProps {
 	setRerender: React.Dispatch<React.SetStateAction<number>>;
 	strategyId: number;
+	fileId: number | undefined;
 }
 
 const IndicatorSection = memo(function IndicatorSection({
 	strategyId,
-	setRerender,
+	fileId,
 }: IndicatorSectionProps) {
 	const { mutateAsync: addIndicatorMutation } = useAddIndicator(strategyId);
 	const { data: strategyIndicators, error: siError, isLoading: siIsLoading } = getStrategyIndicatorsQuery(strategyId);
@@ -32,10 +41,45 @@ const IndicatorSection = memo(function IndicatorSection({
 
 
 
+	const {
+		setTimeseries,
+		setVolume,
+		setHistograms,
+		setLineSeries,
+		setLineSeriesPanes,
+	} = useChartStore()
 
 	useEffect(() => {
-		setRerender((prev) => prev + 1)
-	}, [strategyIndicators]);
+		async function loadData() {
+			if (strategyId) {
+				let timeperiod = "recent"
+				const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
+				const parsed = parseJsonStrings(data);
+
+				const timeseriesService = new TimeseriesService();
+				await timeseriesService.processOhlc(parsed.ohlc);
+				await timeseriesService.processVolume(parsed.volume);
+
+				const indicatorInfo = parsed.indicator_info;
+				delete parsed.ohlc;
+				delete parsed.volume;
+				delete parsed.indicator_info;
+
+				await timeseriesService.processBulk(parsed);
+				const mapped = await timeseriesService.updateChart(indicatorInfo);
+
+				setHistograms(mapped.filter((i) => i.chartStyle === "histogram"));
+				setLineSeries(mapped.filter((i) => i.chartStyle === "line"));
+				setLineSeriesPanes(mapped.filter((i) => i.chartStyle === "line_add_pane"));
+
+				setTimeseries(timeseriesService.ohlc);
+				setVolume(timeseriesService.volume);
+				queryClient.invalidateQueries({ queryKey: ['strategyIndicators'] })
+			}
+		}
+		loadData();
+	}, [strategyId, strategyIndicators, fileId]);
+
 
 	function parseSettings(rawSchema: any): SettingsSchema {
 		const settingsSchema = JSON.parse(rawSchema);

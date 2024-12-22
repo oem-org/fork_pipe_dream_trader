@@ -1,101 +1,89 @@
 import { create } from 'zustand';
-import { IndicatorChart } from '@/interfaces/IndicatorChart';
+import Timeseries from '@/interfaces/Timeseries';
+import { IndicatorChart } from "@/interfaces/IndicatorChart";
+import { Volume } from "@/interfaces/Volume";
 
-interface ChartStore {
-	//histogramIndicators: Array<IndicatorChart>;
-	//lineSeriesIndicators: Array<IndicatorChart>;
-	indicators: { name: string; data: any[] }[]
+interface Store {
+	timeseries: Timeseries[];
+	volume: Volume[];
+	histograms: IndicatorChart[];
+	lineSeries: IndicatorChart[];
+	lineSeriesPanes: IndicatorChart[];
 
-	//setHistogramIndicators: (indicators: Array<IndicatorChart>) => void;
-	//setLineSeriesIndicators: (indicators: Array<IndicatorChart>) => void;
-	//setIndicators: (indicators: Array<IndicatorChart>) => void;
-	addIndicator: (name: string, data: Array<any>) => void;
-	//removeIndicator: (name: string) => void;
-	//addLineSeriesIndicator: (indicator: IndicatorChart) => void;
-	//removeLineSeriesIndicator: (name: string) => void;
-	//addHistogramIndicator: (indicator: IndicatorChart) => void;
-	//removeHistogramIndicator: (name: string) => void;
+	setTimeseries: (timeseries: Timeseries[]) => void;
+	setVolume: (volume: Volume[]) => void;
+	setHistograms: (histograms: IndicatorChart[]) => void;
+	setLineSeries: (lineSeries: IndicatorChart[]) => void;
+	setLineSeriesPanes: (lineSeriesPanes: IndicatorChart[]) => void;
+
+	resetStore: () => void;
 }
 
-const useChartStore = create<ChartStore>((set) => ({
-	// Initial state
-	//histogramIndicators: [],
-	//lineSeriesIndicators: [],
-	indicators: [],
+// Check if the new state is diffrent
+const deepCompare = (prev: any[], next: any[]) => {
+	if (prev.length !== next.length) return false;
 
-	// Actions
-	//setHistogramIndicators: (indicators: Array<IndicatorChart>) =>
-	//	set(() => ({
-	//		histogramIndicators: indicators,
-	//	})),
-	//
-	//setLineSeriesIndicators: (indicators: Array<IndicatorChart>) =>
-	//	set(() => ({
-	//		lineSeriesIndicators: indicators,
-	//	})),
-	//
-	//setIndicators: (indicators: Array<IndicatorChart>) =>
-	//	set(() => ({
-	//		indicators,
-	//	})),
+	for (let i = 0; i < prev.length; i++) {
+		if (JSON.stringify(prev[i]) !== JSON.stringify(next[i])) {
+			return false;
+		}
+	}
 
-	addIndicator: (name: string, data: Array<any>) =>
-		set((state) => ({
-			indicators: [
-				...state.indicators,
-				{
-					name,
-					data,
-				},
-			],
-		})),
+	return true;
+};
 
-	//removeIndicator: (name: string) =>
-	//	set((state) => ({
-	//		indicators: state.indicators.filter((indicator) => indicator.name !== name),
-	//	})),
+export const useChartStore = create<Store>((set) => ({
+	timeseries: [],
+	volume: [],
+	histograms: [],
+	lineSeries: [],
+	lineSeriesPanes: [],
 
-	// Add and remove actions for lineSeriesIndicators
-	//addLineSeriesIndicator: (indicator: IndicatorChart) =>
-	//	set((state) => ({
-	//		lineSeriesIndicators: [
-	//			...state.lineSeriesIndicators,
-	//			{
-	//				name: indicator.name,
-	//				id: indicator.id,
-	//				chartStyle: indicator.chartStyle,
-	//				data: indicator.data,
-	//			},
-	//		],
-	//	})),
-	//
-	//removeLineSeriesIndicator: (name: string) =>
-	//	set((state) => ({
-	//		lineSeriesIndicators: state.lineSeriesIndicators.filter(
-	//			(indicator) => indicator.name !== name
-	//		),
-	//	})),
-	//
-	//// Add and remove actions for histogramIndicators
-	//addHistogramIndicator: (indicator: IndicatorChart) =>
-	//	set((state) => ({
-	//		histogramIndicators: [
-	//			...state.histogramIndicators,
-	//			{
-	//				name: indicator.name,
-	//				id: indicator.id,
-	//				chartStyle: indicator.chartStyle,
-	//				data: indicator.data,
-	//			},
-	//		],
-	//	})),
-	//
-	//removeHistogramIndicator: (name: string) =>
-	//	set((state) => ({
-	//		histogramIndicators: state.histogramIndicators.filter(
-	//			(indicator) => indicator.name !== name
-	//		),
-	//	})),
+	setTimeseries: (timeseries) => set((state) => {
+		if (!deepCompare(state.timeseries, timeseries)) {
+			return { timeseries };
+		}
+		console.log("NO UPDATE TIMESERIES");
+		return {};
+	}),
+
+	setVolume: (volume) => set((state) => {
+		if (!deepCompare(state.volume, volume)) {
+			return { volume };
+		}
+		console.log("NO UPDATE VOLUME");
+		return {};
+	}),
+
+	setHistograms: (histograms) => set((state) => {
+		if (!deepCompare(state.histograms, histograms)) {
+			return { histograms };
+		}
+		console.log("NO UPDATE HISTOGRAMS");
+		return {};
+	}),
+
+	setLineSeries: (lineSeries) => set((state) => {
+		if (!deepCompare(state.lineSeries, lineSeries)) {
+			return { lineSeries };
+		}
+		console.log("NO UPDATE LINESERIES");
+		return {};
+	}),
+
+	setLineSeriesPanes: (lineSeriesPanes) => set((state) => {
+		if (!deepCompare(state.lineSeriesPanes, lineSeriesPanes)) {
+			return { lineSeriesPanes };
+		}
+		console.log("NO UPDATE PANES");
+		return {};
+	}),
+
+	resetStore: () => set({
+		timeseries: [],
+		volume: [],
+		histograms: [],
+		lineSeries: [],
+		lineSeriesPanes: [],
+	}),
 }));
-
-export default useChartStore;
