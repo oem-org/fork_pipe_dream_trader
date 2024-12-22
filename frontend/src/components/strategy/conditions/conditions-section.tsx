@@ -4,7 +4,7 @@ import BuildConditionRenderer from './build-condition-renderer'
 
 export default function ConditionsSection() {
 
-  const defaultConds = [[{ "indicator": "SMA_10" }, { "operator": ">" }, { "value": 1 }], "&", [{ "indicator": "RSI_14" }, { "operator": "=" }, { "indicator": "RSI_10" }]]
+  const defaultConds = [[{ "indicator": null }, { "operator": ">" }, { "value": 1 }], "&", [{ "indicator": null }, { "operator": "=" }, { "indicator": null }]]
 
   return (
     <div>

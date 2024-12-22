@@ -45,13 +45,14 @@ export default function StrategyPage() {
   }, [paramId]);
 
   const handleFileChange = async (file: File) => {
-    setFileId(file.id);
     if (strategy) {
       console.log(strategy.fk_file_id)
       strategy.fk_file_id = file.id
+      // returns the updated strategy
       const resp = await updateStrategyMutation(strategy);
-      console.log(resp);
-
+      if (resp) {
+        setFileId(file.id);
+      }
     }
   };
 
@@ -104,7 +105,7 @@ export default function StrategyPage() {
 
             </article>
             <div className="lg:col-span-3">
-              <Charts />
+              <Charts fileId={fileId} />
             </div>
           </section>
           <section className="grid grid-cols-1 lg:grid-cols-8 gap-4">

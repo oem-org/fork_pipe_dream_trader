@@ -5,14 +5,19 @@ import getStrategyIndicatorsQuery from "@/lib/queries/getStrategyIndicatorsQuery
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
 import { useAddIndicator } from "@/lib/hooks/useAddIndicator";
 import GenericIndicator from "./generic-indicator";
-
+import { useEffect } from "react";
 
 export default function IndicatorSection() {
 
 	const { strategyId } = useStrategyStore();
 	const { mutateAsync: addIndicatorMutation } = useAddIndicator(strategyId);
 	const { data: strategyIndicators, error: siError, isLoading: siIsLoading } = getStrategyIndicatorsQuery(strategyId);
-	const { data: indicatorSettings } = getIndicatorsQuery();
+	const { data: indicators } = getIndicatorsQuery();
+
+	useEffect(() => {
+		console.log("strategyIndicators have changed", strategyIndicators);
+		// You can perform any other side effects or logic here if needed.
+	}, [strategyIndicators])
 
 	async function handleIndicatorChange(indicator: Indicator): Promise<void> {
 		try {
@@ -20,7 +25,7 @@ export default function IndicatorSection() {
 			console.log("Indicator added successfully:", response);
 			console.log(indicator);
 
-			console.log(indicatorSettings, "seeeettings")
+			console.log(indicators, "seeeettings")
 
 		} catch (error) {
 			console.error("Error adding indicator:", error);
@@ -39,14 +44,14 @@ export default function IndicatorSection() {
 		const settingsSchema = JSON.parse(rawSchema)
 		return settingsSchema
 	}
-
+	// TODO: fix ordering problem
 	return (<section>
 		<h2 className="h2 mb-4">Indicators</h2>
 
 		<hr className='py-1' />
 
 		<GenericSelect<Indicator>
-			data={indicatorSettings || []}
+			data={indicators || []}
 			keyExtractor={(indicator) => indicator.id}
 			nameExtractor={(indicator) => indicator.kind}
 			onSelect={handleIndicatorChange}
@@ -54,11 +59,12 @@ export default function IndicatorSection() {
 			title="Select or search"
 			searchEnabled={true}
 		/>
+
 		<div className="mt-4">
 			<h3 className="h3 mb-2">Loaded Indicators</h3>
-			{siIsLoading && <p>Loading indicatorSettings...</p>}
+			{siIsLoading && <p>Loading indicators...</p>}
 			{siError && siError instanceof Error && (
-				<p className="text-red-500">Error loading indicatorSettings: {siError.message}</p>
+				<p className="text-red-500">Error loading indicators: {siError.message}</p>
 			)}
 			{!siIsLoading && !siError && strategyIndicators ? (
 

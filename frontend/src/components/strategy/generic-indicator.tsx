@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '../ui/buttons/button';
 import { isFloat, addDecimal } from '@/lib/utils/numeric-utils';
 import { useUpdateIndicator } from '@/lib/hooks/useUpdateIndicator';
@@ -24,6 +24,12 @@ export default function GenericIndicator({ indicatorName, dataframeColumn, indic
 	const { mutateAsync: updateIndicator } = useUpdateIndicator(strategyId);
 
 	const { mutateAsync: deleteIndicatorMutation } = useDeleteIndicator(strategyId);
+
+	useEffect(() => {
+		console.log("dataframe column", dataframeColumn);
+		// You can perform any other side effects or logic here if needed.
+	}, [dataframeColumn])
+
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setFormData({

@@ -1,3 +1,4 @@
+// TODO: delete back and forward buck in indicator inpyt
 export function convertToString(input: any): string {
 	if (typeof input === 'number') {
 		return input.toString();

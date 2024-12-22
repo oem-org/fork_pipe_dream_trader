@@ -46,7 +46,7 @@ export default function ChartCanvas({
 
 			});
 
-			console.log(indicators, "CHART INDICATORS")
+			console.log("generating a chart canvas", indicators)
 
 			if (chartRef.current && indicators.length > 0) {
 				indicators.forEach((indicator) => {

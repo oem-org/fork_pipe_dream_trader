@@ -9,7 +9,13 @@ import useStrategyStore from '@/lib/hooks/useStrategyStore';
 import { getTimeseriesApi } from '@/lib/apiClientInstances';
 import { parseJsonStrings } from '@/lib/utils/object-utils';
 import { IndicatorChart } from '@/interfaces/IndicatorChart';
-export default function Charts() {
+import { queryClient } from '@/main';
+
+interface ChartsProps {
+	fileId: number
+}
+
+export default function Charts({ fileId }: ChartsProps) {
 	let timeperiod = "recent"
 	const { strategyId } = useStrategyStore()
 	const [timeseries, setTimeseries] = useState<Timeseries[]>([]);
@@ -24,12 +30,11 @@ export default function Charts() {
 	const lineSeriesRefs = useRef<(HTMLDivElement)[]>([]);
 	const emptyChartRef = useRef<HTMLDivElement>(null);
 
-
 	useEffect(() => {
 		async function loadData() {
 			const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
 			const parsed = parseJsonStrings(data);
-			console.log(parsed, "parsed");
+			console.log(parsed, "parsed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
 			const timeseriesService = new TimeseriesService();
 			await timeseriesService.processOhlc(parsed.ohlc);
@@ -40,14 +45,16 @@ export default function Charts() {
 			delete parsed.indicator_info;
 			await timeseriesService.processBulk(parsed);
 			const mapped = await timeseriesService.updateChart(indicatorInfo);
+			console.log(mapped, "MAPPED")
 			setIndicators(mapped)
 
 			setTimeseries(timeseriesService.ohlc);
 			setVolume(timeseriesService.volume);
+			queryClient.invalidateQueries({ queryKey: ['strategyIndicators'] })
 		}
 		loadData()
 
-	}, [strategyId])
+	}, [strategyId, fileId])
 
 
 	useEffect(() => {

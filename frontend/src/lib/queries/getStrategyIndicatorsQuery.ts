@@ -9,7 +9,7 @@ const getStrategyIndicatorsQuery = (strategyId: number) => {
 	const fetchStrategyIndicators = async (): Promise<StrategyIndicator[]> => {
 		try {
 			const strategyIndicators: StrategyIndicator[] = await getStrategyIndicatorsApi.getAll(strategyId)
-			console.log("STRTARSTARSTARSTDAR", strategyIndicators)
+			console.log("getStrategtyIndicators", strategyIndicators)
 			return strategyIndicators
 
 		} catch (error) {

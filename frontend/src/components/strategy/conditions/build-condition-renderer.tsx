@@ -11,7 +11,7 @@ import { useState } from "react";
 interface BuildConditionRendererProps {
   conditions: Array<any>;
 }
-//dynamically renders and manages draggable strategy conditions, 
+//dynamically renders and manages draggable strategy conditions,
 //tracks their values, and allows reordering with drag and drop.
 function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
   const conditionService = new BuildConditionsService(conditions);
@@ -76,7 +76,8 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
   const [blockValues, setBlockValues] = useState<{ [key: number]: { [key: string]: any } }>({});
 
   // Update the state value for a component within a block
-  const handleValueChange = (blockIndex: number, componentKey: string, newValue: any) => {
+  // using the useState setter directly
+  function handleValueChange(blockIndex: number, componentKey: string, newValue: any) {
     setBlockValues((prevValues) => {
       const updatedValues = { ...prevValues };
       if (!updatedValues[blockIndex]) {
@@ -87,13 +88,13 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
     });
   };
 
-  const logBlockOrder = () => {
+  function logBlockOrder() {
     const blockOrder = blocks.map((_, index) => `block-${index}`);
     console.log("Block Order:", blockOrder);
   };
 
   // Move a dragged block from one index to another
-  const moveBlock = (fromIndex: number, toIndex: number) => {
+  function moveBlock(fromIndex: number, toIndex: number) {
     setBlocks((prevBlocks) => {
       const updatedBlocks = [...prevBlocks];
       const [movedBlock] = updatedBlocks.splice(fromIndex, 1);
@@ -102,7 +103,8 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
       return updatedBlocks;
     });
 
-    // Update blockValues to match the sorting of the blocks in the ui 
+    // Update blockValues to match the sorting of the blocks in the ui
+    // by using the useState setter directly
     setBlockValues((prevValues) => {
       const updatedValues = { ...prevValues };
       const movedValues = updatedValues[fromIndex];
@@ -112,7 +114,7 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
     });
   };
 
-  const getSortedValues = () => {
+  function createConditionString() {
     const sortedValues = Object.values(blockValues);
     console.log("Sorted Values:", sortedValues);
     return sortedValues;
@@ -127,7 +129,7 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
           </DraggableBlock>
         ))}
       </div>
-      <button onClick={getSortedValues}>Get Sorted Values</button>
+      <button onClick={createConditionString}>Get Sorted Values</button>
     </DndProvider>
   );
 }
