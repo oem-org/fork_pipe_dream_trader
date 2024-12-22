@@ -6,8 +6,8 @@ from .file_utils import get_file_path
 from sqlalchemy.exc import SQLAlchemyError
 from starlette import status
 from ...dependencies import db_dependency, user_dependency
-from ...lib.data.FileLoader import FileLoader
-from ...lib.data.FileValidator import FileValidator
+from .FileLoader import FileLoader
+from .FileValidator import FileValidator
 from ...models import Files, Users
 from ...schemas import *
 from ...utils.exceptions import (
@@ -53,12 +53,12 @@ def get_file(db: db_dependency, file_id: int):
 
         if not file:
             handle_not_found_error("No file found")
-        
+
         path = file.path
         fileLoader = FileLoader(path)
         fileLoader.load_data()
         data = fileLoader.df.to_json(orient="index")
-        
+
         if not data or fileLoader.df.empty:
             handle_not_found_error("No data found in the file")
         columns = fileLoader.df.columns.tolist()

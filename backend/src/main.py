@@ -8,7 +8,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
 from pytz import utc
 
-from .routers.files.sync_file_paths import FileSyncer
+from .routers.files.FileSyncer import FileSyncer
 
 
 from .middleware.register_middleware import register_middleware

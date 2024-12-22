@@ -10,7 +10,7 @@ from ..orm_connection import Base
 from ..dependencies import get_db
 from ..main import app
 from ..models import Strategies, Users
-from ..lib.auth.auth_services import get_current_user
+from ..routers.auth.auth_utils import get_current_user
 from ..config import Config
 
 client = TestClient(app)

@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from ..models import Users
-from ..lib.auth.auth_services import hash_password
+from ..routers.auth.auth_utils import hash_password
 
 INITIAL_DATA = {
     "users": [

@@ -8,7 +8,7 @@ from starlette import status
 
 from ...dependencies import db_dependency, user_dependency
 from ...models import Users
-from ...lib.auth.auth_services import hash_password, verify_password
+from ..auth.auth_utils import hash_password, verify_password
 
 router = APIRouter(prefix='/user', tags=['user'])
 

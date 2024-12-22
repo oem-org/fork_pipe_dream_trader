@@ -1,7 +1,7 @@
 from logging import exception
 
 from fastapi import APIRouter, Query, HTTPException
-from ...lib.data.FileLoader import FileLoader
+from ..files.FileLoader import FileLoader
 
 from ...lib.data.IndicatorLoader import IndicatorLoader
 from starlette import status
@@ -38,8 +38,8 @@ router = APIRouter(prefix='/timeseries', tags=['chart'])
 #             fileLoader.load_or_reload()
 #
 #             indicators_info = [{
-#                 "indicator_info": si.indicator.indicator_info, 
-#                 "kind": si.indicator.kind, 
+#                 "indicator_info": si.indicator.indicator_info,
+#                 "kind": si.indicator.kind,
 #                 "id": si.id} for si in strategyModel.strategy_indicators if si.indicator
 #             ]
 #
@@ -84,9 +84,9 @@ async def read_all(
             fileLoader.load_data()
             # print(fileLoader.df)
 
-            indicators_info = [{"indicator_info": si.indicator.indicator_info, 
-                                "kind": si.indicator.kind, 
-                                "id": si.id} 
+            indicators_info = [{"indicator_info": si.indicator.indicator_info,
+                                "kind": si.indicator.kind,
+                                "id": si.id}
                                 for si in strategyModel.strategy_indicators if si.indicator]
 
             all_indicator_settings = [ind.settings
@@ -98,7 +98,7 @@ async def read_all(
             indicatorLoader.split_dataframe()
             # Connects dataframe column with StrategyIndicator id
             info = indicatorLoader.connect_indicator_info(indicators_info)
-            
+
             # Key is the name of the database column
             for key, value in info.items():
                 print(key)
@@ -108,12 +108,12 @@ async def read_all(
                 print(strategy_indicator, "test")
                 if strategy_indicator:
                     strategy_indicator.dataframe_column = key
-                    db.commit()  
+                    db.commit()
                 else:
                     print(f"StrategyIndicator with ID {value[id]} not found")
-            
+
             # indicatorLoader.response['timeframe'] = fileLoader.timeframe
-            
+
             return indicatorLoader.response
     except Exception as e:
         handle_db_error(e, "Unexpected error occurred while fetching the file data")
