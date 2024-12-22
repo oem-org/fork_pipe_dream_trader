@@ -66,6 +66,7 @@ class FileResponse(BaseModel):
 class IndicatorSchema(BaseModel):
     id: int
     kind: str
+    name: str
     default_settings: Dict
     indicator_info: str
 

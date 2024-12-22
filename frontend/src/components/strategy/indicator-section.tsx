@@ -16,9 +16,11 @@ export default function IndicatorSection() {
 
 	async function handleIndicatorChange(indicator: Indicator): Promise<void> {
 		try {
-			// Using the destructured mutateAsync
 			const response = await addIndicatorMutation(indicator);
 			console.log("Indicator added successfully:", response);
+			console.log(indicator);
+
+			console.log(indicatorSettings, "seeeettings")
 
 		} catch (error) {
 			console.error("Error adding indicator:", error);
@@ -42,12 +44,13 @@ export default function IndicatorSection() {
 		<h2 className="h2 mb-4">Indicators</h2>
 
 		<hr className='py-1' />
+
 		<GenericSelect<Indicator>
 			data={indicatorSettings || []}
 			keyExtractor={(indicator) => indicator.id}
 			nameExtractor={(indicator) => indicator.kind}
 			onSelect={handleIndicatorChange}
-			renderItem={(indicator) => <span>{indicator.kind}</span>}
+			renderItem={(indicator) => <span>{indicator.name}</span>}
 			title="Select or search"
 			searchEnabled={true}
 		/>

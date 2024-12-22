@@ -57,5 +57,5 @@
 /*navigation*/
 
 .btn-dropdown{
-  @apply text-white text-left w-full px-4 py-2 hover:bg-gray-700 rounded
+  @apply block text-white text-left w-full px-4 py-2 hover:bg-gray-700 rounded
 }
