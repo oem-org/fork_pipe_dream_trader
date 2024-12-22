@@ -54,6 +54,7 @@ class FileSchema(BaseModel):
     id: int
     path: str
     name: str
+    pair: Optional[str]
     file_type: FileTypeEnum
 
 

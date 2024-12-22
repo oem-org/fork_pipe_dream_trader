@@ -1,11 +1,10 @@
 import os
-import shutil
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from fastapi import APIRouter, HTTPException, UploadFile
+from .file_utils import get_file_path
 from sqlalchemy.exc import SQLAlchemyError
 from starlette import status
-import pandas as pd
 from ...dependencies import db_dependency, user_dependency
 from ...lib.data.FileLoader import FileLoader
 from ...lib.data.FileValidator import FileValidator
@@ -85,18 +84,26 @@ async def save_uploaded_file(db: db_dependency, file: UploadFile):
     rows in the error message
 
     -------------------------------------------------------------------
-    FastApi dont have max file size so depends on the server
+    FastApi dont have max file size
 
     """
 
     file_path = None
     try:
-        file_path = save_file(file)
+        file_path = get_file_path(file)
 
         name = Path(file_path).name
         fileValidation = FileValidator(file_path)
         validated = fileValidation.validate()
-        print(validated, "validation check")
+        # Pair refers to the trading pair
+        pair = fileValidation.get_pair()
+        print(pair, "validation check")
+        print(pair, "validation check")
+        print(pair, "validation check")
+        print(pair, "validation check")
+        print(pair, "validation check")
+        print(pair, "validation check")
+        print(pair, "validation check")
         if validated == True:
             name = Path(file_path).name
             saved_file = Files(
@@ -122,29 +129,3 @@ async def save_uploaded_file(db: db_dependency, file: UploadFile):
     return {"file_saved": file_path}
 
 
-def save_file(file: UploadFile) -> str:
-    folder_path = Path(__file__).parent.parent.parent.parent / "uploaded_files"
-    folder_path.mkdir(parents=True, exist_ok=True)
-    file_path = folder_path / file.filename
-
-    if file_path.exists():
-        # send a "Conflict" status code
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"File '{file.filename}' already exists.",
-        )
-
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-
-    return str(file_path)
-
-
-def validate_or_delete(result, file_path) -> bool:
-    if not result.validated:
-        print(result.errors)
-        os.remove(file_path)
-        handle_not_validated_file_error(
-            "File contains validation errors, see result in details", result.errors
-        )
-    return True

@@ -103,6 +103,7 @@ class Files(Base):
     id = Column(Integer, primary_key=True, index=True)
     path = Column(String, unique=True)
     name = Column(String)
+    pair = Column(String, nullable=True)
     file_type = Column(Enum(FileTypeEnum))
     
     strategies = relationship(

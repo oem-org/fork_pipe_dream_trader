@@ -19,7 +19,25 @@ class FileLoader:
             return FileTypeEnum.JSON
         else:
             return None
+    
+    def get_pair(self):
+        columns_to_check = ['pair', 'symbol', 'ticker']
 
+        for column in columns_to_check:
+            if column in self.df.columns:
+                value = str(self.df[column].iloc[0])  # Convert the value to string
+                print("STRRRRR",value)
+                print("STRRRRR",value)
+                print("STRRRRR",value)
+                print("STRRRRR",value)
+                print("STRRRRR",value)
+                print("STRRRRR",value)
+                print("STRRRRR",value)
+                print(f"Returning value from column: {column}")
+                return value
+
+        print("No matching column found.")
+        return None
 
     def load_or_reload(self):
         """

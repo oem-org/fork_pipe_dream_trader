@@ -81,7 +81,12 @@ export default function Charts() {
 
 			{lineSeries.length > 0 ? (
 				lineSeries.map((line, index) => (
-					<div className='w-full h-80' key={index}>
+					<div className='w-full h-80 relative' key={index}>
+
+						<p className="absolute top-0 left-0 p-2 z-50 rounded text-white">
+							{}
+
+						</p>
 						<ChartCanvas
 							// Pass list of lineSeries
 							indicators={[line]}

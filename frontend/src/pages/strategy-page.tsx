@@ -22,7 +22,7 @@ export default function StrategyPage() {
   const { id } = useParams();
   const paramId = id ? parseInt(id) : NaN;
   const { strategyId, setStrategyId } = useStrategyStore();
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const toggleInfoModal = () => setIsInfoModalOpen(!isInfoModalOpen);
@@ -32,7 +32,7 @@ export default function StrategyPage() {
 
 
   const { data: strategy, error, isError, isLoading } = getStrategyQuery(strategyId);
-  const { data: strategies } = getStrategiesQuery();
+  //const { data: strategies } = getStrategiesQuery();
   const { data: files } = getFilesQuery();
 
   const { mutateAsync: updateStrategyMutation } = useUpdateStrategy();
@@ -143,6 +143,3 @@ export default function StrategyPage() {
 //  />
 //</article>
 //title
-//<p className="absolute top-0 left-0 p-2 z-10 bg-white bg-opacity-75 rounded transparent-bg">
-//  {/* Any additional content like loading or info can go here */}
-//</p>

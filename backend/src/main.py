@@ -8,6 +8,8 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
 from pytz import utc
 
+from .routers.files.sync_file_paths import FileSyncer
+
 
 from .middleware.register_middleware import register_middleware
 from .models import *
@@ -21,7 +23,6 @@ from .routers.users import users
 from .seeders.indicators_seeder import indicators_seeder
 # custom logging setup
 # from .logger import logger
-from .utils.sync_file_paths import sync_file_paths
 from .indicators.Ao import Ao
 from .dependencies import user_dependency
 import json
@@ -39,7 +40,7 @@ Base.metadata.create_all(bind=engine)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    sync_file_paths(session)
+    FileSyncer.sync_file_paths(session)
     indicators_seeder(session)
     scheduler.start()
     yield

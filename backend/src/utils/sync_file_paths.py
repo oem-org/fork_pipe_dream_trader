@@ -1,4 +1,3 @@
-from inspect import _void
 from pathlib import Path
 from ..schemas import FileTypeEnum
 from sqlalchemy.orm import Session
@@ -46,9 +45,7 @@ def add_non_matching_files(db: Session, non_matching_files: dict):
 
 def sync_file_paths(db: Session):
     print("syncing")
-    current_directory = Path(__file__).parent
-    parent_parent_folder = current_directory.parent.parent
-    folder_path = parent_parent_folder / "uploaded_files"
+    folder_path = Path.cwd() / "uploaded_files"
 
     folder_files = {file.name: file for file in folder_path.iterdir() if file.is_file()}
     print(folder_files)
