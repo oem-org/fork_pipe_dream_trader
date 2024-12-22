@@ -2,20 +2,29 @@ import { Operator } from '@/interfaces/Operator'
 import GenericSelect from '@/components/ui/lists/generic-select'
 
 interface OperatorConditionSelectProps {
-  initialValue: string
+  initialValue: string;
+  onValueChange: (value: string) => void;
 }
 
+export default function OperatorConditionSelect({ initialValue, onValueChange }: OperatorConditionSelectProps) {
+  const operators: Operator[] = [
+    { "id": 1, "name": "=" },
+    { "id": 2, "name": "<" },
+    { "id": 3, "name": ">" },
+    { "id": 4, "name": "|" }
+  ];
 
-export default function OperatorConditionSelect({ initialValue }: OperatorConditionSelectProps) {
-  const operators: Operator[] = [{ "id": 1, "name": "=" }, { "id": 2, "name": "<" }, { "id": 3, "name": ">" }, { "id": 4, "name": "|" }]
   const initialObj = operators.find(operator => operator.name === initialValue);
 
-
-  function handleOperatorChange() {
-
+  function handleOperatorChange(operator: Operator) {
+    console.log("Selected operator:", operator);
+    if (onValueChange) {
+      onValueChange(operator.name);
+    }
   }
+
   return (
-    <div >
+    <div>
       <GenericSelect<Operator>
         data={operators || []}
         keyExtractor={(operator) => operator.id}
@@ -27,6 +36,5 @@ export default function OperatorConditionSelect({ initialValue }: OperatorCondit
         initialValue={initialObj}
       />
     </div>
-  )
+  );
 }
-

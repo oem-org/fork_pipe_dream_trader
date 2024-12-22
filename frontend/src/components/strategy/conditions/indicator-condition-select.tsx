@@ -3,12 +3,13 @@ import GenericSelect from "@/components/ui/lists/generic-select";
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
 import { StrategyIndicator } from "@/interfaces/StrategyIndicator";
 import useInitialValue from "@/lib/hooks/useInitialValue";
+
 interface IndicatorConditionSelectProps {
   initialValue: string;
-  //key: number;
+  onValueChange: (value: string) => void;
 }
 
-export default function IndicatorConditionSelect({ initialValue }: IndicatorConditionSelectProps) {
+export default function IndicatorConditionSelect({ initialValue, onValueChange }: IndicatorConditionSelectProps) {
 
   const { strategyId } = useStrategyStore();
   const { data: indicatorSettings } = getStrategyIndicatorsQuery(strategyId);
@@ -17,10 +18,13 @@ export default function IndicatorConditionSelect({ initialValue }: IndicatorCond
 
   function handleChange(item: StrategyIndicator) {
     console.log("Selected item:", item);
+    if (onValueChange) {
+      onValueChange(item.dataframe_column);
+    }
   }
 
   return (
-    <div >
+    <div>
       <GenericSelect<StrategyIndicator>
         data={indicatorSettings || []}
         keyExtractor={(indicator) => indicator.id}
@@ -33,4 +37,4 @@ export default function IndicatorConditionSelect({ initialValue }: IndicatorCond
       />
     </div>
   );
-};
+}

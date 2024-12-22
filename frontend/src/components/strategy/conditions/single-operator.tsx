@@ -1,28 +1,44 @@
-import { Settings } from 'lucide-react'; // Make sure you have the lucide-react package installed
-
+import { Settings } from 'lucide-react';
+import { operators } from './operators';
+import { Operator } from '@/interfaces/Operator'
+import GenericSelect from '@/components/ui/lists/generic-select'
 interface SingleOperatorProps {
   initialValue: string;
-  //key: number;
+  onValueChange: (value: string) => void;
 }
 
+function SingleOperator({ initialValue, onValueChange }: SingleOperatorProps) {
+  //let value = initialValue;
 
-function SingleOperator({ initialValue }: SingleOperatorProps) {
-  let value
-  value = initialValue
-  function handleClick() {
-    console.log("click");
+  //function handleClick() {
+  //  console.log("click");
+  //  onValueChange(value);
+  //}
 
+
+  const initialObj = operators.find(operator => operator.name === initialValue);
+
+  function handleOperatorChange(operator: Operator) {
+    console.log("Selected operator:", operator);
+    if (onValueChange) {
+      onValueChange(operator.name);
+    }
   }
 
   return (
-    <div className="flex items-center relative group">
-      <span className="mr-2 cursor-default">{value}</span>
-      <Settings
-        className="invisible group-hover:visible cursor-pointer text-gray-500 hover:text-gray-700"
-        onClick={() => handleClick()}
+    <div>
+      <GenericSelect<Operator>
+        data={operators || []}
+        keyExtractor={(operator) => operator.id}
+        nameExtractor={(operator) => operator.name}
+        onSelect={handleOperatorChange}
+        renderItem={(operator) => <span>{operator.name}</span>}
+        title="Operator"
+        searchEnabled={false}
+        initialValue={initialObj}
       />
     </div>
   );
-};
 
+}
 export default SingleOperator;

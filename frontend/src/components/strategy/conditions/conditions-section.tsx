@@ -1,9 +1,11 @@
 import { Button } from '@/components/ui/buttons/button'
-import ConditionSelect from './condition-select'
-import InputSmall from '../../ui/forms/input-small'
+import BuildConditionRenderer from './build-condition-renderer'
 
 
 export default function ConditionsSection() {
+
+  const defaultConds = [[{ "indicator": "SMA_10" }, { "operator": ">" }, { "value": 1 }], "&", [{ "indicator": "RSI_14" }, { "operator": "=" }, { "indicator": "RSI_10" }]]
+
   return (
     <div>
       <div className="flex flex-row justify-between">
@@ -16,7 +18,7 @@ export default function ConditionsSection() {
       </div>
       <hr className='py-1' />
       <div className='flex flex-row'>
-        <ConditionSelect />
+        <BuildConditionRenderer conditions={defaultConds} />
       </div>
     </div>
   )

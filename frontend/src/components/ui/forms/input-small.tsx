@@ -4,13 +4,17 @@ interface InputFormProps {
 	title?: string;
 	initialValue?: string;
 	name: string;
+	onValueChange: (value: string) => void;
 }
 
-export default function InputSmall({ title, initialValue = "", name }: InputFormProps) {
+export default function InputSmall({ title, initialValue = "", name, onValueChange }: InputFormProps) {
 	const [inputValue, setInputValue] = useState(initialValue);
 
+
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setInputValue(e.target.value);
+		const newValue = e.target.value;
+		setInputValue(newValue);
+		onValueChange(newValue);
 	};
 
 	return (
@@ -27,5 +31,4 @@ export default function InputSmall({ title, initialValue = "", name }: InputForm
 			/>
 		</>
 	);
-};
-
+}
