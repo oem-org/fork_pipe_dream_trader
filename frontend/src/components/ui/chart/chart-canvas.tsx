@@ -20,14 +20,13 @@ interface ChartCanvasProps {
 	};
 }
 
-export default function ChartCanvas({
-	chartContainerRef,
+const ChartCanvas = memo(function ChartCanvas({
+	chartRef,
 	data,
 	volume,
 	indicators,
 	colors: { backgroundColor = '#253248', textColor = 'white' } = {},
 }: ChartCanvasProps): React.ReactElement {
-	const chartRef = useRef<IChartApi | null>(null);
 	const seriesRefs = useRef<{ [key: string]: ISeriesApi<'Line'> }>({});
 
 	useEffect(() => {
