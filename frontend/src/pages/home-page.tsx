@@ -67,11 +67,9 @@ export default function HomePage() {
         </section>
       </div >
 
-      {/* Optional Backtest Section (can go below or be added in the same grid) */}
       < div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6" >
         <section className="p-4 bg-gray-100 rounded-lg">
           <h4 className="text-xl font-bold mb-4">Backtest</h4>
-          {/* Backtest Content Here */}
         </section>
       </div >
     </div >
