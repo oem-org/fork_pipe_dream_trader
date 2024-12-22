@@ -1,13 +1,13 @@
-import create from 'zustand';
+import { create } from 'zustand';
 
 interface RerenderStore {
-	rerender: boolean;
-	toggleRerender: () => void;
+	rerender: number;
+	trigger: () => void;
 }
 
 const useRerenderStore = create<RerenderStore>((set) => ({
-	rerender: false,
-	toggleRerender: () => set((state) => ({ rerender: !state.rerender })),
+	rerender: 0,
+	trigger: () => set((state) => ({ rerender: state.rerender + 1 })),
 }));
 
 export default useRerenderStore;

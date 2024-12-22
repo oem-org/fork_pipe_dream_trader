@@ -16,22 +16,23 @@ import SettingsDropdown from "@/components/strategy/settings-dropdown";
 
 import { useUpdateStrategy } from "@/lib/hooks/useUpdateStrategy";
 import ConditionsSection from "@/components/strategy/conditions/conditions-section";
-
+import useFileStore from "@/lib/hooks/useFileStore";
 
 export default function StrategyPage() {
+  // TODO: use name instead of id
   const { id } = useParams();
   const paramId = id ? parseInt(id) : NaN;
-  const { strategyId, setStrategyId } = useStrategyStore();
+  const { fileId, strategyId, setFileId, setStrategyId } = useStrategyStore();
   //const navigate = useNavigate();
+  const [rerender, setRerender] = useState<number>(0)
 
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const toggleInfoModal = () => setIsInfoModalOpen(!isInfoModalOpen);
 
-  const [fileId, setFileId] = useState<number>(0);
-  const [dataSourceType, setDataSourceType] = useState<string>("");
+  //const [dataSourceType, setDataSourceType] = useState<string>("");
 
 
-  const { data: strategy, error, isError, isLoading } = getStrategyQuery(strategyId);
+  const { data: strategy, error, isError, isLoading } = getStrategyQuery(paramId);
   //const { data: strategies } = getStrategiesQuery();
   const { data: files } = getFilesQuery();
 
@@ -105,12 +106,12 @@ export default function StrategyPage() {
 
             </article>
             <div className="lg:col-span-3">
-              <Charts fileId={fileId} />
+              <Charts key={rerender} strategyId={strategyId} fileId={fileId} />
             </div>
           </section>
           <section className="grid grid-cols-1 lg:grid-cols-8 gap-4">
             <div className="lg:col-span-3 p-4 bg-gray-100 rounded-lg">
-              <IndicatorSection />
+              <IndicatorSection setRerender={setRerender} strategyId={strategyId} />
             </div>
             <section className="lg:col-span-3 p-4 bg-gray-100 rounded-lg">
               <ConditionsSection />

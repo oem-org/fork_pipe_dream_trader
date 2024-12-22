@@ -5,80 +5,92 @@ import getStrategyIndicatorsQuery from "@/lib/queries/getStrategyIndicatorsQuery
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
 import { useAddIndicator } from "@/lib/hooks/useAddIndicator";
 import GenericIndicator from "./generic-indicator";
-import { useEffect } from "react";
+import { useEffect, useCallback, memo } from "react";
 
-export default function IndicatorSection() {
+interface IndicatorSectionProps {
+	setRerender: React.Dispatch<React.SetStateAction<number>>;
+	strategyId: number;
+}
 
-	const { strategyId } = useStrategyStore();
+const IndicatorSection = memo(function IndicatorSection({
+	strategyId,
+	setRerender,
+}: IndicatorSectionProps) {
 	const { mutateAsync: addIndicatorMutation } = useAddIndicator(strategyId);
 	const { data: strategyIndicators, error: siError, isLoading: siIsLoading } = getStrategyIndicatorsQuery(strategyId);
 	const { data: indicators } = getIndicatorsQuery();
 
-	useEffect(() => {
-		console.log("strategyIndicators have changed", strategyIndicators);
-		// You can perform any other side effects or logic here if needed.
-	}, [strategyIndicators])
-
-	async function handleIndicatorChange(indicator: Indicator): Promise<void> {
+	const handleIndicatorChange = useCallback(async (indicator: Indicator): Promise<void> => {
 		try {
 			const response = await addIndicatorMutation(indicator);
 			console.log("Indicator added successfully:", response);
 			console.log(indicator);
-
-			console.log(indicators, "seeeettings")
-
 		} catch (error) {
 			console.error("Error adding indicator:", error);
 		}
-	};
+	}, [addIndicatorMutation]);
+
+
+
+
+	useEffect(() => {
+		setRerender((prev) => prev + 1)
+	}, [strategyIndicators]);
+
+	function parseSettings(rawSchema: any): SettingsSchema {
+		const settingsSchema = JSON.parse(rawSchema);
+		return settingsSchema;
+	}
 
 	interface SettingsSchema {
-		description: string,
-		properties: Record<string, any>,
-		title: string,
-		type: Record<string, any>,
+		description: string;
+		properties: Record<string, any>;
+		title: string;
+		type: Record<string, any>;
 	}
 
-	// The raw schema contains a object with unparsed strings
-	function parseSettings(rawSchema: any): SettingsSchema {
-		const settingsSchema = JSON.parse(rawSchema)
-		return settingsSchema
-	}
-	// TODO: fix ordering problem
-	return (<section>
-		<h2 className="h2 mb-4">Indicators</h2>
+	return (
+		<section>
+			<h2 className="h2 mb-4">Indicators</h2>
+			<hr className="py-1" />
 
-		<hr className='py-1' />
+			<GenericSelect<Indicator>
+				data={indicators || []}
+				keyExtractor={(indicator) => indicator.id}
+				nameExtractor={(indicator) => indicator.kind}
+				onSelect={handleIndicatorChange}
+				renderItem={(indicator) => <span>{indicator.name}</span>}
+				title="Select or search"
+				changeTitle={false}
+				searchEnabled={true}
+			/>
 
-		<GenericSelect<Indicator>
-			data={indicators || []}
-			keyExtractor={(indicator) => indicator.id}
-			nameExtractor={(indicator) => indicator.kind}
-			onSelect={handleIndicatorChange}
-			renderItem={(indicator) => <span>{indicator.name}</span>}
-			title="Select or search"
-			searchEnabled={true}
-		/>
+			<div className="mt-4">
+				<h3 className="h3 mb-2">Loaded Indicators</h3>
+				{siIsLoading && <p>Loading indicators...</p>}
+				{siError && siError instanceof Error && (
+					<p className="text-red-500">Error loading indicators: {siError.message}</p>
+				)}
+				{!siIsLoading && !siError && strategyIndicators ? (
+					<ul>
+						{strategyIndicators.map((indicator) => (
+							<li key={indicator.id}>
+								<GenericIndicator
+									indicatorName={indicator.name}
+									dataframeColumn={indicator.dataframe_column}
+									indicatorId={indicator.id}
+									settingsSchema={parseSettings(indicator.settings_schema)}
+									settings={indicator.settings}
+								/>
+							</li>
+						))}
+					</ul>
+				) : (
+					<p>No indicators found for this strategy.</p>
+				)}
+			</div>
+		</section>
+	);
+});
 
-		<div className="mt-4">
-			<h3 className="h3 mb-2">Loaded Indicators</h3>
-			{siIsLoading && <p>Loading indicators...</p>}
-			{siError && siError instanceof Error && (
-				<p className="text-red-500">Error loading indicators: {siError.message}</p>
-			)}
-			{!siIsLoading && !siError && strategyIndicators ? (
-
-				<ul>
-					{strategyIndicators.map((indicator) => (
-						<li key={indicator.id}>
-							<GenericIndicator indicatorName={indicator.name} dataframeColumn={indicator.dataframe_column} indicatorId={indicator.id} settingsSchema={parseSettings(indicator.settings_schema)} settings={indicator.settings} />
-						</li>
-					))}
-				</ul>
-			) : (
-				<p>No indicators found for this strategy.</p>
-			)}
-		</div>
-
-	</section>)
-}
+export default IndicatorSection;

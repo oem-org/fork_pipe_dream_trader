@@ -32,25 +32,27 @@ export default function Charts({ fileId }: ChartsProps) {
 
 	useEffect(() => {
 		async function loadData() {
-			const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
-			const parsed = parseJsonStrings(data);
-			console.log(parsed, "parsed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			if (strategyId | fileId) {
+				const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
+				const parsed = parseJsonStrings(data);
+				console.log(parsed, "parsed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-			const timeseriesService = new TimeseriesService();
-			await timeseriesService.processOhlc(parsed.ohlc);
-			await timeseriesService.processVolume(parsed.volume);
-			const indicatorInfo = parsed.indicator_info;
-			delete parsed.ohlc;
-			delete parsed.volume;
-			delete parsed.indicator_info;
-			await timeseriesService.processBulk(parsed);
-			const mapped = await timeseriesService.updateChart(indicatorInfo);
-			console.log(mapped, "MAPPED")
-			setIndicators(mapped)
+				const timeseriesService = new TimeseriesService();
+				await timeseriesService.processOhlc(parsed.ohlc);
+				await timeseriesService.processVolume(parsed.volume);
+				const indicatorInfo = parsed.indicator_info;
+				delete parsed.ohlc;
+				delete parsed.volume;
+				delete parsed.indicator_info;
+				await timeseriesService.processBulk(parsed);
+				const mapped = await timeseriesService.updateChart(indicatorInfo);
+				console.log(mapped, "MAPPED")
+				setIndicators(mapped)
 
-			setTimeseries(timeseriesService.ohlc);
-			setVolume(timeseriesService.volume);
-			queryClient.invalidateQueries({ queryKey: ['strategyIndicators'] })
+				setTimeseries(timeseriesService.ohlc);
+				setVolume(timeseriesService.volume);
+				queryClient.invalidateQueries({ queryKey: ['strategyIndicators'] })
+			}
 		}
 		loadData()
 

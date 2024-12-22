@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { createChart, ColorType, IChartApi, ISeriesApi, LineStyle } from 'lightweight-charts';
 import React from 'react';
 import Timeseries from '../../../interfaces/Timeseries';
@@ -21,14 +21,14 @@ interface ChartCanvasProps {
 }
 
 const ChartCanvas = memo(function ChartCanvas({
-	chartRef,
+	chartContainerRef,
 	data,
 	volume,
 	indicators,
 	colors: { backgroundColor = '#253248', textColor = 'white' } = {},
 }: ChartCanvasProps): React.ReactElement {
 	const seriesRefs = useRef<{ [key: string]: ISeriesApi<'Line'> }>({});
-
+	const chartRef = useRef<IChartApi | null>(null);
 	useEffect(() => {
 		if (!chartRef.current && chartContainerRef.current) {
 			chartRef.current = createChart(chartContainerRef.current, {
@@ -101,4 +101,5 @@ const ChartCanvas = memo(function ChartCanvas({
 	}, [indicators, chartContainerRef, data, volume, backgroundColor, textColor]);
 
 	return <div className="w-full h-full" ref={chartContainerRef} />;
-}
+})
+export default ChartCanvas

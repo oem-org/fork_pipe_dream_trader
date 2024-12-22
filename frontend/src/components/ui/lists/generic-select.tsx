@@ -9,6 +9,7 @@ interface GenericSelectProps<T> {
 	renderItem: (item: T) => React.ReactNode;
 	title: string;
 	searchEnabled: boolean;
+	changeTitle?: boolean;
 	nameExtractor: (item: T) => string
 	initialValue?: T | null
 }
@@ -23,6 +24,7 @@ export default function GenericSelect<T>({
 	searchEnabled,
 	nameExtractor,
 	initialValue,
+	changeTitle = true,
 
 }: GenericSelectProps<T>) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +35,9 @@ export default function GenericSelect<T>({
 
 	const handleSelection = (item: T, e: React.MouseEvent<HTMLButtonElement>) => {
 		onSelect(item);
-		setCurrentTitle(nameExtractor(item));
+		if (changeTitle) {
+			setCurrentTitle(nameExtractor(item));
+		}
 		setIsOpen(false);
 		setSearchQuery("");
 		e.preventDefault()
@@ -55,7 +59,7 @@ export default function GenericSelect<T>({
 	};
 
 	useEffect(() => {
-		if (initialValue) {
+		if (initialValue && changeTitle) {
 			setCurrentTitle(nameExtractor(initialValue));
 		}
 	}, [initialValue]);

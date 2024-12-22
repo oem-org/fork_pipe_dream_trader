@@ -19,6 +19,7 @@ export default function getFileQuery(id: number) {
 		// refetch when id changes
 		queryKey: ["file", id],
 		queryFn: fetchFile,
+		enabled: !!id && id > 0
 	})
 
 	return { data, error, isError, isLoading, refetch }

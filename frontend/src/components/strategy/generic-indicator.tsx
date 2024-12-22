@@ -15,36 +15,32 @@ interface GenericIndicatorProps {
 	dataframeColumn: string;
 }
 
-// TODO: inputs go back to default when empty and the inputs move
 export default function GenericIndicator({ indicatorName, dataframeColumn, indicatorId, settingsSchema, settings }: GenericIndicatorProps) {
 	const [formData, setFormData] = useState<Record<string, any>>(settings);
 	const [errors, setErrors] = useState<Record<string, string>>({});
-	console.log(dataframeColumn)
 	const { strategyId } = useStrategyStore();
 	const { mutateAsync: updateIndicator } = useUpdateIndicator(strategyId);
-
 	const { mutateAsync: deleteIndicatorMutation } = useDeleteIndicator(strategyId);
 
-	useEffect(() => {
-		console.log("dataframe column", dataframeColumn);
-		// You can perform any other side effects or logic here if needed.
-	}, [dataframeColumn])
+	function handleDelete(id: number) {
+		deleteIndicatorMutation(id);
+	}
 
-
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setFormData({
-			...formData,
+	function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+		setFormData((prevFormData) => ({
+			...prevFormData,
 			[e.target.name]: e.target.value,
-		});
-	};
+		}));
+	}
+
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
-	const toggleModal = () => setIsModalOpen(!isModalOpen);
+	function toggleModal() {
+		setIsModalOpen((prev) => !prev);
+	}
 
-
-	const handleSubmit = (e: React.FormEvent) => {
+	function handleSubmit(e: React.FormEvent) {
 		e.preventDefault();
-		//TODO: write explanation
 		const convertedFormData = Object.entries(formData).reduce(
 			(acc, [key, value]) => {
 				const property = settingsSchema.properties[key];
@@ -58,7 +54,6 @@ export default function GenericIndicator({ indicatorName, dataframeColumn, indic
 							acc[key] = convertedValue;
 						}
 					} else if (property.type === 'number') {
-						isFloat(value)
 						const convertedValue = parseFloat(value);
 						if (!isFloat(value) && isFloat(convertedValue)) {
 							acc.errors[key] = `${property.title || key} trimming value into a float`;
@@ -81,21 +76,17 @@ export default function GenericIndicator({ indicatorName, dataframeColumn, indic
 			},
 			{ errors: {} } as { [key: string]: any; errors: Record<string, string> }
 		);
-		// TODO: fix errors type error
+
 		if (Object.keys(convertedFormData.errors).length > 0) {
 			setErrors(convertedFormData.errors);
 		} else {
 			setErrors({});
-			// Disregard operand of delete must be optional typescript warning
-			// Its unimportant as the errors {} should not be optional and is deleted only if exist
-			delete convertedFormData.errors
-			const data = updateIndicator({ indicatorId, settings: convertedFormData })
-			console.log(data)
-			console.log('Form submitted successfully with data:', convertedFormData);
+			delete convertedFormData.errors;
+			updateIndicator({ indicatorId, settings: convertedFormData });
 		}
-	};
+	}
 
-	const renderInputField = (key: string, property: Record<string, any>) => {
+	function renderInputField(key: string, property: Record<string, any>) {
 		const { default: defaultValue, title, type } = property;
 		const excludedKeys = ['kind', 'name', 'ddof', 'talib'];
 		if (excludedKeys.includes(key)) {
@@ -185,7 +176,7 @@ export default function GenericIndicator({ indicatorName, dataframeColumn, indic
 					</div>
 				);
 		}
-	};
+	}
 
 	return (
 		<div className='flex flex-col border rounded-lg p-4'>
@@ -194,18 +185,17 @@ export default function GenericIndicator({ indicatorName, dataframeColumn, indic
 					<pre className="whitespace-pre-wrap break-words p-4 rounded-md">
 						{settingsSchema.description}
 					</pre>
-
 				</section>
 			</Modal>
 			<div className='flex flex-row justify-between'>
 				<div className='flex flex-row'>
 					<h3 className='h3 font-bold mr-2'>{indicatorName}</h3>
 					{dataframeColumn && <p className='text-lg mr-2'>ID: {dataframeColumn}</p>}
-					<InfoIcon className='cursor-pointer' onClick={() => toggleModal()} />
+					<InfoIcon className='cursor-pointer' onClick={toggleModal} />
 				</div>
-				<button className="mb-4 appearance-none" onClick={() => deleteIndicatorMutation(indicatorId)}>
+				<button className="mb-4 appearance-none" onClick={() => handleDelete(indicatorId)}>
 					<div className="flex items-center space-x-2">
-						<span >Delete</span>
+						<span>Delete</span>
 						<SquareX />
 					</div>
 				</button>
@@ -216,13 +206,11 @@ export default function GenericIndicator({ indicatorName, dataframeColumn, indic
 					{Object.entries(settingsSchema.properties).map(([key, property]) => {
 						return (<div key={key}>
 							{renderInputField(key, property as Record<string, any>)}
-
 						</div>);
-					})
-
-					}
+					})}
 				</div>
 				<Button className='mt-auto ml-3 mb-2' type='submit'> Submit</Button>
 			</form>
-		</div>);
+		</div>
+	);
 }

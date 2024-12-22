@@ -21,6 +21,7 @@ const getStrategyIndicatorsQuery = (strategyId: number) => {
 	const { data, error, isError, isLoading, refetch } = useQuery<StrategyIndicator[], Error>({
 		queryKey: ["strategyIndicators"],
 		queryFn: fetchStrategyIndicators,
+		enabled: !!strategyId && strategyId > 0
 	})
 
 	return { data, error, isError, isLoading, refetch }

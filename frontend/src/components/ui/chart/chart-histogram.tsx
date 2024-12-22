@@ -1,5 +1,5 @@
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo } from 'react';
 import { createChart, ColorType, IChartApi } from 'lightweight-charts';
 import React from 'react';
 
@@ -14,7 +14,7 @@ interface ChartCanvasProps {
 	};
 }
 
-export default function ChartHistogram({
+const ChartHistogram = memo(function ChartHistogram({
 	data,
 	chartContainerRef,
 	colors: { backgroundColor = '#253248', textColor = 'white' } = {},
@@ -60,4 +60,5 @@ export default function ChartHistogram({
 
 
 	return <div className="w-full h-full" ref={chartContainerRef} />;
-}
+})
+export default ChartHistogram

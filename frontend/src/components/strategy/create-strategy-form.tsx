@@ -8,6 +8,8 @@ import { postStrategyApi } from "@/lib/apiClientInstances";
 import { useNavigate } from 'react-router-dom';
 import { DataSourceEnum } from "@/interfaces/enums/DataSourceEnum";
 import { DatabaseSource, FileSource } from "@/interfaces/Strategy";
+import useStrategyStore from "@/lib/hooks/useStrategyStore";
+
 
 export default function CreateStrategyForm() {
 	const [name, setName] = useState("");
@@ -15,9 +17,9 @@ export default function CreateStrategyForm() {
 	const [clonedStrategy, setClonedStrategyId] = useState<number>(0);
 	const [fileId, setFileId] = useState<number>(0);
 	const [dataSourceType, setDataSourceType] = useState<DataSourceEnum>(DataSourceEnum.FILE);
-
 	const { data: dataStrategies, refetch } = getStrategiesQuery();
 	const { data: dataFiles } = getFilesQuery();
+	const { setStrategyId } = useStrategyStore()
 	console.log(clonedStrategy);
 
 	const [databaseOption, setDatabaseOption] = useState("");
@@ -77,6 +79,7 @@ export default function CreateStrategyForm() {
 					data_source: dataSource,
 				});
 				refetch()
+				setStrategyId(strategy.id)
 				navigate(`/strategy/${strategy.id}`);
 			}
 			else {
@@ -87,6 +90,7 @@ export default function CreateStrategyForm() {
 					data_source: dataSource,
 				});
 				refetch()
+				setStrategyId(strategy.id)
 				navigate(`/strategy/${strategy.id}`);
 			}
 

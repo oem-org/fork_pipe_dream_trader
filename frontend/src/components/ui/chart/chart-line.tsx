@@ -1,5 +1,4 @@
-
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo } from 'react';
 import { createChart, ColorType, IChartApi } from 'lightweight-charts';
 import React from 'react';
 import { LineData } from 'lightweight-charts';
@@ -13,7 +12,7 @@ interface ChartLineProps {
 	};
 }
 
-export default function ChartLine({
+const ChartLine = memo(function ChartLine({
 	data,
 	chartContainerRef,
 	colors: { backgroundColor = '#253248', textColor = 'white' } = {},
@@ -58,6 +57,7 @@ export default function ChartLine({
 		};
 	}, [chartContainerRef, data, backgroundColor, textColor]);
 
-
 	return <div className="w-full h-full" ref={chartContainerRef} />;
-}
+});
+
+export default ChartLine;
