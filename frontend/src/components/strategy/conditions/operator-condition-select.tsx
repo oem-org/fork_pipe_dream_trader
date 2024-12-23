@@ -24,8 +24,7 @@ const OperatorConditionSelect = forwardRef(
     }
 
     useImperativeHandle(ref, () => ({
-      //getValue: () => ({ operatorCondition: selectedOperator.name }),
-      getValue: () => (selectedOperator),
+      getValue: () => ({ operator: selectedOperator?.name }),
       deleteComponent: () => {
         onDelete();
       }
@@ -43,6 +42,7 @@ const OperatorConditionSelect = forwardRef(
           searchEnabled={false}
           initialValue={selectedOperator}
         />
+        <button onClick={onDelete}>Delete</button>
       </div>
     );
   }

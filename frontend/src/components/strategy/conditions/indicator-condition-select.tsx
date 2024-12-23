@@ -37,7 +37,8 @@ const IndicatorConditionSelect = forwardRef(
     // Pass the initial value on first render while nothing has been selected yet
     // Otherwise will return a null value
     useImperativeHandle(ref, () => ({
-      getValue: () => selectedIndicator?.dataframe_column || initialValue,
+
+      getValue: () => ({ indicator: selectedIndicator?.dataframe_column || initialValue }),
 
       deleteComponent: () => {
         onDelete();
@@ -56,6 +57,7 @@ const IndicatorConditionSelect = forwardRef(
           searchEnabled={false}
           initialValue={findInitialValue}
         />
+        <button onClick={onDelete}>Delete</button>
       </div>
     );
   }

@@ -20,7 +20,7 @@ const InputSmall = forwardRef(({ initialValue, name, onValueChange, onDelete }: 
 	}
 
 	useImperativeHandle(ref, () => ({
-		getValue: () => value,
+		getValue: () => ({ value: value }),
 		deleteComponent: () => {
 			onDelete();
 		}

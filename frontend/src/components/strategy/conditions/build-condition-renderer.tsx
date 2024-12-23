@@ -14,23 +14,14 @@ interface BuildConditionRendererProps {
   conditions: Array<any>;
 }
 
-// Dynamically renders and manages draggable strategy conditions,
-// tracks their values, and allows reordering with drag and drop.
 function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
-  const conditionService = new BuildConditionsService(conditions);
-  conditionService.processConditions();
-  const mappedConditions = conditionService.getConditions();
-  console.log("RERENDEEEEEEEER");
+  const [blocks, setBlocks] = useState<JSX.Element[][]>([]);
 
-  // Delete a block by index
-  const deleteBlock = (blockIndex: number) => {
-    setBlocks((prevBlocks) => {
-      const updatedBlocks = prevBlocks.filter((_, index) => index !== blockIndex);
-      return updatedBlocks;
-    });
-  };
+  useEffect(() => {
+    const conditionService = new BuildConditionsService(conditions);
+    conditionService.processConditions();
+    const mappedConditions = conditionService.getConditions();
 
-  const [blocks, setBlocks] = useState<JSX.Element[][]>(() => {
     let currentBlock: JSX.Element[] = [];
     const initialBlocks: JSX.Element[][] = [];
 
@@ -85,7 +76,7 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
                 name="Value"
                 initialValue={value}
                 onValueChange={(newValue) => handleValueChange(index, newValue)}
-                onDelete={() => deleteBlock(index)} // Pass delete handler
+                onDelete={() => deleteBlock(index)}
               />
             );
             break;
@@ -104,25 +95,32 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
       initialBlocks.push(currentBlock);
     }
 
-    return initialBlocks;
-  });
+    setBlocks(initialBlocks);
+  }, [conditions]);
 
-  function logBlockOrder() {
-    const blockOrder = blocks.map((_, index) => `block-${index}`);
-    console.log("Block Order:", blockOrder);
-  }
+  const deleteBlock = (blockIndex: number) => {
+    console.log(blockIndex)
+    console.log(blocks)
 
-  function moveBlock(fromIndex: number, toIndex: number) {
-    setBlocks((prevBlocks) => {
-      const updatedBlocks = [...prevBlocks];
-      const [movedBlock] = updatedBlocks.splice(fromIndex, 1);
-      updatedBlocks.splice(toIndex, 0, movedBlock);
-      logBlockOrder();
-      return updatedBlocks;
-    });
-  }
 
-  function handleValueChange(blockIndex: number, newValue: any) {
+    //setBlocks((prevBlocks) => {
+    //  // Call the `deleteComponent` method from each component in the selected block
+    //  const blockToDelete = prevBlocks[blockIndex];
+    //
+    //  blockToDelete.forEach((component: any) => {
+    //    if (component.ref && component.ref.current) {
+    //      component.ref.current.deleteComponent();  // Call the deleteComponent method for each component in the clicked block
+    //    }
+    //  });
+    //
+    //  // Now remove the block from the array of blocks
+    //  const updatedBlocks = prevBlocks.filter((_, index) => index !== blockIndex);
+    //
+    //  return updatedBlocks;
+    //});
+  };
+
+  const handleValueChange = (blockIndex: number, newValue: any) => {
     setBlocks((prevBlocks) => {
       const updatedBlocks = prevBlocks.map((block, index) => {
         if (index === blockIndex) {
@@ -137,10 +135,19 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
       });
       return updatedBlocks;
     });
-  }
+  };
 
-  function createConditionString() {
-    const values = blocks.flatMap((block) => {
+  const moveBlock = (fromIndex: number, toIndex: number) => {
+    setBlocks((prevBlocks) => {
+      const updatedBlocks = [...prevBlocks];
+      const [movedBlock] = updatedBlocks.splice(fromIndex, 1);
+      updatedBlocks.splice(toIndex, 0, movedBlock);
+      return updatedBlocks;
+    });
+  };
+
+  const createConditionString = () => {
+    const values = blocks.map((block) => {
       return block.map((component: any) => {
         const value = component.ref.current.getValue();
         return value;
@@ -148,7 +155,7 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
     });
     console.log("Values from blocks:", values);
     return values;
-  }
+  };
 
   return (
     <>
