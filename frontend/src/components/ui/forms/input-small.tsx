@@ -1,35 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, forwardRef, useImperativeHandle } from "react";
 
-interface InputFormProps {
-	title?: string;
-	initialValue?: string;
+interface InputSmallProps {
+	initialValue: string;
 	name: string;
 	onValueChange: (value: string) => void;
+	onDelete: () => void;
+
 }
 
-export default function InputSmall({ title, initialValue = "", name, onValueChange }: InputFormProps) {
-	const [inputValue, setInputValue] = useState(initialValue);
+const InputSmall = forwardRef(({ initialValue, name, onValueChange, onDelete }: InputSmallProps, ref) => {
+	const [value, setValue] = useState(initialValue);
 
+	function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+		const newValue = event.target.value;
+		setValue(newValue);
+		if (onValueChange) {
+			onValueChange(newValue);
+		}
+	}
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const newValue = e.target.value;
-		setInputValue(newValue);
-		onValueChange(newValue);
-	};
+	useImperativeHandle(ref, () => ({
+		getValue: () => value,
+		deleteComponent: () => {
+			onDelete();
+		}
+	}));
 
 	return (
-		<>
-			<label htmlFor={name} className="block font-bold mb-1">
-				{title || name}:
-				{inputValue}
-			</label>
+		<div>
+			<label htmlFor={name}>{name}</label>
 			<input
 				id={name}
-				name={name}
-				value={inputValue}
-				onChange={handleInputChange}
-				className="indicator-input"
+				type="text"
+				value={value}
+				onChange={handleChange}
+				style={{ margin: "5px", padding: "5px", border: "1px solid #ccc" }}
 			/>
-		</>
+		</div>
 	);
-}
+});
+
+export default InputSmall;

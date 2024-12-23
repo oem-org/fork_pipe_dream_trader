@@ -8,6 +8,7 @@ import DraggableBlock from "@/components/ui/draggable-block";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useState, useEffect, useRef } from "react";
 import React from "react";
+import { Button } from "@/components/ui/buttons/button";
 
 interface BuildConditionRendererProps {
   conditions: Array<any>;
@@ -21,6 +22,14 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
   const mappedConditions = conditionService.getConditions();
   console.log("RERENDEEEEEEEER");
 
+  // Delete a block by index
+  const deleteBlock = (blockIndex: number) => {
+    setBlocks((prevBlocks) => {
+      const updatedBlocks = prevBlocks.filter((_, index) => index !== blockIndex);
+      return updatedBlocks;
+    });
+  };
+
   const [blocks, setBlocks] = useState<JSX.Element[][]>(() => {
     let currentBlock: JSX.Element[] = [];
     const initialBlocks: JSX.Element[][] = [];
@@ -32,32 +41,53 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
       } else {
         const [kind, value] = condition as [string, string];
         let component: JSX.Element;
+        const ref = React.createRef();
 
         switch (kind) {
           case "singleOperator":
-            component = <SingleOperator
-              key={index}
-              initialValue={value}
-              onValueChange={(newValue) => handleValueChange(index, "singleOperator", newValue)} />;
+            component = (
+              <SingleOperator
+                ref={ref}
+                key={index}
+                initialValue={value}
+                onValueChange={(newValue) => handleValueChange(index, newValue)}
+                onDelete={() => deleteBlock(index)}
+              />
+            );
             break;
           case "indicator":
-            component = <IndicatorConditionSelect
-              key={index}
-              initialValue={value}
-              onValueChange={(newValue) => handleValueChange(index, "indicator", newValue)} />;
+            component = (
+              <IndicatorConditionSelect
+                ref={ref}
+                key={index}
+                initialValue={value}
+                onValueChange={(newValue) => handleValueChange(index, newValue)}
+                onDelete={() => deleteBlock(index)}
+              />
+            );
             break;
           case "operator":
-            component = <OperatorConditionSelect
-              key={index}
-              initialValue={value}
-              onValueChange={(newValue) => handleValueChange(index, "operator", newValue)} />;
+            component = (
+              <OperatorConditionSelect
+                ref={ref}
+                key={index}
+                initialValue={value}
+                onValueChange={(newValue) => handleValueChange(index, newValue)}
+                onDelete={() => deleteBlock(index)}
+              />
+            );
             break;
           case "value":
-            component = <InputSmall
-              key={index}
-              name="Value"
-              initialValue={value}
-              onValueChange={(newValue) => handleValueChange(index, "value", newValue)} />;
+            component = (
+              <InputSmall
+                ref={ref}
+                key={index}
+                name="Value"
+                initialValue={value}
+                onValueChange={(newValue) => handleValueChange(index, newValue)}
+                onDelete={() => deleteBlock(index)} // Pass delete handler
+              />
+            );
             break;
           default:
             component = (
@@ -77,19 +107,11 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
     return initialBlocks;
   });
 
-  const blockRefs = useRef<JSX.Element[][]>([]);
-
-  // Update the ref when the blocks change, to keep track of the current blocks
-  useEffect(() => {
-    blockRefs.current = blocks;
-  }, [blocks]);
-
   function logBlockOrder() {
     const blockOrder = blocks.map((_, index) => `block-${index}`);
     console.log("Block Order:", blockOrder);
   }
 
-  // Move a dragged block from one index to another
   function moveBlock(fromIndex: number, toIndex: number) {
     setBlocks((prevBlocks) => {
       const updatedBlocks = [...prevBlocks];
@@ -100,16 +122,12 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
     });
   }
 
-  // Handle value changes for different components
-  function handleValueChange(blockIndex: number, componentKey: string, newValue: any) {
+  function handleValueChange(blockIndex: number, newValue: any) {
     setBlocks((prevBlocks) => {
-      // Create a new array to ensure immutability
       const updatedBlocks = prevBlocks.map((block, index) => {
         if (index === blockIndex) {
-          // Update the block's components
           return block.map((component: any) => {
             if (component.key === blockIndex) {
-              // Correctly update the component's value
               return React.cloneElement(component, { initialValue: newValue });
             }
             return component;
@@ -117,38 +135,36 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
         }
         return block;
       });
-
       return updatedBlocks;
     });
   }
 
-  // Extract values directly from the blocks
   function createConditionString() {
     const values = blocks.flatMap((block) => {
       return block.map((component: any) => {
-        // Get the value directly from the component
-        if (component.props && component.props.initialValue !== undefined) {
-          return component.props.initialValue;
-        }
-        return null;
+        const value = component.ref.current.getValue();
+        return value;
       }).filter((value) => value !== null);
     });
-
     console.log("Values from blocks:", values);
     return values;
   }
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div>
-        {blocks.map((block, blockIndex) => (
-          <DraggableBlock key={`block-${blockIndex}`} id={blockIndex} index={blockIndex} moveBlock={moveBlock}>
-            {block}
-          </DraggableBlock>
-        ))}
+    <>
+      <DndProvider backend={HTML5Backend}>
+        <div>
+          {blocks.map((block, blockIndex) => (
+            <DraggableBlock key={`block-${blockIndex}`} id={blockIndex} index={blockIndex} moveBlock={moveBlock}>
+              {block}
+            </DraggableBlock>
+          ))}
+        </div>
+      </DndProvider>
+      <div className="mt-10 z-100">
+        <Button onClick={createConditionString}>Get Sorted Values</Button>
       </div>
-      <button onClick={createConditionString}>Get Sorted Values</button>
-    </DndProvider>
+    </>
   );
 }
 

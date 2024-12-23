@@ -1,40 +1,51 @@
-import { Operator } from '@/interfaces/Operator'
-import GenericSelect from '@/components/ui/lists/generic-select'
+import { forwardRef, useImperativeHandle, useState } from "react";
+import { Operator } from "@/interfaces/Operator";
+import GenericSelect from "@/components/ui/lists/generic-select";
+import { operators } from "./operators";
 
 interface OperatorConditionSelectProps {
   initialValue: string;
   onValueChange: (value: string) => void;
+  onDelete: () => void;
 }
 
-export default function OperatorConditionSelect({ initialValue, onValueChange }: OperatorConditionSelectProps) {
-  const operators: Operator[] = [
-    { "id": 1, "name": "=" },
-    { "id": 2, "name": "<" },
-    { "id": 3, "name": ">" },
-    { "id": 4, "name": "|" }
-  ];
+const OperatorConditionSelect = forwardRef(
+  ({ onDelete, initialValue, onValueChange }: OperatorConditionSelectProps, ref) => {
+    const [selectedOperator, setSelectedOperator] = useState(
+      operators.find((operator) => operator.name === initialValue) || null
+    );
 
-  const initialObj = operators.find(operator => operator.name === initialValue);
-
-  function handleOperatorChange(operator: Operator) {
-    console.log("Selected operator:", operator);
-    if (onValueChange) {
-      onValueChange(operator.name);
+    function handleOperatorChange(operator: Operator) {
+      console.log("Selected operator:", operator);
+      setSelectedOperator(operator);
+      if (onValueChange) {
+        onValueChange(operator.name);
+      }
     }
-  }
 
-  return (
-    <div>
-      <GenericSelect<Operator>
-        data={operators || []}
-        keyExtractor={(operator) => operator.id}
-        nameExtractor={(operator) => operator.name}
-        onSelect={handleOperatorChange}
-        renderItem={(operator) => <span>{operator.name}</span>}
-        title="Operator"
-        searchEnabled={false}
-        initialValue={initialObj}
-      />
-    </div>
-  );
-}
+    useImperativeHandle(ref, () => ({
+      //getValue: () => ({ operatorCondition: selectedOperator.name }),
+      getValue: () => (selectedOperator),
+      deleteComponent: () => {
+        onDelete();
+      }
+    }));
+
+    return (
+      <div>
+        <GenericSelect<Operator>
+          data={operators || []}
+          keyExtractor={(operator) => operator.id}
+          nameExtractor={(operator) => operator.name}
+          onSelect={handleOperatorChange}
+          renderItem={(operator) => <span>{operator.name}</span>}
+          title="Operator"
+          searchEnabled={false}
+          initialValue={selectedOperator}
+        />
+      </div>
+    );
+  }
+);
+
+export default OperatorConditionSelect;

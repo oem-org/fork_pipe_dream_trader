@@ -1,0 +1,68 @@
+
+import { BuildConditionsService } from "@/lib/services/ConditionExtractionService";
+import SingleOperator from "./single-operator";
+import InputSmall from "@/components/ui/forms/input-small";
+import IndicatorConditionSelect from "./indicator-condition-select";
+import OperatorConditionSelect from "./operator-condition-select";
+import { DndProvider } from "react-dnd";
+import DraggableBlock from "@/components/ui/draggable-block";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { useState, useEffect, useRef } from "react";
+import React from "react";
+import { Button } from "@/components/ui/buttons/button";
+interface BuildConditionRendererProps {
+  conditions: Array<any>;
+}
+
+// Dynamically renders and manages draggable strategy conditions,
+// tracks their values, and allows reordering with drag and drop.
+function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
+  const conditionService = new BuildConditionsService(conditions);
+  conditionService.processConditions();
+  const mappedConditions = conditionService.getConditions();
+  console.log("RERENDEEEEEEEER");
+
+  const [blocks, setBlocks] = useState<JSX.Element[][]>(() => {
+    let currentBlock: JSX.Element[] = [];
+    const initialBlocks: JSX.Element[][] = [];
+
+    mappedConditions.forEach((condition, index) => {
+      if (condition === "blockEnd") {
+        initialBlocks.push(currentBlock);
+        currentBlock = [];
+      } else {
+        const [kind, value] = condition as [string, string];
+        let component: JSX.Element;
+        const ref = React.createRef()
+        switch (kind) {
+          case "singleOperator":
+
+            component = <SingleOperator
+              ref={ref}
+              key={index}
+              initialValue={value}
+              onValueChange={(newValue) => handleValueChange(index, newValue)} />;
+            break;
+          case "indicator":
+            component = <IndicatorConditionSelect
+              ref={ref}
+              key={index}
+              initialValue={value}
+              onValueChange={(newValue) => handleValueChange(index, newValue)} />;
+            break;
+          case "operator":
+            component = <OperatorConditionSelect
+              ref={ref}
+              key={index}
+              initialValue={value}
+              onValueChange={(newValue) => handleValueChange(index, newValue)} />;
+            break;
+          case "value":
+            component = <InputSmall
+              ref={ref}
+              key={index}
+              name="Value"
+              initialValue={value}
+              onValueChange={(newValue) => handleValueChange(index, newValue)} />;
+            break;
+          default:

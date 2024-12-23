@@ -22,7 +22,7 @@ export default class ConditionExtractionService {
               this.extract("indicator", inner['indicator']);
             } else if ("operator" in inner) {
               //console.log("Inner object represents an operator:", inner);
-              this.extract("operator", inner['operator']); // Fixed key spelling from 'oprator' to 'operator'
+              this.extract("operator", inner['operator']);
             } else {
               console.log("Inner object is unknown:", inner);
             }
