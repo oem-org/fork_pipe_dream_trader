@@ -34,7 +34,7 @@ export default function ConditionsSection() {
       </div>
       <hr className="py-1" />
       <div className="flex flex-row">
-        <BuildConditionRenderer conditions={conditions} />
+        <BuildConditionRenderer conditions={conditions} setConditions={setConditions} />
       </div>
 
       <div className="mt-4">

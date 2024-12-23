@@ -10,11 +10,17 @@ import { useState, useEffect, useRef } from "react";
 import React from "react";
 import { Button } from "@/components/ui/buttons/button";
 
+
+
+// TODO: Set types for conditions
+//
 interface BuildConditionRendererProps {
   conditions: Array<any>;
+
+  setConditions: React.Dispatch<React.SetStateAction<any>>;
 }
 
-function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
+function BuildConditionRenderer({ conditions, setConditions }: BuildConditionRendererProps) {
   const [blocks, setBlocks] = useState<JSX.Element[][]>([]);
 
   useEffect(() => {
@@ -99,26 +105,19 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
   }, [conditions]);
 
   const deleteBlock = (blockIndex: number) => {
-    console.log(blockIndex)
-    console.log(blocks)
+    console.log("Deleting block index:", blockIndex);
 
+    setBlocks((prevBlocks) => {
+      const updatedBlocks = prevBlocks.filter((_, index) => index !== blockIndex);
+      return updatedBlocks;
+    });
 
-    //setBlocks((prevBlocks) => {
-    //  // Call the `deleteComponent` method from each component in the selected block
-    //  const blockToDelete = prevBlocks[blockIndex];
-    //
-    //  blockToDelete.forEach((component: any) => {
-    //    if (component.ref && component.ref.current) {
-    //      component.ref.current.deleteComponent();  // Call the deleteComponent method for each component in the clicked block
-    //    }
-    //  });
-    //
-    //  // Now remove the block from the array of blocks
-    //  const updatedBlocks = prevBlocks.filter((_, index) => index !== blockIndex);
-    //
-    //  return updatedBlocks;
-    //});
+    createConditionString();
   };
+
+  useEffect(() => {
+  }, [blocks]);
+
 
   const handleValueChange = (blockIndex: number, newValue: any) => {
     setBlocks((prevBlocks) => {
@@ -146,6 +145,25 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
     });
   };
 
+
+  // Transform back to the format of conditions state
+  function transformArray(inputArray: any) {
+    let result = [];
+
+    for (let i = 0; i < inputArray.length; i++) {
+      let currentElement = inputArray[i];
+
+      if (currentElement[0] && currentElement[0].hasOwnProperty('singleOperator')) {
+        result.push(currentElement[0].singleOperator);
+
+      } else {
+        result.push(currentElement);
+      }
+    }
+
+    return result;
+  }
+
   const createConditionString = () => {
     const values = blocks.map((block) => {
       return block.map((component: any) => {
@@ -153,8 +171,11 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
         return value;
       }).filter((value) => value !== null);
     });
-    console.log("Values from blocks:", values);
-    return values;
+    const transformedValues = transformArray(values)
+    //console.log(blocks, "blooooocks")
+    console.log("Values from blocks:", transformedValues);
+    setConditions(transformedValues)
+    return transformedValues;
   };
 
   return (
