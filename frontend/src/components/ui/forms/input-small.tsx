@@ -21,6 +21,7 @@ export default function InputSmall({ title, initialValue = "", name, onValueChan
 		<>
 			<label htmlFor={name} className="block font-bold mb-1">
 				{title || name}:
+				{inputValue}
 			</label>
 			<input
 				id={name}

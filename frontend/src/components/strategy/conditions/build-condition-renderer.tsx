@@ -6,17 +6,20 @@ import OperatorConditionSelect from "./operator-condition-select";
 import { DndProvider } from "react-dnd";
 import DraggableBlock from "@/components/ui/draggable-block";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import React from "react";
 
 interface BuildConditionRendererProps {
   conditions: Array<any>;
 }
-//dynamically renders and manages draggable strategy conditions,
-//tracks their values, and allows reordering with drag and drop.
+
+// Dynamically renders and manages draggable strategy conditions,
+// tracks their values, and allows reordering with drag and drop.
 function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
   const conditionService = new BuildConditionsService(conditions);
   conditionService.processConditions();
   const mappedConditions = conditionService.getConditions();
+  console.log("RERENDEEEEEEEER");
 
   const [blocks, setBlocks] = useState<JSX.Element[][]>(() => {
     let currentBlock: JSX.Element[] = [];
@@ -53,6 +56,7 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
             component = <InputSmall
               key={index}
               name="Value"
+              initialValue={value}
               onValueChange={(newValue) => handleValueChange(index, "value", newValue)} />;
             break;
           default:
@@ -73,25 +77,17 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
     return initialBlocks;
   });
 
-  const [blockValues, setBlockValues] = useState<{ [key: number]: { [key: string]: any } }>({});
+  const blockRefs = useRef<JSX.Element[][]>([]);
 
-  // Update the state value for a component within a block
-  // using the useState setter directly
-  function handleValueChange(blockIndex: number, componentKey: string, newValue: any) {
-    setBlockValues((prevValues) => {
-      const updatedValues = { ...prevValues };
-      if (!updatedValues[blockIndex]) {
-        updatedValues[blockIndex] = {};
-      }
-      updatedValues[blockIndex][componentKey] = newValue;
-      return updatedValues;
-    });
-  };
+  // Update the ref when the blocks change, to keep track of the current blocks
+  useEffect(() => {
+    blockRefs.current = blocks;
+  }, [blocks]);
 
   function logBlockOrder() {
     const blockOrder = blocks.map((_, index) => `block-${index}`);
     console.log("Block Order:", blockOrder);
-  };
+  }
 
   // Move a dragged block from one index to another
   function moveBlock(fromIndex: number, toIndex: number) {
@@ -102,23 +98,45 @@ function BuildConditionRenderer({ conditions }: BuildConditionRendererProps) {
       logBlockOrder();
       return updatedBlocks;
     });
+  }
 
-    // Update blockValues to match the sorting of the blocks in the ui
-    // by using the useState setter directly
-    setBlockValues((prevValues) => {
-      const updatedValues = { ...prevValues };
-      const movedValues = updatedValues[fromIndex];
-      delete updatedValues[fromIndex];
-      updatedValues[toIndex] = movedValues;
-      return updatedValues;
+  // Handle value changes for different components
+  function handleValueChange(blockIndex: number, componentKey: string, newValue: any) {
+    setBlocks((prevBlocks) => {
+      // Create a new array to ensure immutability
+      const updatedBlocks = prevBlocks.map((block, index) => {
+        if (index === blockIndex) {
+          // Update the block's components
+          return block.map((component: any) => {
+            if (component.key === blockIndex) {
+              // Correctly update the component's value
+              return React.cloneElement(component, { initialValue: newValue });
+            }
+            return component;
+          });
+        }
+        return block;
+      });
+
+      return updatedBlocks;
     });
-  };
+  }
 
+  // Extract values directly from the blocks
   function createConditionString() {
-    const sortedValues = Object.values(blockValues);
-    console.log("Sorted Values:", sortedValues);
-    return sortedValues;
-  };
+    const values = blocks.flatMap((block) => {
+      return block.map((component: any) => {
+        // Get the value directly from the component
+        if (component.props && component.props.initialValue !== undefined) {
+          return component.props.initialValue;
+        }
+        return null;
+      }).filter((value) => value !== null);
+    });
+
+    console.log("Values from blocks:", values);
+    return values;
+  }
 
   return (
     <DndProvider backend={HTML5Backend}>
