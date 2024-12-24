@@ -4,6 +4,7 @@ import { create } from 'zustand';
 interface ConditionsState {
 	conditions: Array<any>;
 	setConditions: (newConditions: Array<any>) => void;
+	deleteCondition: (index: number) => void;
 }
 
 const useConditionsStore = create<ConditionsState>((set) => ({
