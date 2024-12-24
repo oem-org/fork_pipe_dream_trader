@@ -14,7 +14,6 @@ const IndicatorConditionSelect = forwardRef(
   ({ initialValue, onValueChange }: IndicatorConditionSelectProps, ref) => {
     const { strategyId } = useStrategyStore();
     const { data: indicatorSettings } = getStrategyIndicatorsQuery(strategyId);
-    console.log(indicatorSettings, "DATA");
 
     const findInitialValue = useInitialValue(
       indicatorSettings || [],
@@ -26,7 +25,6 @@ const IndicatorConditionSelect = forwardRef(
     );
 
     function handleChange(item: StrategyIndicator) {
-      console.log("Selected item:", item);
       setSelectedIndicator(item);
       if (onValueChange) {
         onValueChange(item.dataframe_column);

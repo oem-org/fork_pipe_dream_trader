@@ -1,16 +1,10 @@
 import { Button } from '@/components/ui/buttons/button';
 import BuildConditionRenderer from './build-condition-renderer';
 import { useState } from 'react';
-
+import useConditionsStore from '@/lib/hooks/useConditionsStore';
 export default function ConditionsSection() {
-  const defaultConds = [
-    [{ "indicator": "RSI_14" }, { "operator": ">" }, { "value": 100 }],
-    "&",
-    [{ "indicator": "RSI_14" }, { "operator": "=" }, { "indicator": "RSI_14" }]
-    , "|"
-  ];
 
-  const [conditions, setConditions] = useState(defaultConds);
+  const { conditions, setConditions } = useConditionsStore();
 
   const checkLastConditionType = () => {
     const lastCondition = conditions[conditions.length - 1];

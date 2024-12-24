@@ -9,20 +9,16 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { useState, useEffect, useRef } from "react";
 import React from "react";
 import { Button } from "@/components/ui/buttons/button";
-
+import useConditionsStore from "@/lib/hooks/useConditionsStore";
 
 
 // TODO: Set types for conditions
 //
-interface BuildConditionRendererProps {
-  conditions: Array<any>;
 
-  setConditions: React.Dispatch<React.SetStateAction<any>>;
-}
-
-function BuildConditionRenderer({ conditions, setConditions }: BuildConditionRendererProps) {
+function BuildConditionRenderer() {
   const [blocks, setBlocks] = useState<JSX.Element[][]>([]);
 
+  const { conditions, setConditions } = useConditionsStore();
   useEffect(() => {
     const conditionService = new BuildConditionsService(conditions);
     conditionService.processConditions();
@@ -39,7 +35,6 @@ function BuildConditionRenderer({ conditions, setConditions }: BuildConditionRen
         const [kind, value] = condition as [string, string];
         let component: JSX.Element;
         const ref = React.createRef();
-        console.log(currentBlock, index)
         switch (kind) {
           case "singleOperator":
             component = (
@@ -217,6 +212,7 @@ function BuildConditionRenderer({ conditions, setConditions }: BuildConditionRen
     //console.log(blocks, "blooooocks")
     console.log("Values from blocks:", transformedValues);
     setConditions(transformedValues)
+    console.log(conditions, "CONDITIONS")
     return transformedValues;
   };
 
