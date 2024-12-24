@@ -18,7 +18,7 @@ import useConditionsStore from "@/lib/hooks/useConditionsStore";
 function BuildConditionRenderer() {
   const [blocks, setBlocks] = useState<JSX.Element[][]>([]);
 
-  const { conditions, setConditions } = useConditionsStore();
+  const { conditions, setConditions, deleteCondition } = useConditionsStore();
   useEffect(() => {
     const conditionService = new BuildConditionsService(conditions);
     conditionService.processConditions();
@@ -101,61 +101,6 @@ function BuildConditionRenderer() {
   }, [blocks])
 
 
-  const deleteBlock = (blockIndex: number) => {
-    console.log("Deleting block with index:", blockIndex);
-
-    // Log the previous state (blocks before deletion)
-    console.log("Previous blocks state:", blocks);
-
-    // Create a copy of the current blocks
-    const updatedBlocks = [...blocks]; // Spread operator to create a shallow copy of blocks
-
-    // Filter out the block with the given index
-    updatedBlocks.forEach((block, blockIndexArray) => {
-      updatedBlocks[blockIndexArray] = block.filter((_, index) => index !== blockIndex);
-    });
-
-    // Log the updated blocks after filtering
-    console.log("Updated blocks (after filtering):", updatedBlocks);
-
-    // Set the updated blocks state
-    setBlocks(updatedBlocks);
-
-    // Log the final state (this may not be updated yet due to async nature)
-    console.log("Blocks state after setBlocks (this may not be updated yet):", updatedBlocks);
-
-    // Call the createConditionString function after the state has been updated
-    //createConditionString();
-  };
-  const deleteBlock2 = (blockIndex: number) => {
-    console.log("Deleting block with index:", blockIndex);
-
-    // Log the previous state (blocks before deletion)
-    console.log("Previous blocks state:", blocks);
-
-    // Create a copy of the current blocks
-    const updatedBlocks = [...blocks]; // Spread operator to create a shallow copy of blocks
-
-    // Filter out the block with the given index
-    updatedBlocks.forEach((block, blockIndexArray) => {
-      updatedBlocks[blockIndexArray] = block.filter((_, index) => index !== blockIndex);
-    });
-
-    // Log the updated blocks after filtering
-    console.log("Updated blocks (after filtering):", updatedBlocks);
-
-    // Set the updated blocks state
-    setBlocks(updatedBlocks);
-
-    // Log the final state (this may not be updated yet due to async nature)
-    console.log("Blocks state after setBlocks (this may not be updated yet):", updatedBlocks);
-
-    // Call the createConditionString function after the state has been updated
-    //createConditionString();
-  };
-
-
-
   const handleValueChange = (blockIndex: number, newValue: any) => {
     setBlocks((prevBlocks) => {
       const updatedBlocks = prevBlocks.map((block, index) => {
@@ -216,15 +161,22 @@ function BuildConditionRenderer() {
     return transformedValues;
   };
 
+  function deleteRow(index: number) {
+
+
+  }
+
   return (
     <>
       <DndProvider backend={HTML5Backend}>
         <div>
-          {blocks.map((block, blockIndex) => (
+          {blocks.map((block, blockIndex) => (<>
             <DraggableBlock key={`block-${blockIndex}`} id={blockIndex} index={blockIndex} moveBlock={moveBlock}>
               {block}
+
+              <button onClick={() => { deleteCondition(blockIndex) }}>ddddddddddel</button>
             </DraggableBlock>
-          ))}
+          </>))}
         </div>
       </DndProvider>
       <div className="mt-10 z-100">

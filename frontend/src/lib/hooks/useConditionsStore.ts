@@ -13,7 +13,10 @@ const useConditionsStore = create<ConditionsState>((set) => ({
 		[{ "indicator": "RSI_14" }, { "operator": "=" }, { "indicator": "RSI_14" }],
 		"|"
 	],
-	setConditions: (newConditions) => set({ conditions: newConditions }),
+	deleteCondition: (index: number) =>
+		set((state) => ({
+			conditions: state.conditions.filter((_, i) => i !== index),
+		})), setConditions: (newConditions) => set({ conditions: newConditions }),
 }));
 
 export default useConditionsStore;
