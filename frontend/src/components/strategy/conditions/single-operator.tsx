@@ -6,11 +6,10 @@ import GenericSelect from "@/components/ui/lists/generic-select";
 interface SingleOperatorProps {
   initialValue: string;
   onValueChange: (value: string) => void;
-  onDelete: () => void
 }
 
 const SingleOperator = forwardRef(
-  ({ initialValue, onValueChange, onDelete }: SingleOperatorProps, ref) => {
+  ({ initialValue, onValueChange }: SingleOperatorProps, ref) => {
     const [selectedOperator, setSelectedOperator] = useState<Operator>(
       operators.find((operator) => operator.name === initialValue) as Operator
     );
@@ -26,9 +25,6 @@ const SingleOperator = forwardRef(
 
     useImperativeHandle(ref, () => ({
       getValue: () => ({ singleOperator: selectedOperator.name }),
-      deleteComponent: () => {
-        onDelete();
-      }
     }));
     return (
       <div>
@@ -43,7 +39,6 @@ const SingleOperator = forwardRef(
           searchEnabled={false}
           initialValue={selectedOperator}
         />
-        <button onClick={onDelete}>Delete</button>
       </div>
     );
   }

@@ -6,11 +6,10 @@ import { operators } from "./operators";
 interface OperatorConditionSelectProps {
   initialValue: string;
   onValueChange: (value: string) => void;
-  onDelete: () => void;
 }
 
 const OperatorConditionSelect = forwardRef(
-  ({ onDelete, initialValue, onValueChange }: OperatorConditionSelectProps, ref) => {
+  ({ initialValue, onValueChange }: OperatorConditionSelectProps, ref) => {
     const [selectedOperator, setSelectedOperator] = useState(
       operators.find((operator) => operator.name === initialValue) || null
     );
@@ -25,9 +24,6 @@ const OperatorConditionSelect = forwardRef(
 
     useImperativeHandle(ref, () => ({
       getValue: () => ({ operator: selectedOperator?.name }),
-      deleteComponent: () => {
-        onDelete();
-      }
     }));
 
     return (
@@ -42,7 +38,6 @@ const OperatorConditionSelect = forwardRef(
           searchEnabled={false}
           initialValue={selectedOperator}
         />
-        <button onClick={onDelete}>Delete</button>
       </div>
     );
   }

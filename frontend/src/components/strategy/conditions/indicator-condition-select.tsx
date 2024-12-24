@@ -8,11 +8,10 @@ import { forwardRef, useImperativeHandle, useState } from "react";
 interface IndicatorConditionSelectProps {
   initialValue: string;
   onValueChange: (value: string) => void;
-  onDelete: () => void;
 }
 
 const IndicatorConditionSelect = forwardRef(
-  ({ initialValue, onValueChange, onDelete }: IndicatorConditionSelectProps, ref) => {
+  ({ initialValue, onValueChange }: IndicatorConditionSelectProps, ref) => {
     const { strategyId } = useStrategyStore();
     const { data: indicatorSettings } = getStrategyIndicatorsQuery(strategyId);
     console.log(indicatorSettings, "DATA");
@@ -40,9 +39,6 @@ const IndicatorConditionSelect = forwardRef(
 
       getValue: () => ({ indicator: selectedIndicator?.dataframe_column || initialValue }),
 
-      deleteComponent: () => {
-        onDelete();
-      }
     }));
 
     return (
@@ -57,7 +53,6 @@ const IndicatorConditionSelect = forwardRef(
           searchEnabled={false}
           initialValue={findInitialValue}
         />
-        <button onClick={onDelete}>Delete</button>
       </div>
     );
   }

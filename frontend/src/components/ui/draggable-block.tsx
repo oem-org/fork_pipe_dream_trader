@@ -5,15 +5,16 @@ const ItemType = {
 };
 
 interface BlockProps {
-	id: number;
+	id: string;
 	children: JSX.Element[];
 	moveBlock: (dragIndex: number, hoverIndex: number) => void;
 	index: number;
+	test: any
 }
 
 
 
-export default function DraggableBlock({ id, children, moveBlock, index }: BlockProps) {
+export default function DraggableBlock({ test, id, children, moveBlock, index }: BlockProps) {
 	const [, drag] = useDrag(() => ({
 		type: ItemType.BLOCK,
 		item: { id, index },
@@ -34,6 +35,7 @@ export default function DraggableBlock({ id, children, moveBlock, index }: Block
 			ref={(node) => drag(drop(node))}
 			className="flex flex-item border border-gray-300 mb-2 p-2 bg-gray-100 rounded-lg shadow-sm"
 		>
+			<span>{test}-id</span>
 			{children}
 		</div>
 	);

@@ -4,11 +4,10 @@ interface InputSmallProps {
 	initialValue: string;
 	name: string;
 	onValueChange: (value: string) => void;
-	onDelete: () => void;
 
 }
 
-const InputSmall = forwardRef(({ initialValue, name, onValueChange, onDelete }: InputSmallProps, ref) => {
+const InputSmall = forwardRef(({ initialValue, name, onValueChange }: InputSmallProps, ref) => {
 	const [value, setValue] = useState(initialValue);
 
 	function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -21,9 +20,6 @@ const InputSmall = forwardRef(({ initialValue, name, onValueChange, onDelete }: 
 
 	useImperativeHandle(ref, () => ({
 		getValue: () => ({ value: value }),
-		deleteComponent: () => {
-			onDelete();
-		}
 	}));
 
 	return (

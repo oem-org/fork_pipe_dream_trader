@@ -39,7 +39,7 @@ function BuildConditionRenderer({ conditions, setConditions }: BuildConditionRen
         const [kind, value] = condition as [string, string];
         let component: JSX.Element;
         const ref = React.createRef();
-
+        console.log(currentBlock, index)
         switch (kind) {
           case "singleOperator":
             component = (
@@ -48,7 +48,6 @@ function BuildConditionRenderer({ conditions, setConditions }: BuildConditionRen
                 key={index}
                 initialValue={value}
                 onValueChange={(newValue) => handleValueChange(index, newValue)}
-                onDelete={() => deleteBlock(index)}
               />
             );
             break;
@@ -59,7 +58,6 @@ function BuildConditionRenderer({ conditions, setConditions }: BuildConditionRen
                 key={index}
                 initialValue={value}
                 onValueChange={(newValue) => handleValueChange(index, newValue)}
-                onDelete={() => deleteBlock(index)}
               />
             );
             break;
@@ -70,7 +68,6 @@ function BuildConditionRenderer({ conditions, setConditions }: BuildConditionRen
                 key={index}
                 initialValue={value}
                 onValueChange={(newValue) => handleValueChange(index, newValue)}
-                onDelete={() => deleteBlock(index)}
               />
             );
             break;
@@ -82,7 +79,6 @@ function BuildConditionRenderer({ conditions, setConditions }: BuildConditionRen
                 name="Value"
                 initialValue={value}
                 onValueChange={(newValue) => handleValueChange(index, newValue)}
-                onDelete={() => deleteBlock(index)}
               />
             );
             break;
@@ -104,19 +100,65 @@ function BuildConditionRenderer({ conditions, setConditions }: BuildConditionRen
     setBlocks(initialBlocks);
   }, [conditions]);
 
-  const deleteBlock = (blockIndex: number) => {
-    console.log("Deleting block index:", blockIndex);
+  useEffect(() => {
+    console.log("BLOCKS", blocks)
 
-    setBlocks((prevBlocks) => {
-      const updatedBlocks = prevBlocks.filter((_, index) => index !== blockIndex);
-      return updatedBlocks;
+  }, [blocks])
+
+
+  const deleteBlock = (blockIndex: number) => {
+    console.log("Deleting block with index:", blockIndex);
+
+    // Log the previous state (blocks before deletion)
+    console.log("Previous blocks state:", blocks);
+
+    // Create a copy of the current blocks
+    const updatedBlocks = [...blocks]; // Spread operator to create a shallow copy of blocks
+
+    // Filter out the block with the given index
+    updatedBlocks.forEach((block, blockIndexArray) => {
+      updatedBlocks[blockIndexArray] = block.filter((_, index) => index !== blockIndex);
     });
 
-    createConditionString();
+    // Log the updated blocks after filtering
+    console.log("Updated blocks (after filtering):", updatedBlocks);
+
+    // Set the updated blocks state
+    setBlocks(updatedBlocks);
+
+    // Log the final state (this may not be updated yet due to async nature)
+    console.log("Blocks state after setBlocks (this may not be updated yet):", updatedBlocks);
+
+    // Call the createConditionString function after the state has been updated
+    //createConditionString();
+  };
+  const deleteBlock2 = (blockIndex: number) => {
+    console.log("Deleting block with index:", blockIndex);
+
+    // Log the previous state (blocks before deletion)
+    console.log("Previous blocks state:", blocks);
+
+    // Create a copy of the current blocks
+    const updatedBlocks = [...blocks]; // Spread operator to create a shallow copy of blocks
+
+    // Filter out the block with the given index
+    updatedBlocks.forEach((block, blockIndexArray) => {
+      updatedBlocks[blockIndexArray] = block.filter((_, index) => index !== blockIndex);
+    });
+
+    // Log the updated blocks after filtering
+    console.log("Updated blocks (after filtering):", updatedBlocks);
+
+    // Set the updated blocks state
+    setBlocks(updatedBlocks);
+
+    // Log the final state (this may not be updated yet due to async nature)
+    console.log("Blocks state after setBlocks (this may not be updated yet):", updatedBlocks);
+
+    // Call the createConditionString function after the state has been updated
+    //createConditionString();
   };
 
-  useEffect(() => {
-  }, [blocks]);
 
 
   const handleValueChange = (blockIndex: number, newValue: any) => {
@@ -190,6 +232,9 @@ function BuildConditionRenderer({ conditions, setConditions }: BuildConditionRen
         </div>
       </DndProvider>
       <div className="mt-10 z-100">
+        <div className="mt-10 z-100">
+          <Button onClick={() => console.log(blocks)}>BLOCKS</Button>
+        </div>
         <Button onClick={createConditionString}>Get Sorted Values</Button>
       </div>
     </>
