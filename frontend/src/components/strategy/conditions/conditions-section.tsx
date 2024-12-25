@@ -7,7 +7,16 @@ import ConditionsButtonGroup from './conditions-button-group';
 
 export default function ConditionsSection() {
 
-  const { sellConditions, buyConditions, setSellConditions, setBuyConditions, deleteSellCondition, deleteBuyCondition } = useConditionsStore();
+  const {
+    sellConditions,
+    buyConditions,
+    setSellConditions,
+    setBuyConditions,
+    deleteSellCondition,
+    deleteBuyCondition,
+    buyCondtionsString,
+    sellCondtionsString,
+  } = useConditionsStore();
 
 
   const addConditionBuy = (newCondition: ConditionGroup | LogicalOperator) => {

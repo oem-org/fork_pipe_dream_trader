@@ -1,9 +1,10 @@
-
 import { create } from 'zustand';
 
 import { ConditionsArray } from '@/interfaces/Condition';
 
 interface ConditionsState {
+	buyCondtionsString: string;
+	sellCondtionsString: string;
 	buyConditions: ConditionsArray;
 	sellConditions: ConditionsArray;
 	setBuyConditions: (newConditions: ConditionsArray) => void;
@@ -13,19 +14,14 @@ interface ConditionsState {
 }
 
 const useConditionsStore = create<ConditionsState>((set) => ({
+	buyCondtionsString: "",
+	sellCondtionsString: "",
+
 	buyConditions: [
-		[{ "indicator": "RSI_14" }, { "operator": ">" }, { "value": 100 }],
-		"&",
-		[{ "indicator": "RSI_14" }, { "operator": "=" }, { "indicator": "RSI_14" }],
-		"|"
 	] as ConditionsArray,
 
 
 	sellConditions: [
-		[{ "indicator": "RSI_14" }, { "operator": ">" }, { "value": 1 }],
-		"&",
-		[{ "indicator": "RSI_14" }, { "operator": "=" }, { "indicator": "RSI_14" }],
-		"|"
 	] as ConditionsArray,
 
 	deleteBuyCondition: (index: number) =>
@@ -43,6 +39,9 @@ const useConditionsStore = create<ConditionsState>((set) => ({
 
 	setSellConditions: (newConditions) => set({ sellConditions: newConditions }),
 
+	setBuyConditionsString: (newString: string) => set({ buyCondtionsString: newString }),
+
+	setSellConditionsString: (newString: string) => set({ sellCondtionsString: newString }),
 }));
 
 export default useConditionsStore;

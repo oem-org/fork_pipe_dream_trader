@@ -15,7 +15,6 @@ interface BuildConditionsRendererProps {
   conditions: Array<any>,
   setConditions: any,
   deleteBlock: any,
-  side: string,
 }
 
 // TODO: Set types for conditions
@@ -36,7 +35,6 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
 
       console.error('Expected conditions to be an array, but got:', typeof conditions)
     }
-    console.log("MAAAAAAAAAAAAAAAAAAAAAAAAAaaaaaa")
     const conditionService = new BuildConditionsService(conditions);
     conditionService.processConditions();
     const mapped = conditionService.getConditions();
@@ -150,6 +148,7 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
       });
       return updatedBlocks;
     });
+    createConditionString()
   };
 
   const moveBlock = (fromIndex: number, toIndex: number) => {
@@ -180,6 +179,7 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
     return result;
   }
 
+  // TODO: maybe delete
   function deleteCondition(indexToRemove: number) {
     setMappedConditions((prevConditions: any) => {
       const updatedConditions = prevConditions.filter((_: any, index: number) => index !== indexToRemove);
@@ -187,23 +187,6 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
     });
   }
 
-  //function deleteCondition(indexToRemove: number) {
-  //
-  //  const conditionService = new BuildConditionsService(conditions);
-  //  conditionService.processConditions();
-  //  const mapped = conditionService.getConditions();
-  //  // Filter creates new array instead of modifying existing
-  //  mapped.splice(indexToRemove, 1)
-  //  setMappedConditions(mapped)
-  //  console.log(mapped, "mapped local");
-  //
-  //  console.log(mappedConditions, "mapped conditiobns");
-  //
-  //  console.log(mapped)
-  //
-  //
-  //}
-  //
 
   function createConditionString() {
     const values = blocks.map((block) => {
@@ -214,7 +197,7 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
     });
     const transformedValues = transformArray(values)
     //console.log(blocks, "blooooocks")
-    console.log("Values from blocks:", transformedValues);
+    console.log("Values from blocks!!!!!!!!!!!!!!!!!!!!!!!:", transformedValues);
     setConditions(transformedValues)
     console.log(conditions, "CONDITIONS")
     return transformedValues;
