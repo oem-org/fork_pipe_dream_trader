@@ -17,17 +17,24 @@ import useConditionsStore from "@/lib/hooks/useConditionsStore";
 
 function BuildConditionRenderer() {
   const [blocks, setBlocks] = useState<JSX.Element[][]>([]);
-
+  console.log("RERENDER§!")
   const { conditions, setConditions } = useConditionsStore();
+  const [mappedConditions, setMappedConditions] = useState<any>([]);
+
   useEffect(() => {
     const conditionService = new BuildConditionsService(conditions);
     conditionService.processConditions();
-    const mappedConditions = conditionService.getConditions();
+    const mapped = conditionService.getConditions();
+    setMappedConditions(mapped)
+
+  }, [conditions])
+
+  useEffect(() => {
 
     let currentBlock: JSX.Element[] = [];
     const initialBlocks: JSX.Element[][] = [];
 
-    mappedConditions.forEach((condition, index) => {
+    mappedConditions.forEach((condition: any, index: number) => {
       if (condition === "blockEnd") {
         initialBlocks.push(currentBlock);
         currentBlock = [];
@@ -40,6 +47,7 @@ function BuildConditionRenderer() {
             component = (
               <SingleOperator
                 ref={ref}
+                id={index}
                 key={index}
                 initialValue={value}
                 onValueChange={(newValue) => handleValueChange(index, newValue)}
@@ -50,6 +58,7 @@ function BuildConditionRenderer() {
             component = (
               <IndicatorConditionSelect
                 ref={ref}
+                id={index}
                 key={index}
                 initialValue={value}
                 onValueChange={(newValue) => handleValueChange(index, newValue)}
@@ -59,6 +68,7 @@ function BuildConditionRenderer() {
           case "operator":
             component = (
               <OperatorConditionSelect
+                id={index}
                 ref={ref}
                 key={index}
                 initialValue={value}
@@ -69,6 +79,7 @@ function BuildConditionRenderer() {
           case "value":
             component = (
               <InputSmall
+                id={index}
                 ref={ref}
                 key={index}
                 name="Value"
@@ -93,7 +104,7 @@ function BuildConditionRenderer() {
     }
 
     setBlocks(initialBlocks);
-  }, [conditions]);
+  }, [mappedConditions]);
 
   useEffect(() => {
     console.log("BLOCKS", blocks)
@@ -146,7 +157,32 @@ function BuildConditionRenderer() {
     return result;
   }
 
-  const createConditionString = () => {
+  function deleteCondition(indexToRemove: number) {
+    setMappedConditions((prevConditions: any) => {
+      const updatedConditions = prevConditions.filter((_: any, index: number) => index !== indexToRemove);
+      return updatedConditions;
+    });
+  }
+
+  //function deleteCondition(indexToRemove: number) {
+  //
+  //  const conditionService = new BuildConditionsService(conditions);
+  //  conditionService.processConditions();
+  //  const mapped = conditionService.getConditions();
+  //  // Filter creates new array instead of modifying existing
+  //  mapped.splice(indexToRemove, 1)
+  //  setMappedConditions(mapped)
+  //  console.log(mapped, "mapped local");
+  //
+  //  console.log(mappedConditions, "mapped conditiobns");
+  //
+  //  console.log(mapped)
+  //
+  //
+  //}
+  //
+
+  function createConditionString() {
     const values = blocks.map((block) => {
       return block.map((component: any) => {
         const value = component.ref.current.getValue();
@@ -161,10 +197,6 @@ function BuildConditionRenderer() {
     return transformedValues;
   };
 
-  function deleteRow(index: number) {
-
-
-  }
 
   return (
     <>
@@ -182,7 +214,8 @@ function BuildConditionRenderer() {
         <div className="mt-10 z-100">
           <Button onClick={() => console.log(blocks)}>BLOCKS</Button>
         </div>
-        <Button onClick={createConditionString}>Get Sorted Values</Button>
+        <Button onClick={() => createConditionString()}>Get Sorted Values</Button>
+        <Button onClick={() => deleteCondition(0)}>Delete condition</Button>
       </div>
     </>
   );

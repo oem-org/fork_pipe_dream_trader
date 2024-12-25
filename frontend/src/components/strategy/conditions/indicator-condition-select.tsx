@@ -6,12 +6,13 @@ import useInitialValue from "@/lib/hooks/useInitialValue";
 import { forwardRef, useImperativeHandle, useState } from "react";
 
 interface IndicatorConditionSelectProps {
+  id: number;
   initialValue: string;
   onValueChange: (value: string) => void;
 }
 
 const IndicatorConditionSelect = forwardRef(
-  ({ initialValue, onValueChange }: IndicatorConditionSelectProps, ref) => {
+  ({ id, initialValue, onValueChange }: IndicatorConditionSelectProps, ref) => {
     const { strategyId } = useStrategyStore();
     const { data: indicatorSettings } = getStrategyIndicatorsQuery(strategyId);
 
@@ -41,6 +42,7 @@ const IndicatorConditionSelect = forwardRef(
 
     return (
       <div>
+        {id}
         <GenericSelect<StrategyIndicator>
           data={indicatorSettings || []}
           keyExtractor={(indicator) => indicator.id}

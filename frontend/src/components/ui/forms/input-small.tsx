@@ -2,12 +2,13 @@ import React, { useState, forwardRef, useImperativeHandle } from "react";
 
 interface InputSmallProps {
 	initialValue: string;
+	id: number;
 	name: string;
 	onValueChange: (value: string) => void;
 
 }
 
-const InputSmall = forwardRef(({ initialValue, name, onValueChange }: InputSmallProps, ref) => {
+const InputSmall = forwardRef(({ id, initialValue, name, onValueChange }: InputSmallProps, ref) => {
 	const [value, setValue] = useState(initialValue);
 
 	function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -25,6 +26,7 @@ const InputSmall = forwardRef(({ initialValue, name, onValueChange }: InputSmall
 	return (
 		<div>
 			<label htmlFor={name}>{name}</label>
+			{id}
 			<input
 				id={name}
 				type="text"

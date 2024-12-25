@@ -4,12 +4,13 @@ import { Operator } from "@/interfaces/Operator";
 import GenericSelect from "@/components/ui/lists/generic-select";
 
 interface SingleOperatorProps {
+  id: number;
   initialValue: string;
   onValueChange: (value: string) => void;
 }
 
 const SingleOperator = forwardRef(
-  ({ initialValue, onValueChange }: SingleOperatorProps, ref) => {
+  ({ id, initialValue, onValueChange }: SingleOperatorProps, ref) => {
     const [selectedOperator, setSelectedOperator] = useState<Operator>(
       operators.find((operator) => operator.name === initialValue) as Operator
     );
@@ -28,7 +29,7 @@ const SingleOperator = forwardRef(
     }));
     return (
       <div>
-
+        {id}
         <GenericSelect<Operator>
           data={operators || []}
           keyExtractor={(operator) => operator.id}
