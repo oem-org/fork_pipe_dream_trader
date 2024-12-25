@@ -53,6 +53,7 @@ export const putStrategyApi = new PutService<Strategy, Strategy>('strategy', jso
 export const deleteStrategyApi = new DeleteService<number>('strategy', jsonHeader)
 
 
+//Backtest
 
 
 //Timeseries

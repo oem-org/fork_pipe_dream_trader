@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/buttons/button';
 import BuildConditionRenderer from './build-condition-renderer';
 import { useState } from 'react';
 import useConditionsStore from '@/lib/hooks/useConditionsStore';
-import { ConditionsArray, ConditionGroup, LogicalOperator } from '@/interfaces/Condition';
+import { ConditionsArray, Side, ConditionGroup, LogicalOperator } from '@/interfaces/Condition';
 import ConditionsButtonGroup from './conditions-button-group';
 
 export default function ConditionsSection() {
@@ -14,32 +14,25 @@ export default function ConditionsSection() {
     setBuyConditions,
     deleteSellCondition,
     deleteBuyCondition,
-    buyCondtionsString,
-    sellCondtionsString,
   } = useConditionsStore();
 
 
-  const addConditionBuy = (newCondition: ConditionGroup | LogicalOperator) => {
-    console.log("HELLLLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
-    console.log(buyConditions, newCondition)
-    console.log(buyConditions)
-    // To add a number 4 to the array
 
-    setBuyConditions([...buyConditions, newCondition]);
+
+  const addCondition = (side: Side, newCondition: ConditionGroup | LogicalOperator) => {
+    if (side === "buy") {
+
+      console.log(buyConditions, newCondition)
+      console.log(buyConditions)
+      setSellConditions([...buyConditions, newCondition]);
+    } else {
+
+      console.log(sellConditions, newCondition)
+      console.log(sellConditions)
+      setSellConditions([...sellConditions, newCondition]);
+
+    }
   };
-
-  const addConditionSell = (newCondition: ConditionGroup | LogicalOperator) => {
-    console.log("HELLLLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
-    console.log(sellConditions, newCondition)
-    console.log(sellConditions)
-    // To add a number 4 to the array
-
-    setSellConditions([...sellConditions, newCondition]);
-  };
-  //const addConditionBuy = (newCondition: any) => {
-  //  setBuyConditions((prevConditions) => [...prevConditions, newCondition]);
-  //  console.log(buyConditions)
-  //};
   return (
     <div>
       <div className="flex flex-row justify-between">
@@ -58,11 +51,9 @@ export default function ConditionsSection() {
         </div>
 
         <div className='flex flex-col'>
-          <ConditionsButtonGroup addCondition={addConditionBuy} />
+          <ConditionsButtonGroup side="buy" addCondition={addCondition} />
 
         </div>
-
-
 
         <div>
           <div className="flex flex-row">
@@ -70,7 +61,7 @@ export default function ConditionsSection() {
           </div>
 
           <div className='flex flex-col'>
-            <ConditionsButtonGroup addCondition={addConditionSell} />
+            <ConditionsButtonGroup side="sell" addCondition={addCondition} />
 
           </div>
         </div>

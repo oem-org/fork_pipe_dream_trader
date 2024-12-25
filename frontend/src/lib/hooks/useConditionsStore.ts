@@ -1,10 +1,7 @@
 import { create } from 'zustand';
-
 import { ConditionsArray } from '@/interfaces/Condition';
 
 interface ConditionsState {
-	buyCondtionsString: string;
-	sellCondtionsString: string;
 	buyConditions: ConditionsArray;
 	sellConditions: ConditionsArray;
 	setBuyConditions: (newConditions: ConditionsArray) => void;
@@ -14,34 +11,26 @@ interface ConditionsState {
 }
 
 const useConditionsStore = create<ConditionsState>((set) => ({
-	buyCondtionsString: "",
-	sellCondtionsString: "",
-
-	buyConditions: [
-	] as ConditionsArray,
-
-
-	sellConditions: [
-	] as ConditionsArray,
+	buyConditions: [] as any,
+	sellConditions: [] as any,
 
 	deleteBuyCondition: (index: number) =>
-		set((state) => ({
-			buyConditions: state.buyConditions.filter((_, i) => i !== index),
-		})),
+		set((state) => {
+			const updatedConditions = state.buyConditions.filter((_, i) => i !== index);
+			return { buyConditions: updatedConditions };
+		}),
 
-	setBuyConditions: (newConditions) => set({ buyConditions: newConditions }),
-
+	setBuyConditions: (newConditions) =>
+		set({ buyConditions: newConditions }),
 
 	deleteSellCondition: (index: number) =>
-		set((state) => ({
-			sellConditions: state.sellConditions.filter((_, i) => i !== index),
-		})),
+		set((state) => {
+			const updatedConditions = state.sellConditions.filter((_, i) => i !== index);
+			return { sellConditions: updatedConditions };
+		}),
 
-	setSellConditions: (newConditions) => set({ sellConditions: newConditions }),
-
-	setBuyConditionsString: (newString: string) => set({ buyCondtionsString: newString }),
-
-	setSellConditionsString: (newString: string) => set({ sellCondtionsString: newString }),
+	setSellConditions: (newConditions) =>
+		set({ sellConditions: newConditions }),
 }));
 
 export default useConditionsStore;

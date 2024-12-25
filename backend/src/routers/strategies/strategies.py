@@ -217,12 +217,9 @@ async def read_all_strategy_indicators(user: user_dependency, db: db_dependency,
             for si in strategy.strategy_indicators
         ]
 
-        # Debug: Print final response
-
         return indicators
 
     except Exception as e:
-        # Debug: Log the exception details
         print(f"Error occurred: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
@@ -293,7 +290,6 @@ async def update_indicator_in_strategy(
     Update an indicator within a strategy.
     """
     try:
-        # Fetch the existing strategy-indicator relationship
         strategy_indicator = db.query(StrategyIndicators).join(
             Strategies, StrategyIndicators.fk_strategy_id == Strategies.id
         ).filter(

@@ -5,12 +5,17 @@ export interface Condition {
     value: number | string | { indicator: string | null };
 }
 
+export type ConditionElement =
+    | { operator: string }
+    | { value: number }
+    | { indicator: string | null };
 
 export type ConditionGroup = Condition[];
 
 
 export type LogicalOperator = "&" | "|" | "~" | "<" | ">";
 
+export type Side = "buy" | "sell"
 
 export type ConditionsArray = Array<ConditionGroup | LogicalOperator>;
 

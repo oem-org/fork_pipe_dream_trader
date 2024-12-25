@@ -1,22 +1,24 @@
+
 import { ConditionElement, ConditionGroup, LogicalOperator, Side, Condition } from '@/interfaces/Condition'
 import { Button } from '@/components/ui/buttons/button'
 import { useEffect, useState } from 'react'
 import Modal from '@/components/ui/modal'
 import CreateConditionIndicator from './create-condition-indicator'
 import CreateConditionOperator from './create-condition-operator'
+import CreateConditionValue from './create-condition-value'
 
-interface CreateIndicatorIndicatorProps {
+interface IndicatorValueModalProps {
   addCondition: (side: Side, cond: LogicalOperator | ConditionGroup) => void
   side: Side
 }
 
-export default function CreateIndicatorIndicator({ side, addCondition }: CreateIndicatorIndicatorProps) {
+export default function IndicatorValueModal({ side, addCondition }: IndicatorValueModalProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toggleIndicatorIndicator = () => setIsModalOpen(!isModalOpen);
 
   const [indicator1, setIndicator1] = useState<any>({} as ConditionElement)
   const [operator, setOperator] = useState<any>({} as ConditionElement)
-  const [indicator2, setIndicator2] = useState<any>({} as ConditionElement)
+  const [value, setValue] = useState<any>({} as ConditionElement)
 
   function handleAddCondition(side: Side, cond: ConditionGroup) {
     addCondition(side, cond)
@@ -26,8 +28,8 @@ export default function CreateIndicatorIndicator({ side, addCondition }: CreateI
   // Function to convert the state into a Condition object
 
   useEffect(() => {
-    console.log(indicator1, operator, indicator2)
-  }, [indicator1, operator, indicator2])
+    console.log(indicator1, operator, value)
+  }, [indicator1, operator, value])
 
   return (
     <>
@@ -35,10 +37,10 @@ export default function CreateIndicatorIndicator({ side, addCondition }: CreateI
       <Modal onClose={toggleIndicatorIndicator} isOpen={isModalOpen} title="Delete strategy">
         <CreateConditionIndicator setIndicator={setIndicator1} />
         <CreateConditionOperator setOperator={setOperator} />
-        <CreateConditionIndicator setIndicator={setIndicator2} />
+        <CreateConditionValue setValue={setValue} />
         <Button
           onClick={() => {
-            handleAddCondition(side, [indicator1, operator, indicator2]);
+            handleAddCondition(side, [indicator1, operator, value]);
           }}
         >
           Add

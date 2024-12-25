@@ -27,7 +27,6 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
   const [mappedConditions, setMappedConditions] = useState<any>(mapConditions());
 
 
-  console.log("START", conditions, setConditions)
 
   function mapConditions() {
     if (!Array.isArray(conditions)) {
