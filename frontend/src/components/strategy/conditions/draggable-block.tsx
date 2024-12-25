@@ -10,11 +10,12 @@ interface BlockProps {
 	children: ReactNode;
 	moveBlock: (dragIndex: number, hoverIndex: number) => void;
 	index: number;
+	deleteBlock: (id: number) => void
 }
 
 
 
-export default function DraggableBlock({ id, children, moveBlock, index }: BlockProps) {
+export default function DraggableBlock({ deleteBlock, id, children, moveBlock, index }: BlockProps) {
 	const [, drag] = useDrag(() => ({
 		type: ItemType.BLOCK,
 		item: { id, index },
@@ -38,7 +39,7 @@ export default function DraggableBlock({ id, children, moveBlock, index }: Block
 				{children}
 			</div>
 			<div>
-				<ConditionSettings conditionId={id} />
+				<ConditionSettings deleteBlock={deleteBlock} conditionId={id} />
 
 			</div>
 

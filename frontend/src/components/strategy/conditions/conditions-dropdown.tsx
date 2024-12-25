@@ -5,20 +5,24 @@ import Modal from '../../ui/modal';
 import { Button } from '../../ui/buttons/button';
 import Dropdown from '../../ui/navigation/dropdown';
 import { SettingsIcon } from 'lucide-react';
-import useConditionsStore from '@/lib/hooks/useConditionsStore';
 
 interface ConditionSettingsProps {
   conditionId: number
+  deleteBlock: (conditionId: number) => void
 }
 
-export default function ConditionSettings({ conditionId }: ConditionSettingsProps) {
-  const { deleteCondition } = useConditionsStore();
+export default function ConditionSettings({ deleteBlock, conditionId }: ConditionSettingsProps) {
 
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const toggleDeleteModal = () => setIsDeleteModalOpen(!isDeleteModalOpen);
   const toggleRenameModal = () => setIsRenameModalOpen(!isRenameModalOpen);
+
+  function handleDelete(id: number) {
+    deleteBlock(id)
+    toggleDeleteModal()
+  }
 
   return (<>
     <Dropdown textColor="text-black" icon={SettingsIcon} animation={false} direction="right">
@@ -27,7 +31,7 @@ export default function ConditionSettings({ conditionId }: ConditionSettingsProp
     </Dropdown>
 
     <Modal onClose={toggleDeleteModal} isOpen={isDeleteModalOpen} title={"Delete"}>
-      <Button onClick={() => { deleteCondition(conditionId) }}>Delete Strategy</Button>
+      <Button onClick={() => handleDelete(conditionId)}>Delete Strategy</Button>
     </Modal>
 
     <Modal onClose={toggleRenameModal} isOpen={isRenameModalOpen} title={"Edit"}>

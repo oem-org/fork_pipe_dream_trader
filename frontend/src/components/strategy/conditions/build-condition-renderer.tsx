@@ -13,8 +13,9 @@ import { Button } from "@/components/ui/buttons/button";
 
 interface BuildConditionsRendererProps {
   conditions: Array<any>,
-  setConditions: any
-  deleteBlock: any
+  setConditions: any,
+  deleteBlock: any,
+  side: string,
 }
 
 // TODO: Set types for conditions
@@ -225,10 +226,9 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
       <DndProvider backend={HTML5Backend}>
         <div>
           {blocks.map((block, blockIndex) => (<>
-            <DraggableBlock key={`block-${blockIndex}`} id={blockIndex} index={blockIndex} moveBlock={moveBlock}>
+            <DraggableBlock deleteBlock={deleteBlock} key={`block-${blockIndex}`} id={blockIndex} index={blockIndex} moveBlock={moveBlock}>
               {block}
 
-              <Button onClick={() => deleteBlock(blockIndex)}>Delete condition</Button>
             </DraggableBlock>
           </>))}
         </div>

@@ -2,14 +2,15 @@ import { Button } from '@/components/ui/buttons/button';
 import BuildConditionRenderer from './build-condition-renderer';
 import { useState } from 'react';
 import useConditionsStore from '@/lib/hooks/useConditionsStore';
-import { ConditionsArray, ConditionGroup } from '@/interfaces/Condition';
+import { ConditionsArray, ConditionGroup, LogicalOperator } from '@/interfaces/Condition';
+import ConditionsButtonGroup from './conditions-button-group';
 
 export default function ConditionsSection() {
 
   const { sellConditions, buyConditions, setSellConditions, setBuyConditions, deleteSellCondition, deleteBuyCondition } = useConditionsStore();
 
 
-  const addConditionBuy = (newCondition: ConditionGroup) => {
+  const addConditionBuy = (newCondition: ConditionGroup | LogicalOperator) => {
     console.log("HELLLLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
     console.log(buyConditions, newCondition)
     console.log(buyConditions)
@@ -18,7 +19,7 @@ export default function ConditionsSection() {
     setBuyConditions([...buyConditions, newCondition]);
   };
 
-  const addConditionSell = (newCondition: ConditionGroup) => {
+  const addConditionSell = (newCondition: ConditionGroup | LogicalOperator) => {
     console.log("HELLLLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
     console.log(sellConditions, newCondition)
     console.log(sellConditions)
@@ -47,23 +48,25 @@ export default function ConditionsSection() {
           <BuildConditionRenderer deleteBlock={deleteBuyCondition} conditions={buyConditions} setConditions={setBuyConditions} />
         </div>
 
-        <div className="mt-4">
-          <Button onClick={() => addConditionBuy([{ "indicator": null }, { "operator": ">" }, { "value": 1 }])}>Add Condition</Button>
+        <div className='flex flex-col'>
+          <ConditionsButtonGroup addCondition={addConditionBuy} />
+
         </div>
+
+
+
+        <div>
+          <div className="flex flex-row">
+            <BuildConditionRenderer deleteBlock={deleteSellCondition} conditions={sellConditions} setConditions={setSellConditions} />
+          </div>
+
+          <div className='flex flex-col'>
+            <ConditionsButtonGroup addCondition={addConditionSell} />
+
+          </div>
+        </div>
+
       </div>
-
-
-
-      <div>
-        <div className="flex flex-row">
-          <BuildConditionRenderer deleteBlock={deleteSellCondition} conditions={sellConditions} setConditions={setSellConditions} />
-        </div>
-
-        <div className="mt-4">
-          <Button onClick={() => addConditionSell([{ "indicator": "RSI_14" }, { "operator": ">" }, { "indicator": "RSI_14" }])}>Add Condition</Button>
-        </div>
-      </div>
-
     </div>
   );
 }
