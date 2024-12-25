@@ -9,25 +9,46 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { useState, useEffect } from "react";
 import React from "react";
 import { Button } from "@/components/ui/buttons/button";
-import useConditionsStore from "@/lib/hooks/useConditionsStore";
 
+
+interface BuildConditionsRendererProps {
+  conditions: Array<any>,
+  setConditions: React.Dispatch<React.SetStateAction<Array<any>>>;
+}
 
 // TODO: Set types for conditions
 //
 
-function BuildConditionRenderer({ conditions, setConditions }) {
+function BuildConditionRenderer({ conditions, setConditions }: BuildConditionsRendererProps) {
   const [blocks, setBlocks] = useState<JSX.Element[][]>([]);
   console.log("RERENDER§!")
   //const { conditions, setConditions } = useConditionsStore();
-  const [mappedConditions, setMappedConditions] = useState<any>([]);
+  const [mappedConditions, setMappedConditions] = useState<any>(mapConditions());
 
-  useEffect(() => {
+
+  console.log("START", conditions, setConditions)
+
+  function mapConditions() {
+    if (!Array.isArray(conditions)) {
+      console.log("MAPPED", conditions);
+
+      console.error('Expected conditions to be an array, but got:', typeof conditions)
+    }
+    console.log("MAAAAAAAAAAAAAAAAAAAAAAAAAaaaaaa")
     const conditionService = new BuildConditionsService(conditions);
     conditionService.processConditions();
     const mapped = conditionService.getConditions();
-    setMappedConditions(mapped)
+    return mapped
+  }
 
+  useEffect(() => {
+    if (conditions.length > 0) {
+      const mapped = mapConditions()
+      setMappedConditions(mapped)
+    }
   }, [conditions])
+
+
 
   useEffect(() => {
 

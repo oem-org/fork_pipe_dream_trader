@@ -8,10 +8,22 @@ export default function ConditionsSection() {
 
 
   const addConditionBuy = (newCondition: any) => {
-    setBuyConditions((prevConditions) => [...prevConditions, newCondition]);
+    console.log("HELLLLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+    console.log(buyConditions, newCondition)
     console.log(buyConditions)
+    // To add a number 4 to the array
+
+    setBuyConditions([...buyConditions, newCondition]);
   };
 
+  const addConditionSell = (newCondition: any) => {
+    console.log("HELLLLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+    console.log(buyConditions, newCondition)
+    console.log(buyConditions)
+    // To add a number 4 to the array
+
+    setBuyConditions([...sellConditions, newCondition]);
+  };
   //const addConditionBuy = (newCondition: any) => {
   //  setBuyConditions((prevConditions) => [...prevConditions, newCondition]);
   //  console.log(buyConditions)
@@ -28,6 +40,7 @@ export default function ConditionsSection() {
       </div>
       <hr className="py-1" />
       <div>
+        <h3>Buy conditions</h3>
         <div className="flex flex-row">
           <BuildConditionRenderer conditions={buyConditions} setConditions={setBuyConditions} />
         </div>
@@ -45,6 +58,7 @@ export default function ConditionsSection() {
         </div>
 
         <div className="mt-4">
+          <Button onClick={() => addConditionSell([{ "indicator": null }, { "operator": ">" }, { "value": 1 }])}>Add Condition</Button>
         </div>
       </div>
 

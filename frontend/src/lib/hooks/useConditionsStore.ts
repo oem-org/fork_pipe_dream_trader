@@ -29,13 +29,17 @@ const useConditionsStore = create<ConditionsState>((set) => ({
 	deleteBuyCondition: (index: number) =>
 		set((state) => ({
 			buyConditions: state.buyConditions.filter((_, i) => i !== index),
-		})), setBuyConditions: (newConditions) => set({ buyConditions: newConditions }),
+		})),
+
+	setBuyConditions: (newConditions) => set({ buyConditions: newConditions }),
 
 
 	deleteSellCondition: (index: number) =>
 		set((state) => ({
 			sellConditions: state.sellConditions.filter((_, i) => i !== index),
-		})), setSellConditions: (newConditions) => set({ sellConditions: newConditions }),
+		})),
+
+	setSellConditions: (newConditions) => set({ sellConditions: newConditions }),
 
 }));
 
