@@ -10,7 +10,7 @@ from starlette import status
 from sqlalchemy.orm import joinedload
 
 from ...dependencies import db_dependency, user_dependency
-from ...models import Strategies, StrategyIndicators
+from ...models import Strategies, StrategyIndicators, StrategyConditions
 from ...schemas import UpdateStrategyRequest, CreateStrategyRequest, StrategySchema
 from ...utils.debugging.print_db_object import print_db_object
 from ...utils.exceptions import handle_db_error, handle_not_found_error
@@ -329,3 +329,93 @@ async def update_indicator_in_strategy(
         )
 
 
+@router.post("/{strategy_id}/condition", status_code=status.HTTP_201_CREATED)
+async def add_strategy_condition(
+    strategy_id: int,
+    condition_data: dict,
+    db: db_dependency,
+    user: user_dependency,
+):
+    """
+    Add a strategy condition to a strategy.
+    The condition can reference one, two, or no strategy indicators.
+    """
+    try:
+        print(f"Request received to add strategy condition for strategy_id={strategy_id}")
+        print(f"Condition data: {condition_data}")
+
+        # Extract optional indicators and settings from the request data
+        fk_strategy_indicator_id_1 = condition_data.get("fk_strategy_indicator_id_1")
+        fk_strategy_indicator_id_2 = condition_data.get("fk_strategy_indicator_id_2")
+        settings = condition_data.get("settings", {})
+        side = condition_data.get("side")  # Should be "buy" or "sell"
+
+        print(f"Extracted values: fk_strategy_indicator_id_1={fk_strategy_indicator_id_1}, "
+              f"fk_strategy_indicator_id_2={fk_strategy_indicator_id_2}, settings={settings}, side={side}")
+
+        # Validate the strategy exists and belongs to the user
+        strategy = (
+            db.query(Strategies)
+            .filter(Strategies.id == strategy_id)
+            .filter(Strategies.fk_user_id == user["id"])
+            .first()
+        )
+        print(f"Queried strategy: {strategy}")
+
+        if not strategy:
+            print(f"Strategy with id={strategy_id} not found or does not belong to user id={user['id']}")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Strategy not found or does not belong to user",
+            )
+
+        # Validate the side field
+        if side not in ["buy", "sell"]:
+            print(f"Invalid 'side' value: {side}")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid value for 'side'. Must be 'buy' or 'sell'.",
+            )
+
+        # Create a new StrategyCondition
+        strategy_condition = StrategyConditions(
+            fk_strategy_id=strategy_id,
+            fk_strategy_indicator_id_1=fk_strategy_indicator_id_1,
+            fk_strategy_indicator_id_2=fk_strategy_indicator_id_2,
+            settings=settings,
+            side=side,
+        )
+        print(f"Created StrategyCondition object: {strategy_condition}")
+
+        db.add(strategy_condition)
+        db.commit()
+        db.refresh(strategy_condition)
+        print(f"StrategyCondition successfully added with id={strategy_condition.id}")
+
+        return {
+            "message": "StrategyCondition successfully added",
+            "strategy_condition": {
+                "id": strategy_condition.id,
+                "fk_strategy_id": strategy_condition.fk_strategy_id,
+                "fk_strategy_indicator_id_1": strategy_condition.fk_strategy_indicator_id_1,
+                "fk_strategy_indicator_id_2": strategy_condition.fk_strategy_indicator_id_2,
+                "settings": strategy_condition.settings,
+                "side": strategy_condition.side,
+            },
+        }
+
+    except SQLAlchemyError as e:
+        db.rollback()
+        print(f"SQLAlchemy error while adding strategy condition: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Database error: {str(e)}",
+        )
+
+    except Exception as e:
+        db.rollback()
+        print(f"Unexpected error while adding strategy condition: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Unexpected error: {str(e)}",
+        )
