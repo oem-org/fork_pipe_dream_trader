@@ -106,7 +106,7 @@ export default function StrategyPage() {
 
             </article>
             <div className="lg:col-span-3">
-              <Charts strategyId={strategyId} fileId={fileId} />
+              <Charts />
             </div>
           </section>
           <section className="grid grid-cols-1 lg:grid-cols-8 gap-4">

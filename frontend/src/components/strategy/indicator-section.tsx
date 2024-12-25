@@ -16,7 +16,6 @@ import { queryClient } from "@/main";
 import { useChartStore } from "@/lib/hooks/useChartStore";
 
 interface IndicatorSectionProps {
-	setRerender: React.Dispatch<React.SetStateAction<number>>;
 	strategyId: number;
 	fileId: number | undefined;
 }

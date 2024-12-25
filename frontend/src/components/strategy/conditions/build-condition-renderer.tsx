@@ -4,9 +4,9 @@ import InputSmall from "@/components/ui/forms/input-small";
 import IndicatorConditionSelect from "./indicator-condition-select";
 import OperatorConditionSelect from "./operator-condition-select";
 import { DndProvider } from "react-dnd";
-import DraggableBlock from "@/components/ui/draggable-block";
+import DraggableBlock from "./draggable-block";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import { Button } from "@/components/ui/buttons/button";
 import useConditionsStore from "@/lib/hooks/useConditionsStore";
@@ -18,7 +18,7 @@ import useConditionsStore from "@/lib/hooks/useConditionsStore";
 function BuildConditionRenderer() {
   const [blocks, setBlocks] = useState<JSX.Element[][]>([]);
 
-  const { conditions, setConditions, deleteCondition } = useConditionsStore();
+  const { conditions, setConditions } = useConditionsStore();
   useEffect(() => {
     const conditionService = new BuildConditionsService(conditions);
     conditionService.processConditions();
@@ -174,7 +174,6 @@ function BuildConditionRenderer() {
             <DraggableBlock key={`block-${blockIndex}`} id={blockIndex} index={blockIndex} moveBlock={moveBlock}>
               {block}
 
-              <button onClick={() => { deleteCondition(blockIndex) }}>ddddddddddel</button>
             </DraggableBlock>
           </>))}
         </div>
