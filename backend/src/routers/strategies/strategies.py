@@ -336,24 +336,18 @@ async def add_strategy_condition(
     db: db_dependency,
     user: user_dependency,
 ):
-    """
-    Add a strategy condition to a strategy.
-    The condition can reference one, two, or no strategy indicators.
-    """
     try:
         print(f"Request received to add strategy condition for strategy_id={strategy_id}")
         print(f"Condition data: {condition_data}")
 
-        # Extract optional indicators and settings from the request data
         fk_strategy_indicator_id_1 = condition_data.get("fk_strategy_indicator_id_1")
         fk_strategy_indicator_id_2 = condition_data.get("fk_strategy_indicator_id_2")
         settings = condition_data.get("settings", {})
-        side = condition_data.get("side")  # Should be "buy" or "sell"
+        side = condition_data.get("side")  
 
         print(f"Extracted values: fk_strategy_indicator_id_1={fk_strategy_indicator_id_1}, "
               f"fk_strategy_indicator_id_2={fk_strategy_indicator_id_2}, settings={settings}, side={side}")
 
-        # Validate the strategy exists and belongs to the user
         strategy = (
             db.query(Strategies)
             .filter(Strategies.id == strategy_id)
@@ -369,7 +363,6 @@ async def add_strategy_condition(
                 detail="Strategy not found or does not belong to user",
             )
 
-        # Validate the side field
         if side not in ["buy", "sell"]:
             print(f"Invalid 'side' value: {side}")
             raise HTTPException(
@@ -377,7 +370,6 @@ async def add_strategy_condition(
                 detail="Invalid value for 'side'. Must be 'buy' or 'sell'.",
             )
 
-        # Create a new StrategyCondition
         strategy_condition = StrategyConditions(
             fk_strategy_id=strategy_id,
             fk_strategy_indicator_id_1=fk_strategy_indicator_id_1,
@@ -418,4 +410,191 @@ async def add_strategy_condition(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Unexpected error: {str(e)}",
+        )
+
+
+
+@router.put("/{strategy_id}/condition/{condition_id}", status_code=status.HTTP_200_OK)
+async def update_strategy_condition(
+    strategy_id: int,
+    condition_id: int,
+    condition_data: dict,
+    db: db_dependency,
+    user: user_dependency,
+):
+    """
+    Update a strategy condition by condition_id.
+    """
+    try:
+        print(f"Updating strategy condition with id={condition_id} for strategy_id={strategy_id}")
+        print(f"Condition data: {condition_data}")
+
+        # Fetch the strategy condition
+        strategy_condition = (
+            db.query(StrategyConditions)
+            .join(Strategies, StrategyConditions.fk_strategy_id == Strategies.id)
+            .filter(
+                StrategyConditions.id == condition_id,
+                StrategyConditions.fk_strategy_id == strategy_id,
+                Strategies.fk_user_id == user["id"],
+            )
+            .first()
+        )
+        if not strategy_condition:
+            print(f"StrategyCondition with id={condition_id} not found for strategy_id={strategy_id}")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Strategy condition not found or does not belong to user",
+            )
+
+        # Update fields
+        for key, value in condition_data.items():
+            setattr(strategy_condition, key, value)
+
+        db.commit()
+        db.refresh(strategy_condition)
+        print(f"Updated StrategyCondition: {strategy_condition}")
+
+        return {
+            "message": "StrategyCondition successfully updated",
+            "strategy_condition": {
+                "id": strategy_condition.id,
+                "fk_strategy_id": strategy_condition.fk_strategy_id,
+                "fk_strategy_indicator_id_1": strategy_condition.fk_strategy_indicator_id_1,
+                "fk_strategy_indicator_id_2": strategy_condition.fk_strategy_indicator_id_2,
+                "settings": strategy_condition.settings,
+                "side": strategy_condition.side,
+            },
+        }
+
+    except SQLAlchemyError as e:
+        db.rollback()
+        logger.error(f"SQLAlchemy error while updating strategy condition: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to update strategy condition",
+        )
+
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Unexpected error while updating strategy condition: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Unexpected error occurred",
+        )
+
+
+
+
+@router.delete("/{strategy_id}/condition/{condition_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_strategy_condition(
+    strategy_id: int,
+    condition_id: int,
+    db: db_dependency,
+    user: user_dependency,
+):
+    """
+    Delete a strategy condition by condition_id.
+    """
+    try:
+        print(f"Deleting strategy condition with id={condition_id} for strategy_id={strategy_id}")
+
+        # Fetch and validate the strategy condition
+        strategy_condition = (
+            db.query(StrategyConditions)
+            .join(Strategies, StrategyConditions.fk_strategy_id == Strategies.id)
+            .filter(
+                StrategyConditions.id == condition_id,
+                StrategyConditions.fk_strategy_id == strategy_id,
+                Strategies.fk_user_id == user["id"],
+            )
+            .first()
+        )
+        if not strategy_condition:
+            print(f"StrategyCondition with id={condition_id} not found for strategy_id={strategy_id}")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Strategy condition not found or does not belong to user",
+            )
+
+        db.delete(strategy_condition)
+        db.commit()
+        print(f"Deleted StrategyCondition with id={condition_id}")
+
+        return {"message": "StrategyCondition successfully deleted"}
+
+    except SQLAlchemyError as e:
+        db.rollback()
+        logger.error(f"SQLAlchemy error while deleting strategy condition: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to delete strategy condition",
+        )
+
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Unexpected error while deleting strategy condition: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Unexpected error occurred",
+        )
+
+
+#TODO: fix errors codes
+
+@router.get("/{strategy_id}/condition", status_code=status.HTTP_200_OK)
+async def get_all_strategy_conditions(
+    strategy_id: int,
+    db: db_dependency,
+    user: user_dependency,
+):
+    """
+    Retrieve all strategy conditions for a given strategy_id.
+    """
+    try:
+        print(f"Fetching all strategy conditions for strategy_id={strategy_id}")
+
+        strategy = (
+            db.query(Strategies)
+            .filter(Strategies.id == strategy_id, Strategies.fk_user_id == user["id"])
+            .first()
+        )
+        if not strategy:
+            print(f"Strategy with id={strategy_id} not found or does not belong to user")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Strategy not found or does not belong to user",
+            )
+
+        strategy_conditions = (
+            db.query(StrategyConditions)
+            .filter(StrategyConditions.fk_strategy_id == strategy_id)
+            .all()
+        )
+        print(f"Fetched {len(strategy_conditions)} StrategyConditions")
+
+        return [
+            {
+                "id": sc.id,
+                "fk_strategy_id": sc.fk_strategy_id,
+                "fk_strategy_indicator_id_1": sc.fk_strategy_indicator_id_1,
+                "fk_strategy_indicator_id_2": sc.fk_strategy_indicator_id_2,
+                "settings": sc.settings,
+                "side": sc.side,
+            }
+            for sc in strategy_conditions
+        ]
+
+    except SQLAlchemyError as e:
+        logger.error(f"SQLAlchemy error while fetching strategy conditions: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to fetch strategy conditions",
+        )
+
+    except Exception as e:
+        logger.error(f"Unexpected error while fetching strategy conditions: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Unexpected error occurred",
         )
