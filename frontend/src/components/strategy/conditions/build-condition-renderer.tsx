@@ -15,10 +15,10 @@ import useConditionsStore from "@/lib/hooks/useConditionsStore";
 // TODO: Set types for conditions
 //
 
-function BuildConditionRenderer() {
+function BuildConditionRenderer({ conditions, setConditions }) {
   const [blocks, setBlocks] = useState<JSX.Element[][]>([]);
   console.log("RERENDER§!")
-  const { conditions, setConditions } = useConditionsStore();
+  //const { conditions, setConditions } = useConditionsStore();
   const [mappedConditions, setMappedConditions] = useState<any>([]);
 
   useEffect(() => {
