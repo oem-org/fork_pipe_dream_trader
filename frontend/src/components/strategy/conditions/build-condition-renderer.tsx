@@ -13,13 +13,14 @@ import { Button } from "@/components/ui/buttons/button";
 
 interface BuildConditionsRendererProps {
   conditions: Array<any>,
-  setConditions: React.Dispatch<React.SetStateAction<Array<any>>>;
+  setConditions: any
+  deleteBlock: any
 }
 
 // TODO: Set types for conditions
 //
 
-function BuildConditionRenderer({ conditions, setConditions }: BuildConditionsRendererProps) {
+function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: BuildConditionsRendererProps) {
   const [blocks, setBlocks] = useState<JSX.Element[][]>([]);
   console.log("RERENDER§!")
   //const { conditions, setConditions } = useConditionsStore();
@@ -227,6 +228,7 @@ function BuildConditionRenderer({ conditions, setConditions }: BuildConditionsRe
             <DraggableBlock key={`block-${blockIndex}`} id={blockIndex} index={blockIndex} moveBlock={moveBlock}>
               {block}
 
+              <Button onClick={() => deleteBlock(blockIndex)}>Delete condition</Button>
             </DraggableBlock>
           </>))}
         </div>
@@ -236,7 +238,6 @@ function BuildConditionRenderer({ conditions, setConditions }: BuildConditionsRe
           <Button onClick={() => console.log(blocks)}>BLOCKS</Button>
         </div>
         <Button onClick={() => createConditionString()}>Get Sorted Values</Button>
-        <Button onClick={() => deleteCondition(0)}>Delete condition</Button>
       </div>
     </>
   );

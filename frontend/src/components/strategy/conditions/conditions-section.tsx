@@ -2,12 +2,14 @@ import { Button } from '@/components/ui/buttons/button';
 import BuildConditionRenderer from './build-condition-renderer';
 import { useState } from 'react';
 import useConditionsStore from '@/lib/hooks/useConditionsStore';
+import { ConditionsArray, ConditionGroup } from '@/interfaces/Condition';
+
 export default function ConditionsSection() {
 
-  const { sellConditions, buyConditions, setSellConditions, setBuyConditions } = useConditionsStore();
+  const { sellConditions, buyConditions, setSellConditions, setBuyConditions, deleteSellCondition, deleteBuyCondition } = useConditionsStore();
 
 
-  const addConditionBuy = (newCondition: any) => {
+  const addConditionBuy = (newCondition: ConditionGroup) => {
     console.log("HELLLLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
     console.log(buyConditions, newCondition)
     console.log(buyConditions)
@@ -16,13 +18,13 @@ export default function ConditionsSection() {
     setBuyConditions([...buyConditions, newCondition]);
   };
 
-  const addConditionSell = (newCondition: any) => {
+  const addConditionSell = (newCondition: ConditionGroup) => {
     console.log("HELLLLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
-    console.log(buyConditions, newCondition)
-    console.log(buyConditions)
+    console.log(sellConditions, newCondition)
+    console.log(sellConditions)
     // To add a number 4 to the array
 
-    setBuyConditions([...sellConditions, newCondition]);
+    setSellConditions([...sellConditions, newCondition]);
   };
   //const addConditionBuy = (newCondition: any) => {
   //  setBuyConditions((prevConditions) => [...prevConditions, newCondition]);
@@ -42,7 +44,7 @@ export default function ConditionsSection() {
       <div>
         <h3>Buy conditions</h3>
         <div className="flex flex-row">
-          <BuildConditionRenderer conditions={buyConditions} setConditions={setBuyConditions} />
+          <BuildConditionRenderer deleteBlock={deleteBuyCondition} conditions={buyConditions} setConditions={setBuyConditions} />
         </div>
 
         <div className="mt-4">
@@ -54,11 +56,11 @@ export default function ConditionsSection() {
 
       <div>
         <div className="flex flex-row">
-          <BuildConditionRenderer conditions={sellConditions} setConditions={setSellConditions} />
+          <BuildConditionRenderer deleteBlock={deleteSellCondition} conditions={sellConditions} setConditions={setSellConditions} />
         </div>
 
         <div className="mt-4">
-          <Button onClick={() => addConditionSell([{ "indicator": null }, { "operator": ">" }, { "value": 1 }])}>Add Condition</Button>
+          <Button onClick={() => addConditionSell([{ "indicator": "RSI_14" }, { "operator": ">" }, { "indicator": "RSI_14" }])}>Add Condition</Button>
         </div>
       </div>
 
