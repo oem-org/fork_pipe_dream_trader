@@ -97,7 +97,7 @@ export default function ConditionsSection() {
 
         <div>
           <div className="flex flex-row">
-            <BuildConditionRenderer deleteBlock={deleteSellCondition} conditions={buyConditions} setConditions={setSellConditions} />
+            <BuildConditionRenderer conditions={buyConditions} setConditions={setSellConditions} />
           </div>
 
           <div className='flex flex-col'>

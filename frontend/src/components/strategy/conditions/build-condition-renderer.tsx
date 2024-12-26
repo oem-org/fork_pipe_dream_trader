@@ -1,6 +1,6 @@
 import { BuildConditionsService } from "@/lib/services/ConditionExtractionService";
 import SingleOperator from "./single-operator";
-import InputSmall from "@/components/ui/forms/input-small";
+
 import IndicatorConditionSelect from "./indicator-condition-select";
 import OperatorConditionSelect from "./operator-condition-select";
 import { DndProvider } from "react-dnd";
@@ -10,19 +10,21 @@ import { useState, useEffect } from "react";
 import React from "react";
 import { Button } from "@/components/ui/buttons/button";
 import { DivideBlocksService } from "@/lib/services/ComponentMappingService";
-
+import { useDeleteStrategyCondition } from "@/lib/hooks/useDeleteStrategyCondition";
+import useStrategyStore from "@/lib/hooks/useStrategyStore";
 
 interface BuildConditionsRendererProps {
   conditions: Array<any>,
   setConditions: any,
-  deleteBlock: any,
 }
 
 // TODO: Set types for conditions
 //
 
-function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: BuildConditionsRendererProps) {
+function BuildConditionRenderer({ conditions, setConditions }: BuildConditionsRendererProps) {
   const [blocks, setBlocks] = useState<JSX.Element[][]>([]);
+  const { mutateAsync: deleteCondition } = useDeleteStrategyCondition()
+  const { strategyId } = useStrategyStore()
   console.log("RERENDER§!")
   //const { conditions, setConditions } = useConditionsStore();
   const [mappedConditions, setMappedConditions] = useState<any>(mapConditions());
@@ -58,10 +60,18 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
 
     mappedConditions.forEach((condition: any, index: number) => {
       if ("conditionId" in condition) {
+        console.log(condition.id, condition)
+        const deleteButton = (
+          <button key={`delete-${condition.conditionId}`} onClick={() => handleDeleteCondition(condition.conditionId)}>
+            DEEEL
+          </button>
+        );
+        currentBlock.push(deleteButton)
         initialBlocks.push(currentBlock);
         currentBlock = [];
 
       } else {
+
         const [kind, value, id] = condition as [string, string, number];
         let component: JSX.Element;
         const ref = React.createRef();
@@ -122,6 +132,7 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
               </div>
             );
         }
+
         currentBlock.push(component);
       }
     });
@@ -186,12 +197,12 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
   }
 
   // TODO: maybe delete
-  function deleteCondition(indexToRemove: number) {
-    setMappedConditions((prevConditions: any) => {
-      const updatedConditions = prevConditions.filter((_: any, index: number) => index !== indexToRemove);
-      return updatedConditions;
-    });
-  }
+  //function deleteCondition(indexToRemove: number) {
+  //  setMappedConditions((prevConditions: any) => {
+  //    const updatedConditions = prevConditions.filter((_: any, index: number) => index !== indexToRemove);
+  //    return updatedConditions;
+  //  });
+  //}
 
 
   function createConditionString() {
@@ -209,17 +220,20 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
     return transformedValues;
   };
 
+  async function handleDeleteCondition(conditionId: number) {
+    await deleteCondition({ strategyId, conditionId })
+  }
 
   return (
     <>
       <DndProvider backend={HTML5Backend}>
         <div>
-          {blocks.map((block, blockIndex) => (<>
-            <DraggableBlock deleteBlock={deleteBlock} key={`block-${blockIndex}`} id={blockIndex} index={blockIndex} moveBlock={moveBlock}>
-              {block}
-
-            </DraggableBlock>
-          </>))}
+          {blocks.map((block, blockIndex) => (
+            <>
+              <DraggableBlock key={`block-${blockIndex}`} id={blockIndex} index={blockIndex} moveBlock={moveBlock}>
+                {block}
+              </DraggableBlock>
+            </>))}
         </div>
       </DndProvider>
       <div className="mt-10 z-100">

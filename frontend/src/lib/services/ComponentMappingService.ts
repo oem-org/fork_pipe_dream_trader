@@ -92,7 +92,7 @@ import { isLogicalOperator } from "../utils/string-utils";
 
 export class DivideBlocksService {
 	private conditions: Array<any>;
-	private mappedConditions: Array<[string, string] | Record<string, number>>;
+	private mappedConditions: Array<[string, string] | Record<string, number> | number>;
 
 	constructor(conditions: Array<any>) {
 		this.conditions = conditions;
