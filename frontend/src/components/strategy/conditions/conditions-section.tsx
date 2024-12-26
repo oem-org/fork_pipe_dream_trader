@@ -30,23 +30,28 @@ export default function ConditionsSection() {
       const filteredBuyConditions = data.filter((condition) => condition.side === "buy");
       const filteredSellConditions = data.filter((condition) => condition.side === "sell");
 
+      console.log(filteredSellConditions, filteredBuyConditions, "FILTERED BUTY AND SELL")
+
+      console.log("DATA", data, "SENDING THE DATA")
       // Create new objects with only id and settings properties
       const buyConditionsFormatted = filteredBuyConditions.map((condition) => condition.settings);
       const buyConditionsFormatted2 = filteredBuyConditions.map((condition) => ({
         id: condition.id,
         settings: condition.settings,
       }));
-      const sellConditionsFormatted = filteredSellConditions.map((condition) => condition.settings);
-
+      const sellConditionsFormatted2 = filteredSellConditions.map((condition) => ({
+        id: condition.id,
+        settings: condition.settings,
+      }));
 
       console.log(buyConditionsFormatted2, "2222222222222222")
       //console.log(sellConditionsFormatted, buyConditionsFormatted)
       // Set the formatted conditions
       setBuyConditions(buyConditionsFormatted2);
-      setSellConditions(sellConditionsFormatted);
+      setSellConditions(sellConditionsFormatted2);
 
-      console.log("Filtered Buy Conditions:", buyConditionsFormatted);
-      console.log("Filtered Sell Conditions:", sellConditionsFormatted);
+      console.log("Filtered Buy Conditions:", buyConditionsFormatted2);
+      console.log("Filtered Sell Conditions:", sellConditionsFormatted2);
     }
   }, [data]);
   const addCondition = (newCondition: any) => {
@@ -84,9 +89,6 @@ export default function ConditionsSection() {
       <hr className="py-1" />
       <div>
         <h3>Buy conditions</h3>
-        <div className="flex flex-row">
-          <BuildConditionRenderer deleteBlock={deleteBuyCondition} conditions={buyConditions} setConditions={setBuyConditions} />
-        </div>
 
         <div className='flex flex-col'>
           <CreateConditions side="buy" addCondition={addCondition} />
@@ -108,3 +110,8 @@ export default function ConditionsSection() {
     </div>
   );
 }
+
+
+//<div className="flex flex-row">
+//  <BuildConditionRenderer deleteBlock={deleteBuyCondition} conditions={buyConditions} setConditions={setBuyConditions} />
+//</div>

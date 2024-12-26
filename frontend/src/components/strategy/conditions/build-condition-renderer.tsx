@@ -31,20 +31,21 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
 
   function mapConditions() {
     if (!Array.isArray(conditions)) {
-      console.log("MAPPED", conditions);
 
       console.error('Expected conditions to be an array, but got:', typeof conditions)
     }
+
+    console.log("I GOT THIS DATA TO MAP", conditions);
     const conditionServiceTest = new DivideBlocksService(conditions);
     conditionServiceTest.processConditions()
-    conditionServiceTest.getConditions()
-    console.log(conditionServiceTest, "HEREREREREHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH  ");
-
+    let mapp = conditionServiceTest.getConditions()
+    console.log(mapp, "HEREREREREHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH  ");
+    console.log(conditions, "CONDIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
     const conditionService = new BuildConditionsService(conditions);
     conditionService.processConditions();
     const mapped = conditionService.getConditions();
     console.log(mapped, "FUCKING MAPPED")
-    return mapped
+    return mapp
   }
 
   useEffect(() => {
@@ -62,9 +63,10 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
     const initialBlocks: JSX.Element[][] = [];
 
     mappedConditions.forEach((condition: any, index: number) => {
-      if (condition === "blockEnd") {
+      if ("conditionId" in condition) {
         initialBlocks.push(currentBlock);
         currentBlock = [];
+
       } else {
         const [kind, value] = condition as [string, string];
         let component: JSX.Element;
