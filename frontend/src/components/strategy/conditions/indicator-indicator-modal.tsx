@@ -9,13 +9,17 @@ interface CreateIndicatorIndicatorProps {
   side: Side
 }
 
-export default function CreateIndicatorIndicator({ side, addCondition }: CreateIndicatorIndicatorProps) {
+export default function CreateIndicatorIndicatorModal({ side, addCondition }: CreateIndicatorIndicatorProps) {
+  // Indicator Operator Indicator modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toggleIndicatorIndicator = () => setIsModalOpen(!isModalOpen);
-
   const [indicator1, setIndicator1] = useState<any>({} as any)
   const [operator, setOperator] = useState<any>({} as any)
   const [indicator2, setIndicator2] = useState<any>({} as any)
+
+
+  // Indicator Operator Value modal
+
 
   function handleAddCondition(side: Side) {
     console.log(indicator1.indicator)
@@ -38,19 +42,21 @@ export default function CreateIndicatorIndicator({ side, addCondition }: CreateI
 
   return (
     <>
-      <button onClick={toggleIndicatorIndicator}>Delete</button>
-      <Modal onClose={toggleIndicatorIndicator} isOpen={isModalOpen} title="Delete strategy">
-        <CreateConditionIndicator setIndicator={setIndicator1} />
-        <CreateConditionOperator setOperator={setOperator} />
-        <CreateConditionIndicator setIndicator={setIndicator2} />
-        <Button
-          onClick={() => {
-            handleAddCondition(side);
-          }}
-        >
-          Add
-        </Button>
-      </Modal>
+      <div>
+        <button onClick={toggleIndicatorIndicator}>Add Indicator/Indicator</button>
+        <Modal onClose={toggleIndicatorIndicator} isOpen={isModalOpen} title="Delete strategy">
+          <CreateConditionIndicator setIndicator={setIndicator1} />
+          <CreateConditionOperator setOperator={setOperator} />
+          <CreateConditionIndicator setIndicator={setIndicator2} />
+          <Button
+            onClick={() => {
+              handleAddCondition(side);
+            }}
+          >
+            Add
+          </Button>
+        </Modal>
+      </div>
     </>
   );
 }

@@ -3,7 +3,7 @@ import BuildConditionRenderer from './build-condition-renderer';
 import { useEffect, useState } from 'react';
 import useConditionsStore from '@/lib/hooks/useConditionsStore';
 import { ConditionsArray, Side, ConditionGroup, LogicalOperator } from '@/interfaces/Condition';
-import ConditionsButtonGroup from './conditions-button-group';
+import CreateConditions from './create-conditions';
 import getStrategyConditionsQuery from '@/lib/queries/getStrategyConditions';
 import { useAddStrategyCondition } from '@/lib/queries/useAddStrategyCondition'
 import useStrategyStore from '@/lib/hooks/useStrategyStore';
@@ -44,7 +44,7 @@ export default function ConditionsSection() {
       console.log("Filtered Sell Conditions:", sellConditionsFormatted);
     }
   }, [data]);
-  const addCondition = (side: Side, newCondition: any) => {
+  const addCondition = (newCondition: any) => {
 
     console.log(newCondition)
     let result = addConditionMutation(newCondition)
@@ -84,7 +84,7 @@ export default function ConditionsSection() {
         </div>
 
         <div className='flex flex-col'>
-          <ConditionsButtonGroup side="buy" addCondition={addCondition} />
+          <CreateConditions side="buy" addCondition={addCondition} />
 
         </div>
 
@@ -94,7 +94,7 @@ export default function ConditionsSection() {
           </div>
 
           <div className='flex flex-col'>
-            <ConditionsButtonGroup side="sell" addCondition={addCondition} />
+            <CreateConditions side="sell" addCondition={addCondition} />
 
           </div>
         </div>
