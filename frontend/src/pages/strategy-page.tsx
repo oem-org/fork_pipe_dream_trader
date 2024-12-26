@@ -42,6 +42,7 @@ export default function StrategyPage() {
   useEffect(() => {
     console.log(paramId, "stragegy id", strategyId);
 
+
     setStrategyId(paramId);
   }, [paramId]);
 

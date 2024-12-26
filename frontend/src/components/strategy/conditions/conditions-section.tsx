@@ -1,10 +1,12 @@
 import { Button } from '@/components/ui/buttons/button';
 import BuildConditionRenderer from './build-condition-renderer';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useConditionsStore from '@/lib/hooks/useConditionsStore';
 import { ConditionsArray, Side, ConditionGroup, LogicalOperator } from '@/interfaces/Condition';
 import ConditionsButtonGroup from './conditions-button-group';
+import getStrategyConditionsQuery from '@/lib/queries/getStrategyConditions';
 
+import useStrategyStore from '@/lib/hooks/useStrategyStore';
 export default function ConditionsSection() {
 
   const {
@@ -16,10 +18,24 @@ export default function ConditionsSection() {
     deleteBuyCondition,
   } = useConditionsStore();
 
+  const { strategyId } = useStrategyStore()
+  const [test, setTest] = useState()
+  const { data } = getStrategyConditionsQuery(strategyId)
+  useEffect(() => {
+    if (data) {
+      // Filter conditions with side="buy"
+      const filteredBuyConditions = data.filter((condition) => condition.side === "buy");
 
-
-
+      //// Set the filtered conditions to buyConditions state
+      setBuyConditions(filteredBuyConditions);
+      //setTest(filteredBuyConditions)
+      console.log(filteredBuyConditions)
+      console.log(filteredBuyConditions, "Filtered Buy Conditions");
+    }
+  }, [data]);
   const addCondition = (side: Side, newCondition: ConditionGroup | LogicalOperator) => {
+
+
     if (side === "buy") {
 
       console.log(buyConditions, newCondition)
@@ -33,6 +49,7 @@ export default function ConditionsSection() {
 
     }
   };
+  //TODO: DOUBLE BUY CONDS
   return (
     <div>
       <div className="flex flex-row justify-between">
@@ -57,7 +74,7 @@ export default function ConditionsSection() {
 
         <div>
           <div className="flex flex-row">
-            <BuildConditionRenderer deleteBlock={deleteSellCondition} conditions={sellConditions} setConditions={setSellConditions} />
+            <BuildConditionRenderer deleteBlock={deleteSellCondition} conditions={buyConditions} setConditions={setSellConditions} />
           </div>
 
           <div className='flex flex-col'>

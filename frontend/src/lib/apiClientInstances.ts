@@ -5,6 +5,7 @@ import CreateUserFormRequest from "../interfaces/requests/CreateUserFormRequest"
 import { Strategy } from "../interfaces/Strategy"
 import IndicatorRequest from "@/interfaces/requests/UpdateIndicatorRequest"
 import Indicator from "../interfaces/Indicator"
+import { StrategyCondition, StrategyConditionRequest } from "@/interfaces/StrategyCondition"
 import { File, FileResponse } from "@/interfaces/File"
 import { PostRelationService, PutService, GetService, PostService, DeleteRelationService, PutRelationService, GetAllService, DeleteService, GetWithParamsService, GetWithQueryService, GetAllRelationService, } from "./services/ApiService"
 
@@ -37,10 +38,15 @@ export const postIndicatorNames = new PostService<IndicatorRequest, void>('indic
 
 
 
+
+// StrategyConditions
+export const getStrategyConditionsApi = new GetAllRelationService<StrategyCondition>('strategy', jsonHeader, 'condition')
+export const postStrategyConditionsApi = new PostRelationService<Record<string, any>, any>('strategy', jsonHeader, 'condition')
+export const deleteStrategyConditionsApi = new DeleteRelationService('strategy', jsonHeader, 'condition')
+
 // StrategyIndicators
 export const getStrategyIndicatorsApi = new GetAllRelationService<StrategyIndicator>('strategy', jsonHeader, 'indicator')
 export const postStrategyIndicatorsApi = new PostRelationService<Record<string, any>, any>('strategy', jsonHeader, 'indicator')
-
 export const deleteStrategyIndicatorsApi = new DeleteRelationService('strategy', jsonHeader, 'indicator')
 
 
