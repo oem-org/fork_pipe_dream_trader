@@ -13,7 +13,7 @@ import Charts from "@/components/ui/chart/charts";
 import Modal from "@/components/ui/modal";
 import { InfoIcon } from "lucide-react";
 import SettingsDropdown from "@/components/strategy/settings-dropdown";
-
+import BacktestSection from "@/components/strategy/backtest-section";
 import { useUpdateStrategy } from "@/lib/hooks/useUpdateStrategy";
 import ConditionsSection from "@/components/strategy/conditions/conditions-section";
 import useFileStore from "@/lib/hooks/useFileStore";
@@ -114,14 +114,13 @@ export default function StrategyPage() {
             <div className="lg:col-span-3 p-4 bg-gray-100 rounded-lg">
               <IndicatorSection fileId={fileId} strategyId={strategyId} />
             </div>
-            <section className="lg:col-span-3 p-4 bg-gray-100 rounded-lg">
+            <div className="lg:col-span-3 p-4 bg-gray-100 rounded-lg">
               <ConditionsSection />
-            </section>
+            </div>
 
-            <section className="lg:col-span-2 p-4 bg-gray-100 rounded-lg">
-              <h2 className="h2 mb-4">Backtest</h2>
-              <p>This section contains backtest results for the strategy.</p>
-            </section>
+            <div className="lg:col-span-2 p-4 bg-gray-100 rounded-lg">
+              <BacktestSection />
+            </div>
           </section>
         </>
       ) : (
