@@ -6,7 +6,7 @@ const addStrategyCondition = async (
 	strategyCondition: StrategyConditionRequest,
 	strategyId: number
 ): Promise<any> => {
-	console.log("Adding this strategy condition", strategyCondition);
+	console.log("Adding!!!!!!!!!!!!!!!!! this strategy condition", strategyCondition);
 
 	const response = await postStrategyConditionsApi.post(strategyId, {
 		fk_strategy_indicator_id_1: strategyCondition.fk_strategy_indicator_id_1,

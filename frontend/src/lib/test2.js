@@ -5,17 +5,8 @@ class ConditionExtractionService {
 
   processConditions() {
     this.conditions.forEach((condition) => {
-      if ("singleOperator" in condition) {
-        console.log("Object has the singleOperator property:", condition.singleOperator);
-        this.extract(condition.singleOperator);
-        this.blockEnd();
-
-      } else if (Array.isArray(condition)) {
-        this.extract(condition)
-        this.blockEnd();
-      } else {
-        console.log("Value is neither a string nor an array:", condition);
-      }
+      this.extract(condition)
+      this.blockEnd()
     });
   }
 
@@ -54,12 +45,22 @@ class BuildConditionsService extends ConditionExtractionService {
 
 // Input
 let input = [
-  [{ fk_strategy_indicator_id: 2, indicator: "SMA_10" }, { operator: ">" }, { value: 1 }],
-  { singleOperator: "&" },
-  [{ indicator: "RSI_14" }, { operator: ">" }, { fk_strategy_indicator_id: 2, indicator: "SMA_10" }],
+  { id: 1, settings: [{ indicator: "SMA_10" }, { operator: ">" }, { value: 1 }] },
+  { id: 2, settings: { singleOperator: "&" } },
+  { id: 3, settings: [{ indicator: "RSI_14" }, { operator: ">" }, { indicator: "SMA_10" }] },
 ];
 
 // Using the service
 let testt = new BuildConditionsService(input);
 testt.processConditions();
 console.log(testt.getConditions());
+
+
+
+
+
+
+
+
+
+

@@ -7,7 +7,7 @@ import CreateConditionOperator from './create-condition-operator'
 import CreateConditionValue from './create-condition-value'
 
 interface CreateIndicatorIndicatorProps {
-  addCondition: (side: Side, cond: LogicalOperator | ConditionGroup) => void
+  addCondition: (cond: LogicalOperator | ConditionGroup) => void
   side: Side
 }
 
@@ -32,8 +32,8 @@ export default function CreateIndicatorValueModal({ side, addCondition }: Create
       fk_strategy_indicator_id_2: null,
       settings: [{ indicator: indicator1.indicator }, operator, { value: value }]
     }
-    addCondition(side, cond)
-    console.log(side, cond)
+    addCondition(cond)
+    console.log(cond)
   }
 
   // Function to convert the state into a Condition object

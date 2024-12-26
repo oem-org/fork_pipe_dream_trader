@@ -9,6 +9,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { useState, useEffect } from "react";
 import React from "react";
 import { Button } from "@/components/ui/buttons/button";
+import { DivideBlocksService } from "@/lib/services/ComponentMappingService";
 
 
 interface BuildConditionsRendererProps {
@@ -34,6 +35,11 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
 
       console.error('Expected conditions to be an array, but got:', typeof conditions)
     }
+    const conditionServiceTest = new DivideBlocksService(conditions);
+    conditionServiceTest.processConditions()
+    conditionServiceTest.getConditions()
+    console.log(conditionServiceTest, "HEREREREREHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH  ");
+
     const conditionService = new BuildConditionsService(conditions);
     conditionService.processConditions();
     const mapped = conditionService.getConditions();

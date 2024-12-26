@@ -5,7 +5,7 @@ import Modal from '@/components/ui/modal'
 import CreateConditionIndicator from './create-condition-indicator'
 import CreateConditionOperator from './create-condition-operator'
 interface CreateIndicatorIndicatorProps {
-  addCondition: (side: Side, cond: LogicalOperator | ConditionGroup) => void
+  addCondition: (cond: LogicalOperator | ConditionGroup) => void
   side: Side
 }
 
@@ -25,13 +25,14 @@ export default function CreateIndicatorIndicatorModal({ side, addCondition }: Cr
     console.log(indicator1.indicator)
     console.log(indicator2.indicator)
     const cond = {
-      side: side,
-      fk_strategy_indicator_id_1: indicator1.id,
-      fk_strategy_indicator_id_2: indicator2.id,
-      settings: [{ indicator: indicator1.indicator }, operator, { indicator: indicator2.indicator }]
+      "side": side,
+      "fk_strategy_indicator_id_1": indicator1.id,
+      "fk_strategy_indicator_id_2": indicator2.id,
+      "settings": [{ "indicator": indicator1.indicator }, operator, { "indicator": indicator2.indicator }]
     }
-    addCondition(side, cond)
-    console.log(side, cond)
+
+    console.log(cond)
+    addCondition(cond)
   }
 
   // Function to convert the state into a Condition object

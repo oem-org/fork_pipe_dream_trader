@@ -8,7 +8,6 @@ export default class ConditionExtractionService {
   processConditions() {
     this.conditions.forEach((condition: Array<any> | string) => {
       if (typeof condition === "string") {
-        console.log("Value is a string:", condition);
         this.extract("singleOperator", condition);
         this.blockEnd()
       } else if (Array.isArray(condition)) {
