@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/buttons/button";
 import { DivideBlocksService } from "@/lib/services/ComponentMappingService";
 import { useDeleteStrategyCondition } from "@/lib/hooks/useDeleteStrategyCondition";
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
+import InputSmall from "@/components/ui/forms/input-small";
 
 interface BuildConditionsRendererProps {
   conditions: Array<any>,
@@ -207,18 +208,23 @@ function BuildConditionRenderer({ conditions, setConditions }: BuildConditionsRe
 
   function createConditionString() {
     const values = blocks.map((block) => {
-      return block.map((component: any) => {
-        const value = component.ref.current.getValue();
-        return value;
-      }).filter((value) => value !== null);
+      return block
+        .map((component: any) => {
+          // Check if the component has a ref and it is defined
+          if (component.ref && component.ref.current && typeof component.ref.current.getValue === 'function') {
+            return component.ref.current.getValue();
+          }
+          return null; // Skip components without a valid ref
+        })
+        .filter((value) => value !== null); // Filter out null values
     });
-    const transformedValues = transformArray(values)
-    //console.log(blocks, "blooooocks")
+
+    const transformedValues = transformArray(values);
     console.log("Values from blocks!!!!!!!!!!!!!!!!!!!!!!!:", transformedValues);
-    setConditions(transformedValues)
-    console.log(conditions, "CONDITIONS")
+    //setConditions(transformedValues);
+    console.log(conditions, "CONDITIONS");
     return transformedValues;
-  };
+  }
 
   async function handleDeleteCondition(conditionId: number) {
     await deleteCondition({ strategyId, conditionId })
