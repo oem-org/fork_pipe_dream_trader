@@ -34,17 +34,11 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
 
       console.error('Expected conditions to be an array, but got:', typeof conditions)
     }
-
-    console.log("I GOT THIS DATA TO MAP", conditions);
+    console.log("COOOOOOOOOOOOOOOOOOONDITIONS", conditions)
     const conditionServiceTest = new DivideBlocksService(conditions);
     conditionServiceTest.processConditions()
     let mapp = conditionServiceTest.getConditions()
-    console.log(mapp, "HEREREREREHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH  ");
-    console.log(conditions, "CONDIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
-    const conditionService = new BuildConditionsService(conditions);
-    conditionService.processConditions();
-    const mapped = conditionService.getConditions();
-    console.log(mapped, "FUCKING MAPPED")
+    console.log(mapp, "FUCKING MAPPED")
     return mapp
   }
 
@@ -68,13 +62,14 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
         currentBlock = [];
 
       } else {
-        const [kind, value] = condition as [string, string];
+        const [kind, value, id] = condition as [string, string, number];
         let component: JSX.Element;
         const ref = React.createRef();
         switch (kind) {
           case "singleOperator":
             component = (
               <SingleOperator
+                conditionId={id}
                 ref={ref}
                 id={index}
                 key={index}
@@ -86,6 +81,7 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
           case "indicator":
             component = (
               <IndicatorConditionSelect
+                conditionId={id}
                 ref={ref}
                 id={index}
                 key={index}
@@ -97,6 +93,7 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
           case "operator":
             component = (
               <OperatorConditionSelect
+                conditionId={id}
                 id={index}
                 ref={ref}
                 key={index}
@@ -108,6 +105,7 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
           case "value":
             component = (
               <InputSmall
+                conditionId={id}
                 id={index}
                 ref={ref}
                 key={index}
@@ -135,10 +133,10 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
     setBlocks(initialBlocks);
   }, [mappedConditions]);
 
-  useEffect(() => {
-    console.log("BLOCKS", blocks)
-
-  }, [blocks])
+  //useEffect(() => {
+  //  console.log("BLOCKS", blocks)
+  //
+  //}, [blocks])
 
 
   const handleValueChange = (blockIndex: number, newValue: any) => {

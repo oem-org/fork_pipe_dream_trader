@@ -44,6 +44,7 @@ export const getStrategyConditionsApi = new GetAllRelationService<StrategyCondit
 export const postStrategyConditionsApi = new PostRelationService<Record<string, any>, any>('strategy', jsonHeader, 'condition')
 export const deleteStrategyConditionsApi = new DeleteRelationService('strategy', jsonHeader, 'condition')
 
+export const putStrategyConditionsApi = new PutRelationService('strategy', jsonHeader, 'condition')
 // StrategyIndicators
 export const getStrategyIndicatorsApi = new GetAllRelationService<StrategyIndicator>('strategy', jsonHeader, 'indicator')
 export const postStrategyIndicatorsApi = new PostRelationService<Record<string, any>, any>('strategy', jsonHeader, 'indicator')

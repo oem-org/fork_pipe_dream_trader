@@ -446,10 +446,10 @@ async def update_strategy_condition(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Strategy condition not found or does not belong to user",
             )
-
-        # Update fields
+        
         for key, value in condition_data.items():
-            setattr(strategy_condition, key, value)
+            print(key,value,"updating")
+            # setattr(strategy_condition, key, value)
 
         db.commit()
         db.refresh(strategy_condition)

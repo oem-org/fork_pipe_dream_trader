@@ -5,12 +5,13 @@ import { operators } from "./operators";
 
 interface OperatorConditionSelectProps {
   id: number;
+  conditionId: number
   initialValue: string;
   onValueChange: (value: string) => void;
 }
 
 const OperatorConditionSelect = forwardRef(
-  ({ id, initialValue, onValueChange }: OperatorConditionSelectProps, ref) => {
+  ({ id, initialValue, onValueChange, conditionId }: OperatorConditionSelectProps, ref) => {
     const [selectedOperator, setSelectedOperator] = useState(
       operators.find((operator) => operator.name === initialValue) || null
     );
@@ -21,6 +22,7 @@ const OperatorConditionSelect = forwardRef(
       if (onValueChange) {
         onValueChange(operator.name);
       }
+      console.log(conditionId)
     }
 
     useImperativeHandle(ref, () => ({

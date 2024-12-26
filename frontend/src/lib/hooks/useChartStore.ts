@@ -43,7 +43,6 @@ export const useChartStore = create<Store>((set) => ({
 		if (!deepCompare(state.timeseries, timeseries)) {
 			return { timeseries };
 		}
-		console.log("NO UPDATE TIMESERIES");
 		return {};
 	}),
 
@@ -51,7 +50,6 @@ export const useChartStore = create<Store>((set) => ({
 		if (!deepCompare(state.volume, volume)) {
 			return { volume };
 		}
-		console.log("NO UPDATE VOLUME");
 		return {};
 	}),
 
@@ -59,7 +57,6 @@ export const useChartStore = create<Store>((set) => ({
 		if (!deepCompare(state.histograms, histograms)) {
 			return { histograms };
 		}
-		console.log("NO UPDATE HISTOGRAMS");
 		return {};
 	}),
 
@@ -67,7 +64,6 @@ export const useChartStore = create<Store>((set) => ({
 		if (!deepCompare(state.lineSeries, lineSeries)) {
 			return { lineSeries };
 		}
-		console.log("NO UPDATE LINESERIES");
 		return {};
 	}),
 
@@ -75,7 +71,6 @@ export const useChartStore = create<Store>((set) => ({
 		if (!deepCompare(state.lineSeriesPanes, lineSeriesPanes)) {
 			return { lineSeriesPanes };
 		}
-		console.log("NO UPDATE PANES");
 		return {};
 	}),
 

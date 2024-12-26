@@ -5,10 +5,11 @@ interface InputSmallProps {
 	id: number;
 	name: string;
 	onValueChange: (value: string) => void;
+	conditionId: number
 
 }
 
-const InputSmall = forwardRef(({ id, initialValue, name, onValueChange }: InputSmallProps, ref) => {
+const InputSmall = forwardRef(({ id, initialValue, name, onValueChange, conditionId }: InputSmallProps, ref) => {
 	const [value, setValue] = useState(initialValue);
 
 	function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -17,6 +18,7 @@ const InputSmall = forwardRef(({ id, initialValue, name, onValueChange }: InputS
 		if (onValueChange) {
 			onValueChange(newValue);
 		}
+		console.log(conditionId)
 	}
 
 	useImperativeHandle(ref, () => ({
