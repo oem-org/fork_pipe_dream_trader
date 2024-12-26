@@ -49,6 +49,11 @@ export default class ConditionExtractionService {
 }
 
 
+// Input
+// [[{indicator:"SMA_10"},{operator:">"},{value:1}],"&",[{indicator:"RSI_14"},{operator:">"},{value:1}]]
+// Output
+//[["indicator","SMA_10"],["operator",">"],["value",1],"blockEnd",["singleOperator","&"],"blockEnd",
+//  ["indicator","RSI_14"],["operator",">"],["value",1],"blockEnd"]
 
 export class BuildConditionsService extends ConditionExtractionService {
   private mappedConditions: Array<[string, string] | string>;

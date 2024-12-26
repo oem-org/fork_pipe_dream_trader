@@ -31,20 +31,14 @@ export default function ConditionsSection() {
       const filteredSellConditions = data.filter((condition) => condition.side === "sell");
 
       // Create new objects with only id and settings properties
-      const buyConditionsFormatted = filteredBuyConditions.map((condition) => ({
-        id: condition.id,
-        settings: condition.settings
-      }));
+      const buyConditionsFormatted = filteredBuyConditions.map((condition) => condition.settings);
+      const sellConditionsFormatted = filteredSellConditions.map((condition) => condition.settings);
 
-      const sellConditionsFormatted = filteredSellConditions.map((condition) => ({
-        id: condition.id,
-        settings: condition.settings
-      }));
 
       console.log(sellConditionsFormatted, buyConditionsFormatted)
       // Set the formatted conditions
-      //setBuyConditions(buyConditionsFormatted);
-      //setSellConditions(sellConditionsFormatted);
+      setBuyConditions(buyConditionsFormatted);
+      setSellConditions(sellConditionsFormatted);
 
       console.log("Filtered Buy Conditions:", buyConditionsFormatted);
       console.log("Filtered Sell Conditions:", sellConditionsFormatted);

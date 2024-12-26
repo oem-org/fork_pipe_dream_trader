@@ -37,6 +37,7 @@ function BuildConditionRenderer({ conditions, setConditions, deleteBlock }: Buil
     const conditionService = new BuildConditionsService(conditions);
     conditionService.processConditions();
     const mapped = conditionService.getConditions();
+    console.log(mapped, "FUCKING MAPPED")
     return mapped
   }
 
