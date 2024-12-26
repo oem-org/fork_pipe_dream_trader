@@ -9,7 +9,8 @@ interface ConditionsState {
 	deleteBuyCondition: (index: number) => void;
 	deleteSellCondition: (index: number) => void;
 }
-
+// Structure
+// [[{indicator:"RSI_14"},{operator:">"},{value:1}]]
 const useConditionsStore = create<ConditionsState>((set) => ({
 	buyConditions: [] as any,
 	sellConditions: [] as any,

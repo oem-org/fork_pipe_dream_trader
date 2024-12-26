@@ -5,7 +5,7 @@ import useConditionsStore from '@/lib/hooks/useConditionsStore';
 import { ConditionsArray, Side, ConditionGroup, LogicalOperator } from '@/interfaces/Condition';
 import ConditionsButtonGroup from './conditions-button-group';
 import getStrategyConditionsQuery from '@/lib/queries/getStrategyConditions';
-
+import { useAddStrategyCondition } from '@/lib/queries/useAddStrategyCondition'
 import useStrategyStore from '@/lib/hooks/useStrategyStore';
 export default function ConditionsSection() {
 
@@ -21,34 +21,56 @@ export default function ConditionsSection() {
   const { strategyId } = useStrategyStore()
   const [test, setTest] = useState()
   const { data } = getStrategyConditionsQuery(strategyId)
+  const { mutateAsync: addConditionMutation } = useAddStrategyCondition(strategyId);
+
+
   useEffect(() => {
     if (data) {
-      // Filter conditions with side="buy"
+      // Filter conditions by side "buy" and "sell"
       const filteredBuyConditions = data.filter((condition) => condition.side === "buy");
+      const filteredSellConditions = data.filter((condition) => condition.side === "sell");
 
-      //// Set the filtered conditions to buyConditions state
-      setBuyConditions(filteredBuyConditions);
-      //setTest(filteredBuyConditions)
-      console.log(filteredBuyConditions)
-      console.log(filteredBuyConditions, "Filtered Buy Conditions");
+      // Create new objects with only id and settings properties
+      const buyConditionsFormatted = filteredBuyConditions.map((condition) => ({
+        id: condition.id,
+        settings: condition.settings
+      }));
+
+      const sellConditionsFormatted = filteredSellConditions.map((condition) => ({
+        id: condition.id,
+        settings: condition.settings
+      }));
+
+      console.log(sellConditionsFormatted, buyConditionsFormatted)
+      // Set the formatted conditions
+      //setBuyConditions(buyConditionsFormatted);
+      //setSellConditions(sellConditionsFormatted);
+
+      console.log("Filtered Buy Conditions:", buyConditionsFormatted);
+      console.log("Filtered Sell Conditions:", sellConditionsFormatted);
     }
   }, [data]);
-  const addCondition = (side: Side, newCondition: ConditionGroup | LogicalOperator) => {
+  const addCondition = (side: Side, newCondition: any) => {
 
+    console.log(newCondition)
+    let result = addConditionMutation(newCondition)
 
-    if (side === "buy") {
+    console.log(result, "THE RESULT");
 
-      console.log(buyConditions, newCondition)
-      console.log(buyConditions)
-      setSellConditions([...buyConditions, newCondition]);
-    } else {
-
-      console.log(sellConditions, newCondition)
-      console.log(sellConditions)
-      setSellConditions([...sellConditions, newCondition]);
-
-    }
+    //if (side === "buy") {
+    //
+    //  console.log(buyConditions, newCondition)
+    //  console.log(buyConditions)
+    //  setSellConditions([...buyConditions, newCondition]);
+    //} else {
+    //
+    //  console.log(sellConditions, newCondition)
+    //  console.log(sellConditions)
+    //  setSellConditions([...sellConditions, newCondition]);
+    //
+    //}
   };
+
   //TODO: DOUBLE BUY CONDS
   return (
     <div>

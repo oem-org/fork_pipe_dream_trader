@@ -19,6 +19,7 @@ const addStrategyCondition = async (
 };
 
 export const useAddStrategyCondition = (strategyId: number) => {
+
 	const queryClient = useQueryClient();
 
 	return useMutation({

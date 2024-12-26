@@ -8,7 +8,7 @@ export interface Condition {
 export type ConditionElement =
     | { operator: string }
     | { value: number }
-    | { indicator: string | null };
+    | { indicator: string | null, id: number };
 
 export type ConditionGroup = Condition[];
 
