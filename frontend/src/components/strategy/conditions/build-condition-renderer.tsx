@@ -30,7 +30,6 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
   const [blocks, setBlocks] = useState<JSX.Element[][]>([]);
   const { mutateAsync: deleteCondition } = useDeleteStrategyCondition()
   const { strategyId } = useStrategyStore()
-  console.log("RERENDER§!")
   const [mappedConditions, setMappedConditions] = useState<any>(mapConditions());
 
   useImperativeHandle(ref, () => ({
@@ -42,7 +41,6 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
 
       console.error('Expected conditions to be an array, but got:', typeof conditions)
     }
-    console.log("COOOOOOOOOOOOOOOOOOONDITIONS", conditions)
     const conditionServiceTest = new DivideBlocksService(conditions);
     conditionServiceTest.processConditions()
     let mapp = conditionServiceTest.getConditions()

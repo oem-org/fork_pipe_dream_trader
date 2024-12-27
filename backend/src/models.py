@@ -12,6 +12,8 @@ class Users(Base):
     username = Column(String, unique=True)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
     strategies = relationship("Strategies", back_populates="user")
 
 
@@ -27,6 +29,8 @@ class StrategyConditions(Base):
     fk_strategy_indicator_id_1 = Column(Integer, ForeignKey("strategy_indicators.id"), nullable=True)
     fk_strategy_indicator_id_2 = Column(Integer, ForeignKey("strategy_indicators.id"), nullable=True)
     settings = Column(JSON, nullable=True)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
     strategy = relationship("Strategies", back_populates="strategy_conditions")
 
@@ -51,7 +55,9 @@ class Strategies(Base):
     fk_user_id = Column(Integer, ForeignKey("users.id"))
     data_source = Column(JSON, nullable=True)
     fk_file_id = Column(Integer, ForeignKey("files.id"))
-
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+    
     user = relationship("Users", back_populates="strategies")
     file = relationship("Files", back_populates="strategies")
 
@@ -71,7 +77,6 @@ class StrategyIndicators(Base):
 
     strategy = relationship("Strategies", back_populates="strategy_indicators")
     indicator = relationship("Indicators", back_populates="strategy_indicators")
-
     # Relationships to StrategyConditions
     strategy_conditions_1 = relationship(
         "StrategyConditions",

@@ -107,14 +107,16 @@ async def read_strategy(
             db.query(Strategies)
             .filter(Strategies.id == strategy_id)
             .filter(Strategies.fk_user_id == user.get("id"))
-            .options(
-                load_only(
-                    Strategies.id,
-                    Strategies.name,
-                    Strategies.description,
-                    Strategies.data_source,
-                )
-            )
+            # .options(
+            #     load_only(
+            #         Strategies.id,
+            #         Strategies.name,
+            #         Strategies.description,
+            #         Strategies.data_source,
+            #         Strategies.updated_at,
+            #         Strategies.created_at,
+            #     )
+            # )
             .first()
         )
         if not strategy_model:
