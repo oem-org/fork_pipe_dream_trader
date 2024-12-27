@@ -100,8 +100,11 @@ export default function CreateStrategyForm() {
 		}
 	};
 
-	return (
-		<form onSubmit={handleSubmit} className="space-y-4">
+	return (<>
+		<h2 className="text-2xl font-bold mb-6 text-center">
+			Create New Strategy
+		</h2>
+		<form onSubmit={handleSubmit} className="space-y-4 ">
 			<h4>Clone an existing strategy</h4>
 			<GenericSelect<Strategy>
 				data={dataStrategies || []}
@@ -213,5 +216,5 @@ export default function CreateStrategyForm() {
 				Create Strategy
 			</button>
 		</form>
-	);
+	</>);
 }

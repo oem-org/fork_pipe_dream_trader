@@ -6,16 +6,17 @@ import StrategyInfo from "@/components/strategy/strategy-info";
 import { useState } from "react";
 import { Button } from "@/components/ui/buttons/button";
 import StrategyTableRow from "@/components/strategy/conditions/strategy-table-row";
-
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function HomePage() {
   const { data: strategies, isError, isLoading, error } = getStrategiesQuery();
 
-  const [localStrategyId, setLocalStrategyId] = useState<number>(0)
-
+  const queryClient = useQueryClient();
+  const [localStrategyId, setLocalStrategyId] = useState<number>(0);
 
   const handleStrategyChange = (strategy: Strategy) => {
-    setLocalStrategyId(strategy.id)
+    queryClient.invalidateQueries({ queryKey: ["strategyConditions"] });
+    setLocalStrategyId(strategy.id);
   };
 
   if (isLoading) {
@@ -26,16 +27,14 @@ export default function HomePage() {
     return <div>Error: {error.message}</div>;
   }
 
+  //TODO: margin bottom
   return (
     <div className="flex flex-col h-[calc(100vh-64px)]">
-      <div className="flex-grow grid grid-cols-1 lg:grid-cols-2 gap-4 custom-grid-full-spacing overflow-hidden">
-        <section className="bg-gray-100 rounded-lg flex flex-col overflow-hidden">
-          <div className="p-4">
+      <div className="flex-grow grid grid-cols-1 lg:grid-cols-2 gap-4 custom-grid-full-spacing">
+        <section className="bg-gray-100 rounded-lg flex flex-col overflow-auto h-[calc(100vh-64px)]">
+          <div className="p-4 flex flex-row justify-between">
             <h2 className="h2 mb-4">Strategies</h2>
-            <Link
-              to="/create-strategy"
-              className="btn-primary"
-            >
+            <Link to="/create-strategy" className="btn-primary">
               Create new strategy
             </Link>
           </div>
@@ -45,20 +44,19 @@ export default function HomePage() {
             nameExtractor={(strategy) => strategy.name}
             onSelect={handleStrategyChange}
             renderItem={(strategy) => {
-              return <StrategyTableRow strategy={strategy} localStrategyId={localStrategyId} />;
+              return <StrategyTableRow strategy={strategy} setLocalStrategyId={setLocalStrategyId} />;
             }}
             searchEnabled={true}
           />
         </section>
 
-        <section className="p-4 bg-gray-100 rounded-lg">
+        <section className="p-4 bg-gray-100 rounded-lg overflow-auto h-[calc(100vh-64px)]"> {/* Added height and overflow-auto for scrolling */}
           <h4 className="text-xl font-bold mb-4">Info</h4>
           <StrategyInfo strategyId={localStrategyId} />
         </section>
-      </div >
+      </div>
 
-      < div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6" >
-      </div >
-    </div >
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6"></div>
+    </div>
   );
 }

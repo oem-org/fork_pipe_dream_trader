@@ -3,22 +3,25 @@ import { Strategy } from "@/interfaces/Strategy";
 import { Button } from "@/components/ui/buttons/button";
 import { useDeleteStrategy } from "@/lib/hooks/react-query/useDeleteStrategy";
 import { useNavigate } from "react-router-dom";
-
+import { useQueryClient } from "@tanstack/react-query";
 interface StrategyTableRowProps {
   strategy: Strategy;
-  localStrategyId: number;
+  setLocalStrategyId: React.Dispatch<React.SetStateAction<number>>;
+
 }
 
-export default function StrategyTableRow({ strategy, localStrategyId }: StrategyTableRowProps) {
+export default function StrategyTableRow({ strategy, setLocalStrategyId }: StrategyTableRowProps) {
   const navigate = useNavigate();
-  const { mutate: deleteStrategy } = useDeleteStrategy();
-
+  const queryClient = useQueryClient()
+  const { mutateAsync: deleteStrategy } = useDeleteStrategy();
   const handleOpen = () => {
     navigate(`/strategy/${strategy.id}`);
   };
 
-  const handleDelete = () => {
-    deleteStrategy(strategy.id);
+  async function handleDelete() {
+    await deleteStrategy(strategy.id);
+    setLocalStrategyId(0)
+    queryClient.invalidateQueries({ queryKey: ["strategy", strategy.id] });
   };
 
 
@@ -27,7 +30,7 @@ export default function StrategyTableRow({ strategy, localStrategyId }: Strategy
       <span>{strategy.name}</span>
       <div className="flex gap-2">
         <Button onClick={handleOpen}>Open</Button>
-        <Button onClick={handleDelete}>Delete</Button>
+        <Button variant="outline" onClick={handleDelete}>Delete</Button>
       </div>
     </div>
   );
