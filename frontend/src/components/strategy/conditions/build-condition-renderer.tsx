@@ -226,9 +226,8 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
     });
 
     console.log(values, "THE VALUES TO TRANSFORM")
-    const transformedValues = transformArray(values);
-    console.log("Values from blocks!!!!!!!!!!!!!!!!!!!!!!!:", transformedValues);
-    return transformedValues;
+    //const transformedValues = transformArray(values);
+    return values;
   }
 
   async function handleDeleteCondition(conditionId: number) {

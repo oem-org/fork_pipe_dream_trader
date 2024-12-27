@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/buttons/button';
+import { BacktestService } from '@/lib/services/BacktestService';
 import BuildConditionRenderer from './build-condition-renderer';
 import { useRef, useState, useEffect } from 'react';
 import useConditionsStore from '@/lib/hooks/useConditionsStore';
@@ -74,8 +75,6 @@ export default function ConditionsSection() {
   };
   const buyStringRef = useRef<{ createConditionString: () => Array<any> }>(null);
   const sellStringRef = useRef<{ createConditionString: () => Array<any> }>(null);
-  const [buyString, setBuyString] = useState("")
-  const [sellString, setSellString] = useState("")
 
   function runBacktest(): void {
     let buy = []
@@ -88,13 +87,40 @@ export default function ConditionsSection() {
     if (sellStringRef.current) {
       sell = sellStringRef.current.createConditionString();
     }
-    let data: CreateBacktestRequest = {
-      buy_conditions: JSON.stringify(buy),
-      sell_conditions: JSON.stringify(sell),
-    };
 
+    //const input = [
+    //  [
+    //    { "indicator": "RSI_14" },
+    //    { "operator": "<" },
+    //    { "value": "30" }
+    //  ],
+    //  [
+    //    { "singleOperator": "&" }
+    //  ],
+    //  [
+    //    { "indicator": "SMA_10" },
+    //    { "operator": ">" },
+    //    { "value": "2" }
+    //  ]
+    //];
+
+    // Helper function to simulate `isLogicalOperator`.
+
+    // Process the input:
+    const sellConds = new BacktestService(sell);
+    const buyConditions = sellConds.processConditions();
+
+    const buyConds = new BacktestService(buy);
+    const sellConditions = buyConds.processConditions();
+
+
+    let data: CreateBacktestRequest = {
+      buy_conditions: JSON.stringify(buyConditions),
+      sell_conditions: JSON.stringify(sellConditions),
+    };
+    console.log("OUTPUT:", sellConditions);
+    console.log("OUTPUT:", buyConditions);
     postBacktestApi.post(strategyId, data)
-    console.log(buy, sell, "REEEEEEEEEEEEEEEEEEEEF")
   };
   return (
     <div>

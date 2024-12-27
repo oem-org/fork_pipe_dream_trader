@@ -640,6 +640,13 @@ async def get_all_strategy_conditions(
         print(buy_conditions)
         print(sell_conditions)
 
+        
+        # buy = {"buy": [["df.SMA_10 < 1"]]}
+        # sell = {"sell": [["df.SMA_10 > 1.1"]]}
+
+        buy = {"buy": [["SMA_10 < 1"]]}
+        sell = {"sell": [["SMA_10 > 1.1"]]}
+        
         # Loop over buy and sell conditions
         buy_results = [f"Processed buy condition: {cond}" for cond in buy_conditions]
         sell_results = [f"Processed sell condition: {cond}" for cond in sell_conditions]
@@ -649,7 +656,10 @@ async def get_all_strategy_conditions(
         buy_eval_string = backtest.build_conditions("buy", buy_conditions)
         sell_eval_string = backtest.build_conditions("sell", sell_conditions)
 
+        # buy_eval_string = backtest.build_conditions("buy", buy['buy'])
+        # sell_eval_string = backtest.build_conditions("sell", sell['sell'])
         result = backtest.run()
+        print(result)
 
         return {
             "buy_results": buy_results,

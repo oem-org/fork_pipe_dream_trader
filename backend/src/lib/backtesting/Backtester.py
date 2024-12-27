@@ -11,6 +11,9 @@ class Backtester:
         self.df = df
 
     def _build_expression(self, conds: list) -> str:
+        """
+        Format with surrounding ()
+        """
         expression = ""
         for condition in conds:
             if isinstance(condition, list):
@@ -62,16 +65,20 @@ class Backtester:
         df = self.df.copy()
         print(df)
 
-        # 1 signals open a trade, -1 close a trade, 0 no signal
+        # Map column names to the dataframe
+        # Makes it possible to reference a column directly:
+        # Example: SMA_14 instead of df.SMA_14
+        local_vars = {col: df[col] for col in df.columns}
 
+        # 1 signals open a trade, -1 close a trade, 0 no signal
         try:
             if side == "buy":
                 df[f'{side}'] = np.where(
-                    pd.eval(expression), 1, 0
+                    pd.eval(expression, local_dict=local_vars), 1, 0
                 )
             if side == "sell":
                 df[f'{side}'] = np.where(
-                    pd.eval(expression), -1, 0
+                    pd.eval(expression, local_dict=local_vars), -1, 0
                 )
             new_column = df[f'{side}']
             if side == "buy":
