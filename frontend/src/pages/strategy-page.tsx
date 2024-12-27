@@ -1,10 +1,7 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import getStrategyQuery from "@/lib/queries/getStrategyQuery";
-import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
 import { useState, useEffect } from "react";
-import { Strategy, DatabaseSource, FileSource } from "@/interfaces/Strategy";
 import { File } from "@/interfaces/File";
-import { Button } from "@/components/ui/buttons/button";
 import GenericSelect from "@/components/ui/lists/generic-select";
 import getFilesQuery from "@/lib/queries/getFilesQuery";
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
@@ -16,24 +13,17 @@ import SettingsDropdown from "@/components/strategy/settings-dropdown";
 import BacktestSection from "@/components/strategy/backtest-section";
 import { useUpdateStrategy } from "@/lib/hooks/useUpdateStrategy";
 import ConditionsSection from "@/components/strategy/conditions/conditions-section";
-import useFileStore from "@/lib/hooks/useFileStore";
 
 export default function StrategyPage() {
   // TODO: use name instead of id
   const { id } = useParams();
   const paramId = id ? parseInt(id) : NaN;
   const { fileId, strategyId, setFileId, setStrategyId } = useStrategyStore();
-  //const navigate = useNavigate();
-  const [rerender, setRerender] = useState<number>(0)
 
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const toggleInfoModal = () => setIsInfoModalOpen(!isInfoModalOpen);
 
-  //const [dataSourceType, setDataSourceType] = useState<string>("");
-
-
   const { data: strategy, error, isError, isLoading } = getStrategyQuery(paramId);
-  //const { data: strategies } = getStrategiesQuery();
   const { data: files } = getFilesQuery();
 
   const { mutateAsync: updateStrategyMutation } = useUpdateStrategy();

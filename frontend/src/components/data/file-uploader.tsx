@@ -13,7 +13,7 @@ export default function FileUploadForm() {
 		const formData = new FormData(e.currentTarget);
 		console.log(formData)
 		try {
-			const result = await uploader.upload(formData);
+			await uploader.upload(formData);
 
 
 		} catch (err: any) {

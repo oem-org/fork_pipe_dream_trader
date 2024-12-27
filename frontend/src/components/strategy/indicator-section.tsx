@@ -2,16 +2,12 @@ import GenericSelect from "@/components/ui/lists/generic-select";
 import getIndicatorsQuery from "@/lib/queries/getIndicatorsQuery";
 import Indicator from "@/interfaces/Indicator";
 import getStrategyIndicatorsQuery from "@/lib/queries/getStrategyIndicatorsQuery";
-import useStrategyStore from "@/lib/hooks/useStrategyStore";
 import { useAddIndicator } from "@/lib/hooks/useAddIndicator";
 import GenericIndicator from "./generic-indicator";
-import { useEffect, useCallback, memo, useState } from "react";
-import Timeseries from "@/interfaces/Timeseries";
-import { IndicatorChart } from "@/interfaces/IndicatorChart";
+import { useEffect, useCallback, memo } from "react";
 import { getTimeseriesApi } from "@/lib/apiClientInstances";
 import { parseJsonStrings } from "@/lib/utils/object-utils";
 import TimeseriesService from "@/lib/services/TimeseriesService";
-import { Volume } from "@/interfaces/Volume";
 import { queryClient } from "@/main";
 import { useChartStore } from "@/lib/hooks/useChartStore";
 

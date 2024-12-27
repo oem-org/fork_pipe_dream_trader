@@ -5,11 +5,11 @@ import CreateUserFormRequest from "../interfaces/requests/CreateUserFormRequest"
 import { Strategy } from "../interfaces/Strategy"
 import IndicatorRequest from "@/interfaces/requests/UpdateIndicatorRequest"
 import Indicator from "../interfaces/Indicator"
-import { StrategyCondition, StrategyConditionRequest } from "@/interfaces/StrategyCondition"
+import { StrategyCondition } from "@/interfaces/StrategyCondition"
 import { File, FileResponse } from "@/interfaces/File"
 import { PostRelationService, PutService, GetService, PostService, DeleteRelationService, PutRelationService, GetAllService, DeleteService, GetWithParamsService, GetWithQueryService, GetAllRelationService, } from "./services/ApiService"
 
-import { StrategyIndicator, UpdateStrategyIndicatorRequest } from "@/interfaces/StrategyIndicator"
+import { StrategyIndicator} from "@/interfaces/StrategyIndicator"
 import { CreateStrategyRequest } from "@/interfaces/requests/CreateStrategyRequest"
 import { CreateBacktestRequest } from "@/interfaces/Backtest"
 

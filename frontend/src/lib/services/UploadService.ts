@@ -61,7 +61,7 @@ export default class UploadService {
 	}
 
 
-	async read(formData: FormDat): Promise<any> {
+	async read(formData: FormData): Promise<any> {
 		try {
 			const type = await this.detectFileType(formData);
 

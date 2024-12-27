@@ -143,3 +143,4 @@ export class DivideBlocksService {
 		return this.mappedConditions;
 	}
 }
+//TODO: fix typing errors

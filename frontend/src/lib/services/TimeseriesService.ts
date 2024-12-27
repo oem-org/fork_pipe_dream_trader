@@ -1,7 +1,7 @@
 import Timeseries from "@/interfaces/Timeseries";
 import { Volume, VolumeBackend } from "@/interfaces/Volume";
 import { IndicatorChart } from "@/interfaces/IndicatorChart";
-
+// TODO: fix typing errors
 export default class TimeseriesService {
 	public ohlc: Timeseries[];
 	public volume: Volume[];

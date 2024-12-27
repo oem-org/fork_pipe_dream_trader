@@ -5,7 +5,7 @@ import useStrategyStore from "@/lib/hooks/useStrategyStore";
 import { StrategyIndicator } from "@/interfaces/StrategyIndicator";
 import { useState } from "react";
 import React from "react";
-import { Condition, ConditionElement } from "@/interfaces/Condition";
+import { ConditionElement } from "@/interfaces/Condition";
 
 interface CreateConditionIndicatorProps {
   setIndicator: React.Dispatch<React.SetStateAction<ConditionElement>>;

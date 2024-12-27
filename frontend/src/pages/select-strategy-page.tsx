@@ -5,7 +5,6 @@ import { useState } from "react";
 export default function SelectStrategyPage() {
   const { data: dataStrategies } = getStrategiesQuery();
   const [strategyId, setStrategyId] = useState<number>(0);
-  const navigate = useNavigate()
 
   return (
     <div className="flex h-full flex-col px-3 py-4 md:px-2" >

@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/buttons/button';
 import { BacktestService } from '@/lib/services/BacktestService';
 import BuildConditionRenderer from './build-condition-renderer';
 import { useRef, useState, useEffect } from 'react';
-import useConditionsStore from '@/lib/hooks/useConditionsStore';
 import CreateConditions from './create-conditions';
 import getStrategyConditionsQuery from '@/lib/queries/getStrategyConditions';
 import { useAddStrategyCondition } from '@/lib/queries/useAddStrategyCondition'
@@ -79,7 +78,6 @@ export default function ConditionsSection() {
   function runBacktest(): void {
     let buy = []
     let sell = []
-    console.log(buyStringRef.current.createConditionString())
     if (buyStringRef.current) {
       buy = buyStringRef.current.createConditionString();
     }

@@ -13,8 +13,6 @@ export function normalizeDelimeter(value: any) {
 
 export function addDecimal(value: any): string {
 	value = convertToString(value);
-	//console.log(value);
-
 	const normalizedValue = value.replace(',', '.');
 
 	if (!normalizedValue.includes('.')) {

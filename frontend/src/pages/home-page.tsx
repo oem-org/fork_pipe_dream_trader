@@ -3,18 +3,16 @@ import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
 import GenericTable from "@/components/ui/lists/generic-table";
 import { Strategy } from "@/interfaces/Strategy";
 import { File } from "@/interfaces/File";
-import { useEffect, useState } from "react";
-import useStrategyStore from "@/lib/hooks/useStrategyStore";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/buttons/button";
+import { useState } from "react";
 
 export default function HomePage() {
   const { data: strategies } = getStrategiesQuery();
   const { data: files } = getFilesQuery();
-  const [fileId, setFileId] = useState<number>(0);
+  const [fileId, setFileId] = useState(0);
   const navigate = useNavigate();
 
-  const handleFileChange = async (file: File) => {
+  async function handleFileChange(file: File) {
     setFileId(file.id);
   };
 
