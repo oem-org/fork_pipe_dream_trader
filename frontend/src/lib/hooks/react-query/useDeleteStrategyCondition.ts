@@ -1,6 +1,6 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteStrategyConditionApi } from "../apiClientInstances";
+import { deleteStrategyConditionApi } from "@/lib/apiClientInstances";
 
 interface DeleteCondtionRequest {
 	strategyId: number,

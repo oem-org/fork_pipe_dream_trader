@@ -1,6 +1,6 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteStrategyIndicatorsApi } from "../apiClientInstances";
+import { deleteStrategyIndicatorsApi } from "@/lib/apiClientInstances";
 
 const deleteIndicator = async (strategyId: number, indicatorId: number): Promise<any> => {
 

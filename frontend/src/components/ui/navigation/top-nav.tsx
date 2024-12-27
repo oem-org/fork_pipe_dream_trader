@@ -2,7 +2,7 @@ import NavItem from "./nav-item";
 import Dropdown from "./dropdown";
 import { Link } from "react-router-dom";
 import { CircleUserIcon } from "lucide-react";
-import useAuthStore from "@/lib/hooks/useAuthStore";
+import useAuthStore from "@/lib/hooks/stores/useAuthStore";
 import { queryClient } from "@/main";
 
 export default function TopNav() {

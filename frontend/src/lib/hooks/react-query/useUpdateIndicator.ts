@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { putStrategyIndicatorsApi } from "../apiClientInstances";
+import { putStrategyIndicatorsApi } from "../../apiClientInstances";
 
 
 const updateIndicator = async (strategyId: number, indicatorId: number, settings: Record<string, any>): Promise<any> => {

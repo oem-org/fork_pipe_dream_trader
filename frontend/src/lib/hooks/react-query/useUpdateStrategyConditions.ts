@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { putStrategyConditionsApi } from "../apiClientInstances";
+import { putStrategyConditionsApi } from "@/lib/apiClientInstances";
 
 const updateStrategyCondition = async (
 	strategyId: number,

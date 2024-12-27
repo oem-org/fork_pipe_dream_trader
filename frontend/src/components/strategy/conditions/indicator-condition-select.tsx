@@ -1,10 +1,10 @@
-import getStrategyIndicatorsQuery from "@/lib/queries/getStrategyIndicatorsQuery";
+import getStrategyIndicatorsQuery from "@/lib/hooks/react-query/getStrategyIndicatorsQuery";
 import GenericSelect from "@/components/ui/lists/generic-select";
-import useStrategyStore from "@/lib/hooks/useStrategyStore";
+import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
 import { StrategyIndicator } from "@/interfaces/StrategyIndicator";
 import useInitialValue from "@/lib/hooks/useInitialValue";
 import { forwardRef, useImperativeHandle, useState } from "react";
-import { useUpdateStrategyCondition } from "@/lib/queries/useUpdateStrategyConditions";
+import { useUpdateStrategyCondition } from "@/lib/hooks/react-query/useUpdateStrategyConditions";
 import { ConditionElement } from "@/interfaces/Condition";
 
 interface IndicatorConditionSelectProps {

@@ -1,15 +1,15 @@
 import GenericSelect from "@/components/ui/lists/generic-select";
-import getIndicatorsQuery from "@/lib/queries/getIndicatorsQuery";
+import getIndicatorsQuery from "@/lib/hooks/react-query/getIndicatorsQuery";
 import Indicator from "@/interfaces/Indicator";
-import getStrategyIndicatorsQuery from "@/lib/queries/getStrategyIndicatorsQuery";
-import { useAddIndicator } from "@/lib/hooks/useAddIndicator";
+import getStrategyIndicatorsQuery from "@/lib/hooks/react-query/getStrategyIndicatorsQuery";
+import { useAddIndicator } from "@/lib/hooks/react-query/useAddIndicator";
 import GenericIndicator from "./generic-indicator";
 import { useEffect, useCallback, memo } from "react";
 import { getTimeseriesApi } from "@/lib/apiClientInstances";
 import { parseJsonStrings } from "@/lib/utils/object-utils";
 import TimeseriesService from "@/lib/services/TimeseriesService";
 import { queryClient } from "@/main";
-import { useChartStore } from "@/lib/hooks/useChartStore";
+import { useChartStore } from "@/lib/hooks/stores/useChartStore";
 
 interface IndicatorSectionProps {
 	strategyId: number;

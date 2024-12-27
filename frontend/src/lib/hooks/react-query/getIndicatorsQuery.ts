@@ -1,7 +1,7 @@
 
 import { useQuery } from "@tanstack/react-query"
-import { getAllIndicatorsApi } from "../apiClientInstances"
-import Indicator from "../../interfaces/Indicator"
+import { getAllIndicatorsApi } from "@/lib/apiClientInstances"
+import Indicator from "@/interfaces/Indicator"
 
 export default function getIndicatorsQuery() {
 	const fetchIndicators = async (): Promise<Indicator[]> => {

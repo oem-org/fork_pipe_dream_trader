@@ -2,8 +2,8 @@ import { forwardRef, useImperativeHandle, useState } from "react";
 import { operators } from "./operators";
 import { Operator } from "@/interfaces/Operator";
 import GenericSelect from "@/components/ui/lists/generic-select";
-import useStrategyStore from "@/lib/hooks/useStrategyStore";
-import { useUpdateStrategyCondition } from "@/lib/queries/useUpdateStrategyConditions";
+import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
+import { useUpdateStrategyCondition } from "@/lib/hooks/react-query/useUpdateStrategyConditions";
 
 interface SingleOperatorProps {
   id: number;

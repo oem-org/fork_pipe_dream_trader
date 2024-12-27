@@ -1,6 +1,5 @@
 import React from 'react'
 
-import React from 'react';
 
 const FormWarning = ({ error: any }) => {
 	return (

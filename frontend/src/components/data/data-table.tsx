@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import getFileQuery from "@/lib/queries/getFileQuery";
+import getFileQuery from "@/lib/hooks/react-query/getFileQuery";
 
 interface TableProps {
 	id: number;

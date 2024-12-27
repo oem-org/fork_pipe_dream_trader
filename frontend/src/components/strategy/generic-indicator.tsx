@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Button } from '../ui/buttons/button';
 import { isFloat, addDecimal } from '@/lib/utils/numeric-utils';
-import { useUpdateIndicator } from '@/lib/hooks/useUpdateIndicator';
-import { useDeleteIndicator } from '@/lib/hooks/useDeleteIndicator';
-import useStrategyStore from '@/lib/hooks/useStrategyStore';
+import { useUpdateIndicator } from '@/lib/hooks/react-query/useUpdateIndicator';
+import { useDeleteIndicator } from '@/lib/hooks/react-query/useDeleteIndicator';
+import useStrategyStore from '@/lib/hooks/stores/useStrategyStore';
 import { SquareX, InfoIcon } from 'lucide-react';
 import Modal from '../ui/modal';
 

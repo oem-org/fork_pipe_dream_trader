@@ -10,8 +10,8 @@ import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import React from "react";
 import { Button } from "@/components/ui/buttons/button";
 import { DivideBlocksService } from "@/lib/services/ComponentMappingService";
-import { useDeleteStrategyCondition } from "@/lib/hooks/useDeleteStrategyCondition";
-import useStrategyStore from "@/lib/hooks/useStrategyStore";
+import { useDeleteStrategyCondition } from "@/lib/hooks/react-query/useDeleteStrategyCondition";
+import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
 import InputSmall from "@/components/ui/forms/input-small";
 
 interface CreateConditionStringRef {

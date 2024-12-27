@@ -1,7 +1,7 @@
 import FileUploadForm from "@/components/data/file-uploader"
 import DataTable from "@/components/data/data-table";
 import GenericTable from "@/components/ui/lists/generic-table";
-import getFilesQuery from "@/lib/queries/getFilesQuery";
+import getFilesQuery from "@/lib/hooks/react-query/getFilesQuery";
 import { File } from "@/interfaces/File";
 import { useState } from "react";
 

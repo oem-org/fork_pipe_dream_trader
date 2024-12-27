@@ -1,14 +1,14 @@
 import { useState } from "react";
 import GenericSelect from "../ui/lists/generic-select";
 import { Strategy } from "@/interfaces/Strategy";
-import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
-import getFilesQuery from "@/lib/queries/getFilesQuery";
+import getStrategiesQuery from "@/lib/hooks/react-query/getStrategiesQuery";
+import getFilesQuery from "@/lib/hooks/react-query/getFilesQuery";
 import { File } from "@/interfaces/File";
 import { postStrategyApi } from "@/lib/apiClientInstances";
 import { useNavigate } from 'react-router-dom';
 import { DataSourceEnum } from "@/interfaces/enums/DataSourceEnum";
 import { DatabaseSource, FileSource } from "@/interfaces/Strategy";
-import useStrategyStore from "@/lib/hooks/useStrategyStore";
+import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
 
 
 export default function CreateStrategyForm() {

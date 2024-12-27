@@ -4,7 +4,7 @@ import React from 'react';
 import LineChartPanes from './line-pane-charts';
 import LineCharts from './line-charts';
 import HistogramCharts from './histogram-charts';
-import { useChartStore } from '@/lib/hooks/useChartStore';
+import { useChartStore } from '@/lib/hooks/stores/useChartStore';
 
 
 const Charts = React.memo(() => {

@@ -1,4 +1,4 @@
-import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
+import getStrategiesQuery from "@/lib/hooks/react-query/getStrategiesQuery";
 import GenericTable from "@/components/ui/lists/generic-table";
 import { Strategy } from "@/interfaces/Strategy";
 import { Link, useNavigate } from "react-router-dom";

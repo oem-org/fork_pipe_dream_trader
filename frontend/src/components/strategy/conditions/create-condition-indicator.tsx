@@ -1,7 +1,7 @@
 
-import getStrategyIndicatorsQuery from "@/lib/queries/getStrategyIndicatorsQuery";
+import getStrategyIndicatorsQuery from "@/lib/hooks/react-query/getStrategyIndicatorsQuery";
 import GenericSelect from "@/components/ui/lists/generic-select";
-import useStrategyStore from "@/lib/hooks/useStrategyStore";
+import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
 import { StrategyIndicator } from "@/interfaces/StrategyIndicator";
 import { useState } from "react";
 import React from "react";

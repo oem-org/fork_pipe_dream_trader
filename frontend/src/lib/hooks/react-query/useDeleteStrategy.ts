@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteStrategyApi } from "../apiClientInstances";
+import { deleteStrategyApi } from "@/lib/apiClientInstances";
 
 
 

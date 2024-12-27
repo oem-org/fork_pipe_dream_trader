@@ -3,9 +3,9 @@ import { BacktestService } from '@/lib/services/BacktestService';
 import BuildConditionRenderer from './build-condition-renderer';
 import { useRef, useState, useEffect } from 'react';
 import CreateConditions from './create-conditions';
-import getStrategyConditionsQuery from '@/lib/queries/getStrategyConditions';
-import { useAddStrategyCondition } from '@/lib/queries/useAddStrategyCondition'
-import useStrategyStore from '@/lib/hooks/useStrategyStore';
+import getStrategyConditionsQuery from '@/lib/hooks/react-query/getStrategyConditions';
+import { useAddStrategyCondition } from '@/lib/hooks/react-query/useAddStrategyCondition'
+import useStrategyStore from '@/lib/hooks/stores/useStrategyStore';
 
 import { postBacktestApi } from '@/lib/apiClientInstances';
 import { CreateBacktestRequest } from '@/interfaces/Backtest';

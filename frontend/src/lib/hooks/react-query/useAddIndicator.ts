@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Indicator from "@/interfaces/Indicator";
-import { postStrategyIndicatorsApi } from "../apiClientInstances";
+import { postStrategyIndicatorsApi } from "@/lib/apiClientInstances";
 
 const addIndicator = async (indicator: Indicator, paramId: number): Promise<any> => {
 	console.log("adding this indicator", indicator)

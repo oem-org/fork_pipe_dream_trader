@@ -3,7 +3,7 @@ import Modal from '../ui/modal';
 import { Button } from '../ui/buttons/button';
 import Dropdown from '../ui/navigation/dropdown';
 import { SettingsIcon } from 'lucide-react';
-import { useDeleteStrategy } from '@/lib/hooks/useDeleteStrategy';
+import { useDeleteStrategy } from '@/lib/hooks/react-query/useDeleteStrategy';
 
 interface SettingsDropdownProps {
 	strategyId: number

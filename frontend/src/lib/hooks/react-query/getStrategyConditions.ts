@@ -1,7 +1,7 @@
 
 import { useQuery } from "@tanstack/react-query"
 
-import { getStrategyConditionsApi } from "../apiClientInstances"
+import { getStrategyConditionsApi } from "@/lib/apiClientInstances"
 import { StrategyCondition } from "@/interfaces/StrategyCondition"
 
 

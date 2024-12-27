@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import AuthService from "../services/AuthService";
-import CreateUserFormRequest from "../../interfaces/requests/CreateUserFormRequest";
+import AuthService from "@/lib/services/AuthService";
+import CreateUserFormRequest from "@/interfaces/requests/CreateUserFormRequest";
 import { QueryClient } from "@tanstack/react-query";
 
 

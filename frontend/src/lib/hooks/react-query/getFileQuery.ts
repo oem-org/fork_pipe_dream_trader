@@ -1,7 +1,7 @@
 
 
 import { useQuery } from "@tanstack/react-query"
-import { getFileApi } from "../apiClientInstances"
+import { getFileApi } from "../../apiClientInstances"
 import { FileResponse } from "@/interfaces/File"
 
 export default function getFileQuery(id: number) {

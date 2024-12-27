@@ -1,6 +1,6 @@
 import { Input } from '../ui/forms/input';
 import { Button } from '../ui/buttons/button';
-import useAuthStore from '../../lib/hooks/useAuthStore';
+import useAuthStore from '../../lib/hooks/stores/useAuthStore';
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import handleFormSubmit from '../../lib/utils/generics/handleFormSubmit';

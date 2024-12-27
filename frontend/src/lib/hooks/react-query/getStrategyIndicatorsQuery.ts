@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 
-import { getStrategyIndicatorsApi } from "../apiClientInstances"
+import { getStrategyIndicatorsApi } from "@/lib/apiClientInstances"
 import { StrategyIndicator } from "@/interfaces/StrategyIndicator"
 
 

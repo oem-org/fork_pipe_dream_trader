@@ -1,6 +1,6 @@
 import GenericSelect from "@/components/ui/lists/generic-select";
 import {Strategy} from "@/interfaces/Strategy";
-import getStrategiesQuery from "@/lib/queries/getStrategiesQuery";
+import getStrategiesQuery from "@/lib/hooks/react-query/getStrategiesQuery";
 import { useState } from "react";
 export default function SelectStrategyPage() {
   const { data: dataStrategies } = getStrategiesQuery();

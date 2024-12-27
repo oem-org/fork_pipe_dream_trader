@@ -1,7 +1,7 @@
 
 
 import { useQuery } from "@tanstack/react-query";
-import { getTimeseriesApi } from "../apiClientInstances";
+import { getTimeseriesApi } from "@/lib/apiClientInstances";
 
 const useTimeseriesQuery = (timeperiod: string, strategyId: number, fileId: number | undefined) => {
 	const fetchTimeseries = async () => {

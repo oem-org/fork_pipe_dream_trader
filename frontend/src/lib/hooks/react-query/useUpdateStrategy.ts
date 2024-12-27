@@ -1,6 +1,6 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { putStrategyApi } from "../apiClientInstances";
+import { putStrategyApi } from "../../apiClientInstances";
 import { Strategy } from "@/interfaces/Strategy";
 
 const updateStrategy = async (strategyId: number, strategy: Strategy): Promise<any> => {

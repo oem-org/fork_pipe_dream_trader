@@ -1,17 +1,17 @@
 import { useParams } from "react-router-dom";
-import getStrategyQuery from "@/lib/queries/getStrategyQuery";
+import getStrategyQuery from "@/lib/hooks/react-query/getStrategyQuery";
 import { useState, useEffect } from "react";
 import { File } from "@/interfaces/File";
 import GenericSelect from "@/components/ui/lists/generic-select";
-import getFilesQuery from "@/lib/queries/getFilesQuery";
-import useStrategyStore from "@/lib/hooks/useStrategyStore";
+import getFilesQuery from "@/lib/hooks/react-query/getFilesQuery";
+import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
 import IndicatorSection from "@/components/strategy/indicator-section";
 import Charts from "@/components/ui/chart/charts";
 import Modal from "@/components/ui/modal";
 import { InfoIcon } from "lucide-react";
 import SettingsDropdown from "@/components/strategy/settings-dropdown";
 import BacktestSection from "@/components/strategy/backtest-section";
-import { useUpdateStrategy } from "@/lib/hooks/useUpdateStrategy";
+import { useUpdateStrategy } from "@/lib/hooks/react-query/useUpdateStrategy";
 import ConditionsSection from "@/components/strategy/conditions/conditions-section";
 
 export default function StrategyPage() {

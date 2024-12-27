@@ -1,6 +1,6 @@
 
 import { useQuery } from "@tanstack/react-query"
-import { getStrategyApi } from "../apiClientInstances"
+import { getStrategyApi } from "@/lib/apiClientInstances"
 import { Strategy } from "@/interfaces/Strategy"
 
 export default function getStrategyQuery(id: number) {
