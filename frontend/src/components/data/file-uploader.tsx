@@ -13,8 +13,8 @@ export default function FileUploadForm() {
 		const formData = new FormData(e.currentTarget);
 		console.log(formData)
 		try {
-			await uploader.upload(formData);
-
+			const result = await uploader.upload(formData);
+			console.log(result)
 
 		} catch (err: any) {
 			setError(err.message);
@@ -30,7 +30,7 @@ export default function FileUploadForm() {
 						type="file"
 					/>
 				</div>
-				<Button variant="outline" >Upload File</Button>
+				<Button type="submit">Upload File</Button>
 			</form>
 
 			{error && <div className="text-error">{error}</div>}

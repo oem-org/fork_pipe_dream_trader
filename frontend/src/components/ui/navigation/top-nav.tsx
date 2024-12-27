@@ -9,7 +9,7 @@ export default function TopNav() {
   const { logout } = useAuthStore();
 
   return (
-    <nav className="bg-gray-800 p-3 z-30">
+    <nav className="bg-gray-800 p-3 z-30 fixed top-0 left-0 w-full">
       <ul className="flex flex-row items-center justify-between">
         <div className="flex flex-row">
           <li className="text-white text-xl">MyApp</li>

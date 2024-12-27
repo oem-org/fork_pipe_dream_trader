@@ -57,6 +57,14 @@
   @apply text-4xl
 }
 
+
+/*spacing*/
+.custom-grid-full-spacing{
+@apply px-6 mb-6 sm:px-14 sm:mb-14
+} 
+
+
+
 /*colors*/
 
 .custom-light-grey{

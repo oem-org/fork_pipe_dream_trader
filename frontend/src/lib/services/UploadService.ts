@@ -5,7 +5,7 @@ export default class UploadService {
 	async detectFileType(formData: FormData): Promise<string> {
 		return new Promise((resolve, reject) => {
 			const file = formData.get("file") as File;
-
+			console.log(file, "file")
 			if (!file) {
 				reject(new Error("No file found in FormData"));
 				return;
@@ -36,7 +36,7 @@ export default class UploadService {
 				reject(new Error("Error reading the file"));
 			};
 
-			//reader.readAsText(file);
+			reader.readAsText(file);
 		});
 	}
 

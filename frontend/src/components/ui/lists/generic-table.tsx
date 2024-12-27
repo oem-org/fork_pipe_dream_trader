@@ -44,7 +44,7 @@ export default function GenericTable<T>({
 	}, [data]);
 
 	return (
-		<div className="border rounded-md overflow-hidden">
+		<div className="border rounded-md overflow-hidden h-full">
 			<div className="w-full p-4 flex justify-between items-center bg-gray-200 hover:bg-gray-300 transition-colors duration-200">
 				{searchEnabled && (
 					<div className="flex-grow">
@@ -54,7 +54,7 @@ export default function GenericTable<T>({
 			</div>
 
 			<div
-				className="max-h-60 overflow-y-auto"
+				className="h-full overflow-y-auto"
 			>
 				<ul className="list-none p-0">
 					{filteredData.length > 0 ? (

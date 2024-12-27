@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Button } from '../ui/buttons/button';
 import { isFloat, addDecimal } from '@/lib/utils/numeric-utils';
 import { useUpdateIndicator } from '@/lib/hooks/useUpdateIndicator';
@@ -6,7 +6,6 @@ import { useDeleteIndicator } from '@/lib/hooks/useDeleteIndicator';
 import useStrategyStore from '@/lib/hooks/useStrategyStore';
 import { SquareX, InfoIcon } from 'lucide-react';
 import Modal from '../ui/modal';
-import { queryClient } from '@/main';
 
 interface GenericIndicatorProps {
 	indicatorId: number,
@@ -83,8 +82,8 @@ export default function GenericIndicator({ indicatorName, dataframeColumn, indic
 			setErrors(convertedFormData.errors);
 		} else {
 			setErrors({});
-			delete convertedFormData.errors;
-			updateIndicator({ indicatorId, settings: convertedFormData });
+  			const { errors, ...formDataWithoutErrors } = convertedFormData;
+			updateIndicator({ indicatorId, settings: formDataWithoutErrors });
 		}
 	}
 

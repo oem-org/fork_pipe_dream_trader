@@ -68,10 +68,15 @@ class FileLoader:
                 self.df = pd.read_json(self.file_path)
             elif self.file_type == FileTypeEnum.CSV:
                 self.df = pd.read_csv(self.file_path)
-
                 self.df.columns = self.df.columns.str.lower().str.strip()
+            
+            print(self.df.head(1),"DATAFRAAAAAAAAAAAAAME")
+            
+            print("###############",self.df.columns,"################")
+
             column_mapping = {
                 "unix": "time",
+                "Volume": "volume",
                 # "timestamp": "time",
                 "o": "open",
                 "h": "high",

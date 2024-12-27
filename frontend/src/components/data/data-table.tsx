@@ -28,7 +28,7 @@ export default function DataTable({ id }: TableProps) {
 	}
 
 	return (
-		<div className="w-full h-[500px] overflow-auto border border-gray-300 rounded-lg">
+		<div className="w-full h-full overflow-auto border border-gray-300 rounded-lg">
 			<table className="w-full border-collapse">
 				<thead className="bg-gray-100 sticky top-0 z-10">
 					<tr>

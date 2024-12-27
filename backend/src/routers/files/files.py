@@ -66,7 +66,6 @@ def get_file(db: db_dependency, file_id: int):
         return {"file": file, "data": data, "columns": columns}
 
     except SQLAlchemyError as e:
-
         handle_db_error(e, "SQLAlchemy failed feching the file path")
 
     except Exception as e:
@@ -97,12 +96,6 @@ async def save_uploaded_file(db: db_dependency, file: UploadFile):
         validated = fileValidation.validate()
         # Pair refers to the trading pair
         pair = fileValidation.get_pair()
-        print(pair, "validation check")
-        print(pair, "validation check")
-        print(pair, "validation check")
-        print(pair, "validation check")
-        print(pair, "validation check")
-        print(pair, "validation check")
         print(pair, "validation check")
         if validated == True:
             name = Path(file_path).name

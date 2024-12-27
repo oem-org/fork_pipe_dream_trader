@@ -6,40 +6,40 @@ import { File } from "@/interfaces/File";
 import { useState } from "react";
 
 export default function DataPage() {
-
   const { data: files } = getFilesQuery();
   const [fileId, setFileId] = useState<number>(1);
-  //const navigate = useNavigate();
 
   const handleFileChange = async (file: File) => {
     setFileId(file.id);
     console.log(file.id)
   };
 
-
   return (
-    <div className="container mx-auto px-4 space-y-6">
-
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <section className="p-4 bg-gray-100 rounded-lg">
-          <div className="flex flex-col">
-            <h2 className="h2 mb-4">Files</h2>
+    <div className="flex flex-col h-[calc(100vh-64px)]">
+      <div className="flex-grow grid grid-cols-1 lg:grid-cols-2 gap-4 custom-grid-full-spacing overflow-hidden">
+        <section className="bg-gray-100 rounded-lg flex flex-col overflow-hidden">
+          <div className="p-4">
+            <h2 className="text-2xl font-bold mb-4">Files</h2>
             <FileUploadForm />
           </div>
-          <GenericTable<File>
-            data={files || []}
-            keyExtractor={(file) => file.id}
-            nameExtractor={(file) => file.name}
-            onSelect={handleFileChange}
-            renderItem={(file) => <span>{file.name}</span>}
-            searchEnabled={true}
-          />
+          <div className="flex-grow overflow-auto p-4">
+            <GenericTable<File>
+              data={files || []}
+              keyExtractor={(file) => file.id}
+              nameExtractor={(file) => file.name}
+              onSelect={handleFileChange}
+              renderItem={(file) => <span>{file.name}</span>}
+              searchEnabled={true}
+            />
+          </div>
         </section>
-        <section className="p-4 bg-gray-100 rounded-lg">
-          <DataTable id={fileId} />
+        <section className="bg-gray-100 rounded-lg flex flex-col overflow-hidden">
+          <div className="flex-grow overflow-auto p-4">
+            <DataTable id={fileId} />
+          </div>
         </section>
       </div>
     </div>
   );
 }
+
