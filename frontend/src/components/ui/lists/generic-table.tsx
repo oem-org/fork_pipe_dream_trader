@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Search from "./search";
 
-interface GenericTableProps<T> {
+interface GenericListProps<T> {
 	data: T[];
 	keyExtractor: (item: T) => string | number;
 	onSelect: (item: T) => void;
@@ -11,7 +11,7 @@ interface GenericTableProps<T> {
 }
 
 // Creates a table style list of buttons, which means render items must contain buttons
-export default function GenericTable<T>({
+export default function GenericList<T>({
 	data,
 	keyExtractor,
 	onSelect,
@@ -19,7 +19,7 @@ export default function GenericTable<T>({
 	searchEnabled,
 	nameExtractor
 
-}: GenericTableProps<T>) {
+}: GenericListProps<T>) {
 	const [filteredData, setFilteredData] = useState<T[]>(data);
 
 	const handleSelection = (item: T, e: React.MouseEvent<HTMLButtonElement>) => {

@@ -1,6 +1,6 @@
 import FileUploadForm from "@/components/data/file-uploader"
 import DataTable from "@/components/data/data-table";
-import GenericTable from "@/components/ui/lists/generic-table";
+import GenericList from "@/components/ui/lists/generic-table";
 import getFilesQuery from "@/lib/hooks/react-query/getFilesQuery";
 import { File } from "@/interfaces/File";
 import { useState } from "react";
@@ -23,7 +23,7 @@ export default function DataPage() {
             <FileUploadForm />
           </div>
           <div className="flex-grow overflow-auto p-4">
-            <GenericTable<File>
+            <GenericList<File>
               data={files || []}
               keyExtractor={(file) => file.id}
               nameExtractor={(file) => file.name}

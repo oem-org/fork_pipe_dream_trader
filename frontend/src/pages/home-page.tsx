@@ -1,5 +1,5 @@
 import getStrategiesQuery from "@/lib/hooks/react-query/getStrategiesQuery";
-import GenericTable from "@/components/ui/lists/generic-table";
+import GenericList from "@/components/ui/lists/generic-table";
 import { Strategy } from "@/interfaces/Strategy";
 import { Link, useNavigate } from "react-router-dom";
 import StrategyInfo from "@/components/strategy/strategy-info";
@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/buttons/button";
 import StrategyTableRow from "@/components/strategy/conditions/strategy-table-row";
 import { useQueryClient } from "@tanstack/react-query";
-import GenericComponentTable from "@/components/ui/lists/generic-component-table";
+import GenericComponentList from "@/components/ui/lists/generic-component-table";
 
 export default function HomePage() {
   const { data: strategies, isError, isLoading, error } = getStrategiesQuery();
@@ -39,7 +39,7 @@ export default function HomePage() {
               Create new strategy
             </Link>
           </div>
-          <GenericComponentTable<Strategy>
+          <GenericComponentList<Strategy>
             data={strategies || []}
             keyExtractor={(strategy) => strategy.id}
             nameExtractor={(strategy) => strategy.name}

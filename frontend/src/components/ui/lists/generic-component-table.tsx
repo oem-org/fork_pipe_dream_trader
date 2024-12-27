@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Search from "./search";
 
-interface GenericComponentTableProps<T> {
+interface GenericComponentListProps<T> {
 	data: T[];
 	keyExtractor: (item: T) => string | number;
 	onSelect: (item: T) => void;
@@ -12,14 +12,14 @@ interface GenericComponentTableProps<T> {
 }
 
 // Works button passing of buttons or components to the renderItem
-export default function GenericComponentTable<T>({
+export default function GenericComponentList<T>({
 	data,
 	keyExtractor,
 	onSelect,
 	renderItem,
 	searchEnabled,
 	nameExtractor
-}: GenericComponentTableProps<T>) {
+}: GenericComponentListProps<T>) {
 	const [filteredData, setFilteredData] = useState<T[]>(data);
 
 	const handleSelection = (item: T, e: React.MouseEvent<HTMLButtonElement>) => {
