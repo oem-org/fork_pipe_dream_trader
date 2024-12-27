@@ -5,20 +5,27 @@ import Timeseries from "@/interfaces/Timeseries";
 import { Volume } from "@/interfaces/Volume";
 
 interface LineChartProps { data: IndicatorChart[], timeseries: Timeseries[], volume: Volume[] }
-
+//TODO: LineColor
 const LineCharts = React.memo(({ data, timeseries, volume }: LineChartProps) => {
+	console.log(data, "CHARTS DATAAAAAAAAAAAAAAAAAAa")
 	return data.length > 0 ? (
-		data.map((line, index) => (
-			<div className="w-full h-80 relative" key={index}>
-				<ChartCanvas
-					indicators={[line]}
-					chartContainerRef={React.createRef()}
-					volume={volume}
-					data={timeseries}
-				/>
-			</div>
-		))
-	) : (<div>hej</div>
+		<div className="w-full h-80 relative">
+			<ChartCanvas
+				indicators={data}
+				chartContainerRef={React.createRef()}
+				volume={volume}
+				data={timeseries}
+			/>
+		</div>
+
+	) : (<div className="w-full h-80 relative">
+		<ChartCanvas
+			indicators={[]}
+			chartContainerRef={React.createRef()}
+			volume={volume}
+			data={timeseries}
+		/>
+	</div>
 	);
 }
 );

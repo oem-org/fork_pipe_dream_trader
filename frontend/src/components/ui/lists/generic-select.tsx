@@ -74,7 +74,7 @@ export default function GenericSelect<T>({
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 		>
-			<div className="w-full flex justify-between items-center bg-gray-200 hover:bg-gray-300 transition-colors duration-200">
+			<div className="custom-select">
 				{searchEnabled && (isHovered || searchQuery) ? (
 					<div className="flex-grow">
 						<Search onSearch={(query, e) => handleSearch(query, e)} />

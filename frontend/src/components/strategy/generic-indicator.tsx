@@ -82,14 +82,14 @@ export default function GenericIndicator({ indicatorName, dataframeColumn, indic
 			setErrors(convertedFormData.errors);
 		} else {
 			setErrors({});
-  			const { errors, ...formDataWithoutErrors } = convertedFormData;
+			const { errors, ...formDataWithoutErrors } = convertedFormData;
 			updateIndicator({ indicatorId, settings: formDataWithoutErrors });
 		}
 	}
 
 	function renderInputField(key: string, property: Record<string, any>) {
 		const { default: defaultValue, title, type } = property;
-		const excludedKeys = ['kind', 'name', 'ddof', 'talib'];
+		const excludedKeys = ['kind', 'name', 'ddof', 'talib', 'presma'];
 		if (excludedKeys.includes(key)) {
 			return null;
 		}
@@ -180,7 +180,7 @@ export default function GenericIndicator({ indicatorName, dataframeColumn, indic
 	}
 
 	return (
-		<div className='flex flex-col border rounded-lg p-4'>
+		<div className='flex flex-col border rounded-lg p-4 custom-white'>
 			<Modal onClose={toggleModal} isOpen={isModalOpen} title={`Indicator: ${formData['kind']}`}>
 				<section>
 					<pre className="whitespace-pre-wrap break-words p-4 rounded-md">
@@ -190,7 +190,7 @@ export default function GenericIndicator({ indicatorName, dataframeColumn, indic
 			</Modal>
 			<div className='flex flex-row justify-between'>
 				<div className='flex flex-row'>
-					<h3 className='h3 font-bold mr-2'>{indicatorName}</h3>
+					<h4 className='h4 font-bold mr-2'>{indicatorName}</h4>
 					{dataframeColumn && <p className='text-lg mr-2'>ID: {dataframeColumn}</p>}
 					<InfoIcon className='cursor-pointer' onClick={toggleModal} />
 				</div>

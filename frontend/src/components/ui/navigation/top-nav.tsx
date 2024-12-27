@@ -13,22 +13,8 @@ export default function TopNav() {
       <ul className="flex flex-row items-center justify-between">
         <div className="flex flex-row">
           <li className="text-white text-xl">MyApp</li>
-          <NavItem to="/" label="Dashboard" />
+          <NavItem to="/" label="Strategies" />
           <NavItem to="/data" label="Data" />
-          <Dropdown label="Strategies" animation={true}>
-            <Link
-              to="/select-strategy"
-              className="btn-dropdown"
-            >
-              View all
-            </Link>
-            <Link
-              to="/create-strategy"
-              className="btn-dropdown"
-            >
-              Create new strategy
-            </Link>
-          </Dropdown>
         </div>
         <div className="flex space-x-4">
           <Dropdown icon={CircleUserIcon} animation={false} direction="right">

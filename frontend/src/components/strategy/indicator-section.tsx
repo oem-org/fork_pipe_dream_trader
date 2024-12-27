@@ -105,7 +105,6 @@ const IndicatorSection = memo(function IndicatorSection({
 			/>
 
 			<div className="mt-4">
-				<h3 className="h3 mb-2">Loaded Indicators</h3>
 				{siIsLoading && <p>Loading indicators...</p>}
 				{siError && siError instanceof Error && (
 					<p className="text-red-500">Error loading indicators: {siError.message}</p>

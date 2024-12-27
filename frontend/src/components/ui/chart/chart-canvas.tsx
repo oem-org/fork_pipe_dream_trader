@@ -13,7 +13,7 @@ interface ChartCanvasProps {
 	chartContainerRef: React.RefObject<HTMLDivElement>;
 	data: Timeseries[];
 	volume: Volume[];
-	indicators: LineSeries[];
+	indicators: Array<LineSeries[]>;
 	colors?: {
 		backgroundColor?: string;
 		textColor?: string;

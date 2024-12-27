@@ -11,7 +11,7 @@ interface StrategyTableRowProps {
   setLocalStrategyId: React.Dispatch<React.SetStateAction<number>>;
 }
 
-// TODO fix the click propogation
+// TODO: fix the click propogation  
 export default function StrategyTableRow({ strategy, setLocalStrategyId }: StrategyTableRowProps) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();

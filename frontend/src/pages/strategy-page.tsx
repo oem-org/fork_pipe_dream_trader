@@ -13,6 +13,7 @@ import SettingsDropdown from "@/components/strategy/settings-dropdown";
 import BacktestSection from "@/components/strategy/backtest-section";
 import { useUpdateStrategy } from "@/lib/hooks/react-query/useUpdateStrategy";
 import ConditionsSection from "@/components/strategy/conditions/conditions-section";
+import useInitialValue from "@/lib/hooks/useInitialValue";
 
 export default function StrategyPage() {
   // TODO: use name instead of id
@@ -48,6 +49,14 @@ export default function StrategyPage() {
     }
   };
 
+  const findInitialValue = useInitialValue(
+    files || [],
+    strategy?.fk_file_id,
+    (file) => file.id
+  );
+  const [selectedIndicator, setSelectedIndicator] = useState<StrategyIndicator | null>(
+    findInitialValue
+  );
   //const handleStrategyChange = (strategy: Strategy) => {
   //  navigate(`/strategy/${strategy.id}`);
   //};
@@ -70,7 +79,7 @@ export default function StrategyPage() {
               <div className="flex flex-row justify-between">
                 <div className="flex flex-row">
                   <h3 className="h3 mb-4">{strategy.name}</h3>
-                  <InfoIcon className="ml-2 mt-1" onClick={() => toggleInfoModal()} />
+                  <InfoIcon className="cursor-pointer ml-2 mt-1" onClick={() => toggleInfoModal()} />
                 </div>
                 <SettingsDropdown strategyId={strategyId} />
               </div>

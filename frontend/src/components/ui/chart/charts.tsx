@@ -1,14 +1,14 @@
-
-
-import React from 'react';
 import LineChartPanes from './line-pane-charts';
 import LineCharts from './line-charts';
 import HistogramCharts from './histogram-charts';
 import { useChartStore } from '@/lib/hooks/stores/useChartStore';
 
-
-const Charts = React.memo(() => {
+//TODO: add colors
+export default function Charts() {
 	const { lineSeries, lineSeriesPanes, histograms, timeseries, volume } = useChartStore()
+
+	//All charts receive an array of indicators
+	//LineCharts maps them all on a single chart, the rest generate 1 chart pr indicator
 
 	return (
 		<>
@@ -17,5 +17,4 @@ const Charts = React.memo(() => {
 			<HistogramCharts data={histograms} />
 		</>
 	);
-})
-export default Charts
+}
