@@ -34,7 +34,7 @@ export default function DraggableBlock({ id, children, moveBlock, index }: Block
 		<div
 			ref={(node) => drag(drop(node))}
 			className="flex flex-item border justify-between border-gray-300 mb-2 p-2 rounded-lg shadow-sm custom-white"
-		>	<div className="flex flex-row">
+		>	<div className="flex flex-row w-full justify-between">
 				{children}
 			</div>
 			<div>

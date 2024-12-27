@@ -12,12 +12,6 @@ import { CreateBacktestRequest } from '@/interfaces/Backtest';
 
 export default function ConditionsSection() {
 
-  //const {
-  //  sellConditions,
-  //  buyConditions,
-  //  setSellConditions,
-  //  setBuyConditions,
-  //} = useConditionsStore();
 
   const { strategyId } = useStrategyStore()
   const { data } = getStrategyConditionsQuery(strategyId)
@@ -30,10 +24,6 @@ export default function ConditionsSection() {
       const filteredBuyConditions = data.filter((condition) => condition.side === "buy");
       const filteredSellConditions = data.filter((condition) => condition.side === "sell");
 
-      console.log(filteredSellConditions, filteredBuyConditions, "FILTERED BUTY AND SELL")
-
-      console.log("DATA", data, "SENDING THE DATA")
-      // Create new objects with only id and settings properties
       const buyConditionsFormatted = filteredBuyConditions.map((condition) => ({
         id: condition.id,
         settings: condition.settings,
@@ -43,7 +33,6 @@ export default function ConditionsSection() {
         settings: condition.settings,
       }));
 
-      //console.log(sellConditionsFormatted, buyConditionsFormatted)
       // Set the formatted conditions
       setBuyConditions(buyConditionsFormatted);
       setSellConditions(sellConditionsFormatted);
@@ -59,18 +48,6 @@ export default function ConditionsSection() {
 
     console.log(result, "THE RESULT");
 
-    //if (side === "buy") {
-    //
-    //  console.log(buyConditions, newCondition)
-    //  console.log(buyConditions)
-    //  setSellConditions([...buyConditions, newCondition]);
-    //} else {
-    //
-    //  console.log(sellConditions, newCondition)
-    //  console.log(sellConditions)
-    //  setSellConditions([...sellConditions, newCondition]);
-    //
-    //}
   };
   const buyStringRef = useRef<{ createConditionString: () => Array<any> }>(null);
   const sellStringRef = useRef<{ createConditionString: () => Array<any> }>(null);
@@ -124,16 +101,12 @@ export default function ConditionsSection() {
     <div>
       <div className="flex flex-row justify-between">
         <h2 className="h2 mb-4">Strategy</h2>
-        <Button onClick={() => runBacktest()}>RUN BT</Button>
-        <p>Operators:</p>
-        <Button>And</Button>
-        <Button>Or</Button>
-        <Button>Not</Button>
+        <Button onClick={() => runBacktest()}>Run Backtest</Button>
       </div>
       <hr className="py-1" />
       <div>
         <div>
-          <h3>Buy conditions</h3>
+          <h3 className='h3 pb-4'>Buy conditions</h3>
 
           <div className="flex flex-row">
             <BuildConditionRenderer ref={buyStringRef} conditions={buyConditions} />
@@ -145,7 +118,7 @@ export default function ConditionsSection() {
         </div>
         <div>
 
-          <h3>Sell conditions</h3>
+          <h3 className='h3 pb-4'>Sell conditions</h3>
           <div className="flex flex-row">
             <BuildConditionRenderer ref={sellStringRef} conditions={sellConditions} />
           </div>

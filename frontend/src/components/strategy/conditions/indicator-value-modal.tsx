@@ -45,7 +45,7 @@ export default function CreateIndicatorValueModal({ side, addCondition }: Create
   return (
     <>
       <div>
-        <button onClick={toggleIndicatorIndicator}>Add Indicator/Value</button>
+        <Button variant='outline' onClick={toggleIndicatorIndicator}>Indicator/Value</Button>
         <Modal onClose={toggleIndicatorIndicator} isOpen={isModalOpen} title="Delete strategy">
           <CreateConditionIndicator setIndicator={setIndicator1} />
           <CreateConditionOperator setOperator={setOperator} />

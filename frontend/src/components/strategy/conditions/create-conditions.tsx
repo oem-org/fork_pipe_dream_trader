@@ -17,23 +17,18 @@ export default function CreateConditions({ side, addCondition }: CreateCondition
       "fk_strategy_indicator_id_2": null,
       "settings": { "singleOperator": operator }
     }
-    console.log(cond)
     return cond
   }
   return (
     <>
-      <div>
+      <div className="mt-4 space-x-2 flex flex-row mb-2 p-2 w-full">
         <CreateIndicatorIndicatorModal side={side} addCondition={addCondition} />
         <CreateIndicatorValueModal side={side} addCondition={addCondition} />
-
-        <div className="mt-4 flex flex-row">
-          <Button onClick={() => addCondition(createOperator(side, "&"))}> &amp; </Button>
-          <Button onClick={() => addCondition(createOperator(side, "|"))}>|</Button>
-          <Button onClick={() => addCondition(createOperator(side, "~"))}>~</Button>
-          <Button onClick={() => addCondition(createOperator(side, ">"))}>{'>'}</Button>
-          <Button onClick={() => addCondition(createOperator(side, "<"))}>{'<'}</Button>
-        </div>
+        <Button onClick={() => addCondition(createOperator(side, "&"))}> &amp; </Button>
+        <Button onClick={() => addCondition(createOperator(side, "|"))}>|</Button>
+        <Button onClick={() => addCondition(createOperator(side, "~"))}>~</Button>
       </div>
+      <hr className="mb-4" />
     </>
   );
 }

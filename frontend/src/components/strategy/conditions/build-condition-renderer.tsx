@@ -46,7 +46,7 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
     const conditionServiceTest = new DivideBlocksService(conditions);
     conditionServiceTest.processConditions()
     let mapp = conditionServiceTest.getConditions()
-    console.log(mapp, "FUCKING MAPPED")
+    //console.log(mapp, "FUCKING MAPPED")
     return mapp
   }
 
@@ -148,10 +148,6 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
     setBlocks(initialBlocks);
   }, [mappedConditions]);
 
-  //useEffect(() => {
-  //  console.log("BLOCKS", blocks)
-  //
-  //}, [blocks])
 
 
   const handleValueChange = (blockIndex: number, newValue: any) => {
@@ -169,7 +165,7 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
       });
       return updatedBlocks;
     });
-    createConditionString()
+    //createConditionString()
   };
 
   const moveBlock = (fromIndex: number, toIndex: number) => {
@@ -210,20 +206,24 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
     return values;
   }
 
-  async function handleDeleteCondition(conditionId: number) {
-    await deleteCondition({ strategyId, conditionId })
-  }
-
   return (
     <>
       <DndProvider backend={HTML5Backend}>
-        <div>
-          {blocks.map((block, blockIndex) => (
-            <>
-              <DraggableBlock key={`block-${blockIndex}`} id={blockIndex} index={blockIndex} moveBlock={moveBlock}>
+        <div className="w-full">
+          {blocks.length > 0 ? (
+            blocks.map((block, blockIndex) => (
+              <DraggableBlock
+                key={`block-${blockIndex}`}
+                id={blockIndex}
+                index={blockIndex}
+                moveBlock={moveBlock}
+              >
                 {block}
               </DraggableBlock>
-            </>))}
+            ))
+          ) : (
+            <div className="text-center text-gray-500">No condtions added.</div>
+          )}
         </div>
       </DndProvider>
     </>
