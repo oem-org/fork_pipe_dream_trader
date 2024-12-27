@@ -11,6 +11,11 @@
   @apply px-4 py-2 rounded-lg bg-gray-200 text-black;
 }
 
+/* input */
+.label {
+@apply mb-3 mt-5 block text-base font-medium text-gray-900
+}
+
 .input-field {
   @apply w-full px-4 py-2 mt-2 text-black border rounded-lg;
 }
@@ -48,6 +53,24 @@
   @apply text-2xl font-bold
 }
 
+.h1{
+  @apply text-4xl
+}
+
+/*colors*/
+
+.custom-light-grey{
+@apply bg-gray-50
+}
+
+.custom-bg-color{
+@apply bg-gray-800
+}
+
+.custom-text-light{
+  @apply text-gray-50
+}
+
 /*indicators*/
 .indicator-input {
   @apply p-1 w-16 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500
@@ -59,3 +82,4 @@
 .btn-dropdown{
   @apply block text-white text-left w-full px-4 py-2 hover:bg-gray-700 rounded
 }
+

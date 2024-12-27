@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import handleFormSubmit from '../../lib/utils/generics/handleFormSubmit';
 import CreateUserFormRequest from '../../interfaces/requests/CreateUserFormRequest';
 
-type ReturnType = boolean;
+//done!
 
 export default function CreateUserForm() {
 	const [loading, setLoading] = useState(false);
@@ -15,7 +15,7 @@ export default function CreateUserForm() {
 	const navigate = useNavigate();
 
 	async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
-		const success = await handleFormSubmit<CreateUserFormRequest, ReturnType>(e, createUser, setError, setLoading);
+		const success = await handleFormSubmit<CreateUserFormRequest, boolean>(e, createUser, setError, setLoading);
 		console.log(success)
 		if (success) {
 			navigate('/strategy');
@@ -27,10 +27,10 @@ export default function CreateUserForm() {
 			className="space-y-3"
 			onSubmit={handleSubmit}
 		>
-			<div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
-				<h1 className='mb-3 text-2xl'>
+			<div className="flex-1 rounded-lg px-6 pb-4 pt-8 border custom-light-grey">
+				<h2 className='mb-3 h2'>
 					Log in to continue.
-				</h1>
+				</h2>
 				{error && (
 					<div className="mb-4 text-sm text-red-600">{error}</div>
 				)}
@@ -38,7 +38,7 @@ export default function CreateUserForm() {
 
 					<div>
 						<label
-							className="mb-3 mt-5 block text-xs font-medium text-gray-900"
+							className="label"
 							htmlFor="username"
 						>
 							Username
@@ -57,7 +57,7 @@ export default function CreateUserForm() {
 
 					<div className="mt-4">
 						<label
-							className="mb-3 mt-5 block text-xs font-medium text-gray-900"
+							className="label"
 							htmlFor="password"
 						>
 							Email
@@ -76,7 +76,7 @@ export default function CreateUserForm() {
 
 					<div className="mt-4">
 						<label
-							className="mb-3 mt-5 block text-xs font-medium text-gray-900"
+							className="label"
 							htmlFor="password"
 						>
 							Password

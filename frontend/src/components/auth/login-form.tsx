@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import sendFormData from '../../lib/utils/generics/sendFormData';
 
+//done!
 
 export default function LoginForm() {
 	const [loading, setLoading] = useState(false);
@@ -31,7 +32,7 @@ export default function LoginForm() {
 			<div className="w-full">
 				<div>
 					<label
-						className="mb-3 mt-5 block text-xs font-medium text-gray-900"
+						className="label"
 						htmlFor="username"
 					>
 						Username
@@ -49,7 +50,7 @@ export default function LoginForm() {
 				</div>
 				<div className="mt-4">
 					<label
-						className="mb-3 mt-5 block text-xs font-medium text-gray-900"
+						className="label"
 						htmlFor="password"
 					>
 						Password

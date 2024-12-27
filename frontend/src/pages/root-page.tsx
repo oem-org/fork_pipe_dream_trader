@@ -5,7 +5,7 @@ function RootPage() {
 
   return (
     <>
-      <div className="flex flex-col min-h-screen bg-gray-800">
+      <div className="flex flex-col min-h-screen custom-bg-color">
         <TopNav />
         <Outlet />
       </div >
