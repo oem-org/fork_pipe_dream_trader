@@ -137,3 +137,10 @@ class CreateUserResponse(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+
+
+
+class CreateBacktestRequest(BaseModel):
+    buy_conditions: str
+    sell_conditions: str

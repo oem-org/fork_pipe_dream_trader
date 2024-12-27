@@ -1,29 +1,29 @@
 import { Button } from '@/components/ui/buttons/button';
 import BuildConditionRenderer from './build-condition-renderer';
-import { useEffect, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import useConditionsStore from '@/lib/hooks/useConditionsStore';
-import { ConditionsArray, Side, ConditionGroup, LogicalOperator } from '@/interfaces/Condition';
 import CreateConditions from './create-conditions';
 import getStrategyConditionsQuery from '@/lib/queries/getStrategyConditions';
 import { useAddStrategyCondition } from '@/lib/queries/useAddStrategyCondition'
 import useStrategyStore from '@/lib/hooks/useStrategyStore';
+
+import { postBacktestApi } from '@/lib/apiClientInstances';
+import { CreateBacktestRequest } from '@/interfaces/Backtest';
+
 export default function ConditionsSection() {
 
-  const {
-    sellConditions,
-    buyConditions,
-    setSellConditions,
-    setBuyConditions,
-    deleteSellCondition,
-    deleteBuyCondition,
-  } = useConditionsStore();
+  //const {
+  //  sellConditions,
+  //  buyConditions,
+  //  setSellConditions,
+  //  setBuyConditions,
+  //} = useConditionsStore();
 
   const { strategyId } = useStrategyStore()
-  const [test, setTest] = useState()
   const { data } = getStrategyConditionsQuery(strategyId)
   const { mutateAsync: addConditionMutation } = useAddStrategyCondition(strategyId);
-
-
+  const [sellConditions, setSellConditions] = useState<any[]>([]);
+  const [buyConditions, setBuyConditions] = useState<any[]>([]);
   useEffect(() => {
     if (data) {
       // Filter conditions by side "buy" and "sell"
@@ -34,24 +34,22 @@ export default function ConditionsSection() {
 
       console.log("DATA", data, "SENDING THE DATA")
       // Create new objects with only id and settings properties
-      const buyConditionsFormatted = filteredBuyConditions.map((condition) => condition.settings);
-      const buyConditionsFormatted2 = filteredBuyConditions.map((condition) => ({
+      const buyConditionsFormatted = filteredBuyConditions.map((condition) => ({
         id: condition.id,
         settings: condition.settings,
       }));
-      const sellConditionsFormatted2 = filteredSellConditions.map((condition) => ({
+      const sellConditionsFormatted = filteredSellConditions.map((condition) => ({
         id: condition.id,
         settings: condition.settings,
       }));
 
-      console.log(buyConditionsFormatted2, "2222222222222222")
       //console.log(sellConditionsFormatted, buyConditionsFormatted)
       // Set the formatted conditions
-      setBuyConditions(buyConditionsFormatted2);
-      setSellConditions(sellConditionsFormatted2);
+      setBuyConditions(buyConditionsFormatted);
+      setSellConditions(sellConditionsFormatted);
 
-      console.log("Filtered Buy Conditions:", buyConditionsFormatted2);
-      console.log("Filtered Sell Conditions:", sellConditionsFormatted2);
+      console.log("Filtered Buy Conditions:", buyConditionsFormatted);
+      console.log("Filtered Sell Conditions:", sellConditionsFormatted);
     }
   }, [data]);
   const addCondition = (newCondition: any) => {
@@ -74,13 +72,35 @@ export default function ConditionsSection() {
     //
     //}
   };
+  const buyStringRef = useRef<{ createConditionString: () => Array<any> }>(null);
+  const sellStringRef = useRef<{ createConditionString: () => Array<any> }>(null);
+  const [buyString, setBuyString] = useState("")
+  const [sellString, setSellString] = useState("")
 
-  //TODO: DOUBLE BUY CONDS
+  function runBacktest(): void {
+    let buy = []
+    let sell = []
+    console.log(buyStringRef.current.createConditionString())
+    if (buyStringRef.current) {
+      buy = buyStringRef.current.createConditionString();
+    }
+
+    if (sellStringRef.current) {
+      sell = sellStringRef.current.createConditionString();
+    }
+    let data: CreateBacktestRequest = {
+      buy_conditions: JSON.stringify(buy),
+      sell_conditions: JSON.stringify(sell),
+    };
+
+    postBacktestApi.post(strategyId, data)
+    console.log(buy, sell, "REEEEEEEEEEEEEEEEEEEEF")
+  };
   return (
     <div>
       <div className="flex flex-row justify-between">
         <h2 className="h2 mb-4">Strategy</h2>
-        <Button>Add condition</Button>
+        <Button onClick={() => runBacktest()}>RUN BT</Button>
         <p>Operators:</p>
         <Button>And</Button>
         <Button>Or</Button>
@@ -88,16 +108,22 @@ export default function ConditionsSection() {
       </div>
       <hr className="py-1" />
       <div>
-        <h3>Buy conditions</h3>
-
-        <div className='flex flex-col'>
-          <CreateConditions side="buy" addCondition={addCondition} />
-
-        </div>
-
         <div>
+          <h3>Buy conditions</h3>
+
           <div className="flex flex-row">
-            <BuildConditionRenderer conditions={buyConditions} setConditions={setSellConditions} />
+            <BuildConditionRenderer ref={buyStringRef} conditions={buyConditions} />
+          </div>
+          <div className='flex flex-col'>
+            <CreateConditions side="buy" addCondition={addCondition} />
+
+          </div>
+        </div>
+        <div>
+
+          <h3>Sell conditions</h3>
+          <div className="flex flex-row">
+            <BuildConditionRenderer ref={sellStringRef} conditions={sellConditions} />
           </div>
 
           <div className='flex flex-col'>

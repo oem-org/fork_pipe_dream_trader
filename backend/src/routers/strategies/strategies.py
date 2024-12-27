@@ -1,8 +1,11 @@
 import logging
 from typing import Any, Dict, List, Optional
-
-
+import json
+import pandas as pd
 from fastapi import APIRouter, HTTPException, Path
+from ...routers.files.FileLoader import FileLoader
+from ..strategies.IndicatorLoader import IndicatorLoader
+from ...lib.backtesting.Backtester import Backtester
 from pydantic import BaseModel
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import load_only
@@ -11,7 +14,7 @@ from sqlalchemy.orm import joinedload
 
 from ...dependencies import db_dependency, user_dependency
 from ...models import Strategies, StrategyIndicators, StrategyConditions
-from ...schemas import UpdateStrategyRequest, CreateStrategyRequest, StrategySchema
+from ...schemas import CreateBacktestRequest, UpdateStrategyRequest, CreateStrategyRequest, StrategySchema
 from ...utils.debugging.print_db_object import print_db_object
 from ...utils.exceptions import handle_db_error, handle_not_found_error
 
@@ -598,3 +601,68 @@ async def get_all_strategy_conditions(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Unexpected error occurred",
         )
+
+
+
+
+@router.post("/{strategy_id}/backtest", status_code=status.HTTP_200_OK)
+async def get_all_strategy_conditions(
+    strategy_id: int,
+    db: db_dependency,
+    user: user_dependency,
+    backtest_request: CreateBacktestRequest
+):
+    try:
+        # Fetch the strategy model
+        strategyModel = db.query(Strategies).filter(Strategies.id == strategy_id).first()
+
+        if not strategyModel:
+            raise HTTPException(status_code=404, detail="Strategy not found")
+
+        if strategyModel.file:
+            # Process the file data
+            path = strategyModel.file.path
+            file_loader = FileLoader(path)
+            file_loader.load_data()
+
+            all_indicator_settings = [
+                ind.settings
+                for ind in strategyModel.strategy_indicators
+                if ind.settings is not None
+            ]
+
+            indicator_loader = IndicatorLoader(file_loader.df, all_indicator_settings)
+            indicator_loader.load_indicators()
+
+        # Parse the stringified arrays
+        buy_conditions = json.loads(backtest_request.buy_conditions)
+        sell_conditions = json.loads(backtest_request.sell_conditions)
+        print(buy_conditions)
+        print(sell_conditions)
+
+        # Loop over buy and sell conditions
+        buy_results = [f"Processed buy condition: {cond}" for cond in buy_conditions]
+        sell_results = [f"Processed sell condition: {cond}" for cond in sell_conditions]
+
+        # Run the backtest
+        backtest = Backtester(indicator_loader.df)
+        buy_eval_string = backtest.build_conditions("buy", buy_conditions)
+        sell_eval_string = backtest.build_conditions("sell", sell_conditions)
+
+        result = backtest.run()
+
+        return {
+            "buy_results": buy_results,
+            "sell_results": sell_results,
+            "strategy_id": strategy_id,
+            "user": user,
+            "backtest_result": result
+        }
+
+    except Exception as e:
+        handle_db_error(e, "Unexpected error occurred while processing the backtest")
+
+
+
+
+

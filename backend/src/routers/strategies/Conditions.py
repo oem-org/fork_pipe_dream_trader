@@ -64,14 +64,14 @@ class Conditions:
             raise Exception("Error creating condtion strings")        
 
 
-buy = {"buy": [["df.SMA_10 > 1","&","df.close",">","0.01"],"&","~",["df.SMA_10 > 100"]]}
-sell = {"sell": [["df.SMA_10 < 0.3","&","df.close",">","0.01"],"|",["df.SMA_10 < 2"]]}
-
-df = pd.read_pickle("pkl.pkl")
-bt = Backtester(df)
-dfresult = bt.build_conditions("buy", buy)
-dfresult = bt.build_conditions("sell", sell)
-print(dfresult)
+# buy = {"buy": [["df.SMA_10 > 1","&","df.close",">","0.01"],"&","~",["df.SMA_10 > 100"]]}
+# sell = {"sell": [["df.SMA_10 < 0.3","&","df.close",">","0.01"],"|",["df.SMA_10 < 2"]]}
+#
+# df = pd.read_pickle("pkl.pkl")
+# bt = Backtester(df)
+# dfresult = bt.build_conditions("buy", buy)
+# dfresult = bt.build_conditions("sell", sell)
+# print(dfresult)
 # expressionsell = "df.SMA_10 > 1"
 # dfresult = bt.run("sell", "SMA_14", expressionsell)
 # print(dfresult)

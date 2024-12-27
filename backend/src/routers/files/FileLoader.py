@@ -25,14 +25,7 @@ class FileLoader:
 
         for column in columns_to_check:
             if column in self.df.columns:
-                value = str(self.df[column].iloc[0])  # Convert the value to string
-                print("STRRRRR",value)
-                print("STRRRRR",value)
-                print("STRRRRR",value)
-                print("STRRRRR",value)
-                print("STRRRRR",value)
-                print("STRRRRR",value)
-                print("STRRRRR",value)
+                value = str(self.df[column].iloc[0])  
                 print(f"Returning value from column: {column}")
                 return value
 

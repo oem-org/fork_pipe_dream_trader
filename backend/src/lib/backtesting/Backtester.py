@@ -85,16 +85,16 @@ class Backtester:
 
 
 
-buy = {"buy": [["df.SMA_10 < 1"]]}
-sell = {"sell": [["df.SMA_10 > 1.1"]]}
-
-df = pd.read_pickle("pkl.pkl")
-bt = Conditions(df)
-dfresult = bt.build_conditions("buy", buy['buy'])
-dfresult = bt.build_conditions("sell", sell['sell'])
-pnl, drawdown = bt.get_conditions()
-
-print(pnl, drawdown)
+# buy = {"buy": [["df.SMA_10 < 1"]]}
+# sell = {"sell": [["df.SMA_10 > 1.1"]]}
+#
+# df = pd.read_pickle("pkl.pkl")
+# bt = Conditions(df)
+# dfresult = bt.build_conditions("buy", buy['buy'])
+# dfresult = bt.build_conditions("sell", sell['sell'])
+# pnl, drawdown = bt.get_conditions()
+#
+# print(pnl, drawdown)
 
 
 # buy = {"buy": [["df.SMA_10 > 1","&","df.close",">","0.01"],"&","~",["df.SMA_10 > 100"]]}

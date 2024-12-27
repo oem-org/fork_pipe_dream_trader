@@ -37,9 +37,9 @@ async def read_all(
 
         if strategyModel.file:
             path = strategyModel.file.path
-            fileLoader = FileLoader(path)
-            fileLoader.load_data()
-            # print(fileLoader.df)
+            file_loader = FileLoader(path)
+            file_loader.load_data()
+            # print(file_loader.df)
 
             indicators_info = [{"indicator_info": si.indicator.indicator_info,
                                 "kind": si.indicator.kind,
@@ -50,17 +50,16 @@ async def read_all(
                                     for ind in strategyModel.strategy_indicators
                                     if ind.settings is not None]
 
-            indicatorLoader = IndicatorLoader(fileLoader.df, all_indicator_settings)
-            indicatorLoader.load_indicators()
-            indicatorLoader.split_dataframe()
+            indicator_loader = IndicatorLoader(file_loader.df, all_indicator_settings)
+            indicator_loader.load_indicators()
+            indicator_loader.split_dataframe()
             # Connects dataframe column with StrategyIndicator id
-            info = indicatorLoader.connect_indicator_info(indicators_info)
+            info = indicator_loader.connect_indicator_info(indicators_info)
 
             # Key is the name of the database column
             for key, value in info.items():
                 print(key)
                 print(value['id'])
-
                 strategy_indicator = db.query(StrategyIndicators).filter(StrategyIndicators.id == value['id']).first()
                 print(strategy_indicator, "test")
                 if strategy_indicator:
@@ -69,9 +68,9 @@ async def read_all(
                 else:
                     print(f"StrategyIndicator with ID {value[id]} not found")
 
-            # indicatorLoader.response['timeframe'] = fileLoader.timeframe
+            # indicator_loader.response['timeframe'] = file_loader.timeframe
 
-            return indicatorLoader.response
+            return indicator_loader.response
     except Exception as e:
         handle_db_error(e, "Unexpected error occurred while fetching the file data")
 
@@ -94,8 +93,8 @@ async def read_all(
 #
 #         if strategyModel.file:
 #             path = strategyModel.file.path
-#             fileLoader = FileLoader(path)
-#             fileLoader.load_or_reload()
+#             file_loader = FileLoader(path)
+#             file_loader.load_or_reload()
 #
 #             indicators_info = [{
 #                 "indicator_info": si.indicator.indicator_info,
@@ -109,12 +108,12 @@ async def read_all(
 #                 if ind.settings is not None
 #             ]
 #
-#             indicatorLoader = IndicatorLoader(fileLoader.df, all_indicator_settings)
-#             indicatorLoader.load_indicators()
-#             indicatorLoader.split_dataframe()
-#             indicatorLoader.connect_indicator_info(indicators_info)
+#             indicator_loader = IndicatorLoader(file_loader.df, all_indicator_settings)
+#             indicator_loader.load_indicators()
+#             indicator_loader.split_dataframe()
+#             indicator_loader.connect_indicator_info(indicators_info)
 #
-#             return indicatorLoader.response
+#             return indicator_loader.response
 #     except Exception as e:
 #         handle_db_error(e, "Unexpected error occurred while fetching the file data")
 #

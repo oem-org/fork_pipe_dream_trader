@@ -6,7 +6,7 @@ import OperatorConditionSelect from "./operator-condition-select";
 import { DndProvider } from "react-dnd";
 import DraggableBlock from "./draggable-block";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import React from "react";
 import { Button } from "@/components/ui/buttons/button";
 import { DivideBlocksService } from "@/lib/services/ComponentMappingService";
@@ -14,23 +14,28 @@ import { useDeleteStrategyCondition } from "@/lib/hooks/useDeleteStrategyConditi
 import useStrategyStore from "@/lib/hooks/useStrategyStore";
 import InputSmall from "@/components/ui/forms/input-small";
 
+interface CreateConditionStringRef {
+  createConditionString: () => Array<Record<string, any> | string>
+}
+
 interface BuildConditionsRendererProps {
   conditions: Array<any>,
-  setConditions: any,
+  ref: React.RefObject<CreateConditionStringRef>;
 }
 
 // TODO: Set types for conditions
 //
 
-function BuildConditionRenderer({ conditions, setConditions }: BuildConditionsRendererProps) {
+function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, ref: CreateConditionStringRef) {
   const [blocks, setBlocks] = useState<JSX.Element[][]>([]);
   const { mutateAsync: deleteCondition } = useDeleteStrategyCondition()
   const { strategyId } = useStrategyStore()
   console.log("RERENDER§!")
-  //const { conditions, setConditions } = useConditionsStore();
   const [mappedConditions, setMappedConditions] = useState<any>(mapConditions());
 
-
+  useImperativeHandle(ref, () => ({
+    createConditionString,
+  }));
 
   function mapConditions() {
     if (!Array.isArray(conditions)) {
@@ -205,24 +210,24 @@ function BuildConditionRenderer({ conditions, setConditions }: BuildConditionsRe
   //  });
   //}
 
-
-  function createConditionString() {
+  // Generate the condition string for the backtest
+  // It filter out null values from the buttons which are
+  // dynamically generated
+  function createConditionString(): Array<Record<string, any> | string> {
     const values = blocks.map((block) => {
       return block
         .map((component: any) => {
-          // Check if the component has a ref and it is defined
           if (component.ref && component.ref.current && typeof component.ref.current.getValue === 'function') {
             return component.ref.current.getValue();
           }
-          return null; // Skip components without a valid ref
+          return null;
         })
-        .filter((value) => value !== null); // Filter out null values
+        .filter((value) => value !== null);
     });
 
+    console.log(values, "THE VALUES TO TRANSFORM")
     const transformedValues = transformArray(values);
     console.log("Values from blocks!!!!!!!!!!!!!!!!!!!!!!!:", transformedValues);
-    //setConditions(transformedValues);
-    console.log(conditions, "CONDITIONS");
     return transformedValues;
   }
 
@@ -251,5 +256,4 @@ function BuildConditionRenderer({ conditions, setConditions }: BuildConditionsRe
     </>
   );
 }
-
-export default BuildConditionRenderer;
+export default forwardRef(BuildConditionRenderer);

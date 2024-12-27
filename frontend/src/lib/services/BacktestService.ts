@@ -1,0 +1,97 @@
+
+import { isLogicalOperator } from "../utils/string-utils";
+
+[
+	[
+		{
+			"indicator": "RSI_14"
+		},
+		{
+			"operator": "<"
+		},
+		{
+			"value": "30"
+		}
+	],
+	[
+		{
+			"singleOperator": "&"
+		}
+	],
+	[
+		{
+			"indicator": "SMA_10"
+		},
+		{
+			"operator": ">"
+		},
+		{
+			"value": "2"
+		}
+	]
+]
+
+[
+	[
+		"RSI_14", "<", "value": "30"
+	],
+	"&",
+	[
+		"SMA_10", "operator": ">", "value": "2"
+	]
+]
+
+
+export class DivideBlocksService {
+	private conditions: Array<any>;
+	private mappedConditions: Array<[string, string] | Record<string, number> | number>;
+
+	constructor(conditions: Array<any>) {
+		this.conditions = conditions;
+		this.mappedConditions = [];
+	}
+
+
+
+	blockEnd(id: number): void {
+		this.mappedConditions.push({ "conditionId": id });
+	}
+
+	extract(kind: string, value: string, id: number): void {
+		this.mappedConditions.push([kind, value, id]);
+	}
+
+	processConditions() {
+		this.conditions.forEach((condition: { id: number; settings: Array<any> }) => {
+			const { id, settings } = condition;
+			if ("singleOperator" in settings && isLogicalOperator(settings.singleOperator)) {
+				this.extract("singleOperator", settings.singleOperator, id);
+				this.blockEnd(id)
+			} else {
+
+				settings.forEach((inner) => {
+					if (typeof inner === "object" && inner !== null) {
+						if ("value" in inner) {
+							this.extract("value", inner["value"], id);
+						}
+						else if ("indicator" in inner) {
+							this.extract("indicator", inner["indicator"], id);
+						}
+						else if ("operator" in inner) {
+							this.extract("operator", inner["operator"], id);
+						} else {
+							console.log("Inner object is unknown:", inner);
+						}
+					} else {
+						console.log("Inner value is of a wrong type:", inner);
+					}
+				});
+				this.blockEnd(id);
+			}
+		});
+	}
+
+	getConditions(): Array<[string, string] | Record<string, number>> {
+		return this.mappedConditions;
+	}
+}
