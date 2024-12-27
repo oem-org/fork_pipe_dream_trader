@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button } from '../ui/buttons/button'
 export default function BacktestSection() {
 	return (

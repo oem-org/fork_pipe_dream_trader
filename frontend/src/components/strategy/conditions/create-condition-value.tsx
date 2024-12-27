@@ -9,7 +9,7 @@ export default function CreateConditionValue({ setValue }: CreateConditionValueP
   const [valueLocal, setValueLocal] = useState<number>(1);
 
   // Handle input change and update state
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     setValue(event.target.value);
     setValueLocal(event.target.value)
   };

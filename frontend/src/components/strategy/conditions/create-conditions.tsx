@@ -1,10 +1,9 @@
-import { Side, LogicalOperator, ConditionGroup } from "@/interfaces/Condition"
+import { Side, LogicalOperator, CreateConditionRequest } from "@/interfaces/Condition"
 import CreateIndicatorIndicatorModal from "./indicator-indicator-modal"
 import CreateIndicatorValueModal from "./indicator-value-modal"
 import { Button } from "@/components/ui/buttons/button"
-import { Operator } from "@/interfaces/Operator"
 interface CreateConditionsProps {
-  addCondition: (cond: LogicalOperator | ConditionGroup) => void
+  addCondition: (cond: LogicalOperator | CreateConditionRequest) => void
   side: Side
 }
 
@@ -12,7 +11,7 @@ export default function CreateConditions({ side, addCondition }: CreateCondition
 
 
   function createOperator(side: Side, operator: LogicalOperator) {
-    const cond = {
+    const cond: CreateConditionRequest = {
       "side": side,
       "fk_strategy_indicator_id_1": null,
       "fk_strategy_indicator_id_2": null,
