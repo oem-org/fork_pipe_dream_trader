@@ -57,11 +57,14 @@
   @apply text-4xl
 }
 
-/*select*/
+/*generic selection and lists*/
 .custom-select{
   @apply w-full flex justify-between items-center bg-gray-200 hover:bg-gray-300 transition-colors duration-200
 }
 
+.custom-select-row{
+  @apply flex flex-row justify-between w-full p-4 text-base font-normal text-black hover:bg-slate-300 transition-colors duration-200 text-left
+}
 
 /*spacing*/
 .custom-grid-full-spacing{

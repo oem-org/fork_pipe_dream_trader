@@ -62,20 +62,20 @@ export default function GenericComponentList<T>({
 								key={keyExtractor(item)}
 								className="border-t border-gray-200 bg-gray-100"
 							>
-								<div className="flex flex-row w-full p-4 text-left text-md font-normal text-black hover:bg-gray-100 transition-colors duration-200">
+								<div className="custom-select-row">
 									{/* Selection Button - Triggers onSelect */}
 									<button
-										className=""
+										className="w-full text-left "
 										onClick={(e) => handleSelection(item, e)}
 										role="option"
 									>
-										{/* You can use any icon or text for the button */}
 										{nameExtractor(item)}
 									</button>
+									<div>
+										{renderItem(item)}
+									</div>
 
-									{renderItem(item)}
 								</div>
-
 								{/* Render the item content (can contain other buttons or interactive elements) */}
 							</li>
 						))

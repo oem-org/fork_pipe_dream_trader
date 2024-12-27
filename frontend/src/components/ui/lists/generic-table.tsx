@@ -66,7 +66,7 @@ export default function GenericList<T>({
 									}`}
 							>
 								<button
-									className="w-full p-4 text-left text-md font-normal text-black hover:bg-gray-100 transition-colors duration-200"
+									className="custom-select-row"
 									onClick={(e) => handleSelection(item, e)}
 									role="option"
 								>

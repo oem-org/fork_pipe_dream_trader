@@ -35,7 +35,6 @@ export default function StrategyTableRow({ strategy, setLocalStrategyId }: Strat
   return (
     <>
       <div className="flex flex-row items-center justify-between">
-        <span>{strategy.name}</span>
         <div className="flex gap-2">
           <Button onClick={handleOpen}>Open</Button>
           <Button variant="outline" onClick={toggleDeleteModal}>Delete</Button>
