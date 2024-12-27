@@ -22,7 +22,7 @@ const OperatorConditionSelect = forwardRef(
       if (onValueChange) {
         onValueChange(operator.name);
       }
-      console.log(conditionId)
+      console.log(conditionId, id)
     }
 
     useImperativeHandle(ref, () => ({
@@ -31,7 +31,6 @@ const OperatorConditionSelect = forwardRef(
 
     return (
       <div>
-        {id}
         <GenericSelect<Operator>
           data={operators || []}
           keyExtractor={(operator) => operator.id}

@@ -41,7 +41,7 @@ const IndicatorConditionSelect = forwardRef(
       }
 
       let result = await update({ conditionId, strategyId, updateData })
-      console.log(conditionId, result, "IndicatorCondtionSelect")
+      console.log(id, conditionId, result, "IndicatorCondtionSelect")
     }
 
     // Pass the initial value on first render while nothing has been selected yet
@@ -54,7 +54,6 @@ const IndicatorConditionSelect = forwardRef(
 
     return (
       <div>
-        {id}
         <GenericSelect<StrategyIndicator>
           data={indicatorSettings || []}
           keyExtractor={(indicator) => indicator.id}

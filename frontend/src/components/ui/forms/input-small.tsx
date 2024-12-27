@@ -18,7 +18,7 @@ const InputSmall = forwardRef(({ id, initialValue, name, onValueChange, conditio
 		if (onValueChange) {
 			onValueChange(newValue);
 		}
-		console.log(conditionId)
+		console.log(conditionId, id)
 	}
 
 	useImperativeHandle(ref, () => ({
@@ -28,13 +28,12 @@ const InputSmall = forwardRef(({ id, initialValue, name, onValueChange, conditio
 	return (
 		<div>
 			<label htmlFor={name}>{name}</label>
-			{id}
 			<input
+				className="indicator-input"
 				id={name}
 				type="text"
 				value={value}
 				onChange={handleChange}
-				style={{ margin: "5px", padding: "5px", border: "1px solid #ccc" }}
 			/>
 		</div>
 	);

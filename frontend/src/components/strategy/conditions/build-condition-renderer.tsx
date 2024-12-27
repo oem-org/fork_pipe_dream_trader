@@ -13,6 +13,8 @@ import { DivideBlocksService } from "@/lib/services/ComponentMappingService";
 import { useDeleteStrategyCondition } from "@/lib/hooks/react-query/useDeleteStrategyCondition";
 import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
 import InputSmall from "@/components/ui/forms/input-small";
+import { SquareX } from "lucide-react";
+import { DeleteConditionBtn } from "./delete-condition-btn";
 
 interface CreateConditionStringRef {
   createConditionString: () => Array<Record<string, any> | string>
@@ -64,11 +66,9 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
 
     mappedConditions.forEach((condition: any, index: number) => {
       if ("conditionId" in condition) {
-        console.log(condition.id, condition)
+        console.log(condition.id, condition, "WTFFF")
         const deleteButton = (
-          <button key={`delete-${condition.conditionId}`} onClick={() => handleDeleteCondition(condition.conditionId)}>
-            DEEEL
-          </button>
+          <DeleteConditionBtn key={`delete-${condition.conditionId}`} conditionId={condition.conditionId} strategyId={strategyId} />
         );
         currentBlock.push(deleteButton)
         initialBlocks.push(currentBlock);
@@ -182,24 +182,6 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
   };
 
 
-  // Transform back to the format of conditions state
-  function transformArray(inputArray: any) {
-    let result = [];
-
-    for (let i = 0; i < inputArray.length; i++) {
-      let currentElement = inputArray[i];
-
-      if (currentElement[0] && currentElement[0].hasOwnProperty('singleOperator')) {
-        result.push(currentElement[0].singleOperator);
-
-      } else {
-        result.push(currentElement);
-      }
-    }
-
-    return result;
-  }
-
   // TODO: maybe delete
   //function deleteCondition(indexToRemove: number) {
   //  setMappedConditions((prevConditions: any) => {
@@ -244,12 +226,6 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
             </>))}
         </div>
       </DndProvider>
-      <div className="mt-10 z-100">
-        <div className="mt-10 z-100">
-          <Button onClick={() => console.log(blocks)}>BLOCKS</Button>
-        </div>
-        <Button onClick={() => createConditionString()}>Get Sorted Values</Button>
-      </div>
     </>
   );
 }

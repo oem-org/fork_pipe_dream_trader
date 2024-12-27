@@ -31,7 +31,7 @@ const SingleOperator = forwardRef(
       }
 
       let result = await update({ conditionId, strategyId, updateData })
-      console.log(conditionId, result, "SingleOperator update")
+      console.log(id, conditionId, result, "SingleOperator update")
     }
 
 
@@ -40,7 +40,6 @@ const SingleOperator = forwardRef(
     }));
     return (
       <div>
-        {id}
         <GenericSelect<Operator>
           data={operators || []}
           keyExtractor={(operator) => operator.id}
