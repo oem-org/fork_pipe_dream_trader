@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from "react";
 import Search from "./search";
 
-interface GenericTableProps<T> {
+interface GenericComponentTableProps<T> {
 	data: T[];
 	keyExtractor: (item: T) => string | number;
 	onSelect: (item: T) => void;
@@ -10,21 +11,20 @@ interface GenericTableProps<T> {
 	nameExtractor: (item: T) => string
 }
 
-// Creates a table style list of buttons, which means render items must contain buttons
-export default function GenericTable<T>({
+// Works button passing of buttons or components to the renderItem
+export default function GenericComponentTable<T>({
 	data,
 	keyExtractor,
 	onSelect,
 	renderItem,
 	searchEnabled,
 	nameExtractor
-
-}: GenericTableProps<T>) {
+}: GenericComponentTableProps<T>) {
 	const [filteredData, setFilteredData] = useState<T[]>(data);
 
 	const handleSelection = (item: T, e: React.MouseEvent<HTMLButtonElement>) => {
 		onSelect(item);
-		e.preventDefault();
+		e.preventDefault(); // Prevent default behavior, if needed (e.g., form submission)
 	};
 
 	const handleSearch = (query: string, e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,24 +54,29 @@ export default function GenericTable<T>({
 				)}
 			</div>
 
-			<div
-				className="h-full overflow-y-auto"
-			>
+			<div className="h-full overflow-y-auto">
 				<ul className="list-none p-0">
 					{filteredData.length > 0 ? (
 						filteredData.map((item) => (
 							<li
 								key={keyExtractor(item)}
-								className={`border-t border-gray-200 bg-gray-100"
-									}`}
+								className="border-t border-gray-200 bg-gray-100"
 							>
-								<button
-									className="w-full p-4 text-left text-md font-normal text-black hover:bg-gray-100 transition-colors duration-200"
-									onClick={(e) => handleSelection(item, e)}
-									role="option"
-								>
+								<div className="flex flex-row w-full p-4 text-left text-md font-normal text-black hover:bg-gray-100 transition-colors duration-200">
+									{/* Selection Button - Triggers onSelect */}
+									<button
+										className=""
+										onClick={(e) => handleSelection(item, e)}
+										role="option"
+									>
+										{/* You can use any icon or text for the button */}
+										{nameExtractor(item)}
+									</button>
+
 									{renderItem(item)}
-								</button>
+								</div>
+
+								{/* Render the item content (can contain other buttons or interactive elements) */}
 							</li>
 						))
 					) : (
@@ -82,5 +87,3 @@ export default function GenericTable<T>({
 		</div>
 	);
 }
-
-

@@ -14,7 +14,7 @@ import BacktestSection from "@/components/strategy/backtest-section";
 import { useUpdateStrategy } from "@/lib/hooks/react-query/useUpdateStrategy";
 import ConditionsSection from "@/components/strategy/conditions/conditions-section";
 import useInitialValue from "@/lib/hooks/useInitialValue";
-
+import { getFileApi } from "@/lib/apiClientInstances";
 export default function StrategyPage() {
   // TODO: use name instead of id
   const { id } = useParams();
@@ -28,6 +28,7 @@ export default function StrategyPage() {
   const { data: files } = getFilesQuery();
 
   const { mutateAsync: updateStrategyMutation } = useUpdateStrategy();
+  const [initialValue, setInitialValue] = useState<File>()
 
 
   useEffect(() => {
@@ -49,17 +50,18 @@ export default function StrategyPage() {
     }
   };
 
-  const findInitialValue = useInitialValue(
-    files || [],
-    strategy?.fk_file_id,
-    (file) => file.id
-  );
-  const [selectedIndicator, setSelectedIndicator] = useState<StrategyIndicator | null>(
-    findInitialValue
-  );
-  //const handleStrategyChange = (strategy: Strategy) => {
-  //  navigate(`/strategy/${strategy.id}`);
-  //};
+
+  // Set the initial file in the select file dropdown
+  useEffect(() => {
+    if (strategy && strategy.fk_file_id && files) {
+      const selectedFile = files?.find((file) => file.id === strategy.fk_file_id);
+      if (selectedFile) {
+        setInitialValue(selectedFile); // Set the initial value to the selected file
+      }
+    }
+  }, [strategy, files])
+
+
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -68,7 +70,7 @@ export default function StrategyPage() {
   if (isError && error instanceof Error) {
     return <div>Error: {error.message}</div>;
   }
-
+  //TODO: hide file ui if datasource 
   //TODO: fix hover on settings
   return (
     <div className="container mx-auto px-4 space-y-6">
@@ -91,9 +93,7 @@ export default function StrategyPage() {
                 </pre>
               </Modal>
 
-
-
-              <h4 className=".h4">Change file</h4>
+              <h4 className="h4">File</h4>
               <GenericSelect<File>
                 data={files || []}
                 keyExtractor={(file) => file.id}
@@ -102,6 +102,7 @@ export default function StrategyPage() {
                 renderItem={(file) => <span>{file.name}</span>}
                 title="Select or search"
                 searchEnabled={true}
+                initialValue={initialValue}
               />
 
             </article>

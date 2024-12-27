@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/buttons/button";
 import StrategyTableRow from "@/components/strategy/conditions/strategy-table-row";
 import { useQueryClient } from "@tanstack/react-query";
+import GenericComponentTable from "@/components/ui/lists/generic-component-table";
 
 export default function HomePage() {
   const { data: strategies, isError, isLoading, error } = getStrategiesQuery();
@@ -38,13 +39,13 @@ export default function HomePage() {
               Create new strategy
             </Link>
           </div>
-          <GenericTable<Strategy>
+          <GenericComponentTable<Strategy>
             data={strategies || []}
             keyExtractor={(strategy) => strategy.id}
             nameExtractor={(strategy) => strategy.name}
             onSelect={handleStrategyChange}
             renderItem={(strategy) => {
-              return <StrategyTableRow strategy={strategy} setLocalStrategyId={setLocalStrategyId} />;
+              return <div><StrategyTableRow strategy={strategy} setLocalStrategyId={setLocalStrategyId} /></div>;
             }}
             searchEnabled={true}
           />
