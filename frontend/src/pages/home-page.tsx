@@ -2,14 +2,20 @@ import getStrategiesQuery from "@/lib/hooks/react-query/getStrategiesQuery";
 import GenericTable from "@/components/ui/lists/generic-table";
 import { Strategy } from "@/interfaces/Strategy";
 import { Link, useNavigate } from "react-router-dom";
+import StrategyInfo from "@/components/strategy/strategy-info";
+import { useState } from "react";
+import { Button } from "@/components/ui/buttons/button";
+import StrategyTableRow from "@/components/strategy/conditions/strategy-table-row";
+
 
 export default function HomePage() {
   const { data: strategies, isError, isLoading, error } = getStrategiesQuery();
-  const navigate = useNavigate();
+
+  const [localStrategyId, setLocalStrategyId] = useState<number>(0)
 
 
   const handleStrategyChange = (strategy: Strategy) => {
-    navigate(`/strategy/${strategy.id}`);
+    setLocalStrategyId(strategy.id)
   };
 
   if (isLoading) {
@@ -38,13 +44,16 @@ export default function HomePage() {
             keyExtractor={(strategy) => strategy.id}
             nameExtractor={(strategy) => strategy.name}
             onSelect={handleStrategyChange}
-            renderItem={(strategy) => <span>{strategy.name}</span>}
+            renderItem={(strategy) => {
+              return <StrategyTableRow strategy={strategy} localStrategyId={localStrategyId} />;
+            }}
             searchEnabled={true}
           />
         </section>
 
         <section className="p-4 bg-gray-100 rounded-lg">
-          <h4 className="text-xl font-bold mb-4">Backtests</h4>
+          <h4 className="text-xl font-bold mb-4">Info</h4>
+          <StrategyInfo strategyId={localStrategyId} />
         </section>
       </div >
 

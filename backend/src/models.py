@@ -2,7 +2,7 @@ from sqlalchemy import DateTime, func, JSON, Boolean, Column, ForeignKey, Intege
 from sqlalchemy.orm import relationship
 from .orm_connection import Base
 from .schemas import FileTypeEnum
-from enum import Enum as PyEnum
+
 
 class Users(Base):
     __tablename__ = "users"
@@ -17,23 +17,19 @@ class Users(Base):
     strategies = relationship("Strategies", back_populates="user")
 
 
-
-
-
 class StrategyConditions(Base):
     __tablename__ = "strategy_conditions"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    side = Column(String, nullable=False)  
-    fk_strategy_id = Column(Integer, ForeignKey("strategies.id"))
-    fk_strategy_indicator_id_1 = Column(Integer, ForeignKey("strategy_indicators.id"), nullable=True)
-    fk_strategy_indicator_id_2 = Column(Integer, ForeignKey("strategy_indicators.id"), nullable=True)
+    side = Column(String, nullable=False)
+    fk_strategy_id = Column(Integer, ForeignKey("strategies.id", ondelete="CASCADE"))
+    fk_strategy_indicator_id_1 = Column(Integer, ForeignKey("strategy_indicators.id", ondelete="CASCADE"), nullable=True)
+    fk_strategy_indicator_id_2 = Column(Integer, ForeignKey("strategy_indicators.id", ondelete="CASCADE"), nullable=True)
     settings = Column(JSON, nullable=True)
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
     strategy = relationship("Strategies", back_populates="strategy_conditions")
-
     strategy_indicator_1 = relationship(
         "StrategyIndicators",
         foreign_keys=[fk_strategy_indicator_id_1],
@@ -57,7 +53,7 @@ class Strategies(Base):
     fk_file_id = Column(Integer, ForeignKey("files.id"))
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
-    
+
     user = relationship("Users", back_populates="strategies")
     file = relationship("Files", back_populates="strategies")
 
@@ -70,14 +66,13 @@ class StrategyIndicators(Base):
     __tablename__ = "strategy_indicators"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    fk_strategy_id = Column(Integer, ForeignKey("strategies.id"))
-    fk_indicator_id = Column(Integer, ForeignKey("indicators.id"))
+    fk_strategy_id = Column(Integer, ForeignKey("strategies.id", ondelete="CASCADE"))
+    fk_indicator_id = Column(Integer, ForeignKey("indicators.id", ondelete="CASCADE"))
     settings = Column(JSON, nullable=True)
     dataframe_column = Column(String, nullable=True)
 
     strategy = relationship("Strategies", back_populates="strategy_indicators")
     indicator = relationship("Indicators", back_populates="strategy_indicators")
-    # Relationships to StrategyConditions
     strategy_conditions_1 = relationship(
         "StrategyConditions",
         back_populates="strategy_indicator_1",
@@ -92,8 +87,9 @@ class StrategyIndicators(Base):
 
 class StrategyBacktests(Base):
     __tablename__ = "strategy_backtests"
+
     id = Column(Integer, primary_key=True, index=True)
-    fk_strategy_id = Column(Integer, ForeignKey("strategies.id"), primary_key=True)
+    fk_strategy_id = Column(Integer, ForeignKey("strategies.id", ondelete="CASCADE"), primary_key=True)
     conditions = Column(JSON)
     strategy = relationship("Strategies", back_populates="backtests")
     created_at = Column(DateTime, server_default=func.now())
@@ -119,11 +115,10 @@ class TimescaleTables(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
 
-    # Define relationship to Pairs with cascade behavior
     pairs = relationship(
         "Pairs",
         back_populates="timescale_table",
-        cascade="all, delete-orphan",
+        cascade="all, delete-orphan"
     )
 
 
@@ -132,7 +127,7 @@ class Pairs(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
-    fk_timescale_table_id = Column(Integer, ForeignKey("timescale_tables.id"))
+    fk_timescale_table_id = Column(Integer, ForeignKey("timescale_tables.id", ondelete="CASCADE"))
 
     timescale_table = relationship("TimescaleTables", back_populates="pairs")
 

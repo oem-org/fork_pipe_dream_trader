@@ -107,23 +107,21 @@ async def read_strategy(
             db.query(Strategies)
             .filter(Strategies.id == strategy_id)
             .filter(Strategies.fk_user_id == user.get("id"))
-            # .options(
-            #     load_only(
-            #         Strategies.id,
-            #         Strategies.name,
-            #         Strategies.description,
-            #         Strategies.data_source,
-            #         Strategies.updated_at,
-            #         Strategies.created_at,
-            #     )
-            # )
+            .options(
+                joinedload(Strategies.file),  
+                joinedload(Strategies.strategy_conditions),  
+                joinedload(Strategies.strategy_indicators), 
+                joinedload(Strategies.backtests),  
+            )
             .first()
         )
+
         if not strategy_model:
             raise HTTPException(
                 status_code=404,
                 detail=f"No strategy found with id {strategy_id} for user {user.get('id')}",
             )
+
         return strategy_model
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
