@@ -1,4 +1,3 @@
-import { BuildConditionsService } from "@/lib/services/ConditionExtractionService";
 import SingleOperator from "./single-operator";
 
 import IndicatorConditionSelect from "./indicator-condition-select";
@@ -8,12 +7,9 @@ import DraggableBlock from "./draggable-block";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import React from "react";
-import { Button } from "@/components/ui/buttons/button";
 import { DivideBlocksService } from "@/lib/services/ComponentMappingService";
-import { useDeleteStrategyCondition } from "@/lib/hooks/react-query/useDeleteStrategyCondition";
 import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
 import InputSmall from "@/components/ui/forms/input-small";
-import { SquareX } from "lucide-react";
 import { DeleteConditionBtn } from "./delete-condition-btn";
 
 interface CreateConditionStringRef {
@@ -30,7 +26,6 @@ interface BuildConditionsRendererProps {
 
 function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, ref: CreateConditionStringRef) {
   const [blocks, setBlocks] = useState<JSX.Element[][]>([]);
-  const { mutateAsync: deleteCondition } = useDeleteStrategyCondition()
   const { strategyId } = useStrategyStore()
   const [mappedConditions, setMappedConditions] = useState<any>(mapConditions());
 

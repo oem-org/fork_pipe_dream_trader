@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-
-import { ChevronDown, SearchIcon } from 'lucide-react';
+import Search from "./search";
+import ToggleSelect from "./toggle-select";
 
 interface GenericSelectProps<T> {
 	data: T[];
@@ -91,7 +91,7 @@ export default function GenericSelect<T>({
 						{currentTitle}
 					</p>
 				)}
-				<ToggleData isOpen={isOpen} setIsOpen={setIsOpen} />
+				<ToggleSelect isOpen={isOpen} setIsOpen={setIsOpen} />
 			</div>
 
 			<div
@@ -102,7 +102,7 @@ export default function GenericSelect<T>({
 						filteredData.map((item) => (
 							<li key={keyExtractor(item)} className="border-t border-gray-200">
 								<button
-									className="w-full p-4 text-left text-md font-normal text-black hover:bg-gray-100 transition-colors duration-200"
+									className="w-full p-2 text-left text-md font-normal text-black hover:bg-gray-100 transition-colors duration-200"
 									onClick={(e) => handleSelection(item, e)}
 								>
 									{renderItem(item)}
@@ -118,52 +118,3 @@ export default function GenericSelect<T>({
 	);
 }
 
-function Search({
-	onSearch,
-}: {
-	onSearch: (query: string, e: React.ChangeEvent<HTMLInputElement>) => void;
-}) {
-	const [query, setQuery] = useState("");
-
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setQuery(event.target.value);
-		//TODO: research
-		// Pass event to prevent bubbling
-		onSearch(event.target.value, event);
-	};
-
-	return (
-		<div className="w-full flex items-center">
-			<SearchIcon className="mx-2" />
-			<input
-				type="text"
-				className="w-full p-2 bg-gray-100 border border-gray-300 rounded-md"
-				placeholder="Search..."
-				value={query}
-				onChange={handleChange}
-			/>
-		</div>
-	);
-}
-
-interface ToggleDataProps {
-	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	isOpen: boolean;
-}
-
-function ToggleData({ setIsOpen, isOpen }: ToggleDataProps) {
-	return (
-		<button
-			className="p-4 flex justify-between items-center rounded-md transition-colors duration-200"
-			onClick={(e) => {
-				e.preventDefault();
-				e.stopPropagation();
-				setIsOpen(!isOpen);
-			}}
-		>
-			<ChevronDown
-				className={`transform transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
-			/>
-		</button>
-	);
-}

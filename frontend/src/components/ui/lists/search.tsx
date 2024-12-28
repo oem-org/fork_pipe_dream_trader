@@ -13,6 +13,8 @@ export default function Search({
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setQuery(event.target.value);
+		//TODO: research
+		// Pass event to prevent bubbling
 		onSearch(event.target.value, event);
 	};
 
@@ -29,3 +31,7 @@ export default function Search({
 		</div>
 	);
 }
+
+
+
+

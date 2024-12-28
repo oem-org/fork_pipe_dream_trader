@@ -1,6 +1,8 @@
 import { IndicatorChart } from "@/interfaces/IndicatorChart";
 import ChartLine from "./chart-line";
 import React from "react";
+
+
 const LinePaneCharts = React.memo(({ data }: { data: IndicatorChart[] }) => {
 	return (
 		<>

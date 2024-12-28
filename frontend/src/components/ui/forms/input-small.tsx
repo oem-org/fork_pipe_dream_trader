@@ -26,8 +26,8 @@ const InputSmall = forwardRef(({ id, initialValue, name, onValueChange, conditio
 	}));
 
 	return (
-		<div>
-			<label htmlFor={name}>{name}</label>
+		<div className="flex flex-col">
+			<label className="block font-bold" htmlFor={name}>{name}</label>
 			<input
 				className="indicator-input"
 				id={name}
