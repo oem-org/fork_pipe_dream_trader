@@ -33,8 +33,8 @@ export interface StrategyCondition {
     id: number;
     side: string;
     settings?: Record<string, any>;
-    created_at: string;
-    updated_at: string;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export interface StrategyIndicator {

@@ -7,24 +7,22 @@ import getStrategyConditionsQuery from '@/lib/hooks/react-query/getStrategyCondi
 import { useAddStrategyCondition } from '@/lib/hooks/react-query/useAddStrategyCondition'
 import useStrategyStore from '@/lib/hooks/stores/useStrategyStore';
 
-import { postBacktestApi } from '@/lib/apiClientInstances';
+import { getStrategyConditionsApi, postBacktestApi, postStrategyConditionsApi } from '@/lib/apiClientInstances';
 import { CreateBacktestRequest } from '@/interfaces/Backtest';
+import { StrategyCondition } from '@/interfaces/Strategy';
 
 //TODO: Fix overflow of condition by creating vertical layout
 
 //TODO: when indicator is deleted manually remove the FK from all the indicators that have it 
 
 export default function ConditionsSection() {
-
-
   const { strategyId } = useStrategyStore()
-  const { data } = getStrategyConditionsQuery(strategyId)
-  const { mutateAsync: addConditionMutation } = useAddStrategyCondition(strategyId);
   const [sellConditions, setSellConditions] = useState<any[]>([]);
   const [buyConditions, setBuyConditions] = useState<any[]>([]);
-  useEffect(() => {
-    if (data) {
-      // Filter conditions by side "buy" and "sell"
+
+  const fetchStrategyConditions = async () => {
+    try {
+      const data = await getStrategyConditionsApi.getAll(strategyId);
       const filteredBuyConditions = data.filter((condition) => condition.side === "buy");
       const filteredSellConditions = data.filter((condition) => condition.side === "sell");
 
@@ -43,22 +41,42 @@ export default function ConditionsSection() {
 
       console.log("Filtered Buy Conditions:", buyConditionsFormatted);
       console.log("Filtered Sell Conditions:", sellConditionsFormatted);
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to fetch strategyConditions");
     }
-  }, [data]);
-  const addCondition = (newCondition: any) => {
-
-    console.log(newCondition)
-    let result = addConditionMutation(newCondition)
-
-    console.log(result, "THE RESULT");
-
   };
+
+  useEffect(() => {
+    fetchStrategyConditions();
+  }, [strategyId]);
+
+  const addCondition = async (newCondition: any) => {
+    try {
+      console.log("Adding!!!!!!!!!!!!!!!!! this strategy condition", newCondition);
+
+      const response = await postStrategyConditionsApi.post(strategyId, {
+        fk_strategy_indicator_id_1: newCondition.fk_strategy_indicator_id_1,
+        fk_strategy_indicator_id_2: newCondition.fk_strategy_indicator_id_2,
+        settings: newCondition.settings,
+        side: newCondition.side,
+      });
+
+      console.log("Condition added successfully", response);
+
+      // Optionally, refresh conditions to include the newly added one
+      fetchStrategyConditions();
+    } catch (error) {
+      console.error("Error adding condition:", error);
+    }
+  };
+
   const buyStringRef = useRef<{ createConditionString: () => Array<any> }>(null);
   const sellStringRef = useRef<{ createConditionString: () => Array<any> }>(null);
 
   function runBacktest(): void {
-    let buy = []
-    let sell = []
+    let buy = [];
+    let sell = [];
     if (buyStringRef.current) {
       buy = buyStringRef.current.createConditionString();
     }
@@ -73,15 +91,15 @@ export default function ConditionsSection() {
     const buyConds = new BacktestService(buy);
     const sellConditions = buyConds.processConditions();
 
-
     let data: CreateBacktestRequest = {
       buy_conditions: JSON.stringify(buyConditions),
       sell_conditions: JSON.stringify(sellConditions),
     };
     console.log("OUTPUT:", sellConditions);
     console.log("OUTPUT:", buyConditions);
-    postBacktestApi.post(strategyId, data)
+    postBacktestApi.post(strategyId, data);
   };
+
   return (
     <div>
       <div className="flex flex-row justify-between">
@@ -113,13 +131,7 @@ export default function ConditionsSection() {
 
           </div>
         </div>
-
       </div>
     </div>
   );
 }
-
-
-//<div className="flex flex-row">
-//  <BuildConditionRenderer deleteBlock={deleteBuyCondition} conditions={buyConditions} setConditions={setBuyConditions} />
-//</div>
