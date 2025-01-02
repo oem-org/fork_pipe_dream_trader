@@ -18,7 +18,9 @@ from .routers.auth import auth
 from .routers.files import files
 from .routers.indicators import indicators
 from .routers.timeseries import timeseries
-from .routers.strategies import strategies
+from .routers.strategies import strategy
+from .routers.strategies import condition as strategy_condition
+from .routers.strategies import indicator as strategy_indicator
 from .routers.users import users
 from .seeders.indicators_seeder import indicators_seeder
 # custom logging setup
@@ -75,7 +77,9 @@ app.add_event_handler("startup", startup_tasks)
 register_middleware(app)
 
 app.include_router(auth.router)
-app.include_router(strategies.router)
+app.include_router(strategy.router)
+app.include_router(strategy_condition.router)
+app.include_router(strategy_indicator.router)
 app.include_router(users.router)
 app.include_router(files.router)
 app.include_router(indicators.router)

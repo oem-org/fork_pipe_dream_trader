@@ -3,6 +3,13 @@ from typing import Any, Dict, Optional, Union, List
 
 from pydantic import BaseModel
 
+
+class IndicatorRequest(BaseModel):
+    settings: dict
+    # fk_strategy_id: int
+    fk_indicator_id: int
+
+
 class TimeFrameEnum(str, Enum):
         M1 = "1m"
         M5 = "5m"
@@ -60,7 +67,7 @@ class FileSchema(BaseModel):
 
 class FileResponse(BaseModel):
     file: FileSchema
-    data: str 
+    data: str
     columns: List[str]
 
 

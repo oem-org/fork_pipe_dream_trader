@@ -67,25 +67,6 @@ export default function ConditionsSection() {
       sell = sellStringRef.current.createConditionString();
     }
 
-    //const input = [
-    //  [
-    //    { "indicator": "RSI_14" },
-    //    { "operator": "<" },
-    //    { "value": "30" }
-    //  ],
-    //  [
-    //    { "singleOperator": "&" }
-    //  ],
-    //  [
-    //    { "indicator": "SMA_10" },
-    //    { "operator": ">" },
-    //    { "value": "2" }
-    //  ]
-    //];
-
-    // Helper function to simulate `isLogicalOperator`.
-
-    // Process the input:
     const sellConds = new BacktestService(sell);
     const buyConditions = sellConds.processConditions();
 
@@ -108,7 +89,7 @@ export default function ConditionsSection() {
         <Button onClick={() => runBacktest()}>Run Backtest</Button>
       </div>
       <hr className="py-1" />
-      <div>
+      <div className='flex flex-row'>
         <div>
           <h3 className='h3 pb-4'>Buy conditions</h3>
 

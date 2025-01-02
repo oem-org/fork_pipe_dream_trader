@@ -13,9 +13,9 @@ import SettingsDropdown from "@/components/strategy/settings-dropdown";
 import BacktestSection from "@/components/strategy/backtest-section";
 import { useUpdateStrategy } from "@/lib/hooks/react-query/useUpdateStrategy";
 import ConditionsSection from "@/components/strategy/conditions/conditions-section";
-import useInitialValue from "@/lib/hooks/useInitialValue";
 import { getFileApi } from "@/lib/apiClientInstances";
 import { queryClient } from "@/main";
+import { Button } from "@/components/ui/buttons/button";
 
 //TODO: Queries are persisting 
 
@@ -37,7 +37,7 @@ export default function StrategyPage() {
 
 
   useEffect(() => {
-    console.log(paramId, "stragegy id", strategyId);
+    console.log(paramId, "stragety id", strategyId);
     // Remove cache on a navigating to page
     queryClient.invalidateQueries()
 
@@ -110,6 +110,7 @@ export default function StrategyPage() {
                 searchEnabled={true}
                 initialValue={initialValue}
               />
+              <h4>Backtest Results</h4>
 
             </article>
             <div className="lg:col-span-3">
@@ -117,15 +118,11 @@ export default function StrategyPage() {
             </div>
           </section>
           <section className="grid grid-cols-1 lg:grid-cols-8 gap-4">
-            <div className="lg:col-span-3 p-4 bg-gray-100 rounded-lg">
+            <div className="lg:col-span-2 p-4 bg-gray-100 rounded-lg">
               <IndicatorSection fileId={fileId} strategyId={strategyId} />
             </div>
-            <div className="lg:col-span-3 p-4 bg-gray-100 rounded-lg">
+            <div className="lg:col-span-6 p-4 bg-gray-100 rounded-lg">
               <ConditionsSection />
-            </div>
-
-            <div className="lg:col-span-2 p-4 bg-gray-100 rounded-lg">
-              <BacktestSection />
             </div>
           </section>
         </>
