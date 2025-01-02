@@ -26,7 +26,7 @@ const IndicatorConditionSelect = forwardRef(
       (indicator) => indicator.dataframe_column
     );
 
-    const currentCondition = getStrategyConditionApi.get(conditionId)
+    //const currentCondition = getStrategyConditionApi.get(conditionId)
 
     const [selectedIndicator, setSelectedIndicator] = useState<StrategyIndicator | null>(
       findInitialValue
