@@ -40,9 +40,7 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
     }
     const conditionServiceTest = new DivideBlocksService(conditions);
     conditionServiceTest.processConditions()
-    let mapp = conditionServiceTest.getConditions()
-    //console.log(mapp, "FUCKING MAPPED")
-    return mapp
+    return conditionServiceTest.getConditions()
   }
 
   useEffect(() => {
@@ -79,6 +77,7 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
             component = (
               <SingleOperator
                 conditionId={id}
+                position={index}
                 ref={ref}
                 id={index}
                 key={index}
@@ -91,8 +90,8 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
             component = (
               <IndicatorConditionSelect
                 conditionId={id}
+                position={index}
                 ref={ref}
-                id={index}
                 key={index}
                 initialValue={value}
                 onValueChange={(newValue) => handleValueChange(index, newValue)}
@@ -103,7 +102,7 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
             component = (
               <OperatorConditionSelect
                 conditionId={id}
-                id={index}
+                position={index}
                 ref={ref}
                 key={index}
                 initialValue={value}
@@ -115,7 +114,7 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
             component = (
               <InputSmall
                 conditionId={id}
-                id={index}
+                position={index}
                 ref={ref}
                 key={index}
                 name="Value"
@@ -199,6 +198,10 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
     console.log(values, "THE VALUES TO TRANSFORM")
     //const transformedValues = transformArray(values);
     return values;
+  }
+
+  function saveStrategy() {
+
   }
 
   return (

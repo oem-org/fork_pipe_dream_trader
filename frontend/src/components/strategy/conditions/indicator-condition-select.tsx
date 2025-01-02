@@ -8,14 +8,14 @@ import { useUpdateStrategyCondition } from "@/lib/hooks/react-query/useUpdateStr
 import { ConditionElement } from "@/interfaces/Condition";
 
 interface IndicatorConditionSelectProps {
-  id: number;
+  position: number;
   initialValue: string;
   onValueChange: (value: string) => void;
   conditionId: number,
 }
 
 const IndicatorConditionSelect = forwardRef(
-  ({ id, initialValue, onValueChange, conditionId }: IndicatorConditionSelectProps, ref) => {
+  ({ position, initialValue, onValueChange, conditionId }: IndicatorConditionSelectProps, ref) => {
     const { strategyId } = useStrategyStore();
     const { data: indicatorSettings } = getStrategyIndicatorsQuery(strategyId);
     const { mutateAsync: update } = useUpdateStrategyCondition()
@@ -41,7 +41,7 @@ const IndicatorConditionSelect = forwardRef(
       }
 
       let result = await update({ conditionId, strategyId, updateData })
-      console.log(id, conditionId, result, "IndicatorCondtionSelect")
+      console.log(position, conditionId, result, "IndicatorCondtionSelect")
     }
 
     // Pass the initial value on first render while nothing has been selected yet
@@ -49,6 +49,7 @@ const IndicatorConditionSelect = forwardRef(
     useImperativeHandle(ref, () => ({
 
       getValue: () => ({ indicator: selectedIndicator?.dataframe_column || initialValue }),
+      getPosition: () => ({ position: position }),
 
     }));
 

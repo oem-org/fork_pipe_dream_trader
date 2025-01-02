@@ -1,5 +1,16 @@
-from sqlalchemy import DateTime, func, JSON, Boolean, Column, ForeignKey, Integer, String, Enum
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    Column,
+    DateTime,
+    Enum,
+    ForeignKey,
+    Integer,
+    String,
+    func,
+)
 from sqlalchemy.orm import relationship
+
 from .orm_connection import Base
 from .schemas import FileTypeEnum
 
@@ -23,22 +34,27 @@ class StrategyConditions(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     side = Column(String, nullable=False)
     fk_strategy_id = Column(Integer, ForeignKey("strategies.id", ondelete="CASCADE"))
-    fk_strategy_indicator_id_1 = Column(Integer, ForeignKey("strategy_indicators.id", ondelete="CASCADE"), nullable=True)
-    fk_strategy_indicator_id_2 = Column(Integer, ForeignKey("strategy_indicators.id", ondelete="CASCADE"), nullable=True)
+    fk_strategy_indicator_id_1 = Column(
+        Integer, ForeignKey("strategy_indicators.id", ondelete="CASCADE"), nullable=True
+    )
+    fk_strategy_indicator_id_2 = Column(
+        Integer, ForeignKey("strategy_indicators.id", ondelete="CASCADE"), nullable=True
+    )
     settings = Column(JSON, nullable=True)
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
-
+    position = Column(Integer)
     strategy = relationship("Strategies", back_populates="strategy_conditions")
+
     strategy_indicator_1 = relationship(
         "StrategyIndicators",
         foreign_keys=[fk_strategy_indicator_id_1],
-        back_populates="strategy_conditions_1"
+        back_populates="strategy_conditions_1",
     )
     strategy_indicator_2 = relationship(
         "StrategyIndicators",
         foreign_keys=[fk_strategy_indicator_id_2],
-        back_populates="strategy_conditions_2"
+        back_populates="strategy_conditions_2",
     )
 
 
@@ -57,9 +73,15 @@ class Strategies(Base):
     user = relationship("Users", back_populates="strategies")
     file = relationship("Files", back_populates="strategies")
 
-    backtests = relationship("StrategyBacktests", back_populates="strategy", cascade="all, delete-orphan")
-    strategy_indicators = relationship("StrategyIndicators", back_populates="strategy", cascade="all, delete-orphan")
-    strategy_conditions = relationship("StrategyConditions", back_populates="strategy", cascade="all, delete-orphan")
+    backtests = relationship(
+        "StrategyBacktests", back_populates="strategy", cascade="all, delete-orphan"
+    )
+    strategy_indicators = relationship(
+        "StrategyIndicators", back_populates="strategy", cascade="all, delete-orphan"
+    )
+    strategy_conditions = relationship(
+        "StrategyConditions", back_populates="strategy", cascade="all, delete-orphan"
+    )
 
 
 class StrategyIndicators(Base):
@@ -76,12 +98,12 @@ class StrategyIndicators(Base):
     strategy_conditions_1 = relationship(
         "StrategyConditions",
         back_populates="strategy_indicator_1",
-        foreign_keys="StrategyConditions.fk_strategy_indicator_id_1"
+        foreign_keys="StrategyConditions.fk_strategy_indicator_id_1",
     )
     strategy_conditions_2 = relationship(
         "StrategyConditions",
         back_populates="strategy_indicator_2",
-        foreign_keys="StrategyConditions.fk_strategy_indicator_id_2"
+        foreign_keys="StrategyConditions.fk_strategy_indicator_id_2",
     )
 
 
@@ -89,7 +111,9 @@ class StrategyBacktests(Base):
     __tablename__ = "strategy_backtests"
 
     id = Column(Integer, primary_key=True, index=True)
-    fk_strategy_id = Column(Integer, ForeignKey("strategies.id", ondelete="CASCADE"), primary_key=True)
+    fk_strategy_id = Column(
+        Integer, ForeignKey("strategies.id", ondelete="CASCADE"), primary_key=True
+    )
     conditions = Column(JSON)
     strategy = relationship("Strategies", back_populates="backtests")
     created_at = Column(DateTime, server_default=func.now())
@@ -116,9 +140,7 @@ class TimescaleTables(Base):
     name = Column(String)
 
     pairs = relationship(
-        "Pairs",
-        back_populates="timescale_table",
-        cascade="all, delete-orphan"
+        "Pairs", back_populates="timescale_table", cascade="all, delete-orphan"
     )
 
 
@@ -127,7 +149,9 @@ class Pairs(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
-    fk_timescale_table_id = Column(Integer, ForeignKey("timescale_tables.id", ondelete="CASCADE"))
+    fk_timescale_table_id = Column(
+        Integer, ForeignKey("timescale_tables.id", ondelete="CASCADE")
+    )
 
     timescale_table = relationship("TimescaleTables", back_populates="pairs")
 
@@ -142,7 +166,5 @@ class Files(Base):
     file_type = Column(Enum(FileTypeEnum))
 
     strategies = relationship(
-        "Strategies",
-        back_populates="file",
-        cascade="all, delete-orphan"
+        "Strategies", back_populates="file", cascade="all, delete-orphan"
     )

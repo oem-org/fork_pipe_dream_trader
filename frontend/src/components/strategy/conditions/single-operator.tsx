@@ -6,14 +6,14 @@ import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
 import { useUpdateStrategyCondition } from "@/lib/hooks/react-query/useUpdateStrategyConditions";
 
 interface SingleOperatorProps {
-  id: number;
+  position: number;
   initialValue: string;
   onValueChange: (value: string) => void;
   conditionId: number
 }
 
 const SingleOperator = forwardRef(
-  ({ id, initialValue, onValueChange, conditionId }: SingleOperatorProps, ref) => {
+  ({ position, initialValue, onValueChange, conditionId }: SingleOperatorProps, ref) => {
     const [selectedOperator, setSelectedOperator] = useState<Operator>(
       operators.find((operator) => operator.name === initialValue) as Operator
     );
@@ -31,12 +31,13 @@ const SingleOperator = forwardRef(
       }
 
       let result = await update({ conditionId, strategyId, updateData })
-      console.log(id, conditionId, result, "SingleOperator update")
+      console.log(position, conditionId, result, "SingleOperator update")
     }
 
 
     useImperativeHandle(ref, () => ({
       getValue: () => ({ singleOperator: selectedOperator.name }),
+      getPosition: () => ({ position: position }),
     }));
     return (
       <div>

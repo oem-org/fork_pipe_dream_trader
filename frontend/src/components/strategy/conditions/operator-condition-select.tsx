@@ -4,14 +4,14 @@ import GenericSelect from "@/components/ui/lists/generic-select";
 import { operators } from "./operators";
 
 interface OperatorConditionSelectProps {
-  id: number;
+  position: number;
   conditionId: number
   initialValue: string;
   onValueChange: (value: string) => void;
 }
 
 const OperatorConditionSelect = forwardRef(
-  ({ id, initialValue, onValueChange, conditionId }: OperatorConditionSelectProps, ref) => {
+  ({ position, initialValue, onValueChange, conditionId }: OperatorConditionSelectProps, ref) => {
     const [selectedOperator, setSelectedOperator] = useState(
       operators.find((operator) => operator.name === initialValue) || null
     );
@@ -22,11 +22,12 @@ const OperatorConditionSelect = forwardRef(
       if (onValueChange) {
         onValueChange(operator.name);
       }
-      console.log(conditionId, id)
+      console.log(conditionId, position)
     }
 
     useImperativeHandle(ref, () => ({
       getValue: () => ({ operator: selectedOperator?.name }),
+      getPosition: () => ({ postion: position }),
     }));
 
     return (
