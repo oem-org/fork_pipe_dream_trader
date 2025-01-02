@@ -6,6 +6,7 @@ import useInitialValue from "@/lib/hooks/useInitialValue";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useUpdateStrategyCondition } from "@/lib/hooks/react-query/useUpdateStrategyConditions";
 import { useEffect } from "react";
+import { getStrategyConditionApi, putStrategyConditionsApi } from "@/lib/apiClientInstances";
 
 interface IndicatorConditionSelectProps {
   position: number;
@@ -19,12 +20,14 @@ const IndicatorConditionSelect = forwardRef(
   ({ blockIndex, position, initialValue, onValueChange, conditionId }: IndicatorConditionSelectProps, ref) => {
     const { strategyId } = useStrategyStore();
     const { data: indicatorSettings } = getStrategyIndicatorsQuery(strategyId);
-    const { mutateAsync: update } = useUpdateStrategyCondition()
     const findInitialValue = useInitialValue(
       indicatorSettings || [],
       initialValue,
       (indicator) => indicator.dataframe_column
     );
+
+    const currentCondition = getStrategyConditionApi.get(conditionId)
+
     const [selectedIndicator, setSelectedIndicator] = useState<StrategyIndicator | null>(
       findInitialValue
     );
@@ -34,15 +37,14 @@ const IndicatorConditionSelect = forwardRef(
       if (onValueChange) {
         onValueChange(item.dataframe_column);
       }
-      console.log(conditionId)
-      const updateData = {
+      console.log(conditionId, item.settings)
+      const data = {
         "type": "indicator",
-        "fk_strategy_id": item.id,
-        "indicator": item.dataframe_column
+        "position": item.id,
+        "settings": item.dataframe_column
       }
-
-      let result = await update({ conditionId, strategyId, updateData })
-      console.log(position, conditionId, result, "IndicatorCondtionSelect")
+      //putStrategyConditionsApi(strategyId, conditionId)
+      console.log(position, conditionId, data, "IndicatorCondtionSelect")
     }
 
 

@@ -143,6 +143,23 @@ export class GetService<R> extends ApiService {
 	}
 }
 
+export class GetRelationService<R> extends ApiService {
+	async get(id: number): Promise<R> {
+		try {
+			const response = await this.axiosInstance.get<R>(
+				`${this.endpoint}/${id}/${this.model}`
+				, {
+					headers: await this.getHeaders(),
+				});
+
+			return response.data;
+		} catch (error) {
+			console.error("Error in get ");
+
+			throw error;
+		}
+	}
+}
 
 
 //export class PostWithIdServicevT, R> extends ApiService {

@@ -7,22 +7,22 @@ import getStrategyConditionsQuery from '@/lib/hooks/react-query/getStrategyCondi
 import { useAddStrategyCondition } from '@/lib/hooks/react-query/useAddStrategyCondition'
 import useStrategyStore from '@/lib/hooks/stores/useStrategyStore';
 
-import { getStrategyConditionsApi, postBacktestApi, postStrategyConditionsApi } from '@/lib/apiClientInstances';
+import { getAllStrategyConditionsApi, postBacktestApi, postStrategyConditionsApi } from '@/lib/apiClientInstances';
 import { CreateBacktestRequest } from '@/interfaces/Backtest';
 import { StrategyCondition } from '@/interfaces/Strategy';
 
 //TODO: Fix overflow of condition by creating vertical layout
 
-//TODO: when indicator is deleted manually remove the FK from all the indicators that have it 
+//TODO: when indicator is deleted manually remove the FK from all the indicators that have it
 
 export default function ConditionsSection() {
   const { strategyId } = useStrategyStore()
   const [sellConditions, setSellConditions] = useState<any[]>([]);
   const [buyConditions, setBuyConditions] = useState<any[]>([]);
 
-  const fetchStrategyConditions = async () => {
+  async function fetchStrategyConditions() {
     try {
-      const data = await getStrategyConditionsApi.getAll(strategyId);
+      const data = await getAllStrategyConditionsApi.getAll(strategyId);
       const filteredBuyConditions = data.filter((condition) => condition.side === "buy");
       const filteredSellConditions = data.filter((condition) => condition.side === "sell");
 
@@ -48,7 +48,7 @@ export default function ConditionsSection() {
 
   useEffect(() => {
     fetchStrategyConditions();
-  }, [strategyId]);
+  }, [strategyId, buyConditions, sellConditions]);
 
   const addCondition = async (newCondition: any) => {
     try {
@@ -110,7 +110,7 @@ export default function ConditionsSection() {
           <h3 className='h3 pb-4'>Buy conditions</h3>
 
           <div className="flex flex-row">
-            <BuildConditionRenderer side="buy" ref={buyStringRef} conditions={buyConditions} />
+            <BuildConditionRenderer fetchStrategyConditions={fetchStrategyConditions} side="buy" ref={buyStringRef} conditions={buyConditions} />
           </div>
           <div className='flex flex-col'>
             <CreateConditions side="buy" addCondition={addCondition} />
@@ -120,7 +120,7 @@ export default function ConditionsSection() {
 
           <h3 className='h3 pb-4'>Sell conditions</h3>
           <div className="flex flex-row">
-            <BuildConditionRenderer side="sell" ref={sellStringRef} conditions={sellConditions} />
+            <BuildConditionRenderer fetchStrategyConditions={fetchStrategyConditions} side="sell" ref={sellStringRef} conditions={sellConditions} />
           </div>
 
           <div className='flex flex-col'>

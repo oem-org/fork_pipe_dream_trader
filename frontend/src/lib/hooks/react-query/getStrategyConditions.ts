@@ -1,7 +1,7 @@
 
 import { useQuery } from "@tanstack/react-query"
 
-import { getStrategyConditionsApi } from "@/lib/apiClientInstances"
+import { getAllStrategyConditionsApi } from "@/lib/apiClientInstances"
 import { StrategyCondition } from "@/interfaces/StrategyCondition"
 
 
@@ -9,7 +9,7 @@ import { StrategyCondition } from "@/interfaces/StrategyCondition"
 const getStrategyConditionsQuery = (strategyId: number) => {
 	const fetchStrategyConditions = async (): Promise<StrategyCondition[]> => {
 		try {
-			const strategyConditions: StrategyCondition[] = await getStrategyConditionsApi.getAll(strategyId)
+			const strategyConditions: StrategyCondition[] = await getAllStrategyConditionsApi.getAll(strategyId)
 			console.log("getStrategtyConditions", strategyConditions)
 			return strategyConditions
 

@@ -20,12 +20,13 @@ interface BuildConditionsRendererProps {
   conditions: Array<any>,
   side: "buy" | "sell"
   ref: React.RefObject<CreateConditionStringRef>;
+  fetchStrategyConditions: () => void
 }
 
 // TODO: Set types for conditions
 //
 
-function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, ref: CreateConditionStringRef) {
+function BuildConditionRenderer({ conditions, fetchStrategyConditions }: BuildConditionsRendererProps, ref: CreateConditionStringRef) {
   const [blocks, setBlocks] = useState<JSX.Element[][]>([]);
   const { strategyId } = useStrategyStore()
   const [mappedConditions, setMappedConditions] = useState<any>(mapConditions());
@@ -62,7 +63,7 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
       if ("conditionId" in condition) {
         console.log(condition.id, condition, "WTFFF")
         const deleteButton = (
-          <DeleteConditionBtn key={`delete-${condition.conditionId}`} conditionId={condition.conditionId} strategyId={strategyId} />
+          <DeleteConditionBtn fetchStrategyConditions={fetchStrategyConditions} key={`delete-${condition.conditionId}`} conditionId={condition.conditionId} strategyId={strategyId} />
         );
         currentBlock.push(deleteButton)
         initialBlocks.push(currentBlock);
