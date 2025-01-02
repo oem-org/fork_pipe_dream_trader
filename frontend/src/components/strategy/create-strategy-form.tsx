@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { DataSourceEnum } from "@/interfaces/enums/DataSourceEnum";
 import { DatabaseSource, FileSource } from "@/interfaces/Strategy";
 import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
+import { useQueryClient } from "@tanstack/react-query";
 
 
 export default function CreateStrategyForm() {
@@ -21,7 +22,7 @@ export default function CreateStrategyForm() {
 	const { data: dataFiles } = getFilesQuery();
 	const { setStrategyId } = useStrategyStore()
 	console.log(clonedStrategy);
-
+	const queryClient = useQueryClient();
 	const [databaseOption, setDatabaseOption] = useState("");
 	const [errors, setErrors] = useState({
 		name: "",
@@ -90,6 +91,7 @@ export default function CreateStrategyForm() {
 					data_source: dataSource,
 				});
 				refetch()
+				queryClient.invalidateQueries();
 				setStrategyId(strategy.id)
 				navigate(`/strategy/${strategy.id}`);
 			}

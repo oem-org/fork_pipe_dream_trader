@@ -10,6 +10,10 @@ import useStrategyStore from '@/lib/hooks/stores/useStrategyStore';
 import { postBacktestApi } from '@/lib/apiClientInstances';
 import { CreateBacktestRequest } from '@/interfaces/Backtest';
 
+//TODO: Fix overflow of condition by creating vertical layout
+
+//TODO: when indicator is deleted manually remove the FK from all the indicators that have it 
+
 export default function ConditionsSection() {
 
 

@@ -22,6 +22,10 @@
 }
 
 /* input */
+.label-simple{
+  @apply block font-bold
+}
+
 .label {
 @apply mb-3 mt-5 block text-base font-medium text-gray-900
 }

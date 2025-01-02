@@ -15,6 +15,11 @@ import { useUpdateStrategy } from "@/lib/hooks/react-query/useUpdateStrategy";
 import ConditionsSection from "@/components/strategy/conditions/conditions-section";
 import useInitialValue from "@/lib/hooks/useInitialValue";
 import { getFileApi } from "@/lib/apiClientInstances";
+import { queryClient } from "@/main";
+
+//TODO: Queries are persisting 
+
+
 export default function StrategyPage() {
   // TODO: use name instead of id
   const { id } = useParams();
@@ -33,7 +38,8 @@ export default function StrategyPage() {
 
   useEffect(() => {
     console.log(paramId, "stragegy id", strategyId);
-
+    // Remove cache on a navigating to page
+    queryClient.invalidateQueries()
 
     setStrategyId(paramId);
   }, [paramId]);
@@ -131,17 +137,3 @@ export default function StrategyPage() {
   );
 }
 
-
-//<article>
-//  <h4 className=".h4">Change strategy</h4>
-//  <GenericSelect<Strategy>
-//    data={strategies || []}
-//    keyExtractor={(strategy) => strategy.id}
-//    nameExtractor={(strategy) => strategy.name}
-//    onSelect={handleStrategyChange}
-//    renderItem={(strategy) => <span>{strategy.name}</span>}
-//    title="Select or search"
-//    searchEnabled={true}
-//  />
-//</article>
-//title
