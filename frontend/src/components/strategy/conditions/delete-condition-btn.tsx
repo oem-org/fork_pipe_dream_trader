@@ -6,16 +6,16 @@ import { deleteStrategyConditionApi } from "@/lib/apiClientInstances";
 interface DeleteButtonProps {
   conditionId: number;
   strategyId: number;
-  fetchStrategyConditions: () => Promise<void>;
+  setRefetch: React.Dispatch<React.SetStateAction<number>>,
 }
 
-export function DeleteConditionBtn({ fetchStrategyConditions, conditionId, strategyId }: DeleteButtonProps) {
+export function DeleteConditionBtn({ setRefetch, conditionId, strategyId }: DeleteButtonProps) {
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const toggleDeleteModal = () => setIsDeleteModalOpen(!isDeleteModalOpen);
   const handleDelete = async () => {
-    await fetchStrategyConditions()
-    deleteStrategyConditionApi.delete(strategyId, conditionId)
+    await deleteStrategyConditionApi.delete(strategyId, conditionId)
+    setRefetch((prev) => prev + 1)
   }
   return (<>
 

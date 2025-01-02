@@ -37,7 +37,7 @@ const SingleOperator = forwardRef(
         setSelectedOperator(operator);
         if (onValueChange) {
           onValueChange(operator.name);
-          const data = { "position": blockIndex, settings: { "singleOperator": operator.name } }
+          const data = { "position": blockIndex, "settings": { "singleOperator": operator.name } }
           putStrategyConditionsApi.put(strategyId, conditionId, data)
         }
       } catch (error) {

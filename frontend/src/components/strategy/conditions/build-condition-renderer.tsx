@@ -5,7 +5,7 @@ import OperatorConditionSelect from "./operator-condition-select";
 import { DndProvider } from "react-dnd";
 import DraggableBlock from "./draggable-block";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
+import { useCallback, useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import React from "react";
 import { DivideBlocksService } from "@/lib/services/ComponentMappingService";
 import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
@@ -20,26 +20,30 @@ interface BuildConditionsRendererProps {
   conditions: Array<any>,
   side: "buy" | "sell"
   ref: React.RefObject<CreateConditionStringRef>;
-  fetchStrategyConditions: () => void
+  setRefetch: React.Dispatch<React.SetStateAction<number>>,
+
 }
 
 // TODO: Set types for conditions
 //
 
-function BuildConditionRenderer({ conditions, fetchStrategyConditions }: BuildConditionsRendererProps, ref: CreateConditionStringRef) {
+function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRendererProps, ref: CreateConditionStringRef) {
   const [blocks, setBlocks] = useState<JSX.Element[][]>([]);
   const { strategyId } = useStrategyStore()
-  const [mappedConditions, setMappedConditions] = useState<any>(mapConditions());
+  const [mappedConditions, setMappedConditions] = useState<any>([]);
 
   useImperativeHandle(ref, () => ({
     createConditionString,
   }));
 
   function mapConditions() {
-    if (!Array.isArray(conditions)) {
 
+    console.log("HEREEEEEEEEEEE", conditions)
+    if (!Array.isArray(conditions)) {
+      console.log(conditions, "Conds first")
       console.error('Expected conditions to be an array, but got:', typeof conditions)
     }
+
     const conditionServiceTest = new DivideBlocksService(conditions);
     conditionServiceTest.processConditions()
     return conditionServiceTest.getConditions()
@@ -48,7 +52,10 @@ function BuildConditionRenderer({ conditions, fetchStrategyConditions }: BuildCo
   useEffect(() => {
     if (conditions.length > 0) {
       const mapped = mapConditions()
+      console.log(mapped, "MAPPED")
       setMappedConditions(mapped)
+    } else {
+      setMappedConditions([])
     }
   }, [conditions])
 
@@ -63,7 +70,7 @@ function BuildConditionRenderer({ conditions, fetchStrategyConditions }: BuildCo
       if ("conditionId" in condition) {
         console.log(condition.id, condition, "WTFFF")
         const deleteButton = (
-          <DeleteConditionBtn fetchStrategyConditions={fetchStrategyConditions} key={`delete-${condition.conditionId}`} conditionId={condition.conditionId} strategyId={strategyId} />
+          <DeleteConditionBtn setRefetch={setRefetch} key={`delete-${condition.conditionId}`} conditionId={condition.conditionId} strategyId={strategyId} />
         );
         currentBlock.push(deleteButton)
         initialBlocks.push(currentBlock);
@@ -149,7 +156,7 @@ function BuildConditionRenderer({ conditions, fetchStrategyConditions }: BuildCo
 
 
 
-  const handleValueChange = (blockIndex: number, newValue: any) => {
+  const handleValueChange = useCallback((blockIndex: number, newValue: any) => {
     setBlocks((prevBlocks) => {
       const updatedBlocks = prevBlocks.map((block, index) => {
         if (index === blockIndex) {
@@ -164,18 +171,17 @@ function BuildConditionRenderer({ conditions, fetchStrategyConditions }: BuildCo
       });
       return updatedBlocks;
     });
-    //createConditionString()
-  };
+  }, [setBlocks]);
 
-  const moveBlock = (fromIndex: number, toIndex: number) => {
+  const moveBlock = useCallback((fromIndex: number, toIndex: number) => {
     setBlocks((prevBlocks) => {
       const updatedBlocks = [...prevBlocks];
       const [movedBlock] = updatedBlocks.splice(fromIndex, 1);
       updatedBlocks.splice(toIndex, 0, movedBlock);
-      console.log(fromIndex, toIndex)
+      console.log(fromIndex, toIndex);
       return updatedBlocks;
     });
-  };
+  }, [setBlocks]);
 
 
 

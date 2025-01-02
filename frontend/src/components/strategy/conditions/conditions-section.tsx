@@ -19,36 +19,62 @@ export default function ConditionsSection() {
   const { strategyId } = useStrategyStore()
   const [sellConditions, setSellConditions] = useState<any[]>([]);
   const [buyConditions, setBuyConditions] = useState<any[]>([]);
+  const [refetch, setRefetch] = useState<number>(0)
 
-  async function fetchStrategyConditions() {
+  async function fetchBuyConditions(strategyId: number) {
     try {
       const data = await getAllStrategyConditionsApi.getAll(strategyId);
-      const filteredBuyConditions = data.filter((condition) => condition.side === "buy");
-      const filteredSellConditions = data.filter((condition) => condition.side === "sell");
+      const filteredBuyConditions = data
+        .filter((condition) => condition.side === "buy")
+        .map((condition) => ({
+          id: condition.id,
+          settings: condition.settings,
+        }));
 
-      const buyConditionsFormatted = filteredBuyConditions.map((condition) => ({
-        id: condition.id,
-        settings: condition.settings,
-      }));
-      const sellConditionsFormatted = filteredSellConditions.map((condition) => ({
-        id: condition.id,
-        settings: condition.settings,
-      }));
-
-      setBuyConditions(buyConditionsFormatted);
-      setSellConditions(sellConditionsFormatted);
-
-      console.log("Filtered Buy Conditions:", buyConditionsFormatted);
-      console.log("Filtered Sell Conditions:", sellConditionsFormatted);
+      console.log("Filtered Buy Conditions:", filteredBuyConditions);
+      return filteredBuyConditions;
     } catch (error) {
-      console.log(error);
-      throw new Error("Failed to fetch strategyConditions");
+      console.error("Error fetching buy conditions:", error);
+      throw new Error("Failed to fetch buy conditions");
     }
-  };
+  }
+
+  async function fetchSellConditions(strategyId: number) {
+    try {
+      const data = await getAllStrategyConditionsApi.getAll(strategyId);
+      const filteredSellConditions = data
+        .filter((condition) => condition.side === "sell")
+        .map((condition) => ({
+          id: condition.id,
+          settings: condition.settings,
+        }));
+
+      console.log("Filtered Sell Conditions:", filteredSellConditions);
+      return filteredSellConditions;
+    } catch (error) {
+      console.error("Error fetching sell conditions:", error);
+      throw new Error("Failed to fetch sell conditions");
+    }
+  }
+
+  // Usage
+  async function fetchStrategyConditions() {
+    try {
+      const [buyConditions, sellConditions] = await Promise.all([
+        fetchBuyConditions(strategyId),
+        fetchSellConditions(strategyId),
+      ]);
+
+      setBuyConditions(buyConditions);
+      setSellConditions(sellConditions);
+    } catch (error) {
+      console.error("Error in fetchStrategyConditions:", error);
+    }
+  }
 
   useEffect(() => {
     fetchStrategyConditions();
-  }, [strategyId, buyConditions, sellConditions]);
+  }, [strategyId, refetch]);
 
   const addCondition = async (newCondition: any) => {
     try {
@@ -110,7 +136,7 @@ export default function ConditionsSection() {
           <h3 className='h3 pb-4'>Buy conditions</h3>
 
           <div className="flex flex-row">
-            <BuildConditionRenderer fetchStrategyConditions={fetchStrategyConditions} side="buy" ref={buyStringRef} conditions={buyConditions} />
+            <BuildConditionRenderer setRefetch={setRefetch} side="buy" ref={buyStringRef} conditions={buyConditions} />
           </div>
           <div className='flex flex-col'>
             <CreateConditions side="buy" addCondition={addCondition} />
@@ -120,7 +146,7 @@ export default function ConditionsSection() {
 
           <h3 className='h3 pb-4'>Sell conditions</h3>
           <div className="flex flex-row">
-            <BuildConditionRenderer fetchStrategyConditions={fetchStrategyConditions} side="sell" ref={sellStringRef} conditions={sellConditions} />
+            <BuildConditionRenderer setRefetch={setRefetch} side="sell" ref={sellStringRef} conditions={sellConditions} />
           </div>
 
           <div className='flex flex-col'>
