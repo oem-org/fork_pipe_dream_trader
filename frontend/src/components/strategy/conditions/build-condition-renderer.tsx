@@ -49,6 +49,9 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
       const mapped = mapConditions()
       setMappedConditions(mapped)
     }
+    else {
+      setMappedConditions([])
+    }
   }, [conditions])
 
 

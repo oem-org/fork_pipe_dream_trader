@@ -1,4 +1,3 @@
-import { LogicalOperator } from "@/interfaces/Condition";
 
 export function findStringIndex(stringToFind: string, stringArray: Array<string>): number {
 
@@ -10,7 +9,12 @@ export function findStringIndex(stringToFind: string, stringArray: Array<string>
   return index
 }
 
+export function isLogicalOperator(value: any): boolean {
+  const validOperators = ["&", "|", "~", "<", ">", "="];
 
-export function isLogicalOperator(value: any): value is LogicalOperator {
-  return ["&", "|", "~", "<", ">"].includes(value);
+  if (!validOperators.includes(value)) {
+    throw new Error(`Invalid logical operator: ${value}`);
+  }
+
+  return true;
 }
