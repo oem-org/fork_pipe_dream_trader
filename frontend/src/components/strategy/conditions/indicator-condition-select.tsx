@@ -38,13 +38,11 @@ const IndicatorConditionSelect = forwardRef(
         onValueChange(item.dataframe_column);
       }
       console.log(conditionId, item.settings)
-      const data = {
-        "type": "indicator",
-        "position": item.id,
-        "settings": item.dataframe_column
-      }
-      //putStrategyConditionsApi(strategyId, conditionId)
-      console.log(position, conditionId, data, "IndicatorCondtionSelect")
+      //const data = {
+      //  "settings": {item.dataframe_column
+      //}
+      //putStrategyConditionsApi(strategyId, conditionId, data)
+      //console.log(position, conditionId, data, "IndicatorCondtionSelect")
     }
 
 

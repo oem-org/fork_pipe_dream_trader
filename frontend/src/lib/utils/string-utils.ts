@@ -12,5 +12,5 @@ export function findStringIndex(stringToFind: string, stringArray: Array<string>
 
 
 export function isLogicalOperator(value: any): value is LogicalOperator {
-  return ["&", "|", "~", "<", ">"].includes(value);
+  return ["&", "|", "~", "<", ">", "="].includes(value);
 }
