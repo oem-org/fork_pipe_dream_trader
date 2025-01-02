@@ -1,4 +1,4 @@
-
+// TODO: fix overflow on the info box
 export default interface Indicator {
     id: number
     name: string

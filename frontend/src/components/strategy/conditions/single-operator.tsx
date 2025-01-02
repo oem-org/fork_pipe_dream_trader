@@ -4,16 +4,18 @@ import { Operator } from "@/interfaces/Operator";
 import GenericSelect from "@/components/ui/lists/generic-select";
 import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
 import { useUpdateStrategyCondition } from "@/lib/hooks/react-query/useUpdateStrategyConditions";
+import { useEffect } from "react";
 
 interface SingleOperatorProps {
   position: number;
   initialValue: string;
   onValueChange: (value: string) => void;
-  conditionId: number
+  conditionId: number,
+  blockIndex?: number | undefined
 }
 
 const SingleOperator = forwardRef(
-  ({ position, initialValue, onValueChange, conditionId }: SingleOperatorProps, ref) => {
+  ({ blockIndex, position, initialValue, onValueChange, conditionId }: SingleOperatorProps, ref) => {
     const [selectedOperator, setSelectedOperator] = useState<Operator>(
       operators.find((operator) => operator.name === initialValue) as Operator
     );
@@ -34,6 +36,9 @@ const SingleOperator = forwardRef(
       console.log(position, conditionId, result, "SingleOperator update")
     }
 
+    useEffect(() => {
+      console.log(" THE BLOCK Block Index:", blockIndex);
+    }, [blockIndex]);
 
     useImperativeHandle(ref, () => ({
       getValue: () => ({ singleOperator: selectedOperator.name }),

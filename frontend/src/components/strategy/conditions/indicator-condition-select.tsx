@@ -5,17 +5,18 @@ import { StrategyIndicator } from "@/interfaces/StrategyIndicator";
 import useInitialValue from "@/lib/hooks/useInitialValue";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useUpdateStrategyCondition } from "@/lib/hooks/react-query/useUpdateStrategyConditions";
-import { ConditionElement } from "@/interfaces/Condition";
+import { useEffect } from "react";
 
 interface IndicatorConditionSelectProps {
   position: number;
   initialValue: string;
   onValueChange: (value: string) => void;
   conditionId: number,
+  blockIndex: number | undefined,
 }
 
 const IndicatorConditionSelect = forwardRef(
-  ({ position, initialValue, onValueChange, conditionId }: IndicatorConditionSelectProps, ref) => {
+  ({ blockIndex, position, initialValue, onValueChange, conditionId }: IndicatorConditionSelectProps, ref) => {
     const { strategyId } = useStrategyStore();
     const { data: indicatorSettings } = getStrategyIndicatorsQuery(strategyId);
     const { mutateAsync: update } = useUpdateStrategyCondition()
@@ -43,6 +44,11 @@ const IndicatorConditionSelect = forwardRef(
       let result = await update({ conditionId, strategyId, updateData })
       console.log(position, conditionId, result, "IndicatorCondtionSelect")
     }
+
+
+    useEffect(() => {
+      console.log(" THE BLOCK Block Index:", blockIndex);
+    }, [blockIndex]);
 
     // Pass the initial value on first render while nothing has been selected yet
     // Otherwise will return a null value

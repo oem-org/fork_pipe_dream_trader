@@ -51,7 +51,7 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
   }, [conditions])
 
 
-
+  // TODO: write explanation
   useEffect(() => {
 
     let currentBlock: JSX.Element[] = [];
@@ -76,10 +76,10 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
           case "singleOperator":
             component = (
               <SingleOperator
+                blockIndex={undefined}
                 conditionId={id}
                 position={index}
                 ref={ref}
-                id={index}
                 key={index}
                 initialValue={value}
                 onValueChange={(newValue) => handleValueChange(index, newValue)}
@@ -89,6 +89,7 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
           case "indicator":
             component = (
               <IndicatorConditionSelect
+                blockIndex={undefined}
                 conditionId={id}
                 position={index}
                 ref={ref}
@@ -101,6 +102,7 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
           case "operator":
             component = (
               <OperatorConditionSelect
+                blockIndex={undefined}
                 conditionId={id}
                 position={index}
                 ref={ref}
@@ -113,6 +115,7 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
           case "value":
             component = (
               <InputSmall
+                blockIndex={undefined}
                 conditionId={id}
                 position={index}
                 ref={ref}
@@ -167,9 +170,11 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
       const updatedBlocks = [...prevBlocks];
       const [movedBlock] = updatedBlocks.splice(fromIndex, 1);
       updatedBlocks.splice(toIndex, 0, movedBlock);
+      console.log(fromIndex, toIndex)
       return updatedBlocks;
     });
   };
+
 
 
   // TODO: maybe delete
@@ -200,8 +205,20 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
     return values;
   }
 
-  function saveStrategy() {
+  function saveStrategy(): Array<Record<string, any> | string> {
+    const values = blocks.map((block) => {
+      return block
+        .map((component: any) => {
+          if (component.ref && component.ref.current && typeof component.ref.current.getValue === 'function') {
+            return component.ref.current.getPosition();
+          }
+          return null;
+        })
+        .filter((value) => value !== null);
+    });
 
+    console.log(values, "VALUES")
+    return values
   }
 
   return (
@@ -215,8 +232,12 @@ function BuildConditionRenderer({ conditions }: BuildConditionsRendererProps, re
                 id={blockIndex}
                 index={blockIndex}
                 moveBlock={moveBlock}
-              >
-                {block}
+              >{/* Pass blockIndex to each component inside the block */}
+                {
+                  block.map((component) => (
+                    React.cloneElement(component, { blockIndex })
+                  ))
+                }
               </DraggableBlock>
             ))
           ) : (

@@ -1,15 +1,16 @@
 import React, { useState, forwardRef, useImperativeHandle } from "react";
-
+import { useEffect } from "react";
 interface InputSmallProps {
 	initialValue: string;
 	position: number;
 	name: string;
 	onValueChange: (value: string) => void;
 	conditionId: number
+	blockIndex: number | undefined
 
 }
 
-const InputSmall = forwardRef(({ position, initialValue, name, onValueChange, conditionId }: InputSmallProps, ref) => {
+const InputSmall = forwardRef(({ blockIndex, position, initialValue, name, onValueChange, conditionId }: InputSmallProps, ref) => {
 	const [value, setValue] = useState(initialValue);
 
 	function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -21,6 +22,9 @@ const InputSmall = forwardRef(({ position, initialValue, name, onValueChange, co
 		console.log(conditionId, position)
 	}
 
+	useEffect(() => {
+		console.log(" THE BLOCK Block Index:", blockIndex);
+	}, [blockIndex]);
 	useImperativeHandle(ref, () => ({
 		getValue: () => ({ value: value }),
 		getPosition: () => ({ postion: position }),

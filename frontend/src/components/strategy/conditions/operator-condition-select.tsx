@@ -2,16 +2,19 @@ import { forwardRef, useImperativeHandle, useState } from "react";
 import { Operator } from "@/interfaces/Operator";
 import GenericSelect from "@/components/ui/lists/generic-select";
 import { operators } from "./operators";
+import { useEffect } from "react";
+
 
 interface OperatorConditionSelectProps {
   position: number;
   conditionId: number
   initialValue: string;
   onValueChange: (value: string) => void;
+  blockIndex: number | undefined,
 }
 
 const OperatorConditionSelect = forwardRef(
-  ({ position, initialValue, onValueChange, conditionId }: OperatorConditionSelectProps, ref) => {
+  ({ blockIndex, position, initialValue, onValueChange, conditionId }: OperatorConditionSelectProps, ref) => {
     const [selectedOperator, setSelectedOperator] = useState(
       operators.find((operator) => operator.name === initialValue) || null
     );
@@ -25,6 +28,9 @@ const OperatorConditionSelect = forwardRef(
       console.log(conditionId, position)
     }
 
+    useEffect(() => {
+      console.log(" THE BLOCK Block Index:", blockIndex);
+    }, [blockIndex]);
     useImperativeHandle(ref, () => ({
       getValue: () => ({ operator: selectedOperator?.name }),
       getPosition: () => ({ postion: position }),
