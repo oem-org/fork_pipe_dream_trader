@@ -18,6 +18,7 @@ interface CreateConditionStringRef {
 
 interface BuildConditionsRendererProps {
   conditions: Array<any>,
+  side: "buy" | "sell"
   ref: React.RefObject<CreateConditionStringRef>;
 }
 

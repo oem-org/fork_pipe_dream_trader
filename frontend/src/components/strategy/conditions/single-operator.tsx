@@ -3,15 +3,24 @@ import { operators } from "./operators";
 import { Operator } from "@/interfaces/Operator";
 import GenericSelect from "@/components/ui/lists/generic-select";
 import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
-import { useUpdateStrategyCondition } from "@/lib/hooks/react-query/useUpdateStrategyConditions";
 import { useEffect } from "react";
+import { putStrategyConditionsApi } from "@/lib/apiClientInstances";
 
 interface SingleOperatorProps {
   position: number;
   initialValue: string;
   onValueChange: (value: string) => void;
   conditionId: number,
-  blockIndex?: number | undefined
+  blockIndex?: number | undefined,
+}
+
+export interface StrategyCondition {
+  id: number;
+  side: string;
+  fk_strategy_id: number
+  fk_strategy_indicator_id_1?: number
+  fk_strategy_indicator_id_2?: number
+  settings: string
 }
 
 const SingleOperator = forwardRef(
@@ -21,23 +30,25 @@ const SingleOperator = forwardRef(
     );
 
     const { strategyId } = useStrategyStore()
-    const { mutateAsync: update } = useUpdateStrategyCondition()
     async function handleOperatorChange(operator: Operator) {
-      console.log("Selected operator:", operator);
-      setSelectedOperator(operator);
-      if (onValueChange) {
-        onValueChange(operator.name);
-      }
-      const updateData = {
-        "operator": operator.name
-      }
+      try {
 
-      let result = await update({ conditionId, strategyId, updateData })
-      console.log(position, conditionId, result, "SingleOperator update")
+        console.log("Selected operator:", operator);
+        setSelectedOperator(operator);
+        if (onValueChange) {
+          onValueChange(operator.name);
+          const data = { "position": blockIndex, settings: { "singleOperator": operator.name } }
+          putStrategyConditionsApi.put(strategyId, conditionId, data)
+        }
+      } catch (error) {
+        console.error(error)
+      }
     }
 
     useEffect(() => {
       console.log(" THE BLOCK Block Index:", blockIndex);
+      const data = { "position": blockIndex }
+      putStrategyConditionsApi.put(strategyId, conditionId, data)
     }, [blockIndex]);
 
     useImperativeHandle(ref, () => ({

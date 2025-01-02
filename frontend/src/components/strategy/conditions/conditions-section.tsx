@@ -35,7 +35,6 @@ export default function ConditionsSection() {
         settings: condition.settings,
       }));
 
-      // Set the formatted conditions
       setBuyConditions(buyConditionsFormatted);
       setSellConditions(sellConditionsFormatted);
 
@@ -64,7 +63,6 @@ export default function ConditionsSection() {
 
       console.log("Condition added successfully", response);
 
-      // Optionally, refresh conditions to include the newly added one
       fetchStrategyConditions();
     } catch (error) {
       console.error("Error adding condition:", error);
@@ -112,18 +110,17 @@ export default function ConditionsSection() {
           <h3 className='h3 pb-4'>Buy conditions</h3>
 
           <div className="flex flex-row">
-            <BuildConditionRenderer ref={buyStringRef} conditions={buyConditions} />
+            <BuildConditionRenderer side="buy" ref={buyStringRef} conditions={buyConditions} />
           </div>
           <div className='flex flex-col'>
             <CreateConditions side="buy" addCondition={addCondition} />
-
           </div>
         </div>
         <div>
 
           <h3 className='h3 pb-4'>Sell conditions</h3>
           <div className="flex flex-row">
-            <BuildConditionRenderer ref={sellStringRef} conditions={sellConditions} />
+            <BuildConditionRenderer side="sell" ref={sellStringRef} conditions={sellConditions} />
           </div>
 
           <div className='flex flex-col'>

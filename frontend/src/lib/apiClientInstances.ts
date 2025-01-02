@@ -9,7 +9,7 @@ import { StrategyCondition } from "@/interfaces/StrategyCondition"
 import { File, FileResponse } from "@/interfaces/File"
 import { PostRelationService, PutService, GetService, PostService, DeleteRelationService, PutRelationService, GetAllService, DeleteService, GetWithParamsService, GetWithQueryService, GetAllRelationService, } from "./services/ApiService"
 
-import { StrategyIndicator} from "@/interfaces/StrategyIndicator"
+import { StrategyIndicator } from "@/interfaces/StrategyIndicator"
 import { CreateStrategyRequest } from "@/interfaces/requests/CreateStrategyRequest"
 import { CreateBacktestRequest } from "@/interfaces/Backtest"
 
@@ -44,7 +44,6 @@ export const postIndicatorNames = new PostService<IndicatorRequest, void>('indic
 export const getStrategyConditionsApi = new GetAllRelationService<StrategyCondition>('strategy', jsonHeader, 'condition')
 export const postStrategyConditionsApi = new PostRelationService<Record<string, any>, any>('strategy', jsonHeader, 'condition')
 export const deleteStrategyConditionApi = new DeleteRelationService('strategy', jsonHeader, 'condition')
-
 export const putStrategyConditionsApi = new PutRelationService('strategy', jsonHeader, 'condition')
 // StrategyIndicators
 export const getStrategyIndicatorsApi = new GetAllRelationService<StrategyIndicator>('strategy', jsonHeader, 'indicator')
