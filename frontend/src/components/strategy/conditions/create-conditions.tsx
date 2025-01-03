@@ -22,9 +22,7 @@ export default function CreateConditions({ side, addCondition }: CreateCondition
       <div className="mt-4 space-x-2 flex flex-row mb-2 p-2 w-full">
         <CreateIndicatorIndicatorModal side={side} addCondition={addCondition} />
         <CreateIndicatorValueModal side={side} addCondition={addCondition} />
-        <Button onClick={() => addCondition(createOperator(side, "&"))}> &amp; </Button>
-        <Button onClick={() => addCondition(createOperator(side, "|"))}>|</Button>
-        <Button onClick={() => addCondition(createOperator(side, "~"))}>~</Button>
+        <Button onClick={() => addCondition(createOperator(side, "&"))}>Operator</Button>
       </div>
       <hr className="mb-4" />
     </>
@@ -32,6 +30,8 @@ export default function CreateConditions({ side, addCondition }: CreateCondition
 }
 
 
+//<Button onClick={() => addCondition(createOperator(side, "|"))}>|</Button>
+//<Button onClick={() => addCondition(createOperator(side, "~"))}>~</Button>
 
 
 //<button onClick={() => toggleIndicatorValue()} className="btn-dropdown">Rename</button>
