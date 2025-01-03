@@ -1,6 +1,5 @@
 import { useDrag, useDrop } from "react-dnd";
 import { ReactNode } from "react";
-import ConditionSettings from "./conditions-dropdown";
 const ItemType = {
 	BLOCK: "block",
 };
@@ -46,4 +45,3 @@ export default function DraggableBlock({ id, children, moveBlock, index }: Block
 }
 
 
-//<ConditionSettings deleteBlock={deleteBlock} conditionId={id} />

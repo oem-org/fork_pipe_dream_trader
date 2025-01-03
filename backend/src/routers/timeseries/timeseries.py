@@ -67,21 +67,6 @@ async def read_all(
                     db.commit()
                 else:
                     print(f"StrategyIndicator with ID {value[id]} not found")
-            print("##########################3")
-            print("##########################3")
-            print("##########################3")
-            print("##########################3")
-            print("##########################3")
-            print("##########################3")
-            print("##########################3")
-            print("##########################3")
-            print("##########################3")
-            print("##########################3")
-            print("##########################3")
-            print("##########################3")
-            print("##########################3")
-            print("##########################3")
-            print(indicator_loader.timeframe)
             indicator_loader.response['timeframe'] = f'{file_loader.timeframe}'
             
             return indicator_loader.response
@@ -89,46 +74,3 @@ async def read_all(
         handle_db_error(e, "Unexpected error occurred while fetching the file data")
 
 
-# @router.get("/backtest", status_code=status.HTTP_200_OK)
-# async def read_all(
-#     user: user_dependency,
-#     timescale: timescale_dependency,
-#     db: db_dependency,
-#     timeperiod: str = Query(None),
-#     table: str = Query(None),
-#     strategy_query: str = Query(None),
-#     pair: str = Query(None)
-# ):
-#     try:
-#         strategyModel = db.query(Strategies).filter(Strategies.id == strategy_query).first()
-#
-#         if strategyModel:
-#             print(strategyModel.file)
-#
-#         if strategyModel.file:
-#             path = strategyModel.file.path
-#             file_loader = FileLoader(path)
-#             file_loader.load_or_reload()
-#
-#             indicators_info = [{
-#                 "indicator_info": si.indicator.indicator_info,
-#                 "kind": si.indicator.kind,
-#                 "id": si.id} for si in strategyModel.strategy_indicators if si.indicator
-#             ]
-#
-#             all_indicator_settings = [
-#                 ind.settings
-#                 for ind in strategyModel.strategy_indicators
-#                 if ind.settings is not None
-#             ]
-#
-#             indicator_loader = IndicatorLoader(file_loader.df, all_indicator_settings)
-#             indicator_loader.load_indicators()
-#             indicator_loader.split_dataframe()
-#             indicator_loader.connect_indicator_info(indicators_info)
-#
-#             return indicator_loader.response
-#     except Exception as e:
-#         handle_db_error(e, "Unexpected error occurred while fetching the file data")
-#
-#

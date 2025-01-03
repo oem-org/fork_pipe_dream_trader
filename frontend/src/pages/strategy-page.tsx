@@ -15,7 +15,6 @@ import ConditionsSection from "@/components/strategy/conditions/conditions-secti
 import { queryClient } from "@/main";
 import { removeSurroundingQuotes } from "@/lib/utils/string-utils";
 
-//TODO: Queries are persisting 
 
 
 export default function StrategyPage() {
@@ -56,18 +55,15 @@ export default function StrategyPage() {
     }
   };
 
-
-  // Set the initial file in the select file dropdown
+  // Set the initial file for the select file dropdown
   useEffect(() => {
     if (strategy && strategy.fk_file_id && files) {
       const selectedFile = files?.find((file) => file.id === strategy.fk_file_id);
       if (selectedFile) {
-        setInitialValue(selectedFile); // Set the initial value to the selected file
+        setInitialValue(selectedFile);
       }
     }
   }, [strategy, files])
-
-
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -95,7 +91,7 @@ export default function StrategyPage() {
                 <h4 className="h4">Pair:</h4> <p> &nbsp;{removeSurroundingQuotes(pair)}</p>
               </div>
               <div className="flex flex-row">
-                <h4 className="h4">Timeframe:</h4> <p> &nbsp;{removeSurroundingQuotes(timeframe)}</p>
+                <h4 className="h4 mb-2">Timeframe:</h4> <p> &nbsp;{removeSurroundingQuotes(timeframe)}</p>
               </div>
               <hr className='py-1' />
               <Modal onClose={toggleInfoModal} isOpen={isInfoModalOpen} title="Description">
@@ -115,7 +111,8 @@ export default function StrategyPage() {
                 searchEnabled={true}
                 initialValue={initialValue}
               />
-              <h4>Backtest Results</h4>
+              <hr className='py-1 mt-4' />
+              <h4 className="h4 mt-2">Backtest Results</h4>
 
             </article>
             <div className="lg:col-span-3">

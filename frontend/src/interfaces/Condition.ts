@@ -7,8 +7,6 @@ export interface Condition {
 
 export interface CreateConditionRequest {
     side: Side;
-    fk_strategy_indicator_id_1: number | null;
-    fk_strategy_indicator_id_2: number | null;
     settings: Record<string, any> | Array<any>;
 }
 

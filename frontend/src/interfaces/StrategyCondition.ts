@@ -4,8 +4,6 @@ export interface StrategyCondition {
     side: string;
     position: number;
     fk_strategy_id: number;
-    fk_strategy_indicator_id_1?: number;
-    fk_strategy_indicator_id_2?: number;
     settings: string;
 }
 

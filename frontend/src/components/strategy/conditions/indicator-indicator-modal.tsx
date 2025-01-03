@@ -21,8 +21,6 @@ export default function CreateIndicatorIndicatorModal({ side, addCondition }: Cr
   function handleAddCondition() {
     const cond: CreateConditionRequest = {
       side,
-      fk_strategy_indicator_id_1: indicator1.id,
-      fk_strategy_indicator_id_2: indicator2.id,
       settings: [
         { indicator: indicator1.indicator },
         operator,

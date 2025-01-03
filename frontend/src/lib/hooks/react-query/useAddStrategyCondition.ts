@@ -9,8 +9,6 @@ const addStrategyCondition = async (
 	console.log("Adding!!!!!!!!!!!!!!!!! this strategy condition", strategyCondition);
 
 	const response = await postStrategyConditionsApi.post(strategyId, {
-		fk_strategy_indicator_id_1: strategyCondition.fk_strategy_indicator_id_1,
-		fk_strategy_indicator_id_2: strategyCondition.fk_strategy_indicator_id_2,
 		settings: strategyCondition.settings,
 		side: strategyCondition.side,
 	});

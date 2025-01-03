@@ -13,8 +13,6 @@ export default function CreateConditions({ side, addCondition }: CreateCondition
   function createOperator(side: Side, operator: LogicalOperator) {
     const cond: CreateConditionRequest = {
       "side": side,
-      "fk_strategy_indicator_id_1": null,
-      "fk_strategy_indicator_id_2": null,
       "settings": { "singleOperator": operator }
     }
     return cond

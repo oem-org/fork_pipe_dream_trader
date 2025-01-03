@@ -63,8 +63,6 @@ export default function ConditionsSection() {
       console.log("Adding!!!!!!!!!!!!!!!!! this strategy condition", newCondition);
 
       const response = await postStrategyConditionsApi.post(strategyId, {
-        fk_strategy_indicator_id_1: newCondition.fk_strategy_indicator_id_1,
-        fk_strategy_indicator_id_2: newCondition.fk_strategy_indicator_id_2,
         settings: newCondition.settings,
         side: newCondition.side,
       });

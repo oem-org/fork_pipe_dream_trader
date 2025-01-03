@@ -37,15 +37,9 @@ async def add_strategy_condition(
         )
         print(f"Condition data: {condition_data}")
 
-        fk_strategy_indicator_id_1 = condition_data.get("fk_strategy_indicator_id_1")
-        fk_strategy_indicator_id_2 = condition_data.get("fk_strategy_indicator_id_2")
         settings = condition_data.get("settings", {})
         side = condition_data.get("side")
 
-        print(
-            f"Extracted values: fk_strategy_indicator_id_1={fk_strategy_indicator_id_1}, "
-            f"fk_strategy_indicator_id_2={fk_strategy_indicator_id_2}, settings={settings}, side={side}"
-        )
 
         strategy = (
             db.query(Strategies)
@@ -73,8 +67,6 @@ async def add_strategy_condition(
 
         strategy_condition = StrategyConditions(
             fk_strategy_id=strategy_id,
-            fk_strategy_indicator_id_1=fk_strategy_indicator_id_1,
-            fk_strategy_indicator_id_2=fk_strategy_indicator_id_2,
             settings=settings,
             side=side,
         )
@@ -90,8 +82,6 @@ async def add_strategy_condition(
             "strategy_condition": {
                 "id": strategy_condition.id,
                 "fk_strategy_id": strategy_condition.fk_strategy_id,
-                "fk_strategy_indicator_id_1": strategy_condition.fk_strategy_indicator_id_1,
-                "fk_strategy_indicator_id_2": strategy_condition.fk_strategy_indicator_id_2,
                 "settings": strategy_condition.settings,
                 "side": strategy_condition.side,
             },
@@ -151,7 +141,7 @@ async def update_strategy_condition(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Strategy condition not found or does not belong to user",
             )
-        print(condition_data.items(), "CONDITION DATA ITEMS") 
+        print(condition_data.items(), "CONDITION DATA ITEMS")
         for key, value in condition_data.items():
             if key == "settings" and isinstance(value, list):
                 current_settings = strategy_condition.settings or []
@@ -199,8 +189,6 @@ async def update_strategy_condition(
             "strategy_condition": {
                 "id": strategy_condition.id,
                 "fk_strategy_id": strategy_condition.fk_strategy_id,
-                "fk_strategy_indicator_id_1": strategy_condition.fk_strategy_indicator_id_1,
-                "fk_strategy_indicator_id_2": strategy_condition.fk_strategy_indicator_id_2,
                 "settings": strategy_condition.settings,
                 "side": strategy_condition.side,
             },

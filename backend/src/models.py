@@ -34,28 +34,11 @@ class StrategyConditions(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     side = Column(String, nullable=False)
     fk_strategy_id = Column(Integer, ForeignKey("strategies.id", ondelete="CASCADE"))
-    fk_strategy_indicator_id_1 = Column(
-        Integer, ForeignKey("strategy_indicators.id", ondelete="CASCADE"), nullable=True
-    )
-    fk_strategy_indicator_id_2 = Column(
-        Integer, ForeignKey("strategy_indicators.id", ondelete="CASCADE"), nullable=True
-    )
     settings = Column(JSON, nullable=True)
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
     position = Column(Integer)
     strategy = relationship("Strategies", back_populates="strategy_conditions")
-
-    strategy_indicator_1 = relationship(
-        "StrategyIndicators",
-        foreign_keys=[fk_strategy_indicator_id_1],
-        back_populates="strategy_conditions_1",
-    )
-    strategy_indicator_2 = relationship(
-        "StrategyIndicators",
-        foreign_keys=[fk_strategy_indicator_id_2],
-        back_populates="strategy_conditions_2",
-    )
 
 
 class Strategies(Base):
@@ -95,16 +78,6 @@ class StrategyIndicators(Base):
 
     strategy = relationship("Strategies", back_populates="strategy_indicators")
     indicator = relationship("Indicators", back_populates="strategy_indicators")
-    strategy_conditions_1 = relationship(
-        "StrategyConditions",
-        back_populates="strategy_indicator_1",
-        foreign_keys="StrategyConditions.fk_strategy_indicator_id_1",
-    )
-    strategy_conditions_2 = relationship(
-        "StrategyConditions",
-        back_populates="strategy_indicator_2",
-        foreign_keys="StrategyConditions.fk_strategy_indicator_id_2",
-    )
 
 
 class StrategyBacktests(Base):
