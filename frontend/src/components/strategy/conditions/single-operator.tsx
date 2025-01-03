@@ -1,5 +1,5 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
-import { operators } from "./operators";
+import { singleOperators } from "./operators";
 import { Operator } from "@/interfaces/Operator";
 import GenericSelect from "@/components/ui/lists/generic-select";
 import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
@@ -24,7 +24,7 @@ export interface StrategyCondition {
 const SingleOperator = forwardRef(
   ({ blockIndex, position, initialValue, onValueChange, conditionId }: SingleOperatorProps, ref) => {
     const [selectedOperator, setSelectedOperator] = useState<Operator>(
-      operators.find((operator) => operator.name === initialValue) as Operator
+      singleOperators.find((operator) => operator.name === initialValue) as Operator
     );
 
     const { strategyId } = useStrategyStore()
@@ -55,7 +55,7 @@ const SingleOperator = forwardRef(
     return (
       <div>
         <GenericSelect<Operator>
-          data={operators || []}
+          data={singleOperators || []}
           keyExtractor={(operator) => operator.id}
           nameExtractor={(operator) => operator.name}
           onSelect={handleOperatorChange}

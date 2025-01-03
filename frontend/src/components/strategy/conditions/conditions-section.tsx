@@ -53,16 +53,14 @@ export default function ConditionsSection() {
 
   const addCondition = useCallback(async (newCondition: any) => {
     try {
-      console.log("Adding!!!!!!!!!!!!!!!!! this strategy condition", newCondition);
 
-      const response = await postStrategyConditionsApi.post(strategyId, {
+      await postStrategyConditionsApi.post(strategyId, {
         settings: newCondition.settings,
         side: newCondition.side,
       });
 
-      console.log("Condition added successfully!!!!!!!!!!!!!!!!!!!!!", response);
 
-      await fetchStrategyConditions(); // Ensure updated conditions are fetched.
+      await fetchStrategyConditions();
     } catch (error) {
       console.error("Error adding condition:", error);
     }
