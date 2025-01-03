@@ -3,6 +3,11 @@ from typing import Any, Dict, Optional, Union, List
 
 from pydantic import BaseModel
 
+class BacktestResponse(BaseModel):
+    buy_string: str
+    sell_string: str
+    pnl: float
+    drawdown: float
 
 class IndicatorRequest(BaseModel):
     settings: dict

@@ -34,6 +34,7 @@ export default function StrategyPage() {
 
   const [pair, setPair] = useState<string>("")
   const [timeframe, setTimeframe] = useState<string>("")
+  const [backtestResult, setBacktestResult] = useState<string>("")
 
   useEffect(() => {
     console.log(paramId, "stragety id", strategyId);

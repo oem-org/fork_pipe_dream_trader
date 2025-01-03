@@ -83,11 +83,12 @@ class StrategyIndicators(Base):
 class StrategyBacktests(Base):
     __tablename__ = "strategy_backtests"
 
-    id = Column(Integer, primary_key=True, index=True)
-    fk_strategy_id = Column(
-        Integer, ForeignKey("strategies.id", ondelete="CASCADE"), primary_key=True
-    )
-    conditions = Column(JSON)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    fk_strategy_id = Column(Integer, ForeignKey("strategies.id", ondelete="CASCADE"))
+    buy_string = Column(String)
+    sell_string = Column(String)
+    pnl = Column(String)
+    max_drawdown = Column(String)
     strategy = relationship("Strategies", back_populates="backtests")
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())

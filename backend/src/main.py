@@ -21,6 +21,7 @@ from .routers.timeseries import timeseries
 from .routers.strategies import strategy
 from .routers.strategies import condition as strategy_condition
 from .routers.strategies import indicator as strategy_indicator
+from .routers.strategies import backtest as strategy_backtest
 from .routers.users import users
 from .seeders.indicators_seeder import indicators_seeder
 # custom logging setup
@@ -80,6 +81,7 @@ app.include_router(auth.router)
 app.include_router(strategy.router)
 app.include_router(strategy_condition.router)
 app.include_router(strategy_indicator.router)
+app.include_router(strategy_backtest.router)
 app.include_router(users.router)
 app.include_router(files.router)
 app.include_router(indicators.router)

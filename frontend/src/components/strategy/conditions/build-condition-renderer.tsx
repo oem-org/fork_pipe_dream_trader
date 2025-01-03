@@ -39,13 +39,10 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
 
   function mapConditions() {
 
-    console.log("HEREEEEEEEEEEE", conditions)
     if (!Array.isArray(conditions)) {
-      console.log(conditions, "Conds first")
       console.error('Expected conditions to be an array, but got:', typeof conditions)
     }
 
-    console.log(conditions, "CONDITIONS UNSORTED")
     const conditionServiceTest = new DivideBlocksService(conditions);
     conditionServiceTest.processConditions()
     return conditionServiceTest.getConditions()
@@ -67,7 +64,6 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
 
     let currentBlock: JSX.Element[] = [];
     const initialBlocks: JSX.Element[][] = [];
-    let startCondition = "DDDDD"
     mappedConditions.forEach((condition: any, index: number) => {
       if ("conditionId" in condition) {
         console.log(condition.id, condition, "WTFFF")
@@ -77,7 +73,6 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
         currentBlock.push(deleteButton)
         initialBlocks.push(currentBlock);
         currentBlock = [];
-        startCondition = "HHH"
       } else {
 
         const [kind, value, id] = condition as [string, string, number];

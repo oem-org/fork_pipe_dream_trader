@@ -63,6 +63,7 @@ export const deleteStrategyApi = new DeleteService<number>('strategy', jsonHeade
 
 //Backtest
 export const postBacktestApi = new PostRelationService<CreateBacktestRequest, any>('strategy', jsonHeader, "backtest")
+export const getAllBacktestsApi = new GetAllService<BacktestResult>('strategy', jsonHeader, "backtest")
 
 
 //Timeseries

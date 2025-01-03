@@ -3,17 +3,9 @@ import { BacktestService } from '@/lib/services/BacktestService';
 import BuildConditionRenderer from './build-condition-renderer';
 import { useRef, useState, useEffect } from 'react';
 import CreateConditions from './create-conditions';
-import getStrategyConditionsQuery from '@/lib/hooks/react-query/getStrategyConditions';
-import { useAddStrategyCondition } from '@/lib/hooks/react-query/useAddStrategyCondition'
 import useStrategyStore from '@/lib/hooks/stores/useStrategyStore';
-
 import { getAllStrategyConditionsApi, postBacktestApi, postStrategyConditionsApi } from '@/lib/apiClientInstances';
 import { CreateBacktestRequest } from '@/interfaces/Backtest';
-import { StrategyCondition } from '@/interfaces/Strategy';
-
-//TODO: Fix overflow of condition by creating vertical layout
-
-//TODO: when indicator is deleted manually remove the FK from all the indicators that have it
 
 export default function ConditionsSection() {
   const { strategyId } = useStrategyStore()
