@@ -158,7 +158,7 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
 
 
 
-  const handleValueChange = useCallback((blockIndex: number, newValue: any) => {
+  const handleValueChange = (blockIndex: number, newValue: any) => {
     setBlocks((prevBlocks) => {
       const updatedBlocks = prevBlocks.map((block, index) => {
         if (index === blockIndex) {
@@ -173,17 +173,27 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
       });
       return updatedBlocks;
     });
-  }, [setBlocks]);
+    //createConditionString()
+  };
 
-  const moveBlock = useCallback((fromIndex: number, toIndex: number) => {
+
+
+  const moveBlock = (fromIndex: number, toIndex: number) => {
     setBlocks((prevBlocks) => {
       const updatedBlocks = [...prevBlocks];
       const [movedBlock] = updatedBlocks.splice(fromIndex, 1);
       updatedBlocks.splice(toIndex, 0, movedBlock);
-      console.log(fromIndex, toIndex);
-      return updatedBlocks;
+
+      // Force re-render by updating block keys
+      const reRenderedBlocks = updatedBlocks.map((block, index) => {
+        return block.map((component) =>
+          React.cloneElement(component, { key: `${index}-${Date.now()}` })
+        );
+      });
+
+      return reRenderedBlocks;
     });
-  }, [setBlocks]);
+  };
 
 
 
@@ -207,21 +217,6 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
     return values;
   }
 
-  function saveStrategy(): Array<Record<string, any> | string> {
-    const values = blocks.map((block) => {
-      return block
-        .map((component: any) => {
-          if (component.ref && component.ref.current && typeof component.ref.current.getValue === 'function') {
-            return component.ref.current.getPosition();
-          }
-          return null;
-        })
-        .filter((value) => value !== null);
-    });
-
-    console.log(values, "VALUES")
-    return values
-  }
 
   return (
     <>
