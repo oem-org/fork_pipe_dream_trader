@@ -29,7 +29,12 @@ export class DivideBlocksService {
 
 	processConditions() {
 		console.log(this.conditions, "THIS MAPPED FUCKING CONDITIONS")
-		this.conditions.forEach((condition: { id: number; settings: Array<any> }) => {
+
+		// Sort conditions based on there placement in the strategy
+
+		const sortedConditions = this.conditions.sort((a, b) => a.position - b.position);
+
+		sortedConditions.forEach((condition: { id: number; settings: Array<any> }) => {
 			const { id, settings } = condition;
 			console.log(id, settings, "FIRST PRINT")
 			if ("singleOperator" in settings) {

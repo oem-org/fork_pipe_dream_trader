@@ -21,48 +21,30 @@ export default function ConditionsSection() {
   const [buyConditions, setBuyConditions] = useState<any[]>([]);
   const [refetch, setRefetch] = useState<number>(0)
 
-  async function fetchBuyConditions(strategyId: number) {
+  async function fetchConditions(strategyId: number, side: "buy" | "sell") {
     try {
       const data = await getAllStrategyConditionsApi.getAll(strategyId);
-      const filteredBuyConditions = data
-        .filter((condition) => condition.side === "buy")
+      const filteredConditions = data
+        .filter((condition) => condition.side === side)
         .map((condition) => ({
           id: condition.id,
+          position: condition.position,
           settings: condition.settings,
         }));
 
-      console.log("Filtered Buy Conditions:", filteredBuyConditions);
-      return filteredBuyConditions;
+      console.log(`Filtered ${side.charAt(0).toUpperCase() + side.slice(1)} Conditions:`, filteredConditions);
+      return filteredConditions;
     } catch (error) {
-      console.error("Error fetching buy conditions:", error);
-      throw new Error("Failed to fetch buy conditions");
+      console.error(`Error fetching ${side} conditions:`, error);
+      throw new Error(`Failed to fetch ${side} conditions`);
     }
   }
 
-  async function fetchSellConditions(strategyId: number) {
-    try {
-      const data = await getAllStrategyConditionsApi.getAll(strategyId);
-      const filteredSellConditions = data
-        .filter((condition) => condition.side === "sell")
-        .map((condition) => ({
-          id: condition.id,
-          settings: condition.settings,
-        }));
-
-      console.log("Filtered Sell Conditions:", filteredSellConditions);
-      return filteredSellConditions;
-    } catch (error) {
-      console.error("Error fetching sell conditions:", error);
-      throw new Error("Failed to fetch sell conditions");
-    }
-  }
-
-  // Usage
   async function fetchStrategyConditions() {
     try {
       const [buyConditions, sellConditions] = await Promise.all([
-        fetchBuyConditions(strategyId),
-        fetchSellConditions(strategyId),
+        fetchConditions(strategyId, "buy"),
+        fetchConditions(strategyId, "sell"),
       ]);
 
       setBuyConditions(buyConditions);

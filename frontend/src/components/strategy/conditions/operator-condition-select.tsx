@@ -34,9 +34,13 @@ const OperatorConditionSelect = forwardRef(
       console.log(conditionId, position)
     }
 
+
     useEffect(() => {
       console.log(" THE BLOCK Block Index:", blockIndex);
+      const data = { "position": position }
+      putStrategyConditionsApi.put(strategyId, conditionId, data)
     }, [blockIndex]);
+
     useImperativeHandle(ref, () => ({
       getValue: () => ({ operator: selectedOperator?.name }),
       getPosition: () => ({ postion: position }),

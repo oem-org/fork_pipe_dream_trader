@@ -44,6 +44,7 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
       console.error('Expected conditions to be an array, but got:', typeof conditions)
     }
 
+    console.log(conditions, "CONDITIONS UNSORTED")
     const conditionServiceTest = new DivideBlocksService(conditions);
     conditionServiceTest.processConditions()
     return conditionServiceTest.getConditions()
@@ -185,14 +186,6 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
   }, [setBlocks]);
 
 
-
-  // TODO: maybe delete
-  //function deleteCondition(indexToRemove: number) {
-  //  setMappedConditions((prevConditions: any) => {
-  //    const updatedConditions = prevConditions.filter((_: any, index: number) => index !== indexToRemove);
-  //    return updatedConditions;
-  //  });
-  //}
 
   // Generate the condition string for the backtest
   // It filter out null values from the buttons which are

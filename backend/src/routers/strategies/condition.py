@@ -151,7 +151,7 @@ async def update_strategy_condition(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Strategy condition not found or does not belong to user",
             )
-
+        print(condition_data.items(), "CONDITION DATA ITEMS") 
         for key, value in condition_data.items():
             if key == "settings" and isinstance(value, list):
                 current_settings = strategy_condition.settings or []
@@ -183,8 +183,11 @@ async def update_strategy_condition(
                         print(f"Invalid item at index {index}: {new_item}")
 
                 strategy_condition.settings = updated_settings
+                strategy_condition.position = condition_data['position']
 
             elif value is not None:
+                print("HIT")
+
                 setattr(strategy_condition, key, value)
 
         db.commit()
@@ -358,10 +361,10 @@ async def get_all_strategy_conditions(
             {
                 "id": sc.id,
                 "fk_strategy_id": sc.fk_strategy_id,
-                "fk_strategy_indicator_id_1": sc.fk_strategy_indicator_id_1,
-                "fk_strategy_indicator_id_2": sc.fk_strategy_indicator_id_2,
                 "settings": sc.settings,
                 "side": sc.side,
+                "position": sc.position
+
             }
             for sc in strategy_conditions
         ]

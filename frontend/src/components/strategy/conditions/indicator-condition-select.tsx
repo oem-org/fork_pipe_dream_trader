@@ -4,9 +4,8 @@ import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
 import { StrategyIndicator } from "@/interfaces/StrategyIndicator";
 import useInitialValue from "@/lib/hooks/useInitialValue";
 import { forwardRef, useImperativeHandle, useState } from "react";
-import { useUpdateStrategyCondition } from "@/lib/hooks/react-query/useUpdateStrategyConditions";
 import { useEffect } from "react";
-import { getStrategyConditionApi, putStrategyConditionsApi } from "@/lib/apiClientInstances";
+import { putStrategyConditionsApi } from "@/lib/apiClientInstances";
 
 interface IndicatorConditionSelectProps {
   position: number | undefined;
@@ -14,7 +13,7 @@ interface IndicatorConditionSelectProps {
   onValueChange: (value: string) => void;
   conditionId: number,
   blockIndex: number,
-  isFirst: boolean,
+  isFirst: boolean | undefined,
 }
 
 const IndicatorConditionSelect = forwardRef(
@@ -41,14 +40,16 @@ const IndicatorConditionSelect = forwardRef(
       console.log(conditionId, item.settings)
 
       let data = {}
-
+      //isFirst refers to the placement of the select in the condition block
       if (isFirst) {
         data = {
+          "position": position,
           "settings": [{ "indicator": item.dataframe_column }, { "none": null }, { "none": null }]
         }
       } else {
 
         data = {
+          "position": position,
           "settings": [{ "note": null }, { "none": null }, { indicator: item.dataframe_column }]
         }
       }
@@ -62,8 +63,10 @@ const IndicatorConditionSelect = forwardRef(
 
 
     useEffect(() => {
-      console.log(" THE BLOCK Block Index:", position);
-    }, [position]);
+      console.log(" THE BLOCK Block Index:", blockIndex);
+      const data = { "position": position }
+      putStrategyConditionsApi.put(strategyId, conditionId, data)
+    }, [blockIndex]);
 
     useImperativeHandle(ref, () => ({
 

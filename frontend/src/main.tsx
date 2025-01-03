@@ -50,10 +50,6 @@ const router = createBrowserRouter([
         path: "create-strategy",
         element: <CreateStrategyPage />,
       },
-      {
-        path: "select-strategy",
-        element: <SelectStrategyPage />,
-      },
     ],
   },
   {

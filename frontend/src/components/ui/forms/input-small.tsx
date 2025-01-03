@@ -6,11 +6,11 @@ import { useEffect } from "react";
 
 interface InputSmallProps {
 	initialValue: string;
-	position: number;
+	position: number | undefined;
 	name: string;
 	onValueChange: (value: string) => void;
 	conditionId: number
-	blockIndex: number | undefined
+	blockIndex: number
 
 }
 
@@ -25,13 +25,16 @@ const InputSmall = forwardRef(({ blockIndex, position, initialValue, name, onVal
 			onValueChange(newValue);
 		}
 		console.log(conditionId, position)
-		const data = { "position": blockIndex, "settings": [{ "indicator": null }, { "operator": null }, { "value": newValue }] }
+		const data = { "position": position, "settings": [{ "indicator": null }, { "operator": null }, { "value": newValue }] }
 		putStrategyConditionsApi.put(strategyId, conditionId, data)
 	}
 
 	useEffect(() => {
 		console.log(" THE BLOCK Block Index:", blockIndex);
+		const data = { "position": position }
+		putStrategyConditionsApi.put(strategyId, conditionId, data)
 	}, [blockIndex]);
+
 	useImperativeHandle(ref, () => ({
 		getValue: () => ({ value: value }),
 		getPosition: () => ({ postion: position }),
