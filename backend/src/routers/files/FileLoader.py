@@ -10,6 +10,7 @@ class FileLoader:
         self.file_type = self._file_type_check()
         self.df = pd.DataFrame()
         self.pickle_dir = Path("pickled_files")
+        self.timeframe = ""
 
     def _file_type_check(self) -> FileTypeEnum | None:
         """Checks the file type based on the extension"""
@@ -32,6 +33,45 @@ class FileLoader:
         print("No matching column found.")
         return None
 
+    def determine_time_interval(self):
+        """
+        Creates the timeinterval the chart will use
+        """
+        try:
+            TIMEFRAME = {
+                "1m": 60,
+                "5m": 300,
+                "15m":900,
+                "30m":1800,
+                "1h": 3600,
+                "4h": 7200,
+                "8h":14400,
+                "12h":43200,
+                "daily": 86400,
+            }
+
+
+            time_diffs = self.df["time"].diff()
+
+            # First row will allways be nan after diff()
+            unique_intervals = time_diffs.dropna().unique()
+
+            if len(unique_intervals) == 1:
+                interval_seconds = unique_intervals[0]
+
+                print (
+                    f" {interval_seconds} seconds\n"
+                )
+                for timeframe, timeframe_seconds in TIMEFRAME.items():
+                    # Interval_seconds is a negative number and a float because of the
+                    # The way diff() compares
+
+                    if interval_seconds + timeframe_seconds == 0:
+                        self.timeframe = timeframe
+            else:
+                raise Exception("Timeframe does not have unique intervals")
+        except Exception as e:
+            raise Exception(f"Error determining time interval: {e}")
     def load_or_reload(self):
         """
         Checks if a pickle file with the same name as the original file exists.
@@ -95,16 +135,20 @@ class FileLoader:
                 )
         
             
-            # Coerce inserts NaN or NaT if it gets bad row, instead of raising a exception, so its possible to identify excatly which rows are bad
+            # Coerce inserts NaN or NaT if it gets a bad row, instead of raising a exception, so its possible to identify excatly which rows are bad
             self.df["volume"] = pd.to_numeric(self.df["volume"], errors="coerce")
             self.df["open"] = pd.to_numeric(self.df["open"], errors="coerce")
             self.df["close"] = pd.to_numeric(self.df["close"], errors="coerce")
             self.df["low"] = pd.to_numeric(self.df["low"], errors="coerce")
             self.df["high"] = pd.to_numeric(self.df["high"], errors="coerce")
             self.df.set_index(pd.DatetimeIndex(self.df["time"]), inplace=True)
-            # self.df["time"] = pd.to_davetime(
+            # self.df["time"] = pd.to_datetime(
             #     self.df["time"], unit="s", errors="coerce"
             # )
+            
+            self.determine_time_interval()
+
+
         except Exception as e:
             raise Exception(f"Error reading file: {e}")
 

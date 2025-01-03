@@ -10,12 +10,10 @@ import Charts from "@/components/ui/chart/charts";
 import Modal from "@/components/ui/modal";
 import { InfoIcon } from "lucide-react";
 import SettingsDropdown from "@/components/strategy/settings-dropdown";
-import BacktestSection from "@/components/strategy/backtest-section";
 import { useUpdateStrategy } from "@/lib/hooks/react-query/useUpdateStrategy";
 import ConditionsSection from "@/components/strategy/conditions/conditions-section";
-import { getFileApi } from "@/lib/apiClientInstances";
 import { queryClient } from "@/main";
-import { Button } from "@/components/ui/buttons/button";
+import { removeSurroundingQuotes } from "@/lib/utils/string-utils";
 
 //TODO: Queries are persisting 
 
@@ -26,7 +24,7 @@ export default function StrategyPage() {
   const paramId = id ? parseInt(id) : NaN;
   const { fileId, strategyId, setFileId, setStrategyId } = useStrategyStore();
 
-  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState<boolean>(false);
   const toggleInfoModal = () => setIsInfoModalOpen(!isInfoModalOpen);
 
   const { data: strategy, error, isError, isLoading } = getStrategyQuery(paramId);
@@ -35,10 +33,12 @@ export default function StrategyPage() {
   const { mutateAsync: updateStrategyMutation } = useUpdateStrategy();
   const [initialValue, setInitialValue] = useState<File>()
 
+  const [pair, setPair] = useState<string>("")
+  const [timeframe, setTimeframe] = useState<string>("")
 
   useEffect(() => {
     console.log(paramId, "stragety id", strategyId);
-    // Remove cache on a navigating to page
+    // Remove entire cache on navigating to the page
     queryClient.invalidateQueries()
 
     setStrategyId(paramId);
@@ -91,7 +91,12 @@ export default function StrategyPage() {
                 </div>
                 <SettingsDropdown strategyId={strategyId} />
               </div>
-
+              <div className="flex flex-row">
+                <h4 className="h4">Pair:</h4> <p> &nbsp;{removeSurroundingQuotes(pair)}</p>
+              </div>
+              <div className="flex flex-row">
+                <h4 className="h4">Timeframe:</h4> <p> &nbsp;{removeSurroundingQuotes(timeframe)}</p>
+              </div>
               <hr className='py-1' />
               <Modal onClose={toggleInfoModal} isOpen={isInfoModalOpen} title="Description">
                 <pre className="whitespace-pre-wrap break-words p-4">
@@ -118,8 +123,9 @@ export default function StrategyPage() {
             </div>
           </section>
           <section className="grid grid-cols-1 lg:grid-cols-8 gap-4">
+            {/* Loads all data related to the indicators and the chart and saves it in state */}
             <div className="lg:col-span-2 p-4 bg-gray-100 rounded-lg">
-              <IndicatorSection fileId={fileId} strategyId={strategyId} />
+              <IndicatorSection setTimeframe={setTimeframe} setPair={setPair} fileId={fileId} strategyId={strategyId} />
             </div>
             <div className="lg:col-span-6 p-4 bg-gray-100 rounded-lg">
               <ConditionsSection />

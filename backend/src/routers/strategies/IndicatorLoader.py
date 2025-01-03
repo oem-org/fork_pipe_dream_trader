@@ -25,6 +25,7 @@ class IndicatorLoader:
     def __init__(self, df: pd.DataFrame, indicators: List[Dict]):
         self.df = df
         self.indicators = indicators
+        self.timeframe = ""
         self.columns = []
         self.response = {}
         self.pickle_dir = Path.cwd() / "files" / "pickled_strategies"
@@ -43,7 +44,6 @@ class IndicatorLoader:
 
 
         if len(self.indicators) > 0:
-            print(self.indicators, "aaai ieendicen indicators")
             Strategy = ta.Strategy(
                 name="indicators",
             ta=self.indicators
@@ -57,7 +57,6 @@ class IndicatorLoader:
         self.df.dropna(inplace=True)
         self.determine_time_interval()
         # TODO: enable pickle
-        # self.save_pickle("pkl.pkl")
     def split_dataframe(self):
         """
         Create JSON strings to store dataframes of each indicator. column name and trading par
@@ -100,7 +99,6 @@ class IndicatorLoader:
             self.response = json_dfs
 
 
-    # TODO: finish time
     def determine_time_interval(self):
         """
         Creates the timeinterval the chart will use
@@ -121,7 +119,7 @@ class IndicatorLoader:
 
             time_diffs = self.df["time"].diff()
 
-            # First row will allways be nan with diff
+            # First row will allways be nan after diff()
             unique_intervals = time_diffs.dropna().unique()
 
             if len(unique_intervals) == 1:

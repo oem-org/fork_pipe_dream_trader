@@ -422,9 +422,6 @@ async def backtest(
         # buy = {"buy": [["df.SMA_10 < 1"]]}
         # sell = {"sell": [["df.SMA_10 > 1.1"]]}
 
-        buy = {"buy": [["SMA_10 < 1"]]}
-        sell = {"sell": [["SMA_10 > 1.1"]]}
-
         # Loop over buy and sell conditions
         buy_results = [f"Processed buy condition: {cond}" for cond in buy_conditions]
         sell_results = [f"Processed sell condition: {cond}" for cond in sell_conditions]
@@ -436,15 +433,14 @@ async def backtest(
 
         # buy_eval_string = backtest.build_conditions("buy", buy['buy'])
         # sell_eval_string = backtest.build_conditions("sell", sell['sell'])
-        result = backtest.run()
-        print(result)
+        pnl, drawdown = backtest.run()
+        print(pnl, drawdown)
 
         return {
-            "buy_results": buy_results,
-            "sell_results": sell_results,
-            "strategy_id": strategy_id,
-            "user": user,
-            "backtest_result": result,
+            "buy_string": buy_eval_string,
+            "sell_string": sell_eval_string,
+            "pnl": pnl,
+            "drawdown": drawdown,
         }
 
     except Exception as e:

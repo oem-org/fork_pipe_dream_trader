@@ -10,15 +10,19 @@ import { parseJsonStrings } from "@/lib/utils/object-utils";
 import TimeseriesService from "@/lib/services/TimeseriesService";
 import { queryClient } from "@/main";
 import { useChartStore } from "@/lib/hooks/stores/useChartStore";
-
+import { removeSurroundingQuotes } from "@/lib/utils/string-utils";
 interface IndicatorSectionProps {
 	strategyId: number;
 	fileId: number | undefined;
+	setTimeframe: React.Dispatch<React.SetStateAction<string>>;
+	setPair: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const IndicatorSection = memo(function IndicatorSection({
 	strategyId,
 	fileId,
+	setTimeframe,
+	setPair,
 }: IndicatorSectionProps) {
 	const { mutateAsync: addIndicatorMutation } = useAddIndicator(strategyId);
 	const { data: strategyIndicators, error: siError, isLoading: siIsLoading } = getStrategyIndicatorsQuery(strategyId);
@@ -45,17 +49,25 @@ const IndicatorSection = memo(function IndicatorSection({
 	} = useChartStore()
 
 	useEffect(() => {
-		async function loadData() {
+		async function loadData(): Promise<void> {
 			if (strategyId) {
 				let timeperiod = "recent"
 				const data = await getTimeseriesApi.getQueryString(`timeperiod=${timeperiod}&strategy=${strategyId}`);
-				const parsed = parseJsonStrings(data);
+				setTimeframe(data.timeframe)
+				setPair(data.pair)
 
+				// data contains a json object with info on columns, pair and timeframe
+				// aswell as nested objects containing the timeseries data for the indicators
+				// the nested objects needs to be parsed from json strings
+
+				const parsed = parseJsonStrings(data);
+				console.log(parsed, "PARSED")
 				const timeseriesService = new TimeseriesService();
 				await timeseriesService.processOhlc(parsed.ohlc);
 				await timeseriesService.processVolume(parsed.volume);
 
 				const indicatorInfo = parsed.indicator_info;
+				console.log(indicatorInfo, "INDICATOR INFO")
 				delete parsed.ohlc;
 				delete parsed.volume;
 				delete parsed.indicator_info;

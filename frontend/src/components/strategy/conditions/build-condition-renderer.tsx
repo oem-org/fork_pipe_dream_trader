@@ -31,6 +31,7 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
   const [blocks, setBlocks] = useState<JSX.Element[][]>([]);
   const { strategyId } = useStrategyStore()
   const [mappedConditions, setMappedConditions] = useState<any>([]);
+  const [updateCount, setUpdateCount] = useState(0);
 
   useImperativeHandle(ref, () => ({
     createConditionString,
@@ -161,6 +162,7 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
   const handleValueChange = (blockIndex: number, newValue: any) => {
     setBlocks((prevBlocks) => {
       const updatedBlocks = prevBlocks.map((block, index) => {
+        console.log(newValue, "newValue")
         if (index === blockIndex) {
           return block.map((component: any) => {
             if (component.key === blockIndex) {
@@ -176,24 +178,22 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
     //createConditionString()
   };
 
-
-
-  const moveBlock = (fromIndex: number, toIndex: number) => {
+  function moveBlock(fromIndex: number, toIndex: number) {
     setBlocks((prevBlocks) => {
       const updatedBlocks = [...prevBlocks];
       const [movedBlock] = updatedBlocks.splice(fromIndex, 1);
       updatedBlocks.splice(toIndex, 0, movedBlock);
-
-      // Force re-render by updating block keys
-      const reRenderedBlocks = updatedBlocks.map((block, index) => {
-        return block.map((component) =>
-          React.cloneElement(component, { key: `${index}-${Date.now()}` })
-        );
-      });
-
-      return reRenderedBlocks;
+      return updatedBlocks;
     });
-  };
+
+    // Trigger re-render by updating state
+    setUpdateCount((prev) => prev + 1);
+  }
+
+  // Re-render blocks when updateCount changes
+  useEffect(() => {
+    setBlocks((prevBlocks) => [...prevBlocks]);
+  }, [updateCount]);
 
 
 

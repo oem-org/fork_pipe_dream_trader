@@ -85,6 +85,8 @@ class Backtester:
                 self.df['buy'] = new_column
             if side == "sell":
                 self.df['sell'] = new_column
+        
+            return expression
 
         except Exception as e:
             print(f"Error evaluating expression: {e}")
