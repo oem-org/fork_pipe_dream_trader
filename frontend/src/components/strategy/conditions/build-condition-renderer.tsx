@@ -65,7 +65,7 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
 
     let currentBlock: JSX.Element[] = [];
     const initialBlocks: JSX.Element[][] = [];
-
+    let startCondition = "DDDDD"
     mappedConditions.forEach((condition: any, index: number) => {
       if ("conditionId" in condition) {
         console.log(condition.id, condition, "WTFFF")
@@ -75,7 +75,7 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
         currentBlock.push(deleteButton)
         initialBlocks.push(currentBlock);
         currentBlock = [];
-
+        startCondition = "HHH"
       } else {
 
         const [kind, value, id] = condition as [string, string, number];
@@ -85,9 +85,9 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
           case "singleOperator":
             component = (
               <SingleOperator
-                blockIndex={undefined}
+                blockIndex={index}
                 conditionId={id}
-                position={index}
+                position={undefined}
                 ref={ref}
                 key={index}
                 initialValue={value}
@@ -98,9 +98,10 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
           case "indicator":
             component = (
               <IndicatorConditionSelect
-                blockIndex={undefined}
+                isFirst={undefined}
+                blockIndex={index}
                 conditionId={id}
-                position={index}
+                position={undefined}
                 ref={ref}
                 key={index}
                 initialValue={value}
@@ -111,9 +112,9 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
           case "operator":
             component = (
               <OperatorConditionSelect
-                blockIndex={undefined}
+                blockIndex={index}
                 conditionId={id}
-                position={index}
+                position={undefined}
                 ref={ref}
                 key={index}
                 initialValue={value}
@@ -124,9 +125,9 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
           case "value":
             component = (
               <InputSmall
-                blockIndex={undefined}
+                blockIndex={index}
                 conditionId={id}
-                position={index}
+                position={undefined}
                 ref={ref}
                 key={index}
                 name="Value"
@@ -234,16 +235,16 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
       <DndProvider backend={HTML5Backend}>
         <div className="w-full">
           {blocks.length > 0 ? (
-            blocks.map((block, blockIndex) => (
+            blocks.map((block, position) => (
               <DraggableBlock
-                key={`block-${blockIndex}`}
-                id={blockIndex}
-                index={blockIndex}
+                key={`block-${position}`}
+                id={position}
+                index={position}
                 moveBlock={moveBlock}
               >{/* Pass blockIndex to each component inside the block */}
                 {
-                  block.map((component) => (
-                    React.cloneElement(component, { blockIndex })
+                  block.map((component, index) => (
+                    React.cloneElement(component, { position, isFirst: index === 0 })
                   ))
                 }
               </DraggableBlock>

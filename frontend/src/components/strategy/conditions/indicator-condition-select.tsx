@@ -9,15 +9,16 @@ import { useEffect } from "react";
 import { getStrategyConditionApi, putStrategyConditionsApi } from "@/lib/apiClientInstances";
 
 interface IndicatorConditionSelectProps {
-  position: number;
+  position: number | undefined;
   initialValue: string;
   onValueChange: (value: string) => void;
   conditionId: number,
-  blockIndex: number | undefined,
+  blockIndex: number,
+  isFirst: boolean,
 }
 
 const IndicatorConditionSelect = forwardRef(
-  ({ blockIndex, position, initialValue, onValueChange, conditionId }: IndicatorConditionSelectProps, ref) => {
+  ({ blockIndex, isFirst, position, initialValue, onValueChange, conditionId }: IndicatorConditionSelectProps, ref) => {
     const { strategyId } = useStrategyStore();
     const { data: indicatorSettings } = getStrategyIndicatorsQuery(strategyId);
     const findInitialValue = useInitialValue(
@@ -38,29 +39,42 @@ const IndicatorConditionSelect = forwardRef(
         onValueChange(item.dataframe_column);
       }
       console.log(conditionId, item.settings)
-      //const data = {
-      //  "settings": {item.dataframe_column
-      //}
+
+      let data = {}
+
+      if (isFirst) {
+        data = {
+          "settings": [{ "indicator": item.dataframe_column }, { "none": null }, { "none": null }]
+        }
+      } else {
+
+        data = {
+          "settings": [{ "note": null }, { "none": null }, { indicator: item.dataframe_column }]
+        }
+      }
+
+      putStrategyConditionsApi.put(strategyId, conditionId, data)
+      console.log(position, conditionId, data, "IndicatorCondtionSelect")
+
       //putStrategyConditionsApi(strategyId, conditionId, data)
       //console.log(position, conditionId, data, "IndicatorCondtionSelect")
     }
 
 
     useEffect(() => {
-      console.log(" THE BLOCK Block Index:", blockIndex);
-    }, [blockIndex]);
+      console.log(" THE BLOCK Block Index:", position);
+    }, [position]);
 
-    // Pass the initial value on first render while nothing has been selected yet
-    // Otherwise will return a null value
     useImperativeHandle(ref, () => ({
 
       getValue: () => ({ indicator: selectedIndicator?.dataframe_column || initialValue }),
       getPosition: () => ({ position: position }),
 
     }));
-
+    console.log(isFirst, "ISFIRST")
     return (
       <div>
+        {isFirst && <p>{isFirst ? "This is the first element" : "ggggg"}</p>}
         <GenericSelect<StrategyIndicator>
           data={indicatorSettings || []}
           keyExtractor={(indicator) => indicator.id}

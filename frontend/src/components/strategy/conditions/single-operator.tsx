@@ -7,11 +7,11 @@ import { useEffect } from "react";
 import { putStrategyConditionsApi } from "@/lib/apiClientInstances";
 
 interface SingleOperatorProps {
-  position: number;
+  position: number | undefined;
   initialValue: string;
   onValueChange: (value: string) => void;
   conditionId: number,
-  blockIndex?: number | undefined,
+  blockIndex?: number
 }
 
 export interface StrategyCondition {
@@ -37,7 +37,7 @@ const SingleOperator = forwardRef(
         setSelectedOperator(operator);
         if (onValueChange) {
           onValueChange(operator.name);
-          const data = { "position": blockIndex, "settings": { "singleOperator": operator.name } }
+          const data = { "position": position, "settings": { "singleOperator": operator.name } }
           putStrategyConditionsApi.put(strategyId, conditionId, data)
         }
       } catch (error) {
@@ -47,7 +47,7 @@ const SingleOperator = forwardRef(
 
     useEffect(() => {
       console.log(" THE BLOCK Block Index:", blockIndex);
-      const data = { "position": blockIndex }
+      const data = { "position": position }
       putStrategyConditionsApi.put(strategyId, conditionId, data)
     }, [blockIndex]);
 

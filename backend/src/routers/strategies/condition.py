@@ -114,6 +114,7 @@ async def add_strategy_condition(
         )
 
 
+# TODO fix column
 @router.put("/{strategy_id}/condition/{condition_id}", status_code=status.HTTP_200_OK)
 async def update_strategy_condition(
     strategy_id: int,
@@ -153,11 +154,9 @@ async def update_strategy_condition(
 
         for key, value in condition_data.items():
             if key == "settings" and isinstance(value, list):
-                # Handle settings update
                 current_settings = strategy_condition.settings or []
                 print(f"Current settings: {current_settings}")
 
-                # Create a new list to hold the updated settings
                 updated_settings = []
 
                 for index, new_item in enumerate(value):
@@ -183,13 +182,11 @@ async def update_strategy_condition(
                     else:
                         print(f"Invalid item at index {index}: {new_item}")
 
-                # Assign the updated settings back to the strategy condition
                 strategy_condition.settings = updated_settings
 
             elif value is not None:
                 setattr(strategy_condition, key, value)
 
-        # Commit the changes to the database
         db.commit()
         db.refresh(strategy_condition)
         print(f"Updated StrategyCondition: {strategy_condition}")

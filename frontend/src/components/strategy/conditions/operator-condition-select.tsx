@@ -3,14 +3,16 @@ import { Operator } from "@/interfaces/Operator";
 import GenericSelect from "@/components/ui/lists/generic-select";
 import { operators } from "./operators";
 import { useEffect } from "react";
+import { putStrategyConditionsApi } from "@/lib/apiClientInstances";
+import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
 
 
 interface OperatorConditionSelectProps {
-  position: number;
+  position: number | undefined;
   conditionId: number
   initialValue: string;
   onValueChange: (value: string) => void;
-  blockIndex: number | undefined,
+  blockIndex: number,
 }
 
 const OperatorConditionSelect = forwardRef(
@@ -19,12 +21,16 @@ const OperatorConditionSelect = forwardRef(
       operators.find((operator) => operator.name === initialValue) || null
     );
 
+    const { strategyId } = useStrategyStore();
     function handleOperatorChange(operator: Operator) {
       console.log("Selected operator:", operator);
       setSelectedOperator(operator);
       if (onValueChange) {
         onValueChange(operator.name);
       }
+
+      const data = { "position": position, "settings": [{ "none": null }, { "operator": operator.name }, { "none": null }] }
+      putStrategyConditionsApi.put(strategyId, conditionId, data)
       console.log(conditionId, position)
     }
 
