@@ -144,10 +144,10 @@ export class GetService<R> extends ApiService {
 }
 
 export class GetRelationService<R> extends ApiService {
-	async get(id: number): Promise<R> {
+	async get(id: number, modelId: number): Promise<R> {
 		try {
 			const response = await this.axiosInstance.get<R>(
-				`${this.endpoint}/${id}/${this.model}`
+				`${this.endpoint}/${id}/${this.model}/${modelId}`
 				, {
 					headers: await this.getHeaders(),
 				});

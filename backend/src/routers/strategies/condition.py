@@ -152,9 +152,44 @@ async def update_strategy_condition(
             )
 
         for key, value in condition_data.items():
-            print(key, value, "updating!!!!!!!!!!!!!!!!")
-            setattr(strategy_condition, key, value)
+            if key == "settings" and isinstance(value, list):
+                # Handle settings update
+                current_settings = strategy_condition.settings or []
+                print(f"Current settings: {current_settings}")
 
+                # Create a new list to hold the updated settings
+                updated_settings = []
+
+                for index, new_item in enumerate(value):
+                    if isinstance(new_item, dict):
+                        if index < len(current_settings):
+                            # Update existing settings
+                            old_item = current_settings[index]
+                            updated_item = old_item.copy()
+
+                            for sub_key, sub_value in new_item.items():
+                                if sub_value is not None and sub_value != old_item.get(
+                                    sub_key
+                                ):
+                                    updated_item[sub_key] = sub_value
+
+                            updated_settings.append(updated_item)
+                        else:
+                            # Add new item if valid
+                            if any(
+                                sub_value is not None for sub_value in new_item.values()
+                            ):
+                                updated_settings.append(new_item)
+                    else:
+                        print(f"Invalid item at index {index}: {new_item}")
+
+                # Assign the updated settings back to the strategy condition
+                strategy_condition.settings = updated_settings
+
+            elif value is not None:
+                setattr(strategy_condition, key, value)
+
+        # Commit the changes to the database
         db.commit()
         db.refresh(strategy_condition)
         print(f"Updated StrategyCondition: {strategy_condition}")
@@ -173,6 +208,7 @@ async def update_strategy_condition(
 
     except SQLAlchemyError as e:
         db.rollback()
+        print(f"Database error: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to update strategy condition",
@@ -180,6 +216,7 @@ async def update_strategy_condition(
 
     except Exception as e:
         db.rollback()
+        print(f"Unexpected error: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Unexpected error occurred",
@@ -244,9 +281,49 @@ async def delete_strategy_condition(
         )
 
 
+@router.get("/{strategy_id}/condition/{condition_id}")
+async def get_strategy_conditions(
+    strategy_id: int,
+    condition_id: int,
+    db: db_dependency,
+    user: user_dependency,
+):
+    try:
+        # Query the database for the specific StrategyCondition
+        strategy_condition = (
+            db.query(StrategyConditions)
+            .filter(
+                StrategyConditions.strategy_id == strategy_id,
+                StrategyConditions.condition_id == condition_id,
+            )
+            .first()
+        )
+
+        if strategy_condition is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"StrategyCondition with strategy_id={strategy_id} and condition_id={condition_id} not found",
+            )
+
+        # If found, return the StrategyCondition object
+        return strategy_condition
+
+    except SQLAlchemyError as e:
+        # Handle any database-related errors
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to fetch strategy conditions from the database",
+        )
+
+    except Exception as e:
+        # Handle unexpected errors
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Unexpected error occurred",
+        )
+
+
 # TODO: fix errors codes
-
-
 @router.get("/{strategy_id}/condition", status_code=status.HTTP_200_OK)
 async def get_all_strategy_conditions(
     strategy_id: int,

@@ -1,5 +1,9 @@
+import { putStrategyConditionsApi } from "@/lib/apiClientInstances";
+import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
 import React, { useState, forwardRef, useImperativeHandle } from "react";
+import { getStrategyConditionApi } from "@/lib/apiClientInstances";
 import { useEffect } from "react";
+
 interface InputSmallProps {
 	initialValue: string;
 	position: number;
@@ -12,7 +16,8 @@ interface InputSmallProps {
 
 const InputSmall = forwardRef(({ blockIndex, position, initialValue, name, onValueChange, conditionId }: InputSmallProps, ref) => {
 	const [value, setValue] = useState(initialValue);
-
+	const { strategyId } = useStrategyStore();
+	//getStrategyConditionApi.get(strategyId, conditionId)
 	function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
 		const newValue = event.target.value;
 		setValue(newValue);
@@ -20,6 +25,8 @@ const InputSmall = forwardRef(({ blockIndex, position, initialValue, name, onVal
 			onValueChange(newValue);
 		}
 		console.log(conditionId, position)
+		const data = { "position": blockIndex, "settings": [{ "indicator": null }, { "operator": null }, { "value": newValue }] }
+		putStrategyConditionsApi.put(strategyId, conditionId, data)
 	}
 
 	useEffect(() => {
