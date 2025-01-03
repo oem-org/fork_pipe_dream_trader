@@ -5,7 +5,7 @@ import OperatorConditionSelect from "./operator-condition-select";
 import { DndProvider } from "react-dnd";
 import DraggableBlock from "./draggable-block";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useCallback, useState, useEffect, forwardRef, useImperativeHandle } from "react";
+import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import React from "react";
 import { DivideBlocksService } from "@/lib/services/ComponentMappingService";
 import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
@@ -18,16 +18,13 @@ interface CreateConditionStringRef {
 
 interface BuildConditionsRendererProps {
   conditions: Array<any>,
-  side: "buy" | "sell"
-  ref: React.RefObject<CreateConditionStringRef>;
   setRefetch: React.Dispatch<React.SetStateAction<number>>,
-
 }
 
 // TODO: Set types for conditions
 //
 
-function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRendererProps, ref: CreateConditionStringRef) {
+const BuildConditionRenderer = forwardRef(({ conditions, setRefetch }: BuildConditionsRendererProps, ref: React.Ref<CreateConditionStringRef>) => {
   const [blocks, setBlocks] = useState<JSX.Element[][]>([]);
   const { strategyId } = useStrategyStore()
   const [mappedConditions, setMappedConditions] = useState<any>([]);
@@ -51,7 +48,6 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
   useEffect(() => {
     if (conditions.length > 0) {
       const mapped = mapConditions()
-      console.log(mapped, "MAPPED")
       setMappedConditions(mapped)
     } else {
       setMappedConditions([])
@@ -239,5 +235,5 @@ function BuildConditionRenderer({ conditions, setRefetch }: BuildConditionsRende
       </DndProvider>
     </>
   );
-}
-export default forwardRef(BuildConditionRenderer);
+})
+export default BuildConditionRenderer

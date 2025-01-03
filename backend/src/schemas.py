@@ -51,14 +51,12 @@ class UpdateStrategyRequest(BaseModel):
     id: int
     name: str
     description: str
-    data_source: Union[FileSourceRequest, DatabaseSourceRequest]
     fk_file_id: Optional[int]
 
 
 class CreateStrategyRequest(BaseModel):
     name: str
     description: str
-    data_source: Union[FileSourceRequest, DatabaseSourceRequest]
     fk_file_id: Optional[int]
 
 
@@ -90,7 +88,6 @@ class StrategySchema(BaseModel):
     name: str
     description: Optional[str] = None
     fk_user_id: int
-    data_source: Optional[Dict] = None
     model_config = {"from_attributes": True}
 
 
@@ -107,7 +104,6 @@ class StrategyResponseSchema(BaseModel):
     description: Optional[str] = None
     fk_user_id: int
     indicators: Optional[Any] = None
-    data_source: Optional[Any] = None
     model_config = {"from_attributes": True}
 
 

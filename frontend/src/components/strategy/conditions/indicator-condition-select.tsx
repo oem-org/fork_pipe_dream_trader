@@ -77,7 +77,6 @@ const IndicatorConditionSelect = forwardRef(
     console.log(isFirst, "ISFIRST")
     return (
       <div>
-        {isFirst && <p>{isFirst ? "This is the first element" : "ggggg"}</p>}
         <GenericSelect<StrategyIndicator>
           data={indicatorSettings || []}
           keyExtractor={(indicator) => indicator.id}

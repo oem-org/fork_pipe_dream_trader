@@ -89,7 +89,6 @@ class StrategyResponse(BaseModel):
     name: str
     description: Optional[str] = None
     indicators: Optional[dict] = None
-    data_source: Optional[Dict[str, Any]] = None
 
     model_config = {"from_attributes": True}
 

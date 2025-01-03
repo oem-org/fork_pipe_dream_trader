@@ -40,11 +40,6 @@ export default function StrategyInfo({ strategyId }: StrategyInfoProps) {
 		);
 	}
 
-	// Type guard to check if the data_source is a FileSource
-	function isFileSource(dataSource: FileSource | DatabaseSource): dataSource is FileSource {
-		return (dataSource as FileSource).fk_file_id !== undefined;
-	}
-
 	return (
 		<div>
 			<h3 className="h3 font-bold ">{strategy.name}</h3>
@@ -54,24 +49,6 @@ export default function StrategyInfo({ strategyId }: StrategyInfoProps) {
 			{strategy.fk_file_id && (
 				<div className="mt-4">
 					<h3 className="h3 ">File Information</h3>
-				</div>
-			)}
-
-			{strategy.data_source && (
-				<div className="mt-4">
-					<h3 className="h3 ">Data Source</h3>
-					{isFileSource(strategy.data_source) ? (
-						<div >
-							<p>File ID: {strategy.data_source.fk_file_id}</p>
-							{strategy.data_source.timeperiod && <p>Timeperiod: {strategy.data_source.timeperiod}</p>}
-						</div>
-					) : (
-						<div >
-							<p>Table: {strategy.data_source.table}</p>
-							<p>Pair: {strategy.data_source.pair}</p>
-							{strategy.data_source.timeperiod && <p>Timeperiod: {strategy.data_source.timeperiod}</p>}
-						</div>
-					)}
 				</div>
 			)}
 

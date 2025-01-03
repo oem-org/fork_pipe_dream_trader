@@ -48,7 +48,6 @@ class Strategies(Base):
     name = Column(String)
     description = Column(String)
     fk_user_id = Column(Integer, ForeignKey("users.id"))
-    data_source = Column(JSON, nullable=True)
     fk_file_id = Column(Integer, ForeignKey("files.id"))
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
@@ -105,29 +104,6 @@ class Indicators(Base):
     indicator_info = Column(String)
 
     strategy_indicators = relationship("StrategyIndicators", back_populates="indicator")
-
-
-class TimescaleTables(Base):
-    __tablename__ = "timescale_tables"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-
-    pairs = relationship(
-        "Pairs", back_populates="timescale_table", cascade="all, delete-orphan"
-    )
-
-
-class Pairs(Base):
-    __tablename__ = "pairs"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-    fk_timescale_table_id = Column(
-        Integer, ForeignKey("timescale_tables.id", ondelete="CASCADE")
-    )
-
-    timescale_table = relationship("TimescaleTables", back_populates="pairs")
 
 
 class Files(Base):
