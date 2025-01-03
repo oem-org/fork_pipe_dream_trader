@@ -1,19 +1,20 @@
 import { Button } from '@/components/ui/buttons/button';
 import { BacktestService } from '@/lib/services/BacktestService';
 import BuildConditionRenderer from './build-condition-renderer';
-import { useRef, useState, useEffect } from 'react';
+import { useCallback, useRef, useState, useEffect } from 'react';
 import CreateConditions from './create-conditions';
 import useStrategyStore from '@/lib/hooks/stores/useStrategyStore';
-import { getAllStrategyConditionsApi, postBacktestApi, postStrategyConditionsApi } from '@/lib/apiClientInstances';
+import { getAllStrategyConditionsApi, postStrategyBacktestApi, postStrategyConditionsApi } from '@/lib/apiClientInstances';
 import { CreateBacktestRequest } from '@/interfaces/Backtest';
 
+
 export default function ConditionsSection() {
-  const { strategyId } = useStrategyStore()
+  const { strategyId } = useStrategyStore();
   const [sellConditions, setSellConditions] = useState<any[]>([]);
   const [buyConditions, setBuyConditions] = useState<any[]>([]);
-  const [refetch, setRefetch] = useState<number>(0)
+  const [refetch, setRefetch] = useState<number>(0);
 
-  async function fetchConditions(strategyId: number, side: "buy" | "sell") {
+  const fetchConditions = useCallback(async (strategyId: number, side: "buy" | "sell") => {
     try {
       const data = await getAllStrategyConditionsApi.getAll(strategyId);
       const filteredConditions = data
@@ -30,9 +31,9 @@ export default function ConditionsSection() {
       console.error(`Error fetching ${side} conditions:`, error);
       throw new Error(`Failed to fetch ${side} conditions`);
     }
-  }
+  }, []);
 
-  async function fetchStrategyConditions() {
+  const fetchStrategyConditions = useCallback(async () => {
     try {
       const [buyConditions, sellConditions] = await Promise.all([
         fetchConditions(strategyId, "buy"),
@@ -44,13 +45,13 @@ export default function ConditionsSection() {
     } catch (error) {
       console.error("Error in fetchStrategyConditions:", error);
     }
-  }
+  }, [fetchConditions, strategyId]);
 
   useEffect(() => {
     fetchStrategyConditions();
-  }, [strategyId, refetch]);
+  }, [fetchStrategyConditions, refetch]);
 
-  const addCondition = async (newCondition: any) => {
+  const addCondition = useCallback(async (newCondition: any) => {
     try {
       console.log("Adding!!!!!!!!!!!!!!!!! this strategy condition", newCondition);
 
@@ -59,18 +60,18 @@ export default function ConditionsSection() {
         side: newCondition.side,
       });
 
-      console.log("Condition added successfully", response);
+      console.log("Condition added successfully!!!!!!!!!!!!!!!!!!!!!", response);
 
-      fetchStrategyConditions();
+      await fetchStrategyConditions(); // Ensure updated conditions are fetched.
     } catch (error) {
       console.error("Error adding condition:", error);
     }
-  };
+  }, [fetchStrategyConditions, strategyId]);
 
   const buyStringRef = useRef<{ createConditionString: () => Array<any> }>(null);
   const sellStringRef = useRef<{ createConditionString: () => Array<any> }>(null);
 
-  function runBacktest(): void {
+  const runBacktest = useCallback(() => {
     let buy = [];
     let sell = [];
     if (buyStringRef.current) {
@@ -93,8 +94,8 @@ export default function ConditionsSection() {
     };
     console.log("OUTPUT:", sellConditions);
     console.log("OUTPUT:", buyConditions);
-    postBacktestApi.post(strategyId, data);
-  };
+    postStrategyBacktestApi.post(strategyId, data);
+  }, [strategyId]);
 
   return (
     <div>

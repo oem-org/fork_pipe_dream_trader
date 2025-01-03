@@ -24,7 +24,7 @@ export default function SimpleList<T>({
 	return (
 		<div className="border rounded-md overflow-hidden">
 			<button
-				className="w-full p-4 flex justify-between items-center bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
+				className="w-full p-2 flex justify-between items-center bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
 				onClick={() => setIsOpen(!isOpen)}
 			>
 				<span className="font-semibold">{title}</span>
@@ -44,7 +44,7 @@ export default function SimpleList<T>({
 							className="border-t border-gray-200"
 						>
 							<button
-								className="w-full p-4 text-left text-md font-normal text-black hover:bg-gray-100 transition-colors duration-200"
+								className="w-full p-2 text-left text-md font-normal text-black hover:bg-gray-100 transition-colors duration-200"
 								onClick={() => clicked(item)}
 							>
 								{renderItem(item)}

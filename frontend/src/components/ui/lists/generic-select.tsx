@@ -86,7 +86,7 @@ export default function GenericSelect<T>({
 							e.stopPropagation();
 							setIsOpen(!isOpen);
 						}}
-						className="flex-grow p-4 font-semibold cursor-pointer"
+						className="flex-grow p-2 font-semibold cursor-pointer"
 					>
 						{currentTitle}
 					</p>
@@ -102,7 +102,7 @@ export default function GenericSelect<T>({
 						filteredData.map((item) => (
 							<li key={keyExtractor(item)} className="border-t border-gray-200">
 								<button
-									className="w-full p-2 text-left text-md font-normal text-black hover:bg-gray-100 transition-colors duration-200"
+									className="w-full text-left text-md font-normal text-black hover:bg-gray-100 transition-colors duration-200"
 									onClick={(e) => handleSelection(item, e)}
 								>
 									{renderItem(item)}

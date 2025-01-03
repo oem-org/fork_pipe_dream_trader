@@ -34,7 +34,7 @@ export default function StrategyPage() {
 
   const [pair, setPair] = useState<string>("")
   const [timeframe, setTimeframe] = useState<string>("")
-  const [backtestResult, setBacktestResult] = useState<string>("")
+  const [backtestResult, setBacktestResponse] = useState<string>("")
 
   useEffect(() => {
     console.log(paramId, "stragety id", strategyId);
@@ -73,7 +73,7 @@ export default function StrategyPage() {
   if (isError && error instanceof Error) {
     return <div>Error: {error.message}</div>;
   }
-  //TODO: hide file ui if datasource 
+  //TODO: hide file ui if datasource
   //TODO: fix hover on settings
   return (
     <div className="container mx-auto px-4 space-y-6">

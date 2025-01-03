@@ -20,7 +20,7 @@ export type ConditionGroup = Condition[];
 
 export type ConditionInput = LogicalOperator | ConditionGroup;
 
-export type LogicalOperator = "&" | "|" | "~" | "<" | ">";
+export type LogicalOperator = "&" | "|" | "~" | "<" | ">" | "~";
 
 export type Side = "buy" | "sell"
 

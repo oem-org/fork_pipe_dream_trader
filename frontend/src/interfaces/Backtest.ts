@@ -3,6 +3,6 @@ export interface CreateBacktestRequest {
     sell_conditions: any,
 }
 
-export interface BacktestResult {
+export interface BacktestResponse {
     result: Record<any, any>,
 }

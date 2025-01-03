@@ -51,7 +51,6 @@ const SingleOperator = forwardRef(
 
     useImperativeHandle(ref, () => ({
       getValue: () => ({ singleOperator: selectedOperator.name }),
-      getPosition: () => ({ position: position }),
     }));
     return (
       <div>

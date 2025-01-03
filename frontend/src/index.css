@@ -77,7 +77,7 @@
 }
 
 .custom-select-row{
-  @apply flex flex-row justify-between w-full p-4 text-base font-normal text-black hover:bg-slate-300 transition-colors duration-200 text-left
+  @apply flex flex-row justify-between w-full p-2 text-base font-normal text-black hover:bg-slate-300 transition-colors duration-200 text-left
 }
 
 /*spacing*/

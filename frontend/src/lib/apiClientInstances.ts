@@ -12,7 +12,7 @@ import { PostRelationService, PutService, GetService, GetRelationService, PostSe
 import { StrategyIndicator } from "@/interfaces/StrategyIndicator"
 import { CreateStrategyRequest } from "@/interfaces/requests/CreateStrategyRequest"
 import { CreateBacktestRequest } from "@/interfaces/Backtest"
-
+import { BacktestResponse } from "@/interfaces/Backtest"
 const csvHeader = {
 	'Content-Type': 'test/csv',
 };
@@ -62,8 +62,8 @@ export const putStrategyApi = new PutService<Strategy, Strategy>('strategy', jso
 export const deleteStrategyApi = new DeleteService<number>('strategy', jsonHeader)
 
 //Backtest
-export const postBacktestApi = new PostRelationService<CreateBacktestRequest, any>('strategy', jsonHeader, "backtest")
-export const getAllBacktestsApi = new GetAllService<BacktestResult>('strategy', jsonHeader, "backtest")
+export const postStrategyBacktestApi = new PostRelationService<CreateBacktestRequest, any>('strategy', jsonHeader, "backtest")
+export const getAllStrategyBacktestsApi = new GetAllService<BacktestResponse>('strategy', jsonHeader, "backtest")
 
 
 //Timeseries

@@ -8,7 +8,7 @@ interface ToggleSelectProps {
 export default function ToggleSelect({ setIsOpen, isOpen }: ToggleSelectProps) {
 	return (
 		<button
-			className="p-4 flex justify-between items-center rounded-md transition-colors duration-200"
+			className="p-3 flex justify-between items-center rounded-md transition-colors duration-200"
 			onClick={(e) => {
 				e.preventDefault();
 				e.stopPropagation();

@@ -46,7 +46,7 @@ export default function GenericComponentList<T>({
 
 	return (
 		<div className="border rounded-md overflow-hidden h-full">
-			<div className="w-full p-4 flex justify-between items-center bg-gray-200 hover:bg-gray-300 transition-colors duration-200">
+			<div className="w-full p-2 flex justify-between items-center bg-gray-200 hover:bg-gray-300 transition-colors duration-200">
 				{searchEnabled && (
 					<div className="flex-grow">
 						<Search onSearch={(query, e) => handleSearch(query, e)} />
