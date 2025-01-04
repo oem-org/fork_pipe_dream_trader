@@ -1,40 +1,46 @@
 import React, { useState } from "react";
 import UploadService from "../../lib/services/UploadService";
 import { Button } from "../ui/buttons/button";
+import Modal from "../ui/modal";
 
 export default function FileUploadForm() {
-	const [error, setError] = useState<string | null>(null);
-	const uploader = new UploadService()
+	const [modalMessage, setModalMessage] = useState<string | null>(null);
+	const [isModal, setIsModal] = useState<boolean>(false);
+	const uploader = new UploadService();
 
+	const toggleModal = () => setIsModal(!isModal);
 
 	async function handleUpload(e: React.FormEvent<HTMLFormElement>): Promise<void> {
 		e.preventDefault();
-
+		setModalMessage(null);
 		const formData = new FormData(e.currentTarget);
-		console.log(formData)
-		try {
-			const result = await uploader.upload(formData);
-			console.log(result)
 
+		try {
+			await uploader.upload(formData);
+			setModalMessage("File uploaded successfully!");
+			setIsModal(true);
 		} catch (err: any) {
-			setError(err.message);
+			setModalMessage(err.message || "An error occurred during file upload.");
+			setIsModal(true);
 		}
 	}
 
 	return (
 		<div>
+			<Modal onClose={toggleModal} isOpen={isModal} title="Upload Status">
+				<p>{modalMessage}</p>
+			</Modal>
+
 			<form className="py-2 flex flex-row justify-between" onSubmit={handleUpload}>
 				<div className="flex flex-row">
-					<input name="file"
+					<input
+						name="file"
 						id="fileInput"
 						type="file"
 					/>
 				</div>
 				<Button type="submit">Upload File</Button>
 			</form>
-
-			{error && <div className="text-error">{error}</div>}
 		</div>
 	);
 }
-

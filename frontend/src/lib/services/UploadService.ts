@@ -40,44 +40,24 @@ export default class UploadService {
 		});
 	}
 
-	async upload(formData: FormData): Promise<any> {
+	async upload(formData: FormData): Promise<void> {
 		try {
 			const type = await this.detectFileType(formData);
 
 			if (type === "json") {
-				await jsonFileApi.post(formData).catch((error) => {
-					throw new Error("Failed to upload JSON file: " + error.message);
-				});
-			} else {
-				await csvFileApi.post(formData).catch((error) => {
-					throw new Error("Failed to upload CSV file: " + error.message);
-				});
+				const response = await jsonFileApi.post(formData);
+				if (response.status >= 400) {
+					throw new Error(`Error: ${response.statusText || "Unknown error"}`);
+				}
+			} else if (type === "csv") {
+				const response = await csvFileApi.post(formData);
+				if (response.status >= 400) {
+					throw new Error(`Error: ${response.statusText || "Unknown error"}`);
+				}
 			}
-
-		} catch (error) {
+		} catch (error: any) {
 			console.error("Error in upload process:", error);
-			throw error;
-		}
-	}
-
-
-	async read(formData: FormData): Promise<any> {
-		try {
-			const type = await this.detectFileType(formData);
-
-			if (type === "json") {
-				await jsonFileApi.post(formData).catch((error) => {
-					throw new Error("Failed to upload JSON file: " + error.message);
-				});
-			} else {
-				await csvFileApi.post(formData).catch((error) => {
-					throw new Error("Failed to upload CSV file: " + error.message);
-				});
-			}
-
-		} catch (error) {
-			console.error("Error in upload process:", error);
-			throw error;
+			throw new Error(error.message || "Error uploading file");
 		}
 	}
 
