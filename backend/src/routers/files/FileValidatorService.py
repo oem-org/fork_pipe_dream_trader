@@ -1,4 +1,4 @@
-from .FileLoader import FileLoader
+from .FileLoaderService import FileLoader
 import pandas as pd
 
 

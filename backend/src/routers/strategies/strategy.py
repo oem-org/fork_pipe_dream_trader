@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Optional
 import json
 import pandas as pd
 from fastapi import APIRouter, HTTPException, Path
-from ..files.FileLoader import FileLoader
+from ..files.FileLoaderService import FileLoader
 from .IndicatorLoader import IndicatorLoader
 from ...lib.backtesting.Backtester import Backtester
 from pydantic import BaseModel

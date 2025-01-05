@@ -1,7 +1,7 @@
 from logging import exception
 
 from fastapi import APIRouter, Query, HTTPException
-from ..files.FileLoader import FileLoader
+from ..files.FileLoaderService import FileLoader
 
 from ..strategies.IndicatorLoader import IndicatorLoader
 from starlette import status
@@ -68,7 +68,7 @@ async def read_all(
                 else:
                     print(f"StrategyIndicator with ID {value[id]} not found")
             indicator_loader.response['timeframe'] = f'{file_loader.timeframe}'
-            
+
             return indicator_loader.response
     except Exception as e:
         handle_db_error(e, "Unexpected error occurred while fetching the file data")

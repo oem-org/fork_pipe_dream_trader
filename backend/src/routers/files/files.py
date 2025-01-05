@@ -6,8 +6,8 @@ from .file_utils import get_file_path
 from sqlalchemy.exc import SQLAlchemyError
 from starlette import status
 from ...dependencies import db_dependency, user_dependency
-from .FileLoader import FileLoader
-from .FileValidator import FileValidator
+from .FileLoaderService import FileLoader
+from .FileValidatorService import FileValidator
 from ...models import Files, Users
 from ...schemas import *
 from ...utils.exceptions import (

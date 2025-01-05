@@ -10,7 +10,7 @@ from ...models import Strategies, StrategyBacktests
 from ...schemas import CreateBacktestRequest
 
 from ...utils.exceptions import handle_db_error
-from ..files.FileLoader import FileLoader
+from ..files.FileLoaderService import FileLoader
 from .IndicatorLoader import IndicatorLoader
 
 router = APIRouter(prefix="/strategy", tags=["strategy"])
@@ -52,13 +52,13 @@ async def backtest(
         buy_eval_string = backtest.build_conditions("buy", buy_conditions)
         sell_eval_string = backtest.build_conditions("sell", sell_conditions)
         pnl, drawdown = backtest.run()
-        
-        
+
+
         strategy_backtest = StrategyBacktests(
             fk_strategy_id=strategy_id,
             buy_string=buy_eval_string,
             sell_string=sell_eval_string,
-            pnl=str(pnl),  
+            pnl=str(pnl),
             max_drawdown=str(drawdown),
         )
 
