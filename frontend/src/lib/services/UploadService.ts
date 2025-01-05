@@ -1,6 +1,8 @@
 import { csvFileApi } from "../apiClientInstances";
 import { jsonFileApi } from "../apiClientInstances";
 
+// Documentation https://w3c.github.io/FileAPI/#filereaderConstrctr
+
 export default class UploadService {
 	async detectFileType(formData: FormData): Promise<string> {
 		return new Promise((resolve, reject) => {

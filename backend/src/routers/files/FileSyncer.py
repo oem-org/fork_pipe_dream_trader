@@ -2,7 +2,7 @@ from pathlib import Path
 from ...schemas import FileTypeEnum
 from sqlalchemy.orm import Session
 from ...models import Files
-
+#TODO: add comments
 class FileSyncer:
 
     @staticmethod
@@ -15,7 +15,7 @@ class FileSyncer:
             return None
 
     @staticmethod
-    def delete_missing_files(db: Session, missing_files: dict):
+    def delete_missing_files_db(db: Session, missing_files: dict):
         files_to_delete = []
         for name in missing_files.keys():
             db_file_to_delete = db.query(Files).filter(Files.name == name).first()
@@ -32,7 +32,7 @@ class FileSyncer:
     def add_non_matching_files(db: Session, non_matching_files: dict):
         files_to_add = []
         for name, file_info in non_matching_files.items():
-            file_type = FileSyncer.file_type_check(name)  # Call static method
+            file_type = FileSyncer.file_type_check(name)  
             file_to_add = Files(
                 name=name,
                 path=file_info["folder_path"],
@@ -82,6 +82,6 @@ class FileSyncer:
             if db_file.name not in folder_files
         }
 
-        FileSyncer.delete_missing_files(db, missing_in_folder)
+        FileSyncer.delete_missing_files_db(db, missing_in_folder)
         FileSyncer.add_non_matching_files(db, non_matching_files)
 

@@ -26,20 +26,13 @@ from .routers.users import users
 from .seeders.indicators_seeder import indicators_seeder
 # custom logging setup
 # from .logger import logger
-from .indicators.Ao import Ao
-from .dependencies import user_dependency
-import json
-
 
 current_directory = Path(__file__).parent
 parent_folder = current_directory.parent
 
-
 session = SessionLocal()
 scheduler = AsyncIOScheduler(timezone=utc)
 Base.metadata.create_all(bind=engine)
-
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -74,7 +67,6 @@ def startup_tasks():
 
 app.add_event_handler("startup", startup_tasks)
 
-# register_all_errors(app)
 register_middleware(app)
 
 app.include_router(auth.router)

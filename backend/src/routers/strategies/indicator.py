@@ -148,7 +148,6 @@ async def update_indicator_in_strategy(
 
     except SQLAlchemyError as e:
         db.rollback()
-        logger.error(f"SQLAlchemy error while updating indicator: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to update indicator",
@@ -156,7 +155,6 @@ async def update_indicator_in_strategy(
 
     except Exception as e:
         db.rollback()
-        logger.error(f"Unexpected error while updating indicator: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Unexpected error occurred",

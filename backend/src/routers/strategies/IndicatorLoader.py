@@ -136,8 +136,10 @@ class IndicatorLoader:
                         self.timeframe = timeframe
             else:
                 raise Exception("Timeframe does not have unique intervals")
+
         except Exception as e:
             raise Exception(f"Error determining time interval: {e}")
+
     def connect_indicator_info(self, indicators_info):
         """
         Connect auto generated column names with a chart style, id and column name in the dataframe
