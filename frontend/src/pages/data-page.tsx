@@ -13,7 +13,7 @@ export default function DataPage() {
     setFileId(file.id);
     console.log(file.id)
   };
-
+  //TODO: add descrip of what format the files need to be
   return (
     <div className="flex flex-col h-[calc(100vh-64px)]">
       <div className="flex-grow grid grid-cols-1 lg:grid-cols-2 gap-4 custom-grid-full-spacing overflow-hidden">

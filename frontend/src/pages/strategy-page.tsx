@@ -48,7 +48,6 @@ export default function StrategyPage() {
     if (strategy) {
       console.log(strategy.fk_file_id)
       strategy.fk_file_id = file.id
-      // returns the updated strategy
       const resp = await updateStrategyMutation(strategy);
       if (resp) {
         setFileId(file.id);
@@ -56,7 +55,7 @@ export default function StrategyPage() {
     }
   };
 
-  // Set the initial file for the select file dropdown
+  // Set the initial file for the file dropdown
   useEffect(() => {
     if (strategy && strategy.fk_file_id && files) {
       const selectedFile = files?.find((file) => file.id === strategy.fk_file_id);
@@ -121,7 +120,7 @@ export default function StrategyPage() {
             </div>
           </section>
           <section className="grid grid-cols-1 lg:grid-cols-8 gap-4">
-            {/* Loads all data related to the indicators and the chart and saves it in state */}
+            {/* IndicatorSection Loads all data related to the indicators and the chart and saves it in state */}
             <div className="lg:col-span-2 p-4 bg-gray-100 rounded-lg">
               <IndicatorSection setTimeframe={setTimeframe} setPair={setPair} fileId={fileId} strategyId={strategyId} />
             </div>

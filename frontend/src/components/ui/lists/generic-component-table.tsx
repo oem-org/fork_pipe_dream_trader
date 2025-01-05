@@ -11,7 +11,6 @@ interface GenericComponentListProps<T> {
 	nameExtractor: (item: T) => string
 }
 
-// Works button passing of buttons or components to the renderItem
 export default function GenericComponentList<T>({
 	data,
 	keyExtractor,
@@ -24,7 +23,7 @@ export default function GenericComponentList<T>({
 
 	const handleSelection = (item: T, e: React.MouseEvent<HTMLButtonElement>) => {
 		onSelect(item);
-		e.preventDefault(); // Prevent default behavior, if needed (e.g., form submission)
+		e.preventDefault();
 	};
 
 	const handleSearch = (query: string, e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +62,6 @@ export default function GenericComponentList<T>({
 								className="border-t border-gray-200 bg-gray-100"
 							>
 								<div className="custom-select-row">
-									{/* Selection Button - Triggers onSelect */}
 									<button
 										className="w-full text-left "
 										onClick={(e) => handleSelection(item, e)}
@@ -76,7 +74,6 @@ export default function GenericComponentList<T>({
 									</div>
 
 								</div>
-								{/* Render the item content (can contain other buttons or interactive elements) */}
 							</li>
 						))
 					) : (

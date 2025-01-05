@@ -5,8 +5,6 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import sendFormData from '../../lib/utils/generics/sendFormData';
 
-//done!
-
 export default function LoginForm() {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");

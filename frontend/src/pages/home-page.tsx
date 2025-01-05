@@ -1,10 +1,8 @@
 import getStrategiesQuery from "@/lib/hooks/react-query/getStrategiesQuery";
-import GenericList from "@/components/ui/lists/generic-table";
 import { Strategy } from "@/interfaces/Strategy";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import StrategyInfo from "@/components/strategy/strategy-info";
 import { useState } from "react";
-import { Button } from "@/components/ui/buttons/button";
 import StrategyTableRow from "@/components/strategy/conditions/strategy-table-row";
 import { useQueryClient } from "@tanstack/react-query";
 import GenericComponentList from "@/components/ui/lists/generic-component-table";
@@ -28,9 +26,10 @@ export default function HomePage() {
     return <div>Error: {error.message}</div>;
   }
 
-  //TODO: margin bottom
+  //TODO: margin bottom background color
   return (
-    <div className="flex flex-col h-[calc(100vh-64px)]">
+    <div className=" flex flex-col h-[calc(100vh-64px)]">
+
       <div className="flex-grow grid grid-cols-1 lg:grid-cols-2 gap-4 custom-grid-full-spacing">
         <section className="bg-gray-100 rounded-lg flex flex-col overflow-auto h-[calc(100vh-64px)]">
           <div className="p-4 flex flex-row justify-between">
@@ -51,7 +50,7 @@ export default function HomePage() {
           />
         </section>
 
-        <section className="p-4 bg-gray-100 rounded-lg overflow-auto h-[calc(100vh-64px)]"> {/* Added height and overflow-auto for scrolling */}
+        <section className="p-4 bg-gray-100 rounded-lg overflow-auto h-[calc(100vh-64px)]">
           <h4 className="text-xl font-bold mb-4">Info</h4>
           <StrategyInfo strategyId={localStrategyId} />
         </section>

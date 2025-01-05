@@ -44,8 +44,7 @@ export default function StrategyTableRow({ strategy, setLocalStrategyId }: Strat
       <Modal onClose={toggleDeleteModal} isOpen={isDeleteModalOpen} title="Delete Strategy">
         <p>Are you sure you want to delete the strategy?</p>
         <div className="flex gap-2">
-          <Button onClick={() => handleDelete(strategy.id)} variant="outline">Delete Strategy</Button>
-          <Button onClick={toggleDeleteModal}>Cancel</Button>
+          <Button variant="default" onClick={() => handleDelete(strategy.id)}>Delete Strategy</Button>
         </div>
       </Modal>
     </>

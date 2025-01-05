@@ -1,25 +1,11 @@
-import json
-import logging
-from typing import Any, Dict, List, Optional
-
-import pandas as pd
 from fastapi import APIRouter, HTTPException, Path
 from sqlalchemy.exc import SQLAlchemyError
 from starlette import status
 
 from ...dependencies import db_dependency, user_dependency
-from ...lib.backtesting.Backtester import Backtester
-from ...models import Strategies, StrategyConditions, StrategyIndicators
-from ...schemas import (
-    CreateBacktestRequest,
-    CreateStrategyRequest,
-    StrategySchema,
-    UpdateStrategyRequest,
-)
+from ...models import Strategies, StrategyConditions
 from ...utils.debugging.print_db_object import print_db_object
 from ...utils.exceptions import handle_db_error, handle_not_found_error
-from ..files.FileLoader import FileLoader
-from .IndicatorLoader import IndicatorLoader
 
 router = APIRouter(prefix="/strategy", tags=["strategy"])
 
@@ -293,18 +279,15 @@ async def get_strategy_conditions(
                 detail=f"StrategyCondition with strategy_id={strategy_id} and condition_id={condition_id} not found",
             )
 
-        # If found, return the StrategyCondition object
         return strategy_condition
 
     except SQLAlchemyError as e:
-        # Handle any database-related errors
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to fetch strategy conditions from the database",
         )
 
     except Exception as e:
-        # Handle unexpected errors
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Unexpected error occurred",

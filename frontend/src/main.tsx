@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -10,7 +9,6 @@ import RootPage from "./pages/root-page.tsx";
 import LoginPage from "./pages/login-page.tsx";
 import SignupPage from "./pages/signup.tsx";
 import CreateStrategyPage from "./pages/create-strategy-page.tsx";
-import SelectStrategyPage from "./pages/select-strategy-page.tsx";
 import ProtectedRoute from "./components/auth/protected-route.tsx";
 import DataPage from "./pages/data-page.tsx";
 import HomePage from "./pages/home-page.tsx";
@@ -36,7 +34,7 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       {
-        index: true, // This sets the default child for "/"
+        index: true,
         element: <HomePage />,
       }, {
         path: "data",
@@ -74,6 +72,3 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 );
 
 
-//<React.StrictMode>
-//
-//</React.StrictMode >

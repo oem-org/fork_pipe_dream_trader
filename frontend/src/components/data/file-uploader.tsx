@@ -31,9 +31,9 @@ export default function FileUploadForm() {
 				<p>{modalMessage}</p>
 			</Modal>
 
-			<form className="py-2 flex flex-row justify-between" onSubmit={handleUpload}>
+			<form className="py-2 px-2 flex flex-col sm:flex-row justify-between" onSubmit={handleUpload}>
 				<div className="flex flex-row">
-					<input
+					<input className="pb-2"
 						name="file"
 						id="fileInput"
 						type="file"

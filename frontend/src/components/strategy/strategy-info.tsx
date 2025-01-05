@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getStrategyApi } from '@/lib/apiClientInstances';
-import { Strategy, FileSource, DatabaseSource, StrategyCondition, StrategyIndicator, StrategyBacktest } from "@/interfaces/Strategy";
+import { Strategy, StrategyCondition, StrategyIndicator, StrategyBacktest } from "@/interfaces/Strategy";
 
 interface StrategyInfoProps {
 	strategyId: number;

@@ -5,8 +5,8 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import handleFormSubmit from '../../lib/utils/generics/handleFormSubmit';
 import CreateUserFormRequest from '../../interfaces/requests/CreateUserFormRequest';
+import { Link } from 'react-router-dom';
 
-//done!
 
 export default function CreateUserForm() {
 	const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ export default function CreateUserForm() {
 		const success = await handleFormSubmit<CreateUserFormRequest, boolean>(e, createUser, setError, setLoading);
 		console.log(success)
 		if (success) {
-			navigate('/strategy');
+			navigate('/login');
 		}
 	};
 
@@ -29,7 +29,7 @@ export default function CreateUserForm() {
 		>
 			<div className="flex-1 rounded-lg px-6 pb-4 pt-8 border custom-light-grey">
 				<h2 className='mb-3 h2'>
-					Log in to continue.
+					Create a new profile
 				</h2>
 				{error && (
 					<div className="mb-4 text-sm text-red-600">{error}</div>
@@ -93,8 +93,17 @@ export default function CreateUserForm() {
 						</div>
 					</div>
 				</div>
+
+				<div className="mt-4">
+					<Link
+						to="/login"
+						className="text-blue-500 hover:text-blue-700 font-medium transition-colors"
+					>
+						Go to login
+					</Link>
+				</div>
 				<Button className="mt-4 w-full" type="submit" disabled={loading}>
-					{loading ? "Logging in..." : "Log in"}
+					{loading ? "Creating profile..." : "Create profile"}
 				</Button>
 				<div className="flex h-8 items-end space-x-1">
 					{error}

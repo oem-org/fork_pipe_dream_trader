@@ -6,7 +6,6 @@ interface ProtectedRouteProps {
 	children: React.ReactNode;
 }
 
-//done!
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 	const { checkAuth } = useAuthStore();
