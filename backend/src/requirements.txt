@@ -5,8 +5,6 @@ flake8
 black
 pylint
 pylint-quotes
-mypy
-isort
 bcrypt==4.2.1
 cryptography
 fastapi
