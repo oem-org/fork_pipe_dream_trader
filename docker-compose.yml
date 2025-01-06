@@ -2,9 +2,11 @@
 services:
 
   backend:
-    image: soma1337/pipe_dream:latest  # Use the built image
+    # image: soma1337/pipe_dream:latest
+    build:
+      context: ./backend
     volumes:
-      - "./backend:/app" 
+      - "./backend:/app"
     env_file:
       - "./backend/testenv"
     environment:
