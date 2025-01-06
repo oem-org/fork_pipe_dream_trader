@@ -1,7 +1,10 @@
 import asyncio
 from streams.BinanceWebsocket import BinanceWebsocket
 import logging.config
-
+# Binance closed down the free service
+# market_data_service-1  | binance.exceptions.BinanceAPIException: APIError(code=0): Service unavailable
+# from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms.
+# Please contact customer service if you believe you received this message in error.
 logging.config.fileConfig("log_config_websocket.ini")
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
