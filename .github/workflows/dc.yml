@@ -54,9 +54,6 @@ jobs:
           sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | jq -r .tag_name)/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose --version
-      - name: Start Docker Compose services
-        run: |
-          RTE=test docker-compose up --abort-on-container-exit --exit-code-from backend
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -64,9 +61,10 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_NAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-      - name: ls2
+      - name: Start Docker Compose services
         run: |
-          ls -la ./backend
+          RTE=test docker-compose up --abort-on-container-exit --exit-code-from backend
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
