@@ -110,14 +110,9 @@ class FileLoader:
                 self.df = pd.read_csv(self.file_path)
                 self.df.columns = self.df.columns.str.lower().str.strip()
             
-            print(self.df.head(1),"DATAFRAAAAAAAAAAAAAME")
-            
-            print("###############",self.df.columns,"################")
-
             column_mapping = {
                 "unix": "time",
                 "Volume": "volume",
-                # "timestamp": "time",
                 "o": "open",
                 "h": "high",
                 "l": "low",
@@ -127,28 +122,29 @@ class FileLoader:
                 columns=lambda col: column_mapping.get(col, col), inplace=True
             )
 
-
             if "time" in self.df.columns:
                 self.df["time"] = pd.to_numeric(self.df["time"])
                 self.df["time"] = self.df["time"].apply(
                     lambda x: x / 1000 if pd.notna(x) and len(str(int(x))) == 13 else x
                 )
-        
             
-            # Coerce inserts NaN or NaT if it gets a bad row, instead of raising a exception, so its possible to identify excatly which rows are bad
+            # Coerce inserts NaN or NaT if it gets a bad row, instead of raising a exception,
+            # so its possible to identify excatly which rows are bad
             self.df["volume"] = pd.to_numeric(self.df["volume"], errors="coerce")
             self.df["open"] = pd.to_numeric(self.df["open"], errors="coerce")
             self.df["close"] = pd.to_numeric(self.df["close"], errors="coerce")
             self.df["low"] = pd.to_numeric(self.df["low"], errors="coerce")
             self.df["high"] = pd.to_numeric(self.df["high"], errors="coerce")
             self.df.set_index(pd.DatetimeIndex(self.df["time"]), inplace=True)
-            # self.df["time"] = pd.to_datetime(
-            #     self.df["time"], unit="s", errors="coerce"
-            # )
             
             self.determine_time_interval()
-
 
         except Exception as e:
             raise Exception(f"Error reading file: {e}")
 
+
+
+
+            # self.df["time"] = pd.to_datetime(
+            #     self.df["time"], unit="s", errors="coerce"
+            # )

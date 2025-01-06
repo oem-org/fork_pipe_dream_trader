@@ -20,13 +20,13 @@ const IndicatorConditionSelect = forwardRef(
   ({ blockIndex, isFirst, position, initialValue, onValueChange, conditionId }: IndicatorConditionSelectProps, ref) => {
     const { strategyId } = useStrategyStore();
     const { data: indicatorSettings } = getStrategyIndicatorsQuery(strategyId);
+
     const findInitialValue = useInitialValue<StrategyIndicator>(
       indicatorSettings || [],
       initialValue,
       (indicator) => indicator.dataframe_column
     );
 
-    //const currentCondition = getStrategyConditionApi.get(conditionId)
 
     const [selectedIndicator, setSelectedIndicator] = useState<StrategyIndicator | null>(
       findInitialValue

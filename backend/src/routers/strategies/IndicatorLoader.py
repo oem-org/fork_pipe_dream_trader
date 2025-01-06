@@ -1,11 +1,11 @@
 from logging import raiseExceptions
 from pathlib import Path
-from typing import Dict, List
+from typing import Any, Dict, List
 import pandas as pd
 import pandas_ta as ta
 import json
 from pathlib import Path
-from ...schemas import TimeFrameEnum
+from ...schemas import IndicatorInfo, IndicatorSetting, TimeFrameEnum
 from ...indicators import *
 
 import contextlib
@@ -22,7 +22,7 @@ with open(file_name, "w") as file:
 print(f"Help output saved to {file_name}")
 
 class IndicatorLoader:
-    def __init__(self, df: pd.DataFrame, indicators: List[Dict]):
+    def __init__(self, df: pd.DataFrame, indicators: List[IndicatorSetting]):
         self.df = df
         self.indicators = indicators
         self.timeframe = ""
@@ -38,7 +38,7 @@ class IndicatorLoader:
 
 
     def load_indicators(self):
-
+ 
         self.df.ta.log_return(cumulative=True, append=True)
         self.df.ta.percent_return(cumulative=True, append=True)
 
@@ -49,17 +49,14 @@ class IndicatorLoader:
             ta=self.indicators
             )
 
-            # self.df.set_index(pd.DatetimeIndex(self.df["time"]), inplace=True)
-
             self.df.ta.strategy(Strategy)
 
-            # Remove all the empty rows from the start of each column
+        # Remove all the rows that contains NaN after the indicator generation
         self.df.dropna(inplace=True)
-        self.determine_time_interval()
-        # TODO: enable pickle
+
     def split_dataframe(self):
         """
-        Create JSON strings to store dataframes of each indicator. column name and trading par
+        Create JSON strings to store dataframes of each indicator. column name and trading pair
         Also creates a combined JSON string for specific columns: 'time', 'open', 'high', 'low', 'close'.
         """
         json_dfs = {}
@@ -98,49 +95,7 @@ class IndicatorLoader:
 
             self.response = json_dfs
 
-
-    def determine_time_interval(self):
-        """
-        Creates the timeinterval the chart will use
-        """
-        try:
-            TIMEFRAME = {
-                "1m": 60,
-                "5m": 300,
-                "15m":900,
-                "30m":1800,
-                "1h": 3600,
-                "4h": 7200,
-                "8h":14400,
-                "12h":43200,
-                "1d": 86400,
-            }
-
-
-            time_diffs = self.df["time"].diff()
-
-            # First row will allways be nan after diff()
-            unique_intervals = time_diffs.dropna().unique()
-
-            if len(unique_intervals) == 1:
-                interval_seconds = unique_intervals[0]
-
-                print (
-                    f" {interval_seconds} seconds\n"
-                )
-                for timeframe, timeframe_seconds in TIMEFRAME.items():
-                    # Interval_seconds is a negative number and a float because of the
-                    # The way diff() compares
-
-                    if interval_seconds + timeframe_seconds == 0:
-                        self.timeframe = timeframe
-            else:
-                raise Exception("Timeframe does not have unique intervals")
-
-        except Exception as e:
-            raise Exception(f"Error determining time interval: {e}")
-
-    def connect_indicator_info(self, indicators_info):
+    def connect_indicator_info(self, indicators_info:List[Any]) -> Dict:
         """
         Connect auto generated column names with a chart style, id and column name in the dataframe
 

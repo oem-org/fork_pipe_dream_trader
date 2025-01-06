@@ -15,14 +15,6 @@ class FileValidator(FileLoader):
 
         errors = []
 
-        # Missing or invalid fields
-        # missing_fields = self.df[['time', 'volume', 'open']].isna().any(axis=1)
-
-        # Check for missing or invalid timestamps
-        # invalid_time = self.df['time'].isna() | ~self.df['time'].apply(
-        #     lambda x: isinstance(x, (int, float)) and len(str(int(x))) in [10, 13]
-        # )
-
         invalid_volume = self.df['volume'] < 0
 
         # Create a dataframe of same size with booleans
@@ -43,8 +35,6 @@ class FileValidator(FileLoader):
 
             if pd.isna(row['time']):
                 error_message.append("Missing or invalid timestamp")
-            # elif not (len(str(int(row['time']))) in [10, 13]):
-            #     error_message.append(f"Timestamp length is invalid (actual length: {len(str(int(row['time'])))} digits)")
 
             if pd.isna(row['volume']) or row['volume'] < 0:
                 error_message.append("Invalid volume")
@@ -74,3 +64,15 @@ class FileValidator(FileLoader):
         times = self.df['time']
 
         return times.min(), times.max()
+
+
+            # elif not (len(str(int(row['time']))) in [10, 13]):
+            #     error_message.append(f"Timestamp length is invalid (actual length: {len(str(int(row['time'])))} digits)")
+        # Missing or invalid fields
+        # missing_fields = self.df[['time', 'volume', 'open']].isna().any(axis=1)
+
+        # Check for missing or invalid timestamps
+        # invalid_time = self.df['time'].isna() | ~self.df['time'].apply(
+        #     lambda x: isinstance(x, (int, float)) and len(str(int(x))) in [10, 13]
+        # )
+

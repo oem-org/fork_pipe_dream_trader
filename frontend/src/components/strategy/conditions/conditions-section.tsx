@@ -107,7 +107,7 @@ export default function ConditionsSection() {
           <h3 className='h3 pb-4'>Buy conditions</h3>
 
           <div className="flex flex-row">
-            <BuildConditionRenderer setRefetch={setRefetch} side="buy" ref={buyStringRef} conditions={buyConditions} />
+            <BuildConditionRenderer setRefetch={setRefetch} ref={buyStringRef} conditions={buyConditions} />
           </div>
           <div className='flex flex-col'>
             <CreateConditions side="buy" addCondition={addCondition} />
@@ -117,7 +117,7 @@ export default function ConditionsSection() {
 
           <h3 className='h3 pb-4'>Sell conditions</h3>
           <div className="flex flex-row">
-            <BuildConditionRenderer setRefetch={setRefetch} side="sell" ref={sellStringRef} conditions={sellConditions} />
+            <BuildConditionRenderer setRefetch={setRefetch} ref={sellStringRef} conditions={sellConditions} />
           </div>
 
           <div className='flex flex-col'>

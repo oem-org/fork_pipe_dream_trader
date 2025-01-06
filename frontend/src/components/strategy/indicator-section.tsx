@@ -10,7 +10,6 @@ import { parseJsonStrings } from "@/lib/utils/object-utils";
 import TimeseriesService from "@/lib/services/TimeseriesService";
 import { queryClient } from "@/main";
 import { useChartStore } from "@/lib/hooks/stores/useChartStore";
-import { removeSurroundingQuotes } from "@/lib/utils/string-utils";
 interface IndicatorSectionProps {
 	strategyId: number;
 	fileId: number | undefined;

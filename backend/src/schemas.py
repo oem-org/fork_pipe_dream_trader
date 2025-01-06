@@ -1,7 +1,28 @@
 from enum import Enum
 from typing import Any, Dict, Optional, Union, List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+
+class MatchedStyle(BaseModel):
+    indicator_info: str  
+    id: int              
+
+class MatchedStyles(BaseModel):
+    styles: Dict[str, MatchedStyle] 
+
+class IndicatorSetting(BaseModel):
+    kind: str
+    length: int
+    # Allowing all other fields to be dynamic
+    extra: Dict[str, Any] = Field(default_factory=dict)
+    # Allows additional fields outside the specified ones
+    class Config:
+        extra = "allow"  
+
+class IndicatorInfo(BaseModel):
+    indicator_info: str 
+    kind: str
+    id: int
 
 class BacktestResponse(BaseModel):
     buy_string: str

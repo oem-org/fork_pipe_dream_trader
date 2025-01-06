@@ -25,7 +25,7 @@ class TimescaleService:
             conn.close()
 
     def get_timeperiod(self, table_name: str, val_column: str, symbol: str):
-        # Ensure the column name is safely handled
+        # Ensure the column name is safely handled, in regards to SQLInjection
         query = sql.SQL(
             """
             SELECT 

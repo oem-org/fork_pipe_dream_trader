@@ -39,7 +39,7 @@ export default function GenericIndicator({ indicatorName, dataframeColumn, indic
 	function toggleModal() {
 		setIsModalOpen((prev) => !prev);
 	}
-
+	//TODO: explain
 	function handleSubmit(e: React.FormEvent) {
 		e.preventDefault();
 		const convertedFormData = Object.entries(formData).reduce(

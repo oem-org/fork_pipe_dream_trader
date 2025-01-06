@@ -13,7 +13,6 @@ interface GenericSelectProps<T> {
 	nameExtractor: (item: T) => string
 	initialValue?: T | null
 }
-//TODO: when updates the selected strategy disappears
 
 export default function GenericSelect<T>({
 	data,
