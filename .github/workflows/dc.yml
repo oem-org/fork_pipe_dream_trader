@@ -56,7 +56,7 @@ jobs:
           docker-compose --version
       - name: Start Docker Compose services
         run: |
-          RTE=test docker-compose up --abort-on-container-exit --exit-code-from app
+          RTE=test docker-compose up --abort-on-container-exit --exit-code-from backend
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
