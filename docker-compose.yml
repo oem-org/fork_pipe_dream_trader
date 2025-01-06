@@ -26,7 +26,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
     # Remapped to avoid conflict with local postgres
     ports:
-      - "5437:5432"  
+      - "5437:5432"
     env_file:
       - ".env"
     networks:
@@ -53,23 +53,23 @@ services:
       - timescalenet
     # command: ["bash", "entrypoint-timescale.sh"]
 
-  market_data_service:
-    build:
-      context: ./market_data_service
-    env_file:
-      - ".env"
-    environment:
-      - RTE=$RTE
-      - POSTGRES_USER=${TS_POSTGRES_USER}  # Use .env variables
-      - POSTGRES_PASSWORD=${TS_POSTGRES_PASSWORD}
-      - POSTGRES_DB=${TS_POSTGRES_DB}
-      - POSTGRES_HOST=${TS_POSTGRES_HOST}
-    volumes:
-      - "./market_data_service/:/opt/timescale_pull"
-    depends_on:
-      - timescale
-    networks:
-      - timescalenet
+  # market_data_service:
+  #   build:
+  #     context: ./market_data_service
+  #   env_file:
+  #     - ".env"
+  #   environment:
+  #     - RTE=$RTE
+  #     - POSTGRES_USER=${TS_POSTGRES_USER}  # Use .env variables
+  #     - POSTGRES_PASSWORD=${TS_POSTGRES_PASSWORD}
+  #     - POSTGRES_DB=${TS_POSTGRES_DB}
+  #     - POSTGRES_HOST=${TS_POSTGRES_HOST}
+  #   volumes:
+  #     - "./market_data_service/:/opt/timescale_pull"
+  #   depends_on:
+  #     - timescale
+  #   networks:
+  #     - timescalenet
 
 volumes:
   postgres_data:
