@@ -7,8 +7,11 @@ import useStrategyStore from '@/lib/hooks/stores/useStrategyStore';
 import { getAllStrategyConditionsApi, postStrategyBacktestApi, postStrategyConditionsApi } from '@/lib/apiClientInstances';
 import { CreateBacktestRequest } from '@/interfaces/Backtest';
 
+interface ConditionsSectionProps {
+  setBacktest: React.Dispatch<React.SetStateAction<string>>,
+}
 
-export default function ConditionsSection() {
+export default function ConditionsSection({ setBacktest }: ConditionsSectionProps) {
   const { strategyId } = useStrategyStore();
   const [sellConditions, setSellConditions] = useState<any[]>([]);
   const [buyConditions, setBuyConditions] = useState<any[]>([]);
@@ -69,7 +72,7 @@ export default function ConditionsSection() {
   const buyStringRef = useRef<{ createConditionString: () => Array<any> }>(null);
   const sellStringRef = useRef<{ createConditionString: () => Array<any> }>(null);
 
-  const runBacktest = useCallback(() => {
+  const runBacktest = useCallback(async () => {
     let buy = [];
     let sell = [];
     if (buyStringRef.current) {
@@ -87,12 +90,15 @@ export default function ConditionsSection() {
     const sellConditions = buyConds.processConditions();
 
     let data: CreateBacktestRequest = {
-      buy_conditions: JSON.stringify(buyConditions),
-      sell_conditions: JSON.stringify(sellConditions),
+      buy_string: JSON.stringify(buyConditions),
+      sell_string: JSON.stringify(sellConditions),
     };
     console.log("OUTPUT:", sellConditions);
     console.log("OUTPUT:", buyConditions);
-    postStrategyBacktestApi.post(strategyId, data);
+    const result = await postStrategyBacktestApi.post(strategyId, data);
+    setBacktest(result)
+    console.log(result, "RESULT");
+
   }, [strategyId]);
 
   return (

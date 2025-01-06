@@ -14,6 +14,7 @@ import { useUpdateStrategy } from "@/lib/hooks/react-query/useUpdateStrategy";
 import ConditionsSection from "@/components/strategy/conditions/conditions-section";
 import { queryClient } from "@/main";
 import { removeSurroundingQuotes } from "@/lib/utils/string-utils";
+import { getLatestStrategyBacktestsApi } from "@/lib/apiClientInstances";
 
 
 
@@ -34,7 +35,7 @@ export default function StrategyPage() {
 
   const [pair, setPair] = useState<string>("")
   const [timeframe, setTimeframe] = useState<string>("")
-  const [backtestResult, setBacktestResponse] = useState<string>("")
+  const [backtest, setBacktest] = useState<string>("")
 
   useEffect(() => {
     console.log(paramId, "stragety id", strategyId);
@@ -64,6 +65,20 @@ export default function StrategyPage() {
       }
     }
   }, [strategy, files])
+
+  useEffect(() => {
+    async function getBacktests() {
+      // If state for strategyId is not set it will result in being 0
+      if (strategyId > 0) {
+        const result = await getLatestStrategyBacktestsApi.getAll(strategyId)
+        console.log(result, "BT")
+        setBacktest(result)
+
+      }
+    }
+    getBacktests()
+  }, [strategy])
+
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -125,7 +140,7 @@ export default function StrategyPage() {
               <IndicatorSection setTimeframe={setTimeframe} setPair={setPair} fileId={fileId} strategyId={strategyId} />
             </div>
             <div className="lg:col-span-6 p-4 bg-gray-100 rounded-lg">
-              <ConditionsSection />
+              <ConditionsSection setBacktest={setBacktest} />
             </div>
           </section>
         </>

@@ -44,6 +44,26 @@ class ApiService {
 }
 
 
+export class GetLatestRelationService<R> extends ApiService {
+	async getAll(id: number): Promise<R> {
+		try {
+			const response = await this.axiosInstance.get<R>(
+
+				`${this.endpoint}/${id}/${this.model}/latest`,
+				{
+					headers: await this.getHeaders(),
+				});
+			return response.data;
+		} catch (error) {
+			console.log(error)
+			console.error("Error in get latest");
+
+		}
+	}
+
+}
+
+
 export class GetAllRelationService<R> extends ApiService {
 	async getAll(id: number): Promise<R[]> {
 		try {
@@ -55,9 +75,9 @@ export class GetAllRelationService<R> extends ApiService {
 				});
 			return response.data;
 		} catch (error) {
+			console.log(error)
 			console.error("Error in get all");
 
-			throw error;
 		}
 	}
 
@@ -71,9 +91,8 @@ export class GetAllService<R> extends ApiService {
 			});
 			return response.data;
 		} catch (error) {
+			console.log(error)
 			console.error("Error in get all");
-
-			throw error;
 		}
 	}
 
