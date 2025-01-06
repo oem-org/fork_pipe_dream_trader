@@ -4,6 +4,7 @@ export interface Backtest {
     sell_string: string,
     pnl: string,
     max_drawdown: string,
+    created_at: string
 }
 
 

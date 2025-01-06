@@ -5,10 +5,10 @@ import { useCallback, useRef, useState, useEffect } from 'react';
 import CreateConditions from './create-conditions';
 import useStrategyStore from '@/lib/hooks/stores/useStrategyStore';
 import { getAllStrategyConditionsApi, postStrategyBacktestApi, postStrategyConditionsApi } from '@/lib/apiClientInstances';
-import { CreateBacktestRequest } from '@/interfaces/Backtest';
+import { Backtest, CreateBacktestRequest } from '@/interfaces/Backtest';
 
 interface ConditionsSectionProps {
-  setBacktest: React.Dispatch<React.SetStateAction<string>>,
+  setBacktest: React.Dispatch<React.SetStateAction<Backtest>>,
 }
 
 export default function ConditionsSection({ setBacktest }: ConditionsSectionProps) {
@@ -93,11 +93,8 @@ export default function ConditionsSection({ setBacktest }: ConditionsSectionProp
       buy_string: JSON.stringify(buyConditions),
       sell_string: JSON.stringify(sellConditions),
     };
-    console.log("OUTPUT:", sellConditions);
-    console.log("OUTPUT:", buyConditions);
     const result = await postStrategyBacktestApi.post(strategyId, data);
     setBacktest(result)
-    console.log(result, "RESULT");
 
   }, [strategyId]);
 
@@ -111,7 +108,6 @@ export default function ConditionsSection({ setBacktest }: ConditionsSectionProp
       <div className='flex flex-row'>
         <div>
           <h3 className='h3 pb-4'>Buy conditions</h3>
-
           <div className="flex flex-row">
             <BuildConditionRenderer setRefetch={setRefetch} ref={buyStringRef} conditions={buyConditions} />
           </div>
@@ -120,15 +116,12 @@ export default function ConditionsSection({ setBacktest }: ConditionsSectionProp
           </div>
         </div>
         <div>
-
           <h3 className='h3 pb-4'>Sell conditions</h3>
           <div className="flex flex-row">
             <BuildConditionRenderer setRefetch={setRefetch} ref={sellStringRef} conditions={sellConditions} />
           </div>
-
           <div className='flex flex-col'>
             <CreateConditions side="sell" addCondition={addCondition} />
-
           </div>
         </div>
       </div>

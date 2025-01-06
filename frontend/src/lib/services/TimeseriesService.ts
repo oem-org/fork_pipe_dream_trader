@@ -36,11 +36,11 @@ export default class TimeseriesService {
 
 		for (const keyName in indicatorsTimeseries) {
 
-			let indicator = [];
+			let indicator:any = [];
 			if (notAllowedKeys.includes(keyName)) {
 				continue;
 			} else {
-				Object.values(indicatorsTimeseries[keyName]).forEach((data) => {
+				Object.values(indicatorsTimeseries[keyName]).forEach((data:any) => {
 					indicator.push({
 						time: data.time,
 						value: data[keyName],

@@ -17,7 +17,7 @@ from .IndicatorLoader import IndicatorLoader
 router = APIRouter(prefix="/strategy", tags=["strategy"])
 
 
-@router.post("/{strategy_id}/backtest", status_code=status.HTTP_200_OK)
+@router.post("/{strategy_id}/backtest", response_model=StrategyBacktestResponse, status_code=status.HTTP_200_OK)
 async def backtest(
     strategy_id: int,
     db: db_dependency,
@@ -66,20 +66,19 @@ async def backtest(
         db.add(strategy_backtest)
         db.commit()
 
-        return {
-            "buy_string": buy_eval_string,
-            "sell_string": sell_eval_string,
-            "pnl": pnl,
-            "drawdown": drawdown,
-        }
+        # Return the backtest as a StrategyBacktestResponse
+        return StrategyBacktestResponse(
+            id=strategy_backtest.id,
+            fk_strategy_id=strategy_backtest.fk_strategy_id,
+            buy_string=strategy_backtest.buy_string,
+            sell_string=strategy_backtest.sell_string,
+            pnl=str(strategy_backtest.pnl),
+            max_drawdown=str(strategy_backtest.max_drawdown),
+            created_at=str(strategy_backtest.created_at)
+        )
 
     except Exception as e:
         handle_db_error(e, "Unexpected error occurred while processing the backtest")
-
-
-
-
-
 
 @router.get("/{strategy_id}/backtest", response_model=List[StrategyBacktestResponse], status_code=status.HTTP_200_OK)
 async def get_backtests_by_strategy(strategy_id: int, db: db_dependency):
@@ -129,7 +128,7 @@ async def get_latest_backtest(strategy_id: int, db: db_dependency):
             sell_string=latest_backtest.sell_string,
             pnl=str(latest_backtest.pnl),
             max_drawdown=str(latest_backtest.max_drawdown),
-            create_at=str(latest_backtest.created_at)
+            created_at=str(latest_backtest.created_at)
         )
 
     except Exception as e:

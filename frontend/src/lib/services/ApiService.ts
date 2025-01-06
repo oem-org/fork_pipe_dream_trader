@@ -45,7 +45,7 @@ class ApiService {
 
 
 export class GetLatestRelationService<R> extends ApiService {
-	async getAll(id: number): Promise<R> {
+	async get(id: number): Promise<R | void> {
 		try {
 			const response = await this.axiosInstance.get<R>(
 
@@ -65,7 +65,7 @@ export class GetLatestRelationService<R> extends ApiService {
 
 
 export class GetAllRelationService<R> extends ApiService {
-	async getAll(id: number): Promise<R[]> {
+	async getAll(id: number): Promise<R[] | void> {
 		try {
 			const response = await this.axiosInstance.get<R[]>(
 
@@ -84,7 +84,7 @@ export class GetAllRelationService<R> extends ApiService {
 }
 
 export class GetAllService<R> extends ApiService {
-	async getAll(): Promise<R[]> {
+	async getAll(): Promise<R[] | void> {
 		try {
 			const response = await this.axiosInstance.get<R[]>(this.endpoint, {
 				headers: await this.getHeaders(),
@@ -198,7 +198,7 @@ export class GetRelationService<R> extends ApiService {
 //}
 
 export class PostService<T, R> extends ApiService {
-	async post(data: T): Promise<R> {
+	async post(data: T): Promise<R | void> {
 		console.log('post data', data)
 		try {
 			const response = await this.axiosInstance.post<R>(this.endpoint, data, {
@@ -231,8 +231,6 @@ export class DeleteService<T> extends ApiService {
 			});
 		} catch (error) {
 			console.error(error);
-
-			throw error;
 		}
 	}
 }
@@ -255,7 +253,7 @@ export class PutService<T, R> extends ApiService {
 }
 
 export class PutRelationService<T, R> extends ApiService {
-	async put(id: number, modelId: number, data: T): Promise<R> {
+	async put(id: number, modelId: number, data: T): Promise<R | void> {
 		try {
 			const response = await this.axiosInstance.put<R>(`${this.endpoint}/${id}/${this.model}/${modelId}`, data, {
 				headers: await this.getHeaders(),
@@ -264,8 +262,6 @@ export class PutRelationService<T, R> extends ApiService {
 			return response.data;
 		} catch (error) {
 			console.error("Error in update");
-
-			throw error;
 		}
 	}
 }

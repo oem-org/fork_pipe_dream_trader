@@ -56,7 +56,7 @@ export const deleteStrategyApi = new DeleteService<number>('strategy', jsonHeade
 //Backtest
 export const postStrategyBacktestApi = new PostRelationService<CreateBacktestRequest, Backtest>('strategy', jsonHeader, "backtest")
 export const getAllStrategyBacktestsApi = new GetAllRelationService<BacktestResponse>('strategy', {}, "backtest")
-export const getLatestStrategyBacktestsApi = new GetLatestRelationService<BacktestResponse>('strategy', {}, "backtest")
+export const getLatestStrategyBacktestsApi = new GetLatestRelationService<Backtest>('strategy', {}, "backtest")
 
 //Timeseries
 export const getTimeseriesApi = new GetWithQueryService<Record<string, any>>('timeseries', {})

@@ -103,7 +103,7 @@ export default function GenericIndicator({ indicatorName, dataframeColumn, indic
 						<input
 							id={key}
 							name={key}
-							value={formData[key] || defaultValue}
+							value={formData[key]}
 							onChange={handleInputChange}
 							className="indicator-input"
 						/>
@@ -119,7 +119,7 @@ export default function GenericIndicator({ indicatorName, dataframeColumn, indic
 						<input
 							id={key}
 							name={key}
-							value={formData[key] || defaultValue}
+							value={formData[key]}
 							onChange={handleInputChange}
 							className="indicator-input"
 						/>
@@ -203,14 +203,18 @@ export default function GenericIndicator({ indicatorName, dataframeColumn, indic
 			</div>
 			<hr className='py-1' />
 			<form className='flex flex-row justify-between' onSubmit={handleSubmit}>
-				<div className='flex flex-row space-x-2'>
-					{Object.entries(settingsSchema.properties).map(([key, property]) => {
-						return (<div key={key}>
-							{renderInputField(key, property as Record<string, any>)}
-						</div>);
-					})}
+				<div className='flex flex-col'>
+					<div className='flex flex-row space-x-2'>
+						{Object.entries(settingsSchema.properties).map(([key, property]) => {
+							return (<div key={key}>
+								{renderInputField(key, property as Record<string, any>)}
+							</div>);
+						})}
+
+					</div>
+
+					<Button className='mt-auto ml-3 mb-2' type='submit'> Submit</Button>
 				</div>
-				<Button className='mt-auto ml-3 mb-2' type='submit'> Submit</Button>
 			</form>
 		</div>
 	);

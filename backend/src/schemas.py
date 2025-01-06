@@ -10,7 +10,7 @@ class StrategyBacktestResponse(BaseModel):
     sell_string: str
     pnl: str
     max_drawdown: str
-    create_at: str
+    created_at: str
 class MatchedStyle(BaseModel):
     indicator_info: str  
     id: int              
