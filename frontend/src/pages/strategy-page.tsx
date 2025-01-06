@@ -73,7 +73,9 @@ export default function StrategyPage() {
       if (strategyId > 0) {
         const result = await getLatestStrategyBacktestsApi.get(strategyId)
         console.log(result, "BT")
-        setBacktest(result)
+        if (!!result){
+          setBacktest(result)
+        }
 
       }
     }

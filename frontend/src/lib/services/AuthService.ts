@@ -51,7 +51,7 @@ export default class AuthService {
 		}
 	}
 
-	async createUser(user: CreateUserFormRequest): Promise<CreateUserResponse> {
+	async createUser(user: CreateUserFormRequest): Promise<CreateUserResponse | undefined> {
 		return await createUserApi.post(user)
 	}
 

@@ -45,7 +45,7 @@ class ApiService {
 
 
 export class GetLatestRelationService<R> extends ApiService {
-	async get(id: number): Promise<R | void> {
+	async get(id: number): Promise<R | undefined> {
 		try {
 			const response = await this.axiosInstance.get<R>(
 
@@ -65,7 +65,7 @@ export class GetLatestRelationService<R> extends ApiService {
 
 
 export class GetAllRelationService<R> extends ApiService {
-	async getAll(id: number): Promise<R[] | void> {
+	async getAll(id: number): Promise<R[] | undefined> {
 		try {
 			const response = await this.axiosInstance.get<R[]>(
 
@@ -198,7 +198,7 @@ export class GetRelationService<R> extends ApiService {
 //}
 
 export class PostService<T, R> extends ApiService {
-	async post(data: T): Promise<R | void> {
+	async post(data: T): Promise<R | undefined> {
 		console.log('post data', data)
 		try {
 			const response = await this.axiosInstance.post<R>(this.endpoint, data, {
