@@ -1,16 +1,5 @@
 ---
 services:
-  # nginx:
-  #   image: "nginx:latest"
-  #   volumes:
-  #     - ./nginx/:/etc/nginx/conf.d/:ro
-  #   ports:
-  #     - "8000:8000"
-  #   networks:
-  #     - webnet
-  #   depends_on:
-  #     - backend
-  #   restart: always
 
   backend:
     build:
@@ -35,8 +24,9 @@ services:
     container_name: postgres-db
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    # Remapped to avoid conflict with local postgres
     ports:
-      - "5437:5432"  # Remapped to avoid conflict
+      - "5437:5432"  
     env_file:
       - ".env"
     networks:
