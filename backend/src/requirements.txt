@@ -1,10 +1,6 @@
 pip-audit
 python-binance
 psycopg2-binary
-flake8
-black
-pylint
-pylint-quotes
 bcrypt==4.2.1
 cryptography
 fastapi

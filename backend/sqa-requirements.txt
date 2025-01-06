@@ -1,2 +1,5 @@
 mypy
 isort
+black
+pylint
+pylint-quotes
