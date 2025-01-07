@@ -4,9 +4,9 @@ import { getAllIndicatorsApi } from "@/lib/apiClientInstances"
 import Indicator from "@/interfaces/Indicator"
 
 export default function getIndicatorsQuery() {
-	const fetchIndicators = async (): Promise<Indicator[]> => {
+	const fetchIndicators = async (): Promise<Indicator[] | undefined> => {
 		try {
-			const indicators: Indicator[] = await getAllIndicatorsApi.getAll()
+			const indicators: Indicator[] | undefined = await getAllIndicatorsApi.getAll()
 			return indicators
 		} catch (error) {
 			//console.error(error)
@@ -15,7 +15,7 @@ export default function getIndicatorsQuery() {
 	}
 
 
-	const { data, error, isError, isLoading } = useQuery<Indicator[], Error>({
+	const { data, error, isError, isLoading } = useQuery<Indicator[] | undefined, Error>({
 		queryKey: ["indicatorList"],
 		queryFn: fetchIndicators,
 	})

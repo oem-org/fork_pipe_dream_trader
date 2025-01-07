@@ -4,4 +4,5 @@ export interface IndicatorChart {
     name: string;
     chartStyle: string,
     data: Array<any>;
+    lineColor?:string
 }

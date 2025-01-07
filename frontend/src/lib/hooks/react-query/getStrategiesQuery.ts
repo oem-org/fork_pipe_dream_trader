@@ -5,9 +5,9 @@ import { Strategy } from "@/interfaces/Strategy"
 import { getAllStrategiesApi } from "@/lib/apiClientInstances"
 
 const getStrategiesQuery = () => {
-  const fetchStrategies = async (): Promise<Strategy[]> => {
+  const fetchStrategies = async (): Promise<Strategy[] | undefined> => {
     try {
-      const strategies: Strategy[] = await getAllStrategiesApi.getAll()
+      const strategies: Strategy[] | undefined = await getAllStrategiesApi.getAll()
       return strategies
     } catch (error) {
       console.log(error)
@@ -15,7 +15,7 @@ const getStrategiesQuery = () => {
     }
   }
 
-  const { data, error, isError, isLoading, refetch } = useQuery<Strategy[], Error>({
+  const { data, error, isError, isLoading, refetch } = useQuery<Strategy[] | undefined, Error>({
     queryKey: ["strategies"],
     queryFn: fetchStrategies,
   })

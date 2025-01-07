@@ -1,7 +1,6 @@
 import { putStrategyConditionsApi } from "@/lib/apiClientInstances";
 import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
 import React, { useState, forwardRef, useImperativeHandle } from "react";
-import { getStrategyConditionApi } from "@/lib/apiClientInstances";
 import { useEffect } from "react";
 
 interface InputSmallProps {

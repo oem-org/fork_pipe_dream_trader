@@ -3,9 +3,9 @@ import { getAllFilesApi } from "@/lib/apiClientInstances"
 import { File } from "@/interfaces/File"
 
 export default function getFilesQuery() {
-	const fetchFiles = async (): Promise<File[]> => {
+	const fetchFiles = async (): Promise<File[] | undefined> => {
 		try {
-			const files: File[] = await getAllFilesApi.getAll()
+			const files: File[] | undefined = await getAllFilesApi.getAll()
 			return files
 		} catch (error) {
 			//console.error(error)
@@ -14,7 +14,7 @@ export default function getFilesQuery() {
 	}
 
 
-	const { data, error, isError, isLoading } = useQuery<File[], Error>({
+	const { data, error, isError, isLoading } = useQuery<File[] | undefined, Error>({
 		queryKey: ["files"],
 		queryFn: fetchFiles,
 	})

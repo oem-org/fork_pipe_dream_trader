@@ -3,6 +3,14 @@ from typing import Any, Dict, Optional, Union, List
 
 from pydantic import BaseModel, Field
 
+class StrategyBacktestResponse(BaseModel):
+    id: int
+    fk_strategy_id: int
+    buy_string: str
+    sell_string: str
+    pnl: str
+    max_drawdown: str
+    created_at: str
 class MatchedStyle(BaseModel):
     indicator_info: str  
     id: int              
@@ -171,5 +179,5 @@ class Token(BaseModel):
 
 
 class CreateBacktestRequest(BaseModel):
-    buy_conditions: str
-    sell_conditions: str
+    buy_string: str
+    sell_string: str

@@ -6,9 +6,9 @@ import { StrategyIndicator } from "@/interfaces/StrategyIndicator"
 
 
 const getStrategyIndicatorsQuery = (strategyId: number) => {
-	const fetchStrategyIndicators = async (): Promise<StrategyIndicator[]> => {
+	const fetchStrategyIndicators = async (): Promise<StrategyIndicator[] | undefined> => {
 		try {
-			const strategyIndicators: StrategyIndicator[] = await getStrategyIndicatorsApi.getAll(strategyId)
+			const strategyIndicators: StrategyIndicator[] | undefined = await getStrategyIndicatorsApi.getAll(strategyId)
 			return strategyIndicators
 
 		} catch (error) {
@@ -17,7 +17,7 @@ const getStrategyIndicatorsQuery = (strategyId: number) => {
 		}
 	}
 
-	const { data, error, isError, isLoading, refetch } = useQuery<StrategyIndicator[], Error>({
+	const { data, error, isError, isLoading, refetch } = useQuery<StrategyIndicator[] | undefined, Error>({
 		queryKey: ["strategyIndicators"],
 		queryFn: fetchStrategyIndicators,
 		enabled: !!strategyId && strategyId > 0

@@ -5,10 +5,13 @@ import { useCallback, useRef, useState, useEffect } from 'react';
 import CreateConditions from './create-conditions';
 import useStrategyStore from '@/lib/hooks/stores/useStrategyStore';
 import { getAllStrategyConditionsApi, postStrategyBacktestApi, postStrategyConditionsApi } from '@/lib/apiClientInstances';
-import { CreateBacktestRequest } from '@/interfaces/Backtest';
+import { Backtest, CreateBacktestRequest } from '@/interfaces/Backtest';
 
+interface ConditionsSectionProps {
+  setBacktest: React.Dispatch<React.SetStateAction<Backtest>>,
+}
 
-export default function ConditionsSection() {
+export default function ConditionsSection({ setBacktest }: ConditionsSectionProps) {
   const { strategyId } = useStrategyStore();
   const [sellConditions, setSellConditions] = useState<any[]>([]);
   const [buyConditions, setBuyConditions] = useState<any[]>([]);
@@ -17,6 +20,11 @@ export default function ConditionsSection() {
   const fetchConditions = useCallback(async (strategyId: number, side: "buy" | "sell") => {
     try {
       const data = await getAllStrategyConditionsApi.getAll(strategyId);
+
+      if(data === undefined){
+        return undefined
+      }
+
       const filteredConditions = data
         .filter((condition) => condition.side === side)
         .map((condition) => ({
@@ -39,9 +47,12 @@ export default function ConditionsSection() {
         fetchConditions(strategyId, "buy"),
         fetchConditions(strategyId, "sell"),
       ]);
-
+      if (buyConditions){
       setBuyConditions(buyConditions);
+      }
+      if (sellConditions){
       setSellConditions(sellConditions);
+      }
     } catch (error) {
       console.error("Error in fetchStrategyConditions:", error);
     }
@@ -69,7 +80,7 @@ export default function ConditionsSection() {
   const buyStringRef = useRef<{ createConditionString: () => Array<any> }>(null);
   const sellStringRef = useRef<{ createConditionString: () => Array<any> }>(null);
 
-  const runBacktest = useCallback(() => {
+  const runBacktest = useCallback(async () => {
     let buy = [];
     let sell = [];
     if (buyStringRef.current) {
@@ -87,12 +98,12 @@ export default function ConditionsSection() {
     const sellConditions = buyConds.processConditions();
 
     let data: CreateBacktestRequest = {
-      buy_conditions: JSON.stringify(buyConditions),
-      sell_conditions: JSON.stringify(sellConditions),
+      buy_string: JSON.stringify(buyConditions),
+      sell_string: JSON.stringify(sellConditions),
     };
-    console.log("OUTPUT:", sellConditions);
-    console.log("OUTPUT:", buyConditions);
-    postStrategyBacktestApi.post(strategyId, data);
+    const result = await postStrategyBacktestApi.post(strategyId, data);
+    setBacktest(result)
+
   }, [strategyId]);
 
   return (
@@ -105,7 +116,6 @@ export default function ConditionsSection() {
       <div className='flex flex-row'>
         <div>
           <h3 className='h3 pb-4'>Buy conditions</h3>
-
           <div className="flex flex-row">
             <BuildConditionRenderer setRefetch={setRefetch} ref={buyStringRef} conditions={buyConditions} />
           </div>
@@ -114,15 +124,12 @@ export default function ConditionsSection() {
           </div>
         </div>
         <div>
-
           <h3 className='h3 pb-4'>Sell conditions</h3>
           <div className="flex flex-row">
             <BuildConditionRenderer setRefetch={setRefetch} ref={sellStringRef} conditions={sellConditions} />
           </div>
-
           <div className='flex flex-col'>
             <CreateConditions side="sell" addCondition={addCondition} />
-
           </div>
         </div>
       </div>

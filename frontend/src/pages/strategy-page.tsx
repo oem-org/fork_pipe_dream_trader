@@ -14,6 +14,8 @@ import { useUpdateStrategy } from "@/lib/hooks/react-query/useUpdateStrategy";
 import ConditionsSection from "@/components/strategy/conditions/conditions-section";
 import { queryClient } from "@/main";
 import { removeSurroundingQuotes } from "@/lib/utils/string-utils";
+import { getLatestStrategyBacktestsApi } from "@/lib/apiClientInstances";
+import { Backtest } from "@/interfaces/Backtest";
 
 
 
@@ -34,7 +36,7 @@ export default function StrategyPage() {
 
   const [pair, setPair] = useState<string>("")
   const [timeframe, setTimeframe] = useState<string>("")
-  const [backtestResult, setBacktestResponse] = useState<string>("")
+  const [backtest, setBacktest] = useState<Backtest>({} as Backtest)
 
   useEffect(() => {
     console.log(paramId, "stragety id", strategyId);
@@ -65,6 +67,22 @@ export default function StrategyPage() {
     }
   }, [strategy, files])
 
+  useEffect(() => {
+    async function getBacktests() {
+      // If state for strategyId is not set it will result in being 0
+      if (strategyId > 0) {
+        const result = await getLatestStrategyBacktestsApi.get(strategyId)
+        console.log(result, "BT")
+        if (!!result){
+          setBacktest(result)
+        }
+
+      }
+    }
+    getBacktests()
+  }, [strategyId, strategy])
+
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -75,23 +93,24 @@ export default function StrategyPage() {
   //TODO: hide file ui if datasource
   //TODO: fix hover on settings
   return (
-    <div className="container mx-auto px-4 space-y-6">
+    <div className="md:container mx-auto px-4 space-y-6">
       {strategy ? (
         <>
           <section className="grid grid-cols-1 lg:grid-cols-4 gap-4">
             <article className="lg:col-span-1 p-4 bg-gray-100 rounded-lg">
               <div className="flex flex-row justify-between">
                 <div className="flex flex-row">
-                  <h3 className="h3 mb-4">{strategy.name}</h3>
+                  <h3 className="h3 font-semibold mb-4">{strategy.name}</h3>
                   <InfoIcon className="cursor-pointer ml-2 mt-1" onClick={() => toggleInfoModal()} />
                 </div>
                 <SettingsDropdown strategyId={strategyId} />
               </div>
               <div className="flex flex-row">
-                <h4 className="h4">Pair:</h4> <p> &nbsp;{removeSurroundingQuotes(pair)}</p>
+                <h3 className="h3">Pair:</h3> <p className="h3"> &nbsp;{removeSurroundingQuotes(pair)}</p>
+
               </div>
               <div className="flex flex-row">
-                <h4 className="h4 mb-2">Timeframe:</h4> <p> &nbsp;{removeSurroundingQuotes(timeframe)}</p>
+                <h3 className="h3  mb-2">Timeframe:</h3> <p className="h3"> &nbsp;{removeSurroundingQuotes(timeframe)}</p>
               </div>
               <hr className='py-1' />
               <Modal onClose={toggleInfoModal} isOpen={isInfoModalOpen} title="Description">
@@ -100,7 +119,7 @@ export default function StrategyPage() {
                 </pre>
               </Modal>
 
-              <h4 className="h4">File</h4>
+              <h4 className="h3">File:</h4>
               <GenericSelect<File>
                 data={files || []}
                 keyExtractor={(file) => file.id}
@@ -112,8 +131,33 @@ export default function StrategyPage() {
                 initialValue={initialValue}
               />
               <hr className='py-1 mt-4' />
-              <h4 className="h4 mt-2">Backtest Results</h4>
-
+              <h3 className="h3 font-semibold">Backtest Results</h3>
+              {backtest ? (
+                <div className="space-y-2">
+                  <div className="flex flex-row">
+                    <h5 className="font-semibold">Buy:&nbsp;</h5>
+                    <p>{backtest.buy_string}</p>
+                  </div>
+                  <div className="flex flex-row">
+                    <h5 className="font-semibold">Sell:&nbsp;</h5>
+                    <p>{backtest.sell_string}</p>
+                  </div>
+                  <div className="flex flex-row">
+                    <h5 className="font-semibold">PNL:&nbsp;</h5>
+                    <p>{backtest.pnl}</p>
+                  </div>
+                  <div className="flex flex-row">
+                    <h5 className="font-semibold"> Max Drawdown:&nbsp;</h5>
+                    <p>{backtest.max_drawdown}</p>
+                  </div>
+                  <div className="flex flex-row">
+                    <h5 className="font-semibold"> Created At:&nbsp;</h5>
+                    <p>{new Date(backtest.created_at).toLocaleString()}</p>
+                  </div>
+                </div>
+              ) : (
+                <p>No backtest results available.</p>
+              )}
             </article>
             <div className="lg:col-span-3">
               <Charts />
@@ -125,7 +169,7 @@ export default function StrategyPage() {
               <IndicatorSection setTimeframe={setTimeframe} setPair={setPair} fileId={fileId} strategyId={strategyId} />
             </div>
             <div className="lg:col-span-6 p-4 bg-gray-100 rounded-lg">
-              <ConditionsSection />
+              <ConditionsSection setBacktest={setBacktest} />
             </div>
           </section>
         </>

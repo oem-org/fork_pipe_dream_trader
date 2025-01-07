@@ -1,21 +1,14 @@
 import logging
-from typing import Any, Dict, List, Optional
-import json
-import pandas as pd
+from typing import  List, Optional
 from fastapi import APIRouter, HTTPException, Path
-from ..files.FileLoaderService import FileLoader
-from .IndicatorLoader import IndicatorLoader
-from ...lib.backtesting.Backtester import Backtester
 from pydantic import BaseModel
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import load_only
 from starlette import status
 from sqlalchemy.orm import joinedload
 
 from ...dependencies import db_dependency, user_dependency
-from ...models import Strategies, StrategyIndicators, StrategyConditions
-from ...schemas import CreateBacktestRequest, UpdateStrategyRequest, CreateStrategyRequest, StrategySchema
-from ...utils.debugging.print_db_object import print_db_object
+from ...models import Strategies
+from ...schemas import  UpdateStrategyRequest, CreateStrategyRequest, StrategySchema
 from ...utils.exceptions import handle_db_error, handle_not_found_error
 
  # TODO: make it impossible to get same name of indicator bug
