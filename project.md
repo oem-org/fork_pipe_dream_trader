@@ -1,3 +1,6 @@
+nginx folder
+/var/www/html
+
 SELECT *
 FROM ohlc_data_1minute
 WHERE symbol = 'YGGUSDT'
