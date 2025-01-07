@@ -17,3 +17,6 @@ env-prod
 .env-prod
 
 app.log
+
+DockerfileTA
+data.json

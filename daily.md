@@ -1,5 +1,0 @@
-setup h
-
-create ux
-
-  
