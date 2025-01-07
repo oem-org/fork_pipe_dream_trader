@@ -36,7 +36,7 @@ Base.metadata.create_all(bind=engine)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    FileSyncer.sync_file_paths(session)
+#    FileSyncer.sync_file_paths(session)
     indicators_seeder(session)
     scheduler.start()
     yield
@@ -80,6 +80,6 @@ app.include_router(indicators.router)
 app.include_router(timeseries.router)
 
 
-@app.get("/health", tags=["Health"])
+@app.get("/api/health", tags=["Health"])
 async def health_check():
     return {"status": "ok", "message": "FastAPI is running"}

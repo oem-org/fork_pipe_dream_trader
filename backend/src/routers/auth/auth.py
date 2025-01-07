@@ -14,7 +14,7 @@ from .auth_utils import (
     hash_password,
 )
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 
 import logging

@@ -15,7 +15,7 @@ services:
       - timescale
       - postgres
     ports:
-      - "8000:8000"
+      - "8080:8080"
     networks:
       - dbnet
     restart: always
@@ -27,7 +27,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
     # Remapped to avoid conflict with local postgres
     ports:
-      - "5437:5432"
+      - "5435:5432"
     env_file:
       - ".env"
     networks:
