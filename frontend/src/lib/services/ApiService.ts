@@ -84,7 +84,7 @@ export class GetAllRelationService<R> extends ApiService {
 }
 
 export class GetAllService<R> extends ApiService {
-	async getAll(): Promise<R[] | void> {
+	async getAll(): Promise<R[] | undefined> {
 		try {
 			const response = await this.axiosInstance.get<R[]>(this.endpoint, {
 				headers: await this.getHeaders(),

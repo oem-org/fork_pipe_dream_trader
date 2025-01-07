@@ -7,9 +7,9 @@ import { StrategyCondition } from "@/interfaces/StrategyCondition"
 
 
 const getStrategyConditionsQuery = (strategyId: number) => {
-	const fetchStrategyConditions = async (): Promise<StrategyCondition[]> => {
+	const fetchStrategyConditions = async (): Promise<StrategyCondition[] | undefined> => {
 		try {
-			const strategyConditions: StrategyCondition[] = await getAllStrategyConditionsApi.getAll(strategyId)
+			const strategyConditions: StrategyCondition[] | undefined = await getAllStrategyConditionsApi.getAll(strategyId)
 			console.log("getStrategtyConditions", strategyConditions)
 			return strategyConditions
 
@@ -19,7 +19,7 @@ const getStrategyConditionsQuery = (strategyId: number) => {
 		}
 	}
 
-	const { data, error, isError, isLoading, refetch } = useQuery<StrategyCondition[], Error>({
+	const { data, error, isError, isLoading, refetch } = useQuery<StrategyCondition[] | undefined, Error>({
 		queryKey: ["strategyConditions"],
 		queryFn: fetchStrategyConditions,
 		enabled: !!strategyId && strategyId > 0

@@ -51,9 +51,12 @@ export default function CreateStrategyForm() {
 				fk_file_id: fileId,
 				description,
 			});
-			setStrategyId(strategy.id)
 
-			navigate(`/strategy/${strategy.id}`);
+			if (strategy){
+				setStrategyId(strategy.id)
+				navigate(`/strategy/${strategy.id}`);
+			}
+
 		}
 
 		catch (error) {

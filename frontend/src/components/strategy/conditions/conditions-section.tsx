@@ -20,6 +20,11 @@ export default function ConditionsSection({ setBacktest }: ConditionsSectionProp
   const fetchConditions = useCallback(async (strategyId: number, side: "buy" | "sell") => {
     try {
       const data = await getAllStrategyConditionsApi.getAll(strategyId);
+
+      if(data === undefined){
+        return undefined
+      }
+
       const filteredConditions = data
         .filter((condition) => condition.side === side)
         .map((condition) => ({
