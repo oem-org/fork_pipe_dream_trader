@@ -1,25 +1,10 @@
-from logging import raiseExceptions
 from pathlib import Path
 from typing import Any, Dict, List
 import pandas as pd
-import pandas_ta as ta
 import json
 from pathlib import Path
-from ...schemas import IndicatorInfo, IndicatorSetting, TimeFrameEnum
+from ...schemas import IndicatorSetting
 from ...indicators import *
-
-import contextlib
-
-
-file_name = "help_output.txt"
-
-with open(file_name, "w") as file:
-    with contextlib.redirect_stdout(file):
-        help(ta.ema)
-        help(ta.bbands)
-        help(ta.kc)
-
-print(f"Help output saved to {file_name}")
 
 class IndicatorLoader:
     def __init__(self, df: pd.DataFrame, indicators: List[IndicatorSetting]):
@@ -38,7 +23,7 @@ class IndicatorLoader:
 
 
     def load_indicators(self):
- 
+
         self.df.ta.log_return(cumulative=True, append=True)
         self.df.ta.percent_return(cumulative=True, append=True)
 
