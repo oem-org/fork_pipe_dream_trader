@@ -81,8 +81,6 @@ async def read_all(
             #     "indicator_info": "{\"RSI_14\": {\"indicator_info\": \"line_add_pane\", \"id\": 1}}",
             #     "timeframe": "daily"
             # }
-            with open('data.json', 'w') as json_file:
-                json.dump(indicator_loader.response, json_file, indent=4)
             return indicator_loader.response
     except Exception as e:
         handle_db_error(e, "Unexpected error occurred while fetching the file data")
