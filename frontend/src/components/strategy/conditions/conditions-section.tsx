@@ -47,9 +47,12 @@ export default function ConditionsSection({ setBacktest }: ConditionsSectionProp
         fetchConditions(strategyId, "buy"),
         fetchConditions(strategyId, "sell"),
       ]);
-
+      if (buyConditions){
       setBuyConditions(buyConditions);
+      }
+      if (sellConditions){
       setSellConditions(sellConditions);
+      }
     } catch (error) {
       console.error("Error in fetchStrategyConditions:", error);
     }

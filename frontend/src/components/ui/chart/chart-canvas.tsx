@@ -3,7 +3,7 @@ import { createChart, ColorType, IChartApi, ISeriesApi, LineStyle } from 'lightw
 import React from 'react';
 import Timeseries from '../../../interfaces/Timeseries';
 import { Volume } from '@/interfaces/Volume';
-import { LineSeries } from '@/interfaces/types/LineSeries';
+import { IndicatorChart } from '@/interfaces/IndicatorChart';
 
 // Sources:
 // https://github.com/JeppeOEM/dashboard_frontend_exam/blob/main/src/components/charting/ChartComponent.tsx
@@ -13,7 +13,7 @@ interface ChartCanvasProps {
 	chartContainerRef: React.RefObject<HTMLDivElement>;
 	data: Timeseries[];
 	volume: Volume[];
-	indicators: Array<LineSeries[]>;
+	indicators: IndicatorChart[];
 	colors?: {
 		backgroundColor?: string;
 		textColor?: string;
@@ -27,7 +27,7 @@ const ChartCanvas = memo(function ChartCanvas({
 	indicators,
 	colors: { backgroundColor = '#253248', textColor = 'white' } = {},
 }: ChartCanvasProps): React.ReactElement {
-	const seriesRefs = useRef<{ [key: string]: ISeriesApi<'Line'> }>({});
+	const seriesRefs = useRef<{ [key: string]: ISeriesApi<'Line'> | undefined }>({});
 	const chartRef = useRef<IChartApi | null>(null);
 	useEffect(() => {
 		if (!chartRef.current && chartContainerRef.current) {
@@ -50,14 +50,14 @@ const ChartCanvas = memo(function ChartCanvas({
 			if (chartRef.current && indicators.length > 0) {
 				indicators.forEach((indicator) => {
 					if (!seriesRefs.current[indicator.name]) {
-						const lineSeries = chartRef.current.addLineSeries({
+						const lineSeries = chartRef.current?.addLineSeries({
 							color: indicator.lineColor,
 							lineWidth: 2,
 							lineStyle: LineStyle.Solid,
 							priceScaleId: "line",
 						});
 
-						lineSeries.setData(indicator.data);
+						lineSeries?.setData(indicator.data);
 						seriesRefs.current[indicator.name] = lineSeries;
 					}
 				});
