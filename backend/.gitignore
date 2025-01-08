@@ -20,3 +20,6 @@ app.log
 
 DockerfileTA
 data.json
+
+ssl/
+
