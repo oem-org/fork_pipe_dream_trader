@@ -19,7 +19,7 @@ def get_db():
         db.close()
 
 
-# any SQLAlchemy model will inherit from this base class
+# Any SQLAlchemy model will inherit from this base class
 Base = declarative_base()
 
 

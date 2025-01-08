@@ -19,15 +19,10 @@ from ...utils.exceptions import (
 router = APIRouter(prefix="/file", tags=["file"])
 
 
-class FileRequest(BaseModel):
-    period: str
-    pair: str
-
 
 
 @router.get("", status_code=status.HTTP_200_OK, response_model=List[FileSchema])
-def get_all_files(db: db_dependency):
-    # user: user_dependency,
+def get_all_files( user: user_dependency, db: db_dependency):
     try:
         files = db.query(Files).all()
         if not files:
@@ -46,8 +41,7 @@ def get_all_files(db: db_dependency):
 
 @router.get("/{file_id}", status_code=status.HTTP_200_OK, response_model=FileResponse)
 
-def get_file(db: db_dependency, file_id: int):
-    ##user: user_dependency,
+def get_file(user: user_dependency, db: db_dependency, file_id: int):
     try:
         file = db.query(Files).get(file_id)
 
@@ -73,9 +67,8 @@ def get_file(db: db_dependency, file_id: int):
 
 
 @router.post("/save", status_code=status.HTTP_201_CREATED)
-async def save_uploaded_file(db: db_dependency, file: UploadFile):
+async def save_uploaded_file(user: user_dependency, db: db_dependency, file: UploadFile):
     """
-    user: user_dependency,
     FastAPI automatically reads the file and populates UploadFile.
     UploadFile comes with file, filename, size and headers as instance attributes
     -------------------------------------------------------------------

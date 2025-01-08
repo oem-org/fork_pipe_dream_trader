@@ -43,7 +43,6 @@ class IndicatorRequest(BaseModel):
     # fk_strategy_id: int
     fk_indicator_id: int
 
-
 class TimeFrameEnum(str, Enum):
         M1 = "1m"
         M5 = "5m"
@@ -58,23 +57,18 @@ class FileTypeEnum(Enum):
     CSV = "csv"
     JSON = "json"
 
-
 class DataSourceEnum(Enum):
     FILE = "file"
     DATABASE = "database"
-
 
 class FileSourceRequest(BaseModel):
     fk_file_id: int
     timeperiod: Optional[str]
 
-
 class DatabaseSourceRequest(BaseModel):
     table: str
     pair: str
     timeperiod: Optional[str]
-
-
 
 class UpdateStrategyRequest(BaseModel):
     id: int
@@ -82,12 +76,10 @@ class UpdateStrategyRequest(BaseModel):
     description: str
     fk_file_id: Optional[int]
 
-
 class CreateStrategyRequest(BaseModel):
     name: str
     description: str
     fk_file_id: Optional[int]
-
 
 class FileSchema(BaseModel):
     id: int
@@ -102,6 +94,9 @@ class FileResponse(BaseModel):
     data: str
     columns: List[str]
 
+class FileRequest(BaseModel):
+    period: str
+    pair: str
 
 class IndicatorSchema(BaseModel):
     id: int
@@ -109,7 +104,6 @@ class IndicatorSchema(BaseModel):
     name: str
     default_settings: Dict
     indicator_info: str
-
     model_config = {"from_attributes": True}
 
 class StrategySchema(BaseModel):
@@ -118,7 +112,6 @@ class StrategySchema(BaseModel):
     description: Optional[str] = None
     fk_user_id: int
     model_config = {"from_attributes": True}
-
 
 class StrategyIndicatorSchema(BaseModel):
     id: int
@@ -135,22 +128,18 @@ class StrategyResponseSchema(BaseModel):
     indicators: Optional[Any] = None
     model_config = {"from_attributes": True}
 
-
 class ChartDataRequest(BaseModel):
     period: str
     pair: str
-
 
 class ChartDataResponse(BaseModel):
     period: str
     pair: str
 
-
 class LoginSchema(BaseModel):
     id: int
     username: str
     model_config = {"from_attributes": True}
-
 
 class TokenResponse(BaseModel):
     access_token: str
@@ -158,25 +147,19 @@ class TokenResponse(BaseModel):
     id: int
     username: str
 
-
 class CreateUserRequest(BaseModel):
     username: str
     email: str
     password: str
-
 
 class CreateUserResponse(BaseModel):
     id: int
     email: str
     username: str
 
-
 class Token(BaseModel):
     access_token: str
     token_type: str
-
-
-
 
 class CreateBacktestRequest(BaseModel):
     buy_string: str

@@ -81,7 +81,7 @@ async def backtest(
         handle_db_error(e, "Unexpected error occurred while processing the backtest")
 
 @router.get("/{strategy_id}/backtest", response_model=List[StrategyBacktestResponse], status_code=status.HTTP_200_OK)
-async def get_backtests_by_strategy(strategy_id: int, db: db_dependency):
+async def get_backtests_by_strategy(strategy_id: int, user: user_dependency, db: db_dependency):
     try:
         # Query backtests for the specific strategy_id from the database
         backtests = db.query(StrategyBacktests).filter(StrategyBacktests.fk_strategy_id == strategy_id).all()
@@ -111,7 +111,7 @@ async def get_backtests_by_strategy(strategy_id: int, db: db_dependency):
 
 
 @router.get("/{strategy_id}/backtest/latest", response_model=StrategyBacktestResponse, status_code=status.HTTP_200_OK)
-async def get_latest_backtest(strategy_id: int, db: db_dependency):
+async def get_latest_backtest(strategy_id: int, user: user_dependency, db: db_dependency):
     try:
         latest_backtest = db.query(StrategyBacktests).filter(StrategyBacktests.fk_strategy_id == strategy_id) \
             .order_by(StrategyBacktests.created_at.desc()).first()

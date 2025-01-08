@@ -5,8 +5,7 @@ from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.requests import Request
-from fastapi.responses import JSONResponse
-
+from fastapi.responses import JSONResponse, RedirectResponse
 logger = logging.getLogger("uvicorn.access")
 # custom made logger so disabled
 logger.disabled = True
@@ -34,6 +33,20 @@ def register_middleware(app: FastAPI):
         "http://localhost:8000",
         "http://localhost:8000/docs",
     ]
+
+    # Custom HTTPS Redirect Middleware
+    # @app.middleware("http")
+    # async def redirect_to_https(request: Request, call_next):
+    #     # Check if the request is over HTTP (not HTTPS)
+    #     if request.url.scheme == "http":
+    #         # Redirect to HTTPS (301 permanent redirect)
+    #         https_url = request.url._replace(scheme="https")
+    #         return RedirectResponse(url=str(https_url), status_code=status.HTTP_301_MOVED_PERMANENTLY)
+    #
+    #     # Proceed with the request if it's already using HTTPS
+    #     response = await call_next(request)
+    #     return response
+
 
     # app.add_middleware(HTTPSRedirectMidVdleware)
     app.add_middleware(

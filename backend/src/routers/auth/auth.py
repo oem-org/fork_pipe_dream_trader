@@ -63,7 +63,6 @@ def create_user2(db: db_dependency, create_user_request: CreateUserRequest):
         )
     except Exception as e:
         print(e)
-        # Catch any other exceptions
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An unexpected error occurred. Please try again later.",
@@ -71,7 +70,6 @@ def create_user2(db: db_dependency, create_user_request: CreateUserRequest):
 
 
 @router.post("/token", response_model=TokenResponse)
-# Dependency Injection of the OAuth2PasswordRequestForm
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: db_dependency
 ):

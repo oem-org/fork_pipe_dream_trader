@@ -1,6 +1,3 @@
-import logging
-import logging.config
-import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -42,30 +39,11 @@ async def lifespan(app: FastAPI):
     yield
     scheduler.shutdown()
 
-
 app = FastAPI(lifespan=lifespan)
 
-
-@app.on_event("startup")
-async def startup_event():
-    app.state.user_cache = {}  # Initialize cache in the app state
-
-
-
-# @scheduler.scheduled_job('cron', minute="*")
-# async def fetch_current_time():
-#    print("cron")
-
-
-def startup_tasks():
-    try:
-        print("seeding")
-        indicators_seeder(session)
-    except Exception as e:
-        print(f"Error during startup seeding: {e}")
-
-
-app.add_event_handler("startup", startup_tasks)
+@scheduler.scheduled_job('cron', hour=0, minute=0)
+async def fetch_current_time():
+    print("Midnight Cron job")
 
 register_middleware(app)
 

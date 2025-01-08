@@ -63,7 +63,6 @@ dftest = {
     'Z': [0, 0, 0, 0],
 }
 
-# Create DataFrame
 tdf = pd.DataFrame(dftest)
 
 # Expressions to evaluate
