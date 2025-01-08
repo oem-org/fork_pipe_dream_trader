@@ -10,7 +10,14 @@ WORKDIR /app
 # Install TA-Lib
 # Source: https://github.com/hotep-team/docker-python-ta-lib/blob/main/Dockerfile
 RUN pip3 install --upgrade pip
+# Copy SSL files into the container
+COPY /etc/letsencrypt/live/mrqdt.xyz/privkey.pem .
+COPY /etc/letsencrypt/live/mrqdt.xyz/fullchain.pem .
 
+
+# Set permissions for the SSL files
+RUN chmod 600 privkey.pem && \
+    chmod 600 fullchain.pem
 
 
 # RUN apt-get install gcc g++ make curl

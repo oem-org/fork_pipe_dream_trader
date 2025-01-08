@@ -30,12 +30,12 @@ def register_middleware(app: FastAPI):
 
     origins = [
         "http://localhost:5173",
-        "http://www.mrqdt.xyz",
-        "http://www.mrqdt.xyz/",
+       # "http://www.mrqdt.xyz",
+       # "http://www.mrqdt.xyz/",
         "https://www.mrqdt.xyz",
         "https://mrqdt.xyz",
-        "http://mrqdt.xyz",
-        "http://mrqdt.xyz/",
+       # "http://mrqdt.xyz",
+       # "http://mrqdt.xyz/",
         "http://localhost:5174",
         "http://localhost:8000",
         "http://localhost:8080",

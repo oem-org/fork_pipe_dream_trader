@@ -24,6 +24,8 @@ from .routers.strategies import indicator as strategy_indicator
 from .routers.strategies import backtest as strategy_backtest
 from .routers.users import users
 from .seeders.indicators_seeder import indicators_seeder
+import ssl
+        
 # custom logging setup
 # from .logger import logger
 
@@ -36,7 +38,7 @@ Base.metadata.create_all(bind=engine)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-#    FileSyncer.sync_file_paths(session)
+    FileSyncer.sync_file_paths(session)
     indicators_seeder(session)
     scheduler.start()
     yield
@@ -44,7 +46,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
-
+ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+ssl_context.load_cert_chain('/etc/ssl/cert/fullchain.pem', keyfile='/etc/ssl/cert/privkey.pem')
 
 @app.on_event("startup")
 async def startup_event():
