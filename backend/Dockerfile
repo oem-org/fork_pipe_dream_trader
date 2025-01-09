@@ -7,10 +7,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 COPY . /app
 
 WORKDIR /app
-# Install TA-Lib
-# Source: https://github.com/hotep-team/docker-python-ta-lib/blob/main/Dockerfile
 RUN pip3 install --upgrade pip
-
 
 
 # RUN apt-get install gcc g++ make curl

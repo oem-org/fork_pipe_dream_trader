@@ -21,6 +21,8 @@ from .routers.strategies import indicator as strategy_indicator
 from .routers.strategies import backtest as strategy_backtest
 from .routers.users import users
 from .seeders.indicators_seeder import indicators_seeder
+#import ssl
+
 # custom logging setup
 # from .logger import logger
 
@@ -58,6 +60,6 @@ app.include_router(indicators.router)
 app.include_router(timeseries.router)
 
 
-@app.get("/health", tags=["Health"])
+@app.get("/api/health", tags=["Health"])
 async def health_check():
     return {"status": "ok", "message": "FastAPI is running"}

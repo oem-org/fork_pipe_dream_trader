@@ -17,7 +17,7 @@ logging.basicConfig(
     level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
-router = APIRouter(prefix="/strategy", tags=["strategy"])
+router = APIRouter(prefix="/api/strategy", tags=["strategy"])
 
 
 

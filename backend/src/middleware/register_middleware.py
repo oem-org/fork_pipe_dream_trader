@@ -1,6 +1,6 @@
 import logging
 import time
-
+from urllib.parse import urlunparse
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
@@ -21,17 +21,26 @@ def register_middleware(app: FastAPI):
         response = await call_next(request)
         processing_time = time.time() - start_time
 
-        # custom logging to cli
+        # custom logging to CLI
         message = f"{request.client.host}:{request.client.port} - {request.method} - {request.url.path} - {response.status_code} completed after {processing_time}s"
 
         print(message)
         return response
 
+
+
     origins = [
         "http://localhost:5173",
+       # "http://www.mrqdt.xyz",
+       # "http://www.mrqdt.xyz/",
+        "https://www.mrqdt.xyz",
+        "https://mrqdt.xyz",
+       # "http://mrqdt.xyz",
+       # "http://mrqdt.xyz/",
         "http://localhost:5174",
         "http://localhost:8000",
-        "http://localhost:8000/docs",
+        "http://localhost:8080",
+        "http://localhost:8080/docs",
     ]
 
     # Custom HTTPS Redirect Middleware

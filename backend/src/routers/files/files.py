@@ -16,7 +16,7 @@ from ...utils.exceptions import (
     handle_not_validated_file_error,
 )
 
-router = APIRouter(prefix="/file", tags=["file"])
+router = APIRouter(prefix="/api/file", tags=["file"])
 
 
 

@@ -12,7 +12,7 @@ from ...models import Indicators, Strategies, Users
 from ...schemas import *
 from ...utils.print_values_db_object import print_db_object
 
-router = APIRouter(prefix="/indicators", tags=["indicators"])
+router = APIRouter(prefix="/api/indicators", tags=["indicators"])
 
 
 @router.get("", status_code=status.HTTP_200_OK, response_model=List[IndicatorSchema])

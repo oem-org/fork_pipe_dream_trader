@@ -19,7 +19,7 @@ from ...utils.debugging.print_db_object import print_db_object
 from ...utils.exceptions import handle_db_error, handle_not_found_error
 
 
-router = APIRouter(prefix="/strategy", tags=["strategy"])
+router = APIRouter(prefix="/api/strategy", tags=["strategy"])
 # TODO: response model
 @router.get("/{strategy_id}/indicator", status_code=status.HTTP_200_OK)
 async def read_all_strategy_indicators(user: user_dependency, db: db_dependency, strategy_id: int = Path(gt=0)):
