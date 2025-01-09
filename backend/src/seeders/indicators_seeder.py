@@ -6,7 +6,7 @@ from ..indicators import ao, rsi, bbands, ema, sma
 
 
 def indicators_seeder(session: Session):
-    indicator_data = [ema, sma, bbands, rsi, ao]
+    indicator_data = [ema, sma, rsi, ao]
     new_indicators = 0
     flag = True
 
