@@ -7,13 +7,11 @@ services:
       context: ./backend
     volumes:
       - "./backend:/app"
-      #      - "/etc/letsencrypt/live/mrqdt.xyz:/etc/ssl/certs"
     env_file:
       - "./backend/testenv"
     environment:
       - RTE=$RTE
     depends_on:
- #     - timescale
       - postgres
     ports:
       - "8080:8080"
