@@ -13,7 +13,7 @@ from ...schemas import  FileSchema  # Assuming you have a schema for the File
 from ...utils.exceptions import handle_db_error, handle_not_found_error
 
 
-router = APIRouter(prefix='/timeseries', tags=['chart'])
+router = APIRouter(prefix='/api/timeseries', tags=['chart'])
 
 
 @router.get("/", status_code=status.HTTP_200_OK)
