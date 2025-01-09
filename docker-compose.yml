@@ -2,9 +2,9 @@
 services:
 
   backend:
-    image: soma1337/pipe_dream:latest
-    # build:
-    #   context: ./backend
+    # image: soma1337/pipe_dream:latest
+    build:
+      context: ./backend
     volumes:
       - "./backend:/app"
       #      - "/etc/letsencrypt/live/mrqdt.xyz:/etc/ssl/certs"
