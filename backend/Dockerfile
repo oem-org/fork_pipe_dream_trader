@@ -9,9 +9,6 @@ COPY . /app
 WORKDIR /app
 RUN pip3 install --upgrade pip
 
-
-# RUN apt-get install gcc g++ make curl
-
 RUN pip3 install -r /app/src/requirements.txt
 
 RUN apt install git
