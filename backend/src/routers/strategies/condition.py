@@ -7,7 +7,7 @@ from ...models import Strategies, StrategyConditions
 from ...utils.debugging.print_db_object import print_db_object
 from ...utils.exceptions import handle_db_error, handle_not_found_error
 
-router = APIRouter(prefix="/strategy", tags=["strategy"])
+router = APIRouter(prefix="/api/strategy", tags=["strategy"])
 
 
 @router.post("/{strategy_id}/condition", status_code=status.HTTP_201_CREATED)
