@@ -1,11 +1,11 @@
 import logging
 import time
-
+from urllib.parse import urlunparse
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.requests import Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import RedirectResponse
 
 logger = logging.getLogger("uvicorn.access")
 # custom made logger so disabled
@@ -22,11 +22,13 @@ def register_middleware(app: FastAPI):
         response = await call_next(request)
         processing_time = time.time() - start_time
 
-        # custom logging to cli
+        # custom logging to CLI
         message = f"{request.client.host}:{request.client.port} - {request.method} - {request.url.path} - {response.status_code} completed after {processing_time}s"
 
         print(message)
         return response
+
+
 
     origins = [
         "http://localhost:5173",
