@@ -3,9 +3,9 @@ from typing import Any, Dict, List, Optional
 import json
 import pandas as pd
 from fastapi import APIRouter, HTTPException, Path
-from ..files.FileLoaderService import FileLoader
+from ...lib.services.FileLoaderService import FileLoader
 from .IndicatorLoader import IndicatorLoader
-from ...lib.backtesting.Backtester import Backtester
+from ...lib.services.BacktesterService import Backtester
 from pydantic import BaseModel
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import load_only

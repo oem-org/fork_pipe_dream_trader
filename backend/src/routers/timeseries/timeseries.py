@@ -1,7 +1,7 @@
 from logging import exception
 import json
 from fastapi import APIRouter, Query, HTTPException
-from ..files.FileLoaderService import FileLoader
+from ...lib.services.FileLoaderService import FileLoader
 
 from ..strategies.IndicatorLoader import IndicatorLoader
 from starlette import status

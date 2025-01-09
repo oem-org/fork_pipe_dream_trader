@@ -6,12 +6,12 @@ from fastapi import APIRouter, HTTPException
 from starlette import status
 
 from ...dependencies import db_dependency, user_dependency
-from ...lib.backtesting.Backtester import Backtester
+from ...lib.services.BacktesterService import Backtester
 from ...models import Strategies, StrategyBacktests
 from ...schemas import CreateBacktestRequest, StrategyBacktestResponse
 
 from ...utils.exceptions import handle_db_error
-from ..files.FileLoaderService import FileLoader
+from ...lib.services.FileLoaderService import FileLoader
 from .IndicatorLoader import IndicatorLoader
 
 router = APIRouter(prefix="/strategy", tags=["strategy"])
@@ -98,8 +98,8 @@ async def get_backtests_by_strategy(strategy_id: int, user: user_dependency, db:
                 fk_strategy_id=backtest.fk_strategy_id,
                 buy_string=backtest.buy_string,
                 sell_string=backtest.sell_string,
-                pnl=str(backtest.pnl),  
-                max_drawdown=str(backtest.max_drawdown), 
+                pnl=str(backtest.pnl),
+                max_drawdown=str(backtest.max_drawdown),
                 create_at=str(backtest.created_at)
             )
             for backtest in backtests
