@@ -19,10 +19,8 @@ router = APIRouter(prefix='/timeseries', tags=['chart'])
 @router.get("/", status_code=status.HTTP_200_OK)
 async def read_all(
     user: user_dependency,
-    timescale: timescale_dependency,
     db: db_dependency,
     timeperiod: str = Query(None),
-    table: str = Query(None),
     strategy: str = Query(None),
     pair: str = Query(None)
 ):
@@ -38,10 +36,10 @@ async def read_all(
             path = strategyModel.file.path
             file_loader = FileLoader(path)
             file_loader.load_data()
-            # print(file_loader.df)
+            print("HIIIIIT")
 
             # Example of indicator info dict
-            # [{'indicator_info': 'line_add_pane', 'kind': 'rsi', 'id': 1}] 
+            # [{'indicator_info': 'line_add_pane', 'kind': 'rsi', 'id': 1}]
             indicators_info = [{"indicator_info": si.indicator.indicator_info,
                                 "kind": si.indicator.kind,
                                 "id": si.id}
@@ -52,18 +50,18 @@ async def read_all(
             all_indicator_settings = [ind.settings
                                     for ind in strategyModel.strategy_indicators
                                     if ind.settings is not None]
-            
+
             indicator_loader = IndicatorLoader(file_loader.df, all_indicator_settings)
             indicator_loader.load_indicators()
             indicator_loader.split_dataframe()
-            
+
             # Connects dataframe column with StrategyIndicator id
             info = indicator_loader.connect_indicator_info(indicators_info)
 
             # Key is the name of the database column
             for key, value in info.items():
                 print(key)
-                print(value['id'])  
+                print(value['id'])
                 strategy_indicator = db.query(StrategyIndicators).filter(StrategyIndicators.id == value['id']).first()
                 if strategy_indicator:
                     strategy_indicator.dataframe_column = key

@@ -1,10 +1,10 @@
 from datetime import timedelta
 from typing import Annotated
-
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.exc import SQLAlchemyError
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from starlette import status
-
 from ...dependencies import db_dependency
 from ...models import Users
 from ...schemas import *
@@ -17,15 +17,9 @@ from .auth_utils import (
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-import logging
-
-from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import BaseModel
-from sqlalchemy.exc import SQLAlchemyError
-
 
 @router.post("", status_code=status.HTTP_201_CREATED)
-def create_user2(db: db_dependency, create_user_request: CreateUserRequest):
+def create_user(db: db_dependency, create_user_request: CreateUserRequest):
     try:
 
 

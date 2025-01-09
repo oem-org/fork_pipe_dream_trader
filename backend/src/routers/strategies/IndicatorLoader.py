@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Any, Dict, List
 import pandas as pd
+import pandas_ta as ta
 import json
 from pathlib import Path
 from ...schemas import IndicatorSetting

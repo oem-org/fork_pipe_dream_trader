@@ -8,7 +8,7 @@
 # {
 #  "sub": "1234567890",
 #  "name": "John Doe",
-#  "role": "Admin"    # make up what ever roles you want
+#  "role": "Admin"
 #  "iat": 1516239022
 # }
 # And a Signature that verifies the token authenticity
