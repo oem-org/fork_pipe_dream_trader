@@ -55,7 +55,6 @@ const BuildConditionRenderer = forwardRef(({ conditions, setRefetch }: BuildCond
   }, [conditions])
 
 
-  // TODO: write explanation
   useEffect(() => {
 
     let currentBlock: JSX.Element[] = [];
@@ -165,7 +164,6 @@ const BuildConditionRenderer = forwardRef(({ conditions, setRefetch }: BuildCond
       });
       return updatedBlocks;
     });
-    //createConditionString()
   };
 
   function moveBlock(fromIndex: number, toIndex: number) {
@@ -217,7 +215,7 @@ const BuildConditionRenderer = forwardRef(({ conditions, setRefetch }: BuildCond
                 id={position}
                 index={position}
                 moveBlock={moveBlock}
-              >{/* Pass blockIndex to each component inside the block */}
+              >{/* Pass position to each component inside the block */}
                 {
                   block.map((component, index) => (
                     React.cloneElement(component, { position, isFirst: index === 0 })
