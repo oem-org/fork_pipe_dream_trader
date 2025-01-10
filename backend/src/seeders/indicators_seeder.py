@@ -1,10 +1,9 @@
-# https://github.com/JeppeOEM/crypto_dashboard_exam/blob/main/core/management/commands/seed_indicators.py
 from sqlalchemy.orm import Session
 
 from ..models import Indicators
 from ..indicators import ao, rsi, bbands, ema, sma
-
-https://github.com/JeppeOEM/crypto_dashboard_exam/blob/main/core/management/commands/seed_indicators.py
+# Inspired by old code
+#https://github.com/JeppeOEM/crypto_dashboard_exam/blob/main/core/management/commands/seed_indicators.py
 
 
 def indicators_seeder(session: Session):
