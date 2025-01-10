@@ -174,11 +174,11 @@ const BuildConditionRenderer = forwardRef(({ conditions, setRefetch }: BuildCond
       return updatedBlocks;
     });
 
-    // Trigger re-render by updating state
+
+  // Rerender blocks when updateCount changes
     setUpdateCount((prev) => prev + 1);
   }
 
-  // Re-render blocks when updateCount changes
   useEffect(() => {
     setBlocks((prevBlocks) => [...prevBlocks]);
   }, [updateCount]);
