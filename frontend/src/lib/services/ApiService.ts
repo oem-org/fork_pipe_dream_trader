@@ -1,5 +1,8 @@
 import axios, { AxiosInstance } from "axios";
 
+// Inspired by old code
+//https://github.com/JeppeOEM/dashboard_frontend_exam/blob/main/src/services/ApiClient.ts
+
 class ApiService {
 	protected axiosInstance: AxiosInstance;
 	protected endpoint: string;

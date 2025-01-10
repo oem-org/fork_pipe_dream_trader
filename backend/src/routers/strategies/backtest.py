@@ -14,7 +14,7 @@ from ...utils.exceptions import handle_db_error
 from ...lib.services.FileLoaderService import FileLoader
 from .IndicatorLoader import IndicatorLoader
 
-router = APIRouter(prefix="/strategy", tags=["strategy"])
+router = APIRouter(prefix="/api/strategy", tags=["strategy"])
 
 
 @router.post("/{strategy_id}/backtest", response_model=StrategyBacktestResponse, status_code=status.HTTP_200_OK)

@@ -26,3 +26,12 @@ export const isFloat = (value: any): boolean => {
 	const normalizedValue = normalizeDelimeter(value)
 	return !isNaN(parseFloat(normalizedValue)) && normalizedValue !== '' && normalizedValue !== null && normalizedValue.indexOf('.') !== -1;
 };
+
+
+export function truncateToFourDecimals(input: string) {
+    const number = parseFloat(input);
+    if (isNaN(number)) {
+        throw new Error("Invalid input: not a number.");
+    }
+    return (Math.floor(number * 10000) / 10000).toString();
+}

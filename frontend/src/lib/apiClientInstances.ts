@@ -13,6 +13,10 @@ import { StrategyIndicator } from "@/interfaces/StrategyIndicator"
 import { CreateStrategyRequest } from "@/interfaces/requests/CreateStrategyRequest"
 import { CreateBacktestRequest } from "@/interfaces/Backtest"
 import { BacktestResponse, Backtest } from "@/interfaces/Backtest"
+
+// Inspired by earlier work
+//https://github.com/JeppeOEM/dashboard_frontend_exam/blob/main/src/services/ApiClientInstances.ts
+
 const csvHeader = {
 	'Content-Type': 'test/csv',
 };

@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 .btn-primary {
   @apply px-4 py-4 rounded-lg bg-blue-600 text-white hover:bg-blue-700;
@@ -84,7 +83,7 @@
 /*spacing*/
 .custom-grid-full-spacing{
 @apply px-6 mb-6 sm:px-14 sm:mb-14
-} 
+}
 
 
 

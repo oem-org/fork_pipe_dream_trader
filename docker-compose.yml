@@ -33,47 +33,8 @@ services:
       - dbnet
     restart: always
 
-  # timescale:
-  #   image: timescale/timescaledb-ha:pg16
-  #   volumes:
-  #     - timescale_data:/home/postgres/pgdata/data
-  #     - ./sql/timescale/init.sql:/docker-entrypoint-initdb.d/init.sql
-  #   # remapped because it was conflicting with local postgres
-  #   ports:
-  #     - "5438:5432"
-  #   env_file:
-  #     - ".env"
-  #   environment:
-  #     - RTE=$RTE
-  #     - POSTGRES_USER=${TS_POSTGRES_USER}  # Use .env variables
-  #     - POSTGRES_PASSWORD=${TS_POSTGRES_PASSWORD}
-  #     - POSTGRES_DB=${TS_POSTGRES_DB}
-  #     - POSTGRES_HOST=${TS_POSTGRES_HOST}
-  #   networks:
-  #     - timescalenet
-    # command: ["bash", "entrypoint-timescale.sh"]
-
-  # market_data_service:
-  #   build:
-  #     context: ./market_data_service
-  #   env_file:
-  #     - ".env"
-  #   environment:
-  #     - RTE=$RTE
-  #     - POSTGRES_USER=${TS_POSTGRES_USER}  # Use .env variables
-  #     - POSTGRES_PASSWORD=${TS_POSTGRES_PASSWORD}
-  #     - POSTGRES_DB=${TS_POSTGRES_DB}
-  #     - POSTGRES_HOST=${TS_POSTGRES_HOST}
-  #   volumes:
-  #     - "./market_data_service/:/opt/timescale_pull"
-  #   depends_on:
-  #     - timescale
-  #   networks:
-  #     - timescalenet
-
 volumes:
   postgres_data:
- # timescale_data:
   node_modules:
 
 networks:
