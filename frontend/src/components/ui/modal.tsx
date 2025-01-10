@@ -37,7 +37,7 @@ export default function Modal({ title, isOpen, onClose, children, onAction, acti
 							<Button onClick={onAction}>{actionText || "Confirm"}</Button>
 						)}
 						<Button variant="outline" onClick={onClose}>
-							Cancel
+							Close
 						</Button>
 					</div>
 				</div>

@@ -15,7 +15,7 @@ export default function TopNav() {
         <div className="flex flex-row">
           <li className="text-white text-xl">
             <div className="flex flex-row items-center space-x-2">
-              <span className="hidden sm:block">Pipe Dream Trading</span>
+              <span style={{ fontFamily: "'Ubuntu', sans-serif" }} className="font-bold text-2xl hidden sm:block">Pipe Dream Trading</span>
               <Activity className="flex-shrink-0" />
             </div>
           </li>

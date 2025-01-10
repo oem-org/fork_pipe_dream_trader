@@ -95,8 +95,6 @@ async def save_uploaded_file(user: user_dependency, db: db_dependency, file: Upl
             saved_file = Files(
                 path=file_path, name=name, file_type=fileValidation.file_type
             )
-            # TODO: check os remove
-            # os.remove(fileValidation.file_path)
             db.add(saved_file)
             db.commit()
         else:

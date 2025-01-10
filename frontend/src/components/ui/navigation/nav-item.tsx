@@ -9,7 +9,7 @@ export default function NavItem({ to, label }: DropdownItemProps) {
   return (
 
     <li className="text-white">
-      <Link to={to} className="hover:bg-gray-700 px-4 py-2 rounded">{label}</Link>
+      <Link to={to} className="hover:bg-gray-700 px-4 py-2 rounded text-xl">{label}</Link>
     </li>
   );
 

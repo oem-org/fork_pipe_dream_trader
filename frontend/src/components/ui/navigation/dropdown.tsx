@@ -1,13 +1,16 @@
 import { useState, useRef, useEffect, ReactNode } from 'react';
 import { ChevronDown, type LucideIcon } from 'lucide-react';
 
+// Component created with shadcnui ai  
+// https://ui.shadcn.com
+
 interface DropdownProps {
   children: ReactNode;
   icon?: LucideIcon;
   label?: string;
   animation: boolean;
   direction?: 'left' | 'right';
-  textColor?: string;  // New prop for text color
+  textColor?: string;
 }
 
 export default function Dropdown({
@@ -16,7 +19,7 @@ export default function Dropdown({
   animation,
   children,
   direction = 'left',
-  textColor = 'text-white' // Default text color is white
+  textColor = 'text-white'
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLLIElement>(null);
@@ -44,7 +47,7 @@ export default function Dropdown({
         onFocus={() => setIsOpen(true)}
         className={`flex items-center ${textColor} rounded hover:bg-gray-700`}
       >
-        {Icon && <Icon className="h-5 w-5 mr-2" />}
+        {Icon && <Icon className="h-7 w-7 mr-2" />}
         {label && <span className="mr-2">{label}</span>}
         {animation && (
           <ChevronDown

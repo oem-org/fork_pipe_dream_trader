@@ -1,6 +1,5 @@
 import CreateStrategyForm from "@/components/strategy/create-strategy-form";
 
-//TODO: center
 export default function CreateStrategyPage() {
   return (
     <div className="flex items-center justify-center">

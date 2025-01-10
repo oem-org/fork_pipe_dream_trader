@@ -22,6 +22,7 @@ export default function DataPage() {
             <h2 className="text-2xl font-bold mb-4">Files</h2>
             <FileUploadForm />
           </div>
+
           <div className="flex-grow overflow-auto p-4">
             <GenericList<File>
               data={files || []}
