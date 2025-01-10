@@ -1,4 +1,4 @@
-# Dont use alpine as it needs special optinal packages installed in react
+# Dont use alpine as it needs specific packages installed in react
 FROM node:20-bookworm
 
 WORKDIR /app

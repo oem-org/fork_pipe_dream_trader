@@ -101,7 +101,7 @@ export default function GenericSelect<T>({
 						filteredData.map((item) => (
 							<li key={keyExtractor(item)} className="border-t border-gray-200">
 								<button
-									className="w-full text-left text-md font-normal text-black hover:bg-gray-100 transition-colors duration-200"
+									className="w-full text-left p-2 text-md font-normal text-black hover:bg-gray-100 transition-colors duration-200"
 									onClick={(e) => handleSelection(item, e)}
 								>
 									{renderItem(item)}

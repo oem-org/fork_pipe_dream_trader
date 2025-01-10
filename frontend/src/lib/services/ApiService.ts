@@ -7,8 +7,8 @@ class ApiService {
 	protected headers: Record<string, string>;
 
 	constructor(endpoint: string, headers: Record<string, string>, model: string = "") {
-		const url = 'https://mrqdt.xyz/api'
-
+		// const url = 'https://mrqdt.xyz/api'
+		const url = 'http://localhost:8080/api'
 		this.axiosInstance = axios.create({ baseURL: url });
 		this.endpoint = endpoint;
 		this.model = model;
