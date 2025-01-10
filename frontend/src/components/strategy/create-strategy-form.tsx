@@ -5,6 +5,7 @@ import { File } from "@/interfaces/File";
 import { postStrategyApi } from "@/lib/apiClientInstances";
 import { useNavigate } from 'react-router-dom';
 import useStrategyStore from "@/lib/hooks/stores/useStrategyStore";
+import { Button } from "../ui/buttons/button";
 
 export default function CreateStrategyForm() {
 	const [name, setName] = useState("");
@@ -52,7 +53,7 @@ export default function CreateStrategyForm() {
 				description,
 			});
 
-			if (strategy){
+			if (strategy) {
 				setStrategyId(strategy.id)
 				navigate(`/strategy/${strategy.id}`);
 			}
@@ -121,12 +122,12 @@ export default function CreateStrategyForm() {
 				{errors.description && <p className="text-error">{errors.description}</p>}
 			</div>
 
-			<button
+			<Button
 				type="submit"
-				className="btn-primary w-full mt-4"
+				className="w-full mt-4"
 			>
 				Create Strategy
-			</button>
+			</Button>
 		</form>
 	</>);
 }

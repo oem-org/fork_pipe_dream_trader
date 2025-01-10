@@ -67,7 +67,8 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>
     <RouterProvider router={router} />
-    <ReactQueryDevtools initialIsOpen={false} />
+    {/*Tool to see cache*/}
+    {/*<ReactQueryDevtools initialIsOpen={false} />*/}
   </QueryClientProvider>
 );
 

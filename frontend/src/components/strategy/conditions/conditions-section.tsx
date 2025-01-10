@@ -21,7 +21,7 @@ export default function ConditionsSection({ setBacktest }: ConditionsSectionProp
     try {
       const data = await getAllStrategyConditionsApi.getAll(strategyId);
 
-      if(data === undefined){
+      if (data === undefined) {
         return undefined
       }
 
@@ -46,11 +46,11 @@ export default function ConditionsSection({ setBacktest }: ConditionsSectionProp
         fetchConditions(strategyId, "buy"),
         fetchConditions(strategyId, "sell"),
       ]);
-      if (buyConditions){
-      setBuyConditions(buyConditions);
+      if (buyConditions) {
+        setBuyConditions(buyConditions);
       }
-      if (sellConditions){
-      setSellConditions(sellConditions);
+      if (sellConditions) {
+        setSellConditions(sellConditions);
       }
     } catch (error) {
       console.error("Error in fetchStrategyConditions:", error);
@@ -106,28 +106,28 @@ export default function ConditionsSection({ setBacktest }: ConditionsSectionProp
   }, [strategyId]);
 
   return (
-    <div>
+    <div className="flex flex-col">
       <div className="flex flex-row justify-between">
         <h2 className="h2 mb-4">Strategy</h2>
         <Button onClick={() => runBacktest()}>Run Backtest</Button>
       </div>
       <hr className="py-1" />
-      <div className='flex flex-row'>
-        <div>
-          <h3 className='h3 pb-4'>Buy conditions</h3>
+      <div className="flex flex-row space-x-4">
+        <div className="flex-1">
+          <h3 className="h3 font-semibold pb-4">Buy conditions</h3>
           <div className="flex flex-row">
             <BuildConditionRenderer setRefetch={setRefetch} ref={buyStringRef} conditions={buyConditions} />
           </div>
-          <div className='flex flex-col'>
+          <div className="flex flex-col">
             <CreateConditions side="buy" addCondition={addCondition} />
           </div>
         </div>
-        <div>
-          <h3 className='h3 pb-4'>Sell conditions</h3>
+        <div className="flex-1">
+          <h3 className="h3 font-semibold pb-4">Sell conditions</h3>
           <div className="flex flex-row">
             <BuildConditionRenderer setRefetch={setRefetch} ref={sellStringRef} conditions={sellConditions} />
           </div>
-          <div className='flex flex-col'>
+          <div className="flex flex-col">
             <CreateConditions side="sell" addCondition={addCondition} />
           </div>
         </div>

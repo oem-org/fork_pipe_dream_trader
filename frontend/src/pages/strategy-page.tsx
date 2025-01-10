@@ -16,11 +16,10 @@ import { queryClient } from "@/main";
 import { removeSurroundingQuotes } from "@/lib/utils/string-utils";
 import { getLatestStrategyBacktestsApi } from "@/lib/apiClientInstances";
 import { Backtest } from "@/interfaces/Backtest";
-
+import { formatDate } from "@/lib/utils/string-utils";
 
 
 export default function StrategyPage() {
-  // TODO: use name instead of id
   const { id } = useParams();
   const paramId = id ? parseInt(id) : NaN;
   const { fileId, strategyId, setFileId, setStrategyId } = useStrategyStore();
@@ -87,8 +86,7 @@ export default function StrategyPage() {
   if (isError && error instanceof Error) {
     return <div>Error: {error.message}</div>;
   }
-  //TODO: hide file ui if datasource
-  //TODO: fix hover on settings
+
   return (
     <div className="md:container mx-auto px-4 space-y-6">
       {strategy ? (
@@ -116,7 +114,7 @@ export default function StrategyPage() {
                 </pre>
               </Modal>
 
-              <h4 className="h3">File:</h4>
+              <h4 className="h3 font-semibold pb-2">File:</h4>
               <GenericSelect<File>
                 data={files || []}
                 keyExtractor={(file) => file.id}
@@ -149,7 +147,7 @@ export default function StrategyPage() {
                   </div>
                   <div className="flex flex-row">
                     <h5 className="font-semibold"> Created At:&nbsp;</h5>
-                    <p>{new Date(backtest.created_at).toLocaleString()}</p>
+                    <p>{formatDate(backtest?.created_at)}</p>
                   </div>
                 </div>
               ) : (

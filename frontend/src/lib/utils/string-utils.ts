@@ -19,3 +19,9 @@ export function isLogicalOperator(value: any): value is LogicalOperator {
 export function removeSurroundingQuotes(str: string) {
   return str.replace(/^"(.*)"$/, '$1');
 }
+
+
+export function formatDate(dateString: string) {
+  const date = new Date(dateString);
+  return !isNaN(date.getTime()) ? date.toLocaleString() : "";
+};

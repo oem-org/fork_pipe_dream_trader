@@ -12,7 +12,7 @@ interface LineChartProps {
 
 const LineCharts = React.memo(({ data, timeseries, volume }: LineChartProps) => {
 	return data.length > 0 ? (
-		<div className="w-full h-80 relative rounded-tl-lg rounded-tr-lg overflow-hidden">
+		<div style={{ height: "28rem" }} className="w-full h-96 relative rounded-tl-lg rounded-tr-lg overflow-hidden">
 			<ChartCanvas
 				indicators={data}
 				chartContainerRef={React.createRef()}
@@ -21,7 +21,7 @@ const LineCharts = React.memo(({ data, timeseries, volume }: LineChartProps) => 
 			/>
 		</div>
 	) : (
-		<div className="w-full h-80 relative rounded-tl-lg rounded-tr-lg overflow-hidden">
+		<div style={{ height: "28rem" }} className="w-full h-96 relative rounded-tl-lg rounded-tr-lg overflow-hidden">
 			<ChartCanvas
 				indicators={[]}
 				chartContainerRef={React.createRef()}

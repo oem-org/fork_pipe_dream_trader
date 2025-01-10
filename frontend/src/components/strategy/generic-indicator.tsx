@@ -39,7 +39,7 @@ export default function GenericIndicator({ indicatorName, dataframeColumn, indic
 	function toggleModal() {
 		setIsModalOpen((prev) => !prev);
 	}
-	//TODO: explain
+	// Validate the inputs on submit
 	function handleSubmit(e: React.FormEvent) {
 		e.preventDefault();
 		const convertedFormData = Object.entries(formData).reduce(
@@ -189,17 +189,18 @@ export default function GenericIndicator({ indicatorName, dataframeColumn, indic
 				</section>
 			</Modal>
 			<div className='flex flex-row justify-between'>
-				<div className='flex flex-row'>
-					<h4 className='h4 font-bold mr-2'>{indicatorName}</h4>
-					{dataframeColumn && <p className='text-lg mr-2'>ID: {dataframeColumn}</p>}
-					<InfoIcon className='cursor-pointer' onClick={toggleModal} />
-				</div>
 				<button className="mb-4 appearance-none" onClick={() => handleDelete(indicatorId)}>
 					<div className="flex items-center space-x-2">
 						<span>Delete</span>
 						<SquareX />
 					</div>
 				</button>
+			</div>
+
+			<div className='flex flex-row'>
+				<h4 className='h4 font-bold mr-2'>{indicatorName}</h4>
+				{dataframeColumn && <p className='text-lg mr-2'>{dataframeColumn}</p>}
+				<InfoIcon className='cursor-pointer' onClick={toggleModal} />
 			</div>
 			<hr className='py-1' />
 			<form className='flex flex-row justify-between' onSubmit={handleSubmit}>

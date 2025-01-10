@@ -24,34 +24,8 @@ export default function CreateConditions({ side, addCondition }: CreateCondition
         <CreateIndicatorValueModal side={side} addCondition={addCondition} />
         <Button onClick={() => addCondition(createOperator(side, "&"))}>Operator</Button>
       </div>
-      <hr className="mb-4" />
     </>
   );
 }
 
 
-//<Button onClick={() => addCondition(createOperator(side, "|"))}>|</Button>
-//<Button onClick={() => addCondition(createOperator(side, "~"))}>~</Button>
-
-
-//<button onClick={() => toggleIndicatorValue()} className="btn-dropdown">Rename</button>
-
-//return (<>
-//
-//
-//  <div className="mt-4 flex flex-row">
-//  </div>
-//  <div className="mt-4 flex flex-row">
-//    <Button onClick={() => addCondition("&")}> &amp; </Button>
-//    <Button onClick={() => addCondition("|")}>|</Button>
-//    <Button onClick={() => addCondition("~")}>~</Button>
-//    <Button onClick={() => addCondition(">")}>{'>'}</Button>
-//    <Button onClick={() => addCondition("<")}>{'<'}</Button>
-//  </div>
-//
-//</>)
-//
-
-//<Button onClick={() => addCondition([{ "value": 1 }, { "operator": ">" }, { "indicator": null }])}>Value/Indicator</Button>
-//<Button onClick={() => addCondition([{ "indicator": null }, { "operator": ">" }, { "value": 1 }])}>Indicator/Value</Button>
-//<Button onClick={() => addCondition([{ "indicator": null }, { "operator": ">" }, { "indicator": null }])}>Indicator/Indicator</Button>
