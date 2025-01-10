@@ -43,21 +43,6 @@ def register_middleware(app: FastAPI):
         "http://localhost:8080/docs",
     ]
 
-    # Custom HTTPS Redirect Middleware
-    # @app.middleware("http")
-    # async def redirect_to_https(request: Request, call_next):
-    #     # Check if the request is over HTTP (not HTTPS)
-    #     if request.url.scheme == "http":
-    #         # Redirect to HTTPS (301 permanent redirect)
-    #         https_url = request.url._replace(scheme="https")
-    #         return RedirectResponse(url=str(https_url), status_code=status.HTTP_301_MOVED_PERMANENTLY)
-    #
-    #     # Proceed with the request if it's already using HTTPS
-    #     response = await call_next(request)
-    #     return response
-
-
-    # app.add_middleware(HTTPSRedirectMidVdleware)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=origins,
@@ -65,8 +50,3 @@ def register_middleware(app: FastAPI):
         allow_headers=["*"],
         allow_credentials=True,
     )
-
-    # app.add_middleware(
-    #     TrustedHostMiddleware,
-    #     allowed_hosts=["localhost", "127.0.0.1", "0.0.0.0"],
-    # )

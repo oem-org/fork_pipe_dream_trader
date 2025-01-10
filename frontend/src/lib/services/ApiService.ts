@@ -30,7 +30,7 @@ class ApiService {
 			}
 		}
 
-		// If there's no valid token or an error occurred, return an empty object
+		// If there's no valid token return an empty object
 		return {};
 	}
 
@@ -108,7 +108,7 @@ export class PostRelationService<T, R> extends ApiService {
 
 			return response.data;
 		} catch (error) {
-			console.log("PostService throwing an error")
+			console.log("PostRelationService throwing an error")
 			throw error;
 		}
 	}
@@ -180,22 +180,6 @@ export class GetRelationService<R> extends ApiService {
 	}
 }
 
-
-//export class PostWithIdServicevT, R> extends ApiService {
-//	async post(id: number,  ,data: T): Promise<R> {
-//		console.log('post data', data)
-//		try {
-//			const response = await this.axiosInstance.post<R>(`${this.endpoint}/${id}/`, data, {
-//				headers: await this.getHeaders(),
-//			});
-//
-//			return response.data;
-//		} catch (error) {
-//			console.log("PostService throwing an error")
-//			throw error;
-//		}
-//	}
-//}
 
 export class PostService<T, R> extends ApiService {
 	async post(data: T): Promise<R | undefined> {
