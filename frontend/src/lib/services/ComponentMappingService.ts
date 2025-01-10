@@ -20,17 +20,13 @@ export class DivideBlocksService {
 	}
 
 	processConditions() {
-		console.log(this.conditions, "THIS MAPPED FUCKING CONDITIONS")
-
 		// Sort conditions based on there placement in the strategy
 
 		const sortedConditions = this.conditions.sort((a, b) => a.position - b.position);
 
 		sortedConditions.forEach((condition: { id: number; settings: Array<any> }) => {
 			const { id, settings } = condition;
-			console.log(id, settings, "FIRST PRINT")
 			if ("singleOperator" in settings && isLogicalOperator(settings.singleOperator)) {
-				console.log("SignleOperator")
 				this.extract("singleOperator", settings.singleOperator, id);
 				this.blockEnd(id)
 			} else {

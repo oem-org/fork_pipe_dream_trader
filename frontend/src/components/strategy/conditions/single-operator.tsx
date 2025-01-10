@@ -31,7 +31,6 @@ const SingleOperator = forwardRef(
     async function handleOperatorChange(operator: Operator) {
       try {
 
-        console.log("Selected operator:", operator);
         setSelectedOperator(operator);
         if (onValueChange) {
           onValueChange(operator.name);
@@ -44,7 +43,6 @@ const SingleOperator = forwardRef(
     }
 
     useEffect(() => {
-      console.log(" THE BLOCK Block Index:", blockIndex);
       const data = { "position": position }
       putStrategyConditionsApi.put(strategyId, conditionId, data)
     }, [blockIndex]);

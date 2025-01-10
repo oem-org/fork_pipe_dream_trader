@@ -29,7 +29,6 @@ const InputSmall = forwardRef(({ blockIndex, position, initialValue, name, onVal
 	}
 
 	useEffect(() => {
-		console.log(" THE BLOCK Block Index:", blockIndex);
 		const data = { "position": position }
 		putStrategyConditionsApi.put(strategyId, conditionId, data)
 	}, [blockIndex]);

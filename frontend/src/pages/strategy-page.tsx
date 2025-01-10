@@ -39,7 +39,6 @@ export default function StrategyPage() {
   const [backtest, setBacktest] = useState<Backtest>({} as Backtest)
 
   useEffect(() => {
-    console.log(paramId, "stragety id", strategyId);
     // Remove entire cache on navigating to the page
     queryClient.invalidateQueries()
 
@@ -48,7 +47,6 @@ export default function StrategyPage() {
 
   const handleFileChange = async (file: File) => {
     if (strategy) {
-      console.log(strategy.fk_file_id)
       strategy.fk_file_id = file.id
       const resp = await updateStrategyMutation(strategy);
       if (resp) {

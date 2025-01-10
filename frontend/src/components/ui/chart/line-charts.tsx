@@ -11,7 +11,6 @@ interface LineChartProps {
 }
 
 const LineCharts = React.memo(({ data, timeseries, volume }: LineChartProps) => {
-	console.log(data, "CHARTS DATAAAAAAAAAAAAAAAAAAa");
 	return data.length > 0 ? (
 		<div className="w-full h-80 relative rounded-tl-lg rounded-tr-lg overflow-hidden">
 			<ChartCanvas

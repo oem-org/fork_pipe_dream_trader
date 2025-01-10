@@ -3,7 +3,6 @@ import Indicator from "@/interfaces/Indicator";
 import { postStrategyIndicatorsApi } from "@/lib/apiClientInstances";
 
 const addIndicator = async (indicator: Indicator, paramId: number): Promise<any> => {
-	console.log("adding this indicator", indicator)
 	const response = await postStrategyIndicatorsApi.post(paramId, {
 		fk_indicator_id: indicator.id,
 

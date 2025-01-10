@@ -24,7 +24,6 @@ export default class TimeseriesService {
 
 		}
 
-		console.log("Mapped Indicators", mappedIndicators);
 		return mappedIndicators
 	}
 

@@ -10,7 +10,6 @@ const getStrategyConditionsQuery = (strategyId: number) => {
 	const fetchStrategyConditions = async (): Promise<StrategyCondition[] | undefined> => {
 		try {
 			const strategyConditions: StrategyCondition[] | undefined = await getAllStrategyConditionsApi.getAll(strategyId)
-			console.log("getStrategtyConditions", strategyConditions)
 			return strategyConditions
 
 		} catch (error) {

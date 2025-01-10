@@ -31,12 +31,10 @@ const OperatorConditionSelect = forwardRef(
 
       const data = { "position": position, "settings": [{ "none": null }, { "operator": operator.name }, { "none": null }] }
       putStrategyConditionsApi.put(strategyId, conditionId, data)
-      console.log(conditionId, position)
     }
 
 
     useEffect(() => {
-      console.log(" THE BLOCK Block Index:", blockIndex);
       const data = { "position": position }
       putStrategyConditionsApi.put(strategyId, conditionId, data)
     }, [blockIndex]);

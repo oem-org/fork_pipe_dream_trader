@@ -25,7 +25,6 @@ export default class AuthService {
 
 			if (authInformation && authInformation.access_token) {
 				localStorage.setItem("user", JSON.stringify(authInformation));
-				console.log(authInformation);
 				return true;
 			}
 

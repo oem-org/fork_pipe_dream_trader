@@ -37,7 +37,6 @@ const IndicatorConditionSelect = forwardRef(
       if (onValueChange) {
         onValueChange(item.dataframe_column);
       }
-      console.log(conditionId, item.settings)
 
       let data = {}
       //isFirst refers to the placement of the select in the condition block
@@ -55,15 +54,11 @@ const IndicatorConditionSelect = forwardRef(
       }
 
       putStrategyConditionsApi.put(strategyId, conditionId, data)
-      console.log(position, conditionId, data, "IndicatorCondtionSelect")
 
-      //putStrategyConditionsApi(strategyId, conditionId, data)
-      //console.log(position, conditionId, data, "IndicatorCondtionSelect")
     }
 
 
     useEffect(() => {
-      console.log(" THE BLOCK Block Index:", blockIndex);
       const data = { "position": position }
       putStrategyConditionsApi.put(strategyId, conditionId, data)
     }, [blockIndex]);
@@ -74,7 +69,6 @@ const IndicatorConditionSelect = forwardRef(
       getPosition: () => ({ position: position }),
 
     }));
-    console.log(isFirst, "ISFIRST")
     return (
       <div>
         <GenericSelect<StrategyIndicator>

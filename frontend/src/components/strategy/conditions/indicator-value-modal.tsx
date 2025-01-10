@@ -28,9 +28,6 @@ export default function CreateIndicatorValueModal({ side, addCondition }: Create
     toggleModal();
   }
 
-  useEffect(() => {
-    console.log(indicator1, operator, value)
-  }, [indicator1, operator, value])
 
   return (
     <>
