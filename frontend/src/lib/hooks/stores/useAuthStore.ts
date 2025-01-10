@@ -3,6 +3,8 @@ import AuthService from "@/lib/services/AuthService";
 import CreateUserFormRequest from "@/interfaces/requests/CreateUserFormRequest";
 import { QueryClient } from "@tanstack/react-query";
 
+// Inspired by earlier work
+// https://github.com/JeppeOEM/dashboard_frontend_exam/blob/main/src/stores/authStore.ts
 
 const authService = AuthService.getInstance();
 

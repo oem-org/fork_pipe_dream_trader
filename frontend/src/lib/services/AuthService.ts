@@ -4,6 +4,8 @@ import { createUserApi } from "../apiClientInstances";
 import { authUserApi } from "../apiClientInstances";
 import CreateUserFormRequest from "../../interfaces/requests/CreateUserFormRequest";
 import axios from "axios";
+// Inspired by earlier work
+// https://github.com/JeppeOEM/dashboard_frontend_exam/blob/main/src/services/auth/AuthService.ts
 
 export default class AuthService {
 	private static instance: AuthService
