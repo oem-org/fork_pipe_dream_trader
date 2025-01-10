@@ -60,13 +60,11 @@ const IndicatorSection = memo(function IndicatorSection({
 				// the nested objects needs to be parsed from json strings
 
 				const parsed = parseJsonStrings(data);
-				console.log(parsed, "PARSED")
 				const timeseriesService = new TimeseriesService();
 				await timeseriesService.processOhlc(parsed.ohlc);
 				await timeseriesService.processVolume(parsed.volume);
 
 				const indicatorInfo = parsed.indicator_info;
-				console.log(indicatorInfo, "INDICATOR INFO")
 				delete parsed.ohlc;
 				delete parsed.volume;
 				delete parsed.indicator_info;

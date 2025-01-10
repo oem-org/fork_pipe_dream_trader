@@ -14,14 +14,12 @@ interface CreateConditionIndicatorProps {
 export default function CreateConditionIndicator({ setIndicator }: CreateConditionIndicatorProps) {
   const { strategyId } = useStrategyStore();
   const { data: indicatorSettings } = getStrategyIndicatorsQuery(strategyId);
-  console.log("THE INDICAGOR STRATEGY DATA", indicatorSettings)
   const [selectedIndicator, setSelectedIndicator] = useState<StrategyIndicator>();
 
   // Connect StrategyIndicator id
   function handleChange(indicator: StrategyIndicator) {
     setSelectedIndicator(indicator)
     setIndicator({ indicator: indicator.dataframe_column, id: indicator.id })
-    console.log(selectedIndicator)
   }
 
   return (

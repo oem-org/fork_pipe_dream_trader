@@ -33,7 +33,6 @@ export default function ConditionsSection({ setBacktest }: ConditionsSectionProp
           settings: condition.settings,
         }));
 
-      console.log(`Filtered ${side.charAt(0).toUpperCase() + side.slice(1)} Conditions:`, filteredConditions);
       return filteredConditions;
     } catch (error) {
       console.error(`Error fetching ${side} conditions:`, error);

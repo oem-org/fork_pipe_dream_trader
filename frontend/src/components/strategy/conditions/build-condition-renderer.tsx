@@ -62,7 +62,6 @@ const BuildConditionRenderer = forwardRef(({ conditions, setRefetch }: BuildCond
     const initialBlocks: JSX.Element[][] = [];
     mappedConditions.forEach((condition: any, index: number) => {
       if ("conditionId" in condition) {
-        console.log(condition.id, condition, "WTFFF")
         const deleteButton = (
           <DeleteConditionBtn setRefetch={setRefetch} key={`delete-${condition.conditionId}`} conditionId={condition.conditionId} strategyId={strategyId} />
         );
@@ -203,8 +202,6 @@ const BuildConditionRenderer = forwardRef(({ conditions, setRefetch }: BuildCond
         .filter((value) => value !== null);
     });
 
-    console.log(values, "THE VALUES TO TRANSFORM")
-    //const transformedValues = transformArray(values);
     return values;
   }
 
