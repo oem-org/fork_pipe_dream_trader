@@ -10,24 +10,11 @@ from fastapi.responses import JSONResponse, RedirectResponse
 
 logger = logging.getLogger("uvicorn.access")
 # custom made logger so disabled
-logger.disabled = True
+logger.disabled = False
 
 
-# beyond crud youtube
+# source: beyond crud youtube
 def register_middleware(app: FastAPI):
-
-    @app.middleware("http")
-    async def custom_logging(request: Request, call_next):
-        start_time = time.time()
-
-        response = await call_next(request)
-        processing_time = time.time() - start_time
-
-        # custom logging to CLI
-        message = f"{request.client.host}:{request.client.port} - {request.method} - {request.url.path} - {response.status_code} completed after {processing_time}s"
-
-        print(message)
-        return response
 
     origins = [
         "http://localhost:5173",

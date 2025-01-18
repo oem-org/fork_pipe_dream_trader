@@ -54,7 +54,7 @@ serialized_schema = json.dumps(schema)
 bbands = {
     "kind": "bbands",
     "name": "Boillinger Bands",
-    "default_settings": bbands_settings.dict(),
+    "default_settings": bbands_settings.model_dump(),
     "settings_schema": serialized_schema,
     "indicator_info": "line",
 }

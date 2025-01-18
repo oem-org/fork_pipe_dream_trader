@@ -50,6 +50,29 @@ app.dependency_overrides[get_db] = mock_get_db
 
 
 def test_health_check():
+    """"""
     response = client.get("/api/health")
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == {"status": "ok", "message": "FastAPI is running"}
+
+
+def test_cors_allowed_origin():
+    """ensure CORS headers are set for allowed origins."""
+    allowed_origin = "http://localhost:5173"  
+    response = client.get(
+        "/api/health",  
+        headers={"Origin": allowed_origin},
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert response.headers.get("access-control-allow-origin") == allowed_origin
+
+
+def test_cors_disallowed_origin():
+    """ensure CORS headers are not set for disallowed origins."""
+    disallowed_origin = "http://disallowed-origin.com"
+    response = client.get(
+        "/api/health",  
+        headers={"Origin": disallowed_origin},
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert "access-control-allow-origin" not in response.headers

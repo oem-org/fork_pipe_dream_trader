@@ -50,7 +50,7 @@ serialized_schema = json.dumps(schema)
 sma = {
     "kind": "sma",
     "name": "Simple Moving Average",
-    "default_settings": sma_settings.dict(),
+    "default_settings": sma_settings.model_dump(),
     "settings_schema": serialized_schema,
     "indicator_info": "line",
 }

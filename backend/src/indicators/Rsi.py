@@ -63,7 +63,7 @@ serialized_schema = json.dumps(schema)
 rsi = {
     "kind": "rsi",
     "name": "Relative Strength Index",
-    "default_settings": rsi_settings.dict(),
+    "default_settings": rsi_settings.model_dump(),
     "settings_schema": serialized_schema,
     "indicator_info": "line_add_pane",
 }

@@ -55,7 +55,7 @@ serialized_schema = json.dumps(schema)
 ema = {
     "kind": "ema",
     "name": "Exponential Moving Average",
-    "default_settings": ema_settings.dict(),
+    "default_settings": ema_settings.model_dump(),
     "settings_schema": serialized_schema,
     "indicator_info": "line",
 }
