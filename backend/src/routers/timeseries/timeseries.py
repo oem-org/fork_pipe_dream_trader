@@ -7,11 +7,8 @@ from starlette import status
 
 from ...dependencies import db_dependency, timescale_dependency, user_dependency
 from ...lib.services.FileLoaderService import FileLoader
-from ...models import (
-    Files,
-    Strategies,  # Assuming you have a File model
-    StrategyIndicators,
-)
+from ...models import Strategies  # Assuming you have a File model
+from ...models import Files, StrategyIndicators
 from ...schemas import FileSchema  # Assuming you have a schema for the File
 from ...utils.exceptions import handle_db_error, handle_not_found_error
 from ..strategies.IndicatorLoader import IndicatorLoader
