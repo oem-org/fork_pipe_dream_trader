@@ -9,7 +9,7 @@ from ...indicators import *
 from ...schemas import IndicatorSetting
 
 
-class IndicatorLoader:
+class IndicatorLoaderService:
     def __init__(self, df: pd.DataFrame, indicators: List[IndicatorSetting]):
         self.df = df
         self.indicators = indicators

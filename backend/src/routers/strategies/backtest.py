@@ -11,7 +11,7 @@ from ...lib.services.FileLoaderService import FileLoader
 from ...models import Strategies, StrategyBacktests
 from ...schemas import CreateBacktestRequest, StrategyBacktestResponse
 from ...utils.exceptions import handle_db_error
-from .IndicatorLoader import IndicatorLoader
+from ...lib.services.IndicatorLoader import IndicatorLoader
 
 router = APIRouter(prefix="/api/strategy", tags=["strategy"])
 

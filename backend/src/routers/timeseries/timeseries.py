@@ -7,14 +7,13 @@ from starlette import status
 
 from ...dependencies import db_dependency, timescale_dependency, user_dependency
 from ...lib.services.FileLoaderService import FileLoader
-from ...models import Strategies  # Assuming you have a File model
+from ...models import Strategies
 from ...models import Files, StrategyIndicators
-from ...schemas import FileSchema  # Assuming you have a schema for the File
+from ...schemas import FileSchema
 from ...utils.exceptions import handle_db_error, handle_not_found_error
-from ..strategies.IndicatorLoader import IndicatorLoader
+from ...lib.services.IndicatorLoaderService import IndicatorLoaderService
 
 router = APIRouter(prefix='/api/timeseries', tags=['chart'])
-
 
 @router.get("/", status_code=status.HTTP_200_OK)
 async def read_all(
@@ -57,7 +56,7 @@ async def read_all(
                 if ind.settings is not None
             ]
 
-            indicator_loader = IndicatorLoader(file_loader.df, all_indicator_settings)
+            indicator_loader = IndicatorLoaderService(file_loader.df, all_indicator_settings)
             indicator_loader.load_indicators()
             indicator_loader.split_dataframe()
 

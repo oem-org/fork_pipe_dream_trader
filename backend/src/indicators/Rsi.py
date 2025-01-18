@@ -52,7 +52,7 @@ class Rsi(BaseModel):
     drift: int = Field(1)
     offset: int = Field(0)
 
-    model_config = {'min_anystr_length': 1, 'anystr_strip_whitespace': True}
+    model_config = {'str_min_length': 1, 'str_strip_whitespace': True}
 
 
 rsi_settings = Rsi()

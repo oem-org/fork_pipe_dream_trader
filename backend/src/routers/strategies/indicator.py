@@ -16,7 +16,7 @@ from ...models import Strategies, StrategyIndicators
 from ...schemas import IndicatorRequest
 from ...utils.debugging.print_db_object import print_db_object
 from ...utils.exceptions import handle_db_error, handle_not_found_error
-from .IndicatorLoader import IndicatorLoader
+from ...lib.services.IndicatorLoader import IndicatorLoader
 
 router = APIRouter(prefix="/api/strategy", tags=["strategy"])
 
