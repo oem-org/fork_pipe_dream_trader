@@ -1,17 +1,20 @@
-from logging import exception
 import json
-from fastapi import APIRouter, Query, HTTPException
-from ...lib.services.FileLoaderService import FileLoader
+from logging import exception
 
-from ..strategies.IndicatorLoader import IndicatorLoader
+from fastapi import APIRouter, HTTPException, Query
+from sqlalchemy.orm import joinedload
 from starlette import status
 
-from sqlalchemy.orm import joinedload
 from ...dependencies import db_dependency, timescale_dependency, user_dependency
-from ...models import Files, Strategies, StrategyIndicators  # Assuming you have a File model
-from ...schemas import  FileSchema  # Assuming you have a schema for the File
+from ...lib.services.FileLoaderService import FileLoader
+from ...models import (
+    Files,
+    Strategies,  # Assuming you have a File model
+    StrategyIndicators,
+)
+from ...schemas import FileSchema  # Assuming you have a schema for the File
 from ...utils.exceptions import handle_db_error, handle_not_found_error
-
+from ..strategies.IndicatorLoader import IndicatorLoader
 
 router = APIRouter(prefix='/api/timeseries', tags=['chart'])
 
@@ -22,12 +25,11 @@ async def read_all(
     db: db_dependency,
     timeperiod: str = Query(None),
     strategy: str = Query(None),
-    pair: str = Query(None)
+    pair: str = Query(None),
 ):
     # strategy refers to the id taken from the query string
-    try :
+    try:
         strategyModel = db.query(Strategies).filter(Strategies.id == strategy).first()
-
 
         if strategyModel:
             print(strategyModel.file)
@@ -40,16 +42,23 @@ async def read_all(
 
             # Example of indicator info dict
             # [{'indicator_info': 'line_add_pane', 'kind': 'rsi', 'id': 1}]
-            indicators_info = [{"indicator_info": si.indicator.indicator_info,
-                                "kind": si.indicator.kind,
-                                "id": si.id}
-                                for si in strategyModel.strategy_indicators if si.indicator]
+            indicators_info = [
+                {
+                    "indicator_info": si.indicator.indicator_info,
+                    "kind": si.indicator.kind,
+                    "id": si.id,
+                }
+                for si in strategyModel.strategy_indicators
+                if si.indicator
+            ]
 
             # Example of settings dict
             # [{'kind': 'rsi', 'length': 14, 'scalar': 100, 'talib': False, 'drift': 1, 'offset': 0}]
-            all_indicator_settings = [ind.settings
-                                    for ind in strategyModel.strategy_indicators
-                                    if ind.settings is not None]
+            all_indicator_settings = [
+                ind.settings
+                for ind in strategyModel.strategy_indicators
+                if ind.settings is not None
+            ]
 
             indicator_loader = IndicatorLoader(file_loader.df, all_indicator_settings)
             indicator_loader.load_indicators()
@@ -62,7 +71,11 @@ async def read_all(
             for key, value in info.items():
                 print(key)
                 print(value['id'])
-                strategy_indicator = db.query(StrategyIndicators).filter(StrategyIndicators.id == value['id']).first()
+                strategy_indicator = (
+                    db.query(StrategyIndicators)
+                    .filter(StrategyIndicators.id == value['id'])
+                    .first()
+                )
                 if strategy_indicator:
                     strategy_indicator.dataframe_column = key
                     db.commit()
@@ -82,5 +95,3 @@ async def read_all(
             return indicator_loader.response
     except Exception as e:
         handle_db_error(e, "Unexpected error occurred while fetching the file data")
-
-

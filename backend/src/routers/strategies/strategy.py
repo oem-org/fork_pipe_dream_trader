@@ -1,25 +1,24 @@
 import logging
-from typing import  List, Optional
+from typing import List, Optional
+
 from fastapi import APIRouter, HTTPException, Path
 from pydantic import BaseModel
 from sqlalchemy.exc import SQLAlchemyError
-from starlette import status
 from sqlalchemy.orm import joinedload
+from starlette import status
 
 from ...dependencies import db_dependency, user_dependency
 from ...models import Strategies
-from ...schemas import  UpdateStrategyRequest, CreateStrategyRequest, StrategySchema
+from ...schemas import CreateStrategyRequest, StrategySchema, UpdateStrategyRequest
 from ...utils.exceptions import handle_db_error, handle_not_found_error
 
- # TODO: make it impossible to get same name of indicator bug
+# TODO: make it impossible to get same name of indicator bug
 # Configure logging
 logging.basicConfig(
     level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/strategy", tags=["strategy"])
-
-
 
 
 class CreateUserRequest(BaseModel):
@@ -175,4 +174,3 @@ async def delete_strategy(
     except Exception as e:
         db.rollback()
         handle_db_error(e, "Unexpected error occurred fetching stategy")
-

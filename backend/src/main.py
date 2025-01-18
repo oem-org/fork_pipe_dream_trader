@@ -6,22 +6,21 @@ from fastapi import FastAPI
 from pytz import utc
 
 from .lib.services.FileSyncerService import FileSyncer
-
-
 from .middleware.register_middleware import register_middleware
 from .models import *
 from .orm_connection import SessionLocal, engine
 from .routers.auth import auth
 from .routers.files import files
 from .routers.indicators import indicators
-from .routers.timeseries import timeseries
-from .routers.strategies import strategy
+from .routers.strategies import backtest as strategy_backtest
 from .routers.strategies import condition as strategy_condition
 from .routers.strategies import indicator as strategy_indicator
-from .routers.strategies import backtest as strategy_backtest
+from .routers.strategies import strategy
+from .routers.timeseries import timeseries
 from .routers.users import users
 from .seeders.indicators_seeder import indicators_seeder
-#import ssl
+
+# import ssl
 
 # custom logging setup
 # from .logger import logger
@@ -33,6 +32,7 @@ session = SessionLocal()
 scheduler = AsyncIOScheduler(timezone=utc)
 Base.metadata.create_all(bind=engine)
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     FileSyncer.sync_file_paths(session)
@@ -41,11 +41,14 @@ async def lifespan(app: FastAPI):
     yield
     scheduler.shutdown()
 
+
 app = FastAPI(lifespan=lifespan)
+
 
 @scheduler.scheduled_job('cron', hour=0, minute=0)
 async def fetch_current_time():
     print("Midnight Cron job")
+
 
 register_middleware(app)
 

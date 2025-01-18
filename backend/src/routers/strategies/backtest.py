@@ -7,17 +7,20 @@ from starlette import status
 
 from ...dependencies import db_dependency, user_dependency
 from ...lib.services.BacktesterService import Backtester
+from ...lib.services.FileLoaderService import FileLoader
 from ...models import Strategies, StrategyBacktests
 from ...schemas import CreateBacktestRequest, StrategyBacktestResponse
-
 from ...utils.exceptions import handle_db_error
-from ...lib.services.FileLoaderService import FileLoader
 from .IndicatorLoader import IndicatorLoader
 
 router = APIRouter(prefix="/api/strategy", tags=["strategy"])
 
 
-@router.post("/{strategy_id}/backtest", response_model=StrategyBacktestResponse, status_code=status.HTTP_200_OK)
+@router.post(
+    "/{strategy_id}/backtest",
+    response_model=StrategyBacktestResponse,
+    status_code=status.HTTP_200_OK,
+)
 async def backtest(
     strategy_id: int,
     db: db_dependency,
@@ -54,7 +57,6 @@ async def backtest(
         sell_eval_string = backtest.build_conditions("sell", sell_conditions)
         pnl, drawdown = backtest.run()
 
-
         strategy_backtest = StrategyBacktests(
             fk_strategy_id=strategy_id,
             buy_string=buy_eval_string,
@@ -74,21 +76,33 @@ async def backtest(
             sell_string=strategy_backtest.sell_string,
             pnl=str(strategy_backtest.pnl),
             max_drawdown=str(strategy_backtest.max_drawdown),
-            created_at=str(strategy_backtest.created_at)
+            created_at=str(strategy_backtest.created_at),
         )
 
     except Exception as e:
         handle_db_error(e, "Unexpected error occurred while processing the backtest")
 
-@router.get("/{strategy_id}/backtest", response_model=List[StrategyBacktestResponse], status_code=status.HTTP_200_OK)
-async def get_backtests_by_strategy(strategy_id: int, user: user_dependency, db: db_dependency):
+
+@router.get(
+    "/{strategy_id}/backtest",
+    response_model=List[StrategyBacktestResponse],
+    status_code=status.HTTP_200_OK,
+)
+async def get_backtests_by_strategy(
+    strategy_id: int, user: user_dependency, db: db_dependency
+):
     try:
         # Query backtests for the specific strategy_id from the database
-        backtests = db.query(StrategyBacktests).filter(StrategyBacktests.fk_strategy_id == strategy_id).all()
+        backtests = (
+            db.query(StrategyBacktests)
+            .filter(StrategyBacktests.fk_strategy_id == strategy_id)
+            .all()
+        )
 
         if not backtests:
             raise HTTPException(
-                status_code=404, detail=f"No backtests found for strategy_id {strategy_id}"
+                status_code=404,
+                detail=f"No backtests found for strategy_id {strategy_id}",
             )
 
         # Transform to response schema if needed
@@ -100,25 +114,37 @@ async def get_backtests_by_strategy(strategy_id: int, user: user_dependency, db:
                 sell_string=backtest.sell_string,
                 pnl=str(backtest.pnl),
                 max_drawdown=str(backtest.max_drawdown),
-                create_at=str(backtest.created_at)
+                create_at=str(backtest.created_at),
             )
             for backtest in backtests
         ]
     except Exception as e:
-        handle_db_error(e, f"Unexpected error occurred while retrieving backtests for strategy_id {strategy_id}")
+        handle_db_error(
+            e,
+            f"Unexpected error occurred while retrieving backtests for strategy_id {strategy_id}",
+        )
 
 
-
-
-@router.get("/{strategy_id}/backtest/latest", response_model=StrategyBacktestResponse, status_code=status.HTTP_200_OK)
-async def get_latest_backtest(strategy_id: int, user: user_dependency, db: db_dependency):
+@router.get(
+    "/{strategy_id}/backtest/latest",
+    response_model=StrategyBacktestResponse,
+    status_code=status.HTTP_200_OK,
+)
+async def get_latest_backtest(
+    strategy_id: int, user: user_dependency, db: db_dependency
+):
     try:
-        latest_backtest = db.query(StrategyBacktests).filter(StrategyBacktests.fk_strategy_id == strategy_id) \
-            .order_by(StrategyBacktests.created_at.desc()).first()
+        latest_backtest = (
+            db.query(StrategyBacktests)
+            .filter(StrategyBacktests.fk_strategy_id == strategy_id)
+            .order_by(StrategyBacktests.created_at.desc())
+            .first()
+        )
 
         if not latest_backtest:
             raise HTTPException(
-                status_code=404, detail=f"No backtests found for strategy_id {strategy_id}"
+                status_code=404,
+                detail=f"No backtests found for strategy_id {strategy_id}",
             )
 
         return StrategyBacktestResponse(
@@ -128,8 +154,11 @@ async def get_latest_backtest(strategy_id: int, user: user_dependency, db: db_de
             sell_string=latest_backtest.sell_string,
             pnl=str(latest_backtest.pnl),
             max_drawdown=str(latest_backtest.max_drawdown),
-            created_at=str(latest_backtest.created_at)
+            created_at=str(latest_backtest.created_at),
         )
 
     except Exception as e:
-        handle_db_error(e, f"Unexpected error occurred while retrieving the latest backtest for strategy_id {strategy_id}")
+        handle_db_error(
+            e,
+            f"Unexpected error occurred while retrieving the latest backtest for strategy_id {strategy_id}",
+        )

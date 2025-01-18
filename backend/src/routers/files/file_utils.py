@@ -1,9 +1,12 @@
-from pathlib import Path
-from ...utils.exceptions import handle_not_validated_file_error
-from starlette import status
-from fastapi import HTTPException, UploadFile
-import shutil
 import os
+import shutil
+from pathlib import Path
+
+from fastapi import HTTPException, UploadFile
+from starlette import status
+
+from ...utils.exceptions import handle_not_validated_file_error
+
 
 def get_file_path(file: UploadFile) -> str:
     folder_path = Path.cwd() / "files"

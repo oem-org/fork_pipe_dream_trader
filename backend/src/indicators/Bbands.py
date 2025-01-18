@@ -1,16 +1,18 @@
 import json
+from typing import Any, Dict
+
 from pydantic import BaseModel, Field
-from typing import Dict, Any
+
 
 class Bbands(BaseModel):
     """
     bbands(close: pandas.core.series.Series, length: Union[int, numpy.integer] = None, std: Union[int, numpy.integer, float, numpy.floating] = None, ddof: Union[int, numpy.integer] = 0, mamode: str = None, talib: bool = None, offset: Union[int, numpy.integer] = None, **kwargs: Optional[dict]) -> pandas.core.frame.DataFrame
         Bollinger Bands (BBANDS)
-        
+
         A popular volatility indicator by John Bollinger.
         Sources:
             https://www.tradingview.com/wiki/Bollinger_Bands_(BB)
-        
+
         Args:
             close (pd.Series): Series of 'close's
             length (int): The short period. Default: 5
@@ -24,13 +26,14 @@ class Bbands(BaseModel):
                         represents the number of elements. The 'talib' argument
                         must be false for 'ddof' to work. Default: 1
             offset (int): How many periods to offset the result. Default: 0
-        
+
         Kwargs:
             fillna (value, optional): pd.DataFrame.fillna(value)
-        
+
         Returns:
             pd.DataFrame: lower, mid, upper, bandwidth, and percent columns.
     """
+
     kind: str = Field("bbands")
     length: int = Field(10)
     std: int = Field(10)
@@ -40,10 +43,8 @@ class Bbands(BaseModel):
     ddof: int = Field(1)
     offset: int = Field(0)
 
-    model_config = {
-        'min_anystr_length': 1,
-        'anystr_strip_whitespace': True
-    }
+    model_config = {'min_anystr_length': 1, 'anystr_strip_whitespace': True}
+
 
 bbands_settings = Bbands()
 

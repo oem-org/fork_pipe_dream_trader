@@ -1,27 +1,22 @@
 from datetime import timedelta
 from typing import Annotated
+
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.exc import SQLAlchemyError
-from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
+from sqlalchemy.exc import SQLAlchemyError
 from starlette import status
+
 from ...dependencies import db_dependency
 from ...models import Users
 from ...schemas import *
-from .auth_utils import (
-    authenticate_user,
-    create_access_token,
-    hash_password,
-)
+from .auth_utils import authenticate_user, create_access_token, hash_password
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
-
 
 
 @router.post("", status_code=status.HTTP_201_CREATED)
 def create_user(db: db_dependency, create_user_request: CreateUserRequest):
     try:
-
 
         model = Users(
             email=create_user_request.email,

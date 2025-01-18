@@ -1,22 +1,24 @@
 from ast import Raise
-import pandas as pd
 from pathlib import Path
+
 import numpy as np
+import pandas as pd
+
 
 class Conditions:
     """
     Buy and sell signals created with a string expression
     The signals are shifted 1 row forward to not trigger false early signal
-    
+
     pandas.eval:
 
     https://pandas.pydata.org/docs/reference/api/pandas.eval.html
     """
+
     def __init__(self, df):
         self.df = df
         self.buy_df_column = None
         self.sell_df_column = None
-
 
     def _build_expression(self, conds: dict) -> str:
         expression = ""
@@ -26,7 +28,7 @@ class Conditions:
                 expression += f"({joined})"
             if isinstance(condition, str):
                 expression += f" {condition} "
-        
+
         return expression
 
     def get_conditions(self):
@@ -37,18 +39,16 @@ class Conditions:
 
     def build_conditions(self, side, conditions):
         print("Running backtest...")
-        expression = self._build_expression(conditions) 
+        expression = self._build_expression(conditions)
         # Print the first row for debugging purposes
         print(self.df.head(1))
         print("Expression:", expression)
 
         # Make a copy so both sell and buy can shift 1 forward later
-        df = self.df.copy() 
-        
+        df = self.df.copy()
+
         try:
-            df[f'{side}'] = np.where(
-                pd.eval(expression), 1, -1
-            )
+            df[f'{side}'] = np.where(pd.eval(expression), 1, -1)
             # Move the rows 1 step forward to not give a false early signal
             # This will trigger a buy or sell on the open of the next price bar
             new_column = df[f'{side}'] = self.df[f'{side}'].shift(1)
@@ -61,7 +61,7 @@ class Conditions:
 
         except Exception as e:
             print(f"Error evaluating expression: {e}")
-            raise Exception("Error creating condtion strings")        
+            raise Exception("Error creating condtion strings")
 
 
 # buy = {"buy": [["df.SMA_10 > 1","&","df.close",">","0.01"],"&","~",["df.SMA_10 > 100"]]}
@@ -79,7 +79,7 @@ class Conditions:
 
 # print(df.dtypes)
 #
-# # 
+# #
 #
 #
 #
@@ -100,13 +100,13 @@ class Conditions:
 # # print(df)
 #
 #
-# expression = '(tdf.A > tdf.B & tdf.C > tdf.D) & tdf.B < 2' # True 
+# expression = '(tdf.A > tdf.B & tdf.C > tdf.D) & tdf.B < 2' # True
 #                                                     # fail
 # expression2 = '(tdf.A > tdf.B & tdf.C > tdf.D) & ~(tdf.B == 1.9)' # False
 #
 # expression3 = '(tdf.A > tdf.B & tdf.C > tdf.D) & ~(tdf.B == 0.9 | tdf.C == 1.8)' # False
 #
-# expression4 = '(tdf.A > tdf.B & tdf.C > tdf.D) & tdf.B > 0.1' # True 
+# expression4 = '(tdf.A > tdf.B & tdf.C > tdf.D) & tdf.B > 0.1' # True
 #                                                     # fail
 # expression5 = '(tdf.A > tdf.B & tdf.C < tdf.D) & ~(tdf.B < 0.1)' # False
 #

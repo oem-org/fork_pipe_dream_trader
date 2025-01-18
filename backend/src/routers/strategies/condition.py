@@ -26,7 +26,6 @@ async def add_strategy_condition(
         settings = condition_data.get("settings", {})
         side = condition_data.get("side")
 
-
         strategy = (
             db.query(Strategies)
             .filter(Strategies.id == strategy_id)
@@ -334,8 +333,7 @@ async def get_all_strategy_conditions(
                 "fk_strategy_id": sc.fk_strategy_id,
                 "settings": sc.settings,
                 "side": sc.side,
-                "position": sc.position
-
+                "position": sc.position,
             }
             for sc in strategy_conditions
         ]
@@ -351,5 +349,3 @@ async def get_all_strategy_conditions(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Unexpected error occurred",
         )
-
-

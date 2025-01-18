@@ -1,11 +1,13 @@
-from .FileLoaderService import FileLoader
 import pandas as pd
+
+from .FileLoaderService import FileLoader
 
 
 class FileValidator(FileLoader):
     def __init__(self, file_path: str):
         super().__init__(file_path)  # Inherit from FileLoader
         self.errors = {}
+
     # TODO: fix validation
     def validate(self) -> bool:
         """
@@ -25,7 +27,9 @@ class FileValidator(FileLoader):
         invalid_high = ~self.df['high'].apply(lambda x: isinstance(x, (int, float)))
 
         # Combine all invalid conditions into one condition with bitwise OR
-        invalid_rows = invalid_volume | invalid_open | invalid_close | invalid_low | invalid_high
+        invalid_rows = (
+            invalid_volume | invalid_open | invalid_close | invalid_low | invalid_high
+        )
         duplicate_indices = self.df.index[self.df.index.duplicated()].tolist()
         if duplicate_indices:
             return False
@@ -65,9 +69,8 @@ class FileValidator(FileLoader):
 
         return times.min(), times.max()
 
-
-            # elif not (len(str(int(row['time']))) in [10, 13]):
-            #     error_message.append(f"Timestamp length is invalid (actual length: {len(str(int(row['time'])))} digits)")
+        # elif not (len(str(int(row['time']))) in [10, 13]):
+        #     error_message.append(f"Timestamp length is invalid (actual length: {len(str(int(row['time'])))} digits)")
         # Missing or invalid fields
         # missing_fields = self.df[['time', 'volume', 'open']].isna().any(axis=1)
 
@@ -75,4 +78,3 @@ class FileValidator(FileLoader):
         # invalid_time = self.df['time'].isna() | ~self.df['time'].apply(
         #     lambda x: isinstance(x, (int, float)) and len(str(int(x))) in [10, 13]
         # )
-

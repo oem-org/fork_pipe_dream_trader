@@ -1,7 +1,8 @@
 from pathlib import Path
+
 import pandas as pd
 
-from ...schemas import FileTypeEnum 
+from ...schemas import FileTypeEnum
 
 
 class FileLoader:
@@ -20,13 +21,13 @@ class FileLoader:
             return FileTypeEnum.JSON
         else:
             return None
-    
+
     def get_pair(self):
         columns_to_check = ['pair', 'symbol', 'ticker']
 
         for column in columns_to_check:
             if column in self.df.columns:
-                value = str(self.df[column].iloc[0])  
+                value = str(self.df[column].iloc[0])
                 print(f"Returning value from column: {column}")
                 return value
 
@@ -41,15 +42,14 @@ class FileLoader:
             TIMEFRAME = {
                 "1m": 60,
                 "5m": 300,
-                "15m":900,
-                "30m":1800,
+                "15m": 900,
+                "30m": 1800,
                 "1h": 3600,
                 "4h": 7200,
-                "8h":14400,
-                "12h":43200,
+                "8h": 14400,
+                "12h": 43200,
                 "daily": 86400,
             }
-
 
             time_diffs = self.df["time"].diff()
 
@@ -59,9 +59,7 @@ class FileLoader:
             if len(unique_intervals) == 1:
                 interval_seconds = unique_intervals[0]
 
-                print (
-                    f" {interval_seconds} seconds\n"
-                )
+                print(f" {interval_seconds} seconds\n")
                 for timeframe, timeframe_seconds in TIMEFRAME.items():
                     # Interval_seconds is a negative number and a float because of the
                     # The way diff() compares
@@ -72,6 +70,7 @@ class FileLoader:
                 raise Exception("Timeframe does not have unique intervals")
         except Exception as e:
             raise Exception(f"Error determining time interval: {e}")
+
     def load_or_reload(self):
         """
         Checks if a pickle file with the same name as the original file exists.
@@ -85,7 +84,6 @@ class FileLoader:
         new_folder = directory / "pickled_files"
 
         pickle_file_path = new_folder / original_file_path.with_suffix(".pkl").name
-
 
         if pickle_file_path.exists():
             print(f"Loading data from pickle file: {pickle_file_path}")
@@ -109,7 +107,7 @@ class FileLoader:
             elif self.file_type == FileTypeEnum.CSV:
                 self.df = pd.read_csv(self.file_path)
                 self.df.columns = self.df.columns.str.lower().str.strip()
-            
+
             column_mapping = {
                 "unix": "time",
                 "Volume": "volume",
@@ -127,7 +125,7 @@ class FileLoader:
                 self.df["time"] = self.df["time"].apply(
                     lambda x: x / 1000 if pd.notna(x) and len(str(int(x))) == 13 else x
                 )
-            
+
             # Coerce inserts NaN or NaT if it gets a bad row, instead of raising a exception,
             # so its possible to identify excatly which rows are bad
             self.df["volume"] = pd.to_numeric(self.df["volume"], errors="coerce")
@@ -136,14 +134,11 @@ class FileLoader:
             self.df["low"] = pd.to_numeric(self.df["low"], errors="coerce")
             self.df["high"] = pd.to_numeric(self.df["high"], errors="coerce")
             self.df.set_index(pd.DatetimeIndex(self.df["time"]), inplace=True)
-            
+
             self.determine_time_interval()
 
         except Exception as e:
             raise Exception(f"Error reading file: {e}")
-
-
-
 
             # self.df["time"] = pd.to_datetime(
             #     self.df["time"], unit="s", errors="coerce"

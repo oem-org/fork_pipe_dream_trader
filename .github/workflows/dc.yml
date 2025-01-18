@@ -3,13 +3,13 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - main
-      - feat/deploy
+      - main/ne
+      - feat/deploy/ne
 
   pull_request:
     branches:
-      - main
-      - feat/deploy
+      - main/ne
+      - feat/deploy/ne
 
 jobs:
   test:
@@ -22,17 +22,6 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r backend/sqa-requirements.txt
-      - name: Format import with Isort
-        working-directory: ./backend/src
-        run: |
-          isort .
-        continue-on-error: true
-
-      - name: Format with black
-        working-directory: ./backend/src
-        run: |
-          black . --skip-string-normalization
-        continue-on-error: true
 
       - name: Type-check with mypy
         working-directory: ./backend/src

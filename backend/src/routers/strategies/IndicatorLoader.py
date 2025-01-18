@@ -1,11 +1,13 @@
-from pathlib import Path
-from typing import Any, Dict, List
-import pandas as pd
-import pandas_ta as ta
 import json
 from pathlib import Path
-from ...schemas import IndicatorSetting
+from typing import Any, Dict, List
+
+import pandas as pd
+import pandas_ta as ta
+
 from ...indicators import *
+from ...schemas import IndicatorSetting
+
 
 class IndicatorLoader:
     def __init__(self, df: pd.DataFrame, indicators: List[IndicatorSetting]):
@@ -22,18 +24,13 @@ class IndicatorLoader:
         self.df.to_pickle(file_path)
         print(f"DataFrame saved to {file_path}")
 
-
     def load_indicators(self):
 
         self.df.ta.log_return(cumulative=True, append=True)
         self.df.ta.percent_return(cumulative=True, append=True)
 
-
         if len(self.indicators) > 0:
-            Strategy = ta.Strategy(
-                name="indicators",
-            ta=self.indicators
-            )
+            Strategy = ta.Strategy(name="indicators", ta=self.indicators)
 
             self.df.ta.strategy(Strategy)
 
@@ -59,7 +56,17 @@ class IndicatorLoader:
             # Get the curreny pair
             json_dfs["pair"] = json.dumps(self.df['symbol'].iloc[0])
 
-            columns_to_drop = ['high', 'low', 'close', 'open','tradecount','symbol','date','CUMPCTRET_1','CUMLOGRET_1']
+            columns_to_drop = [
+                'high',
+                'low',
+                'close',
+                'open',
+                'tradecount',
+                'symbol',
+                'date',
+                'CUMPCTRET_1',
+                'CUMLOGRET_1',
+            ]
             columns_to_drop = [col for col in columns_to_drop if col in self.df.columns]
             self.df = self.df.drop(columns=columns_to_drop)
 
@@ -81,7 +88,7 @@ class IndicatorLoader:
 
             self.response = json_dfs
 
-    def connect_indicator_info(self, indicators_info:List[Any]) -> Dict:
+    def connect_indicator_info(self, indicators_info: List[Any]) -> Dict:
         """
         Connect auto generated column names with a chart style, id and column name in the dataframe
 
@@ -94,12 +101,14 @@ class IndicatorLoader:
             base_column = column.split('_')[0].lower()
             for obj in indicators_info:
                 if base_column == obj['kind'].lower():
-                    matched_styles[column] = { "indicator_info": obj['indicator_info'], "id": obj['id']}
+                    matched_styles[column] = {
+                        "indicator_info": obj['indicator_info'],
+                        "id": obj['id'],
+                    }
         matched_styles_dict = matched_styles
 
         self.response['indicator_info'] = json.dumps(matched_styles)
         return matched_styles_dict
-
 
     def get_data(self):
         return self.df

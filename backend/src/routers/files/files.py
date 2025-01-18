@@ -2,9 +2,9 @@ import os
 from pathlib import Path
 
 from fastapi import APIRouter, HTTPException, UploadFile
-from .file_utils import get_file_path
 from sqlalchemy.exc import SQLAlchemyError
 from starlette import status
+
 from ...dependencies import db_dependency, user_dependency
 from ...lib.services.FileLoaderService import FileLoader
 from ...lib.services.FileValidatorService import FileValidator
@@ -15,14 +15,13 @@ from ...utils.exceptions import (
     handle_not_found_error,
     handle_not_validated_file_error,
 )
+from .file_utils import get_file_path
 
 router = APIRouter(prefix="/api/file", tags=["file"])
 
 
-
-
 @router.get("", status_code=status.HTTP_200_OK, response_model=List[FileSchema])
-def get_all_files( user: user_dependency, db: db_dependency):
+def get_all_files(user: user_dependency, db: db_dependency):
     try:
         files = db.query(Files).all()
         if not files:
@@ -40,7 +39,6 @@ def get_all_files( user: user_dependency, db: db_dependency):
 
 
 @router.get("/{file_id}", status_code=status.HTTP_200_OK, response_model=FileResponse)
-
 def get_file(user: user_dependency, db: db_dependency, file_id: int):
     try:
         file = db.query(Files).get(file_id)
@@ -67,7 +65,9 @@ def get_file(user: user_dependency, db: db_dependency, file_id: int):
 
 
 @router.post("/save", status_code=status.HTTP_201_CREATED)
-async def save_uploaded_file(user: user_dependency, db: db_dependency, file: UploadFile):
+async def save_uploaded_file(
+    user: user_dependency, db: db_dependency, file: UploadFile
+):
     """
     FastAPI automatically reads the file and populates UploadFile.
     UploadFile comes with file, filename, size and headers as instance attributes
@@ -111,5 +111,3 @@ async def save_uploaded_file(user: user_dependency, db: db_dependency, file: Upl
         raise HTTPException(status_code=500, detail=f"File not saved: {e}")
 
     return {"file_saved": file_path}
-
-

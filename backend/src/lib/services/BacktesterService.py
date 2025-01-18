@@ -1,8 +1,9 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 # Source: Idea taken from old project
 # https://github.com/JeppeOEM/CryptoPlatform/blob/main/main_app/trading_engine/Condition.py
+
 
 class Backtester:
     def __init__(self, df):
@@ -25,32 +26,32 @@ class Backtester:
     def run(self) -> pd.DataFrame:
         """
         Calculate the max drawdown and profit net loss
-        
-        Signal specifies a trade 
-        
+
+        Signal specifies a trade
+
         The signals are shifted 1 forward to not trigger false early signal
         Explanation:
-        If a condition triggers a trade with daily candlesticks at 11-12/2023 
+        If a condition triggers a trade with daily candlesticks at 11-12/2023
         then it would only be possible to react when the day ends as the candlestick
         does not exist before.
         """
         self.df['signal'] = self.df['buy'] + self.df['sell']
-        
+
         signal = self.df[self.df['signal'] != 0].copy()
         signal['pnl'] = signal['close'].pct_change() * signal['signal'].shift(1)
-        
+
         signal['cum_pnl'] = signal['pnl'].cumsum()
-        
+
         signal['max_cum_pnl'] = signal['cum_pnl'].cummax()
         print(signal['pnl'].sum())
-        
+
         signal['drawdown'] = signal['max_cum_pnl'] - signal["cum_pnl"]
-        
+
         return signal['pnl'].sum(), signal['drawdown'].max()
 
-    def build_conditions(self, side:str , conditions: list):
+    def build_conditions(self, side: str, conditions: list):
         """
-        Buy and sell signals created with a string expression in pandas eval function 
+        Buy and sell signals created with a string expression in pandas eval function
 
         pandas.eval:
         https://pandas.pydata.org/docs/reference/api/pandas.eval.html
@@ -83,13 +84,12 @@ class Backtester:
                 self.df['buy'] = new_column
             if side == "sell":
                 self.df['sell'] = new_column
-        
+
             return expression
 
         except Exception as e:
             print(f"Error evaluating expression: {e}")
             raise Exception("Error creating condtion strings")
-
 
 
 # buy = {"buy": [["df.SMA_10 < 1"]]}

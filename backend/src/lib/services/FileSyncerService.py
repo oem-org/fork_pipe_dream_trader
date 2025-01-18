@@ -1,8 +1,12 @@
 from pathlib import Path
-from ...schemas import FileTypeEnum
+
 from sqlalchemy.orm import Session
+
 from ...models import Files
-#TODO: add comments
+from ...schemas import FileTypeEnum
+
+
+# TODO: add comments
 class FileSyncer:
 
     @staticmethod
@@ -32,7 +36,7 @@ class FileSyncer:
     def add_non_matching_files(db: Session, non_matching_files: dict):
         files_to_add = []
         for name, file_info in non_matching_files.items():
-            file_type = FileSyncer.file_type_check(name)  
+            file_type = FileSyncer.file_type_check(name)
             file_to_add = Files(
                 name=name,
                 path=file_info["folder_path"],
@@ -51,7 +55,9 @@ class FileSyncer:
         # Path.cwd returns the project root folder
         folder_path = Path.cwd() / "files"
 
-        folder_files = {file.name: file for file in folder_path.iterdir() if file.is_file()}
+        folder_files = {
+            file.name: file for file in folder_path.iterdir() if file.is_file()
+        }
         print("Folder Files:", folder_files)
 
         db_files = db.query(Files).all()
@@ -84,4 +90,3 @@ class FileSyncer:
 
         FileSyncer.delete_missing_files_db(db, missing_in_folder)
         FileSyncer.add_non_matching_files(db, non_matching_files)
-
