@@ -35,7 +35,7 @@ class Token(BaseModel):
 @router.post("", status_code=status.HTTP_201_CREATED, response_model=StrategySchema)
 async def create_strategy(
     user: user_dependency,
-    db: db_dependency,                                                                                                      
+    db: db_dependency,
     strategy_request: CreateStrategyRequest,
 ):
     try:

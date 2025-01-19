@@ -39,10 +39,12 @@ def missing_all_values():
     file_path = get_test_file_path("missing_values.csv")
     return file_path
 
+
 @pytest.fixture
 def invalid_type_string_open():
     file_path = get_test_file_path("invalid_type_string_open.csv")
     return file_path
+
 
 @pytest.fixture
 def invalid_volume_type_string():
@@ -97,7 +99,8 @@ def test_file_validator_with_duplicate_index(duplicate_row):
         == "Error reading file: Error determining time interval: Timeframe does not have unique intervals"
     )
 
-def missing_values(missing_all_values):
+
+def test_missing_values(missing_all_values):
     """Open contains value below zero"""
     validator = FileValidator(missing_all_values)
 
@@ -107,7 +110,7 @@ def missing_values(missing_all_values):
     assert any("Invalid high value" in error[1] for error in validator.errors)
     assert any("Invalid close value" in error[1] for error in validator.errors)
     assert any("Invalid low value" in error[1] for error in validator.errors)
-    assert any("Invalid volume value" in error[1] for error in validator.errors)
+    assert any("Invalid volume" in error[1] for error in validator.errors)
 
 
 def test_open_below_zero(invalid_open_zero):

@@ -55,10 +55,10 @@ class Backtester:
 
         pnl_sum = signal['pnl'].sum()
         max_drawdown = signal['drawdown'].max()
-        pnl_sum_truncated = float(f"{pnl_sum:.4f}")
-        max_drawdown_truncated = float(f"{max_drawdown:.4f}")
+        pnl_sum_truncated = float(f"{pnl_sum * 100:.4f}")
+        max_drawdown_truncated = float(f"{max_drawdown *100:.4f}")
         # return as pct
-        return pnl_sum_truncated * 100, max_drawdown_truncated * 100
+        return pnl_sum_truncated, max_drawdown_truncated
 
     def build_conditions(self, side: str, conditions: list):
         """

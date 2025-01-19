@@ -9,8 +9,6 @@ export class DivideBlocksService {
 		this.mappedConditions = [];
 	}
 
-
-
 	blockEnd(id: number): void {
 		this.mappedConditions.push({ "conditionId": id });
 	}

@@ -16,7 +16,7 @@ export default function ConditionsSection({ setBacktest }: ConditionsSectionProp
   const [sellConditions, setSellConditions] = useState<any[]>([]);
   const [buyConditions, setBuyConditions] = useState<any[]>([]);
   const [refetch, setRefetch] = useState<number>(0);
-  const [backtestError, setBacktestError] = useState<any>()
+  //const [backtestError, setBacktestError] = useState<any>()
   const fetchConditions = useCallback(async (strategyId: number, side: "buy" | "sell") => {
     try {
       const data = await getAllStrategyConditionsApi.getAll(strategyId);
@@ -104,7 +104,8 @@ export default function ConditionsSection({ setBacktest }: ConditionsSectionProp
       const result = await postStrategyBacktestApi.post(strategyId, data);
       setBacktest(result);
     } catch (error) {
-      //TODO: error handling
+
+      //TODO: display error values
     }
 
   }, [strategyId]);
@@ -113,7 +114,6 @@ export default function ConditionsSection({ setBacktest }: ConditionsSectionProp
     <div className="flex flex-col">
       <div className="flex flex-row justify-between">
         <h2 className="h2 mb-4">Strategy</h2>
-        {backtestError}
         <Button onClick={() => runBacktest()}>Run Backtest</Button>
       </div>
       <hr className="py-1" />

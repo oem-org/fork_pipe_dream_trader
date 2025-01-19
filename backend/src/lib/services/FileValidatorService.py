@@ -5,42 +5,34 @@ from .FileLoaderService import FileLoader
 
 class FileValidator(FileLoader):
     def __init__(self, file_path: str):
-        super().__init__(file_path)  # Inherit from FileLoader
+        super().__init__(file_path)
         self.errors = []
 
     def validate(self) -> bool:
         """
-        Validate the DataFrame with vectorized operators for speed.
-        Returns True if valid, False otherwise.
+        Each row Returns True if error is found
         """
-        self.load_data()  # Load the data first
+        self.load_data()
         errors = []
 
         invalid_volume = pd.to_numeric(self.df['volume'], errors='coerce').isna() | (
             self.df['volume'] < 0
         )
-
         invalid_open = pd.to_numeric(self.df['open'], errors='coerce').isna() | (
             self.df['open'] < 0
         )
-
         invalid_close = pd.to_numeric(self.df['close'], errors='coerce').isna() | (
             self.df['close'] < 0
         )
-
         invalid_low = pd.to_numeric(self.df['low'], errors='coerce').isna() | (
             self.df['low'] < 0
         )
-
         invalid_high = pd.to_numeric(self.df['high'], errors='coerce').isna() | (
             self.df['high'] < 0
         )
-
         invalid_rows = (
             invalid_volume | invalid_open | invalid_close | invalid_low | invalid_high
         )
-
-        # print("invalid rows", invalid_rows)
 
         # Check for invalid rows
         for index in self.df[invalid_rows].index:

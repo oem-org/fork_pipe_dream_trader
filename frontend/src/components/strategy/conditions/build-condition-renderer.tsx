@@ -21,9 +21,6 @@ interface BuildConditionsRendererProps {
   setRefetch: React.Dispatch<React.SetStateAction<number>>,
 }
 
-// TODO: Set types for conditions
-//
-
 const BuildConditionRenderer = forwardRef(({ conditions, setRefetch }: BuildConditionsRendererProps, ref: React.Ref<CreateConditionStringRef>) => {
   const [blocks, setBlocks] = useState<JSX.Element[][]>([]);
   const { strategyId } = useStrategyStore()
@@ -169,13 +166,14 @@ const BuildConditionRenderer = forwardRef(({ conditions, setRefetch }: BuildCond
   function moveBlock(fromIndex: number, toIndex: number) {
     setBlocks((prevBlocks) => {
       const updatedBlocks = [...prevBlocks];
+      // [movedBlock] = ... is shorthand for destructring the array returned from splice
       const [movedBlock] = updatedBlocks.splice(fromIndex, 1);
       updatedBlocks.splice(toIndex, 0, movedBlock);
       return updatedBlocks;
     });
 
 
-  // Rerender blocks when updateCount changes
+    // Rerender blocks when updateCount changes
     setUpdateCount((prev) => prev + 1);
   }
 

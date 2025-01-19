@@ -29,9 +29,7 @@ const IndicatorSection = memo(function IndicatorSection({
 
 	const handleIndicatorChange = useCallback(async (indicator: Indicator): Promise<void> => {
 		try {
-			const response = await addIndicatorMutation(indicator);
-			console.log("Indicator added successfully:", response);
-			console.log(indicator);
+			await addIndicatorMutation(indicator);
 		} catch (error) {
 			console.error("Error adding indicator:", error);
 		}
