@@ -18,11 +18,10 @@ export default class TimeseriesService {
 		// Print the type and value of timestamp
 		//console.log('Type of timestamp:', typeof timestamp);
 		//console.log('Value of timestamp:', timestamp);
-		const modifiedTimestamp = Math.floor(timestamp / 1000);
+		//const modifiedTimestamp = Math.floor(timestamp / 1000);
 
 		//console.log('Modified Timestamp:', modifiedTimestamp);
-		// lightweight charts expects UTCtimestamp
-		return modifiedTimestamp as UTCTimestamp
+		return timestamp as UTCTimestamp
 	}
 	async updateChart(indicatorInfo: Record<string, any>) {
 
