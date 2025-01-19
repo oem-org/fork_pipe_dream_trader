@@ -1,11 +1,7 @@
 import pytest
-import pandas as pd
-from pathlib import Path
 from ..lib.services.FileValidatorService import FileValidator
 from ..utils.get_test_file_path import get_test_file_path
 
-
-# Test file fixtures
 
 @pytest.fixture
 def valid_file():
@@ -31,8 +27,6 @@ def timestamp_missing():
 def invalid_open_zero():
     file_path = get_test_file_path("invalid_open_zero.csv")
     return file_path
-
-
 
 @pytest.fixture
 def invalid_type_string_open():
@@ -78,8 +72,8 @@ def test_missing_timestamp(timestamp_missing):
         == "Error reading file: Error determining time interval: Timeframe does not have unique intervals"
     )
 
-
 def test_file_validator_with_duplicate_index(duplicate_row):
+    """Timestamp index duplicated"""
     with pytest.raises(Exception) as error:
         validator = FileValidator(duplicate_row)
         validator.validate()
@@ -89,10 +83,8 @@ def test_file_validator_with_duplicate_index(duplicate_row):
         == "Error reading file: Error determining time interval: Timeframe does not have unique intervals"
     )
 
-
-
 def test_open_below_zero(invalid_open_zero):
-    """Open contains string value (invalid data type)"""
+    """Open contains value below zero"""
     validator = FileValidator(invalid_open_zero)
 
     assert validator.validate() is False
@@ -100,7 +92,7 @@ def test_open_below_zero(invalid_open_zero):
 
 
 def test_open_type_string(invalid_type_string_open):
-    """Open contains string value (invalid data type)"""
+    """Open contains string value"""
     validator = FileValidator(invalid_type_string_open)
 
     assert validator.validate() is False
@@ -108,7 +100,7 @@ def test_open_type_string(invalid_type_string_open):
 
 
 def test_invalid_volume_string(invalid_volume_type_string):
-    """Volume has invalid value (e.g., negative or missing)"""
+    """Volume contains a string value"""
     validator = FileValidator(invalid_volume_type_string)
 
     assert validator.validate() is False

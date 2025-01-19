@@ -16,32 +16,21 @@ class FileValidator(FileLoader):
         self.load_data()  # Load the data first
         errors = []
 
-        # Validation conditions
-        # Validation checks with debug prints
-        # Check for invalid 'volume' values (non-numeric or below zero)
         invalid_volume = pd.to_numeric(self.df['volume'], errors='coerce').isna() | (self.df['volume'] < 0)
-        print("Invalid volume rows:\n", self.df[invalid_volume])
 
-        # Check for invalid 'open' values (non-numeric or below zero)
         invalid_open = pd.to_numeric(self.df['open'], errors='coerce').isna() | (self.df['open'] < 0)
-        print("Invalid open rows:\n", self.df[invalid_open])
 
-        # Check for invalid 'close' values (non-numeric or below zero)
         invalid_close = pd.to_numeric(self.df['close'], errors='coerce').isna() | (self.df['close'] < 0)
-        print("Invalid close rows:\n", self.df[invalid_close])
 
-        # Check for invalid 'low' values (non-numeric or below zero)
         invalid_low = pd.to_numeric(self.df['low'], errors='coerce').isna() | (self.df['low'] < 0)
-        print("Invalid low rows:\n", self.df[invalid_low])
 
-        # Check for invalid 'high' values (non-numeric or below zero)
         invalid_high = pd.to_numeric(self.df['high'], errors='coerce').isna() | (self.df['high'] < 0)
-        print("Invalid high rows:\n", self.df[invalid_high])
+        
         invalid_rows = (
             invalid_volume | invalid_open | invalid_close | invalid_low | invalid_high
         )
 
-        print("invalid rows", invalid_rows)
+        # print("invalid rows", invalid_rows)
 
         # Check for invalid rows
         for index in self.df[invalid_rows].index:
@@ -88,7 +77,6 @@ class FileValidator(FileLoader):
                 f.write(f"Row {index}: {message}\n")
             f.write("=" * 50 + "\n")
 
-        print(f"Errors saved to {file_path}")
 
     def get_date_range(self):
         """

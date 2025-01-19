@@ -124,21 +124,13 @@ class FileLoader:
 
             if "time" in self.df.columns:
                 self.df["time"] = pd.to_numeric(self.df["time"])
-                first_value = self.df["time"].iloc[0]
-                value_type = type(first_value)
 
-                print("First value:", first_value)
-                print("Type of first value:", value_type)
                 # self.df["time"] = (self.df["time"] / 1000).astype(int)
 
                 # self.df['time'] = self.df['time'].apply(
                 #     lambda x: pd.to_datetime(x, unit='ms').timestamp()
                 # )
                 self.df.set_index(pd.DatetimeIndex(self.df["time"]), inplace=True)
-                first_value = self.df["time"].iloc[0]
-                value_type = type(first_value)
-                print("First value:", first_value)
-                print("Type of first value:", value_type)
 
             # Coerce inserts NaN or NaT if it gets a bad row, instead of raising a exception,
             # so its possible to identify excatly which rows are bad

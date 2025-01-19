@@ -38,7 +38,9 @@ class Backtester:
         self.df['signal'] = self.df['buy'] + self.df['sell']
 
         signal = self.df[self.df['signal'] != 0].copy()
+        
         signal['pnl'] = signal['close'].pct_change() * signal['signal'].shift(1)
+        # signal['pnl'] = signal['close'].pct_change() * signal['signal']
 
         signal['cum_pnl'] = signal['pnl'].cumsum()
 
@@ -46,6 +48,10 @@ class Backtester:
         print(signal['pnl'].sum())
 
         signal['drawdown'] = signal['max_cum_pnl'] - signal["cum_pnl"]
+        
+        print("Signals:\n", self.df[['signal', 'buy', 'sell']])
+        print("PnL:\n", signal[['pnl', 'cum_pnl']])
+        print("Drawdown:\n", signal[['max_cum_pnl', 'drawdown']])
 
         return signal['pnl'].sum(), signal['drawdown'].max()
 
