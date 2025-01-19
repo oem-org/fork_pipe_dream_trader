@@ -1,19 +1,16 @@
-import json
-from logging import exception
-
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Query
 from sqlalchemy.orm import joinedload
 from starlette import status
 
 from ...dependencies import db_dependency, timescale_dependency, user_dependency
 from ...lib.services.FileLoaderService import FileLoader
-from ...models import Strategies
-from ...models import Files, StrategyIndicators
+from ...lib.services.IndicatorLoaderService import IndicatorLoaderService
+from ...models import Files, Strategies, StrategyIndicators
 from ...schemas import FileSchema
 from ...utils.exceptions import handle_db_error, handle_not_found_error
-from ...lib.services.IndicatorLoaderService import IndicatorLoaderService
 
 router = APIRouter(prefix='/api/timeseries', tags=['chart'])
+
 
 @router.get("/", status_code=status.HTTP_200_OK)
 async def read_all(
@@ -34,7 +31,6 @@ async def read_all(
             path = strategyModel.file.path
             file_loader = FileLoader(path)
             file_loader.load_data()
-            print("HIIIIIT")
 
             # Example of indicator info dict
             # [{'indicator_info': 'line_add_pane', 'kind': 'rsi', 'id': 1}]
@@ -56,7 +52,9 @@ async def read_all(
                 if ind.settings is not None
             ]
 
-            indicator_loader = IndicatorLoaderService(file_loader.df, all_indicator_settings)
+            indicator_loader = IndicatorLoaderService(
+                file_loader.df, all_indicator_settings
+            )
             indicator_loader.load_indicators()
             indicator_loader.split_dataframe()
 

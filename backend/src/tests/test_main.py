@@ -1,6 +1,3 @@
-import numpy as np
-import pandas as pd
-import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
 from passlib.context import CryptContext
@@ -10,7 +7,6 @@ from sqlalchemy.orm import Session, sessionmaker
 from ..config import Config
 from ..dependencies import get_db
 from ..main import app
-from ..models import Strategies, Users
 from ..orm_connection import Base
 from ..routers.auth.auth_utils import get_current_user
 
@@ -58,9 +54,9 @@ def test_health_check():
 
 def test_cors_allowed_origin():
     """ensure CORS headers are set for allowed origins."""
-    allowed_origin = "http://localhost:5173"  
+    allowed_origin = "http://localhost:5173"
     response = client.get(
-        "/api/health",  
+        "/api/health",
         headers={"Origin": allowed_origin},
     )
     assert response.status_code == status.HTTP_200_OK
@@ -71,7 +67,7 @@ def test_cors_disallowed_origin():
     """ensure CORS headers are not set for disallowed origins."""
     disallowed_origin = "http://disallowed-origin.com"
     response = client.get(
-        "/api/health",  
+        "/api/health",
         headers={"Origin": disallowed_origin},
     )
     assert response.status_code == status.HTTP_200_OK

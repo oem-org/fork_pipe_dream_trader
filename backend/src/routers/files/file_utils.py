@@ -8,13 +8,12 @@ from starlette import status
 from ...utils.exceptions import handle_not_validated_file_error
 
 
-def get_file_path(file: UploadFile) -> str:
-    folder_path = Path.cwd() / "files"
+def get_file_path(file: UploadFile, dir: str) -> str:
+    folder_path = Path.cwd() / dir
     folder_path.mkdir(parents=True, exist_ok=True)
     file_path = folder_path / file.filename
 
     if file_path.exists():
-        # send a "Conflict" status code
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"File '{file.filename}' already exists.",
@@ -22,7 +21,7 @@ def get_file_path(file: UploadFile) -> str:
 
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
-
+    print(file_path)
     return str(file_path)
 
 

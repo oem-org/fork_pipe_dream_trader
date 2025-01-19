@@ -100,8 +100,13 @@ export default function ConditionsSection({ setBacktest }: ConditionsSectionProp
       buy_string: JSON.stringify(buyConditions),
       sell_string: JSON.stringify(sellConditions),
     };
-    const result = await postStrategyBacktestApi.post(strategyId, data);
-    setBacktest(result)
+    try {
+
+      const result = await postStrategyBacktestApi.post(strategyId, data);
+      setBacktest(result)
+    } catch (error) {
+      console.log("No backtest found")
+    }
 
   }, [strategyId]);
 

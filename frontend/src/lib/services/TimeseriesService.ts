@@ -1,6 +1,7 @@
 import Timeseries from "@/interfaces/Timeseries";
 import { Volume, VolumeBackend } from "@/interfaces/Volume";
 import { IndicatorChart } from "@/interfaces/IndicatorChart";
+import { UTCTimestamp } from "lightweight-charts";
 // TODO: fix typing errors
 export default class TimeseriesService {
 	public ohlc: Timeseries[];
@@ -13,18 +14,31 @@ export default class TimeseriesService {
 		this.indicators = {};
 	}
 
+	formatTimestamp(timestamp: any) {
+		// Print the type and value of timestamp
+		//console.log('Type of timestamp:', typeof timestamp);
+		//console.log('Value of timestamp:', timestamp);
+		const modifiedTimestamp = Math.floor(timestamp / 1000);
+
+		//console.log('Modified Timestamp:', modifiedTimestamp);
+		// lightweight charts expects UTCtimestamp
+		return modifiedTimestamp as UTCTimestamp
+	}
 	async updateChart(indicatorInfo: Record<string, any>) {
 
 		const mappedIndicators: IndicatorChart[] = [];
 
 		for (let key in indicatorInfo) {
 			// Key is dataframe column name fx "RSI_14"
-			//
-			mappedIndicators.push({ "name": `${key}`, "chartStyle": indicatorInfo[key].indicator_info, "id": indicatorInfo[key].id, "data": this.indicators[key] });
-
+			mappedIndicators.push({
+				"name": `${key}`,
+				"chartStyle": indicatorInfo[key].indicator_info,
+				"id": indicatorInfo[key].id,
+				"data": this.indicators[key]
+			});
 		}
 
-		return mappedIndicators
+		return mappedIndicators;
 	}
 
 	// TODO: add types
@@ -34,14 +48,13 @@ export default class TimeseriesService {
 		const notAllowedKeys = ["time", "volume pols", "columns", "pair"];
 
 		for (const keyName in indicatorsTimeseries) {
-
-			let indicator:any = [];
+			let indicator: any = [];
 			if (notAllowedKeys.includes(keyName)) {
 				continue;
 			} else {
-				Object.values(indicatorsTimeseries[keyName]).forEach((data:any) => {
+				Object.values(indicatorsTimeseries[keyName]).forEach((data: any) => {
 					indicator.push({
-						time: data.time,
+						time: this.formatTimestamp(data.time),  // Divide by 1000 and convert to integer
 						value: data[keyName],
 					});
 				});
@@ -54,7 +67,7 @@ export default class TimeseriesService {
 	async processVolume(volume: VolumeBackend[]): Promise<void> {
 		Object.values(volume).forEach((data) => {
 			this.volume.push({
-				time: data.time,
+				time: this.formatTimestamp(data.time),  // Divide by 1000 and convert to integer
 				value: data.volume,
 			});
 		});
@@ -65,7 +78,7 @@ export default class TimeseriesService {
 
 		Object.values(ohlc).forEach((data) => {
 			this.ohlc.push({
-				time: data.time,
+				time: this.formatTimestamp(data.time),  // Divide by 1000 and convert to integer
 				open: data.open,
 				high: data.high,
 				low: data.low,

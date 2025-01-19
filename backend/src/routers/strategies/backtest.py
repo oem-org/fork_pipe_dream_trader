@@ -8,10 +8,10 @@ from starlette import status
 from ...dependencies import db_dependency, user_dependency
 from ...lib.services.BacktesterService import Backtester
 from ...lib.services.FileLoaderService import FileLoader
+from ...lib.services.IndicatorLoaderService import IndicatorLoaderService
 from ...models import Strategies, StrategyBacktests
 from ...schemas import CreateBacktestRequest, StrategyBacktestResponse
 from ...utils.exceptions import handle_db_error
-from ...lib.services.IndicatorLoader import IndicatorLoader
 
 router = APIRouter(prefix="/api/strategy", tags=["strategy"])
 
@@ -46,7 +46,9 @@ async def backtest(
                 if ind.settings is not None
             ]
 
-            indicator_loader = IndicatorLoader(file_loader.df, all_indicator_settings)
+            indicator_loader = IndicatorLoaderService(
+                file_loader.df, all_indicator_settings
+            )
             indicator_loader.load_indicators()
 
         buy_conditions = json.loads(backtest_request.buy_string)

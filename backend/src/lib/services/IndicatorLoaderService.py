@@ -45,7 +45,7 @@ class IndicatorLoaderService:
         json_dfs = {}
 
         required_columns = {"time", "open", "high", "low", "close"}
-
+        # Check whether all the columns specified in required_columns are present
         if required_columns.issubset(set(self.df.columns)):
 
             # Grab columns specified in list

@@ -1,5 +1,7 @@
+import { UTCTimestamp } from "lightweight-charts";
+
 export default interface Timeseries {
-    time: string;
+    time: UTCTimestamp;
     open: number;
     high: number;
     low: number;

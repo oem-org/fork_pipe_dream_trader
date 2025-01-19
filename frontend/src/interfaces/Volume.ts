@@ -1,6 +1,8 @@
+import { UTCTimestamp } from "lightweight-charts"
+
 // Must be named value for lightweight charts api
 export interface Volume {
-    time: string,
+    time: UTCTimestamp,
     value: number
 }
 

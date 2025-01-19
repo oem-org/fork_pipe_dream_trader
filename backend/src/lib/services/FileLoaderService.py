@@ -51,7 +51,9 @@ class FileLoader:
                 "daily": 86400,
             }
 
-            time_diffs = self.df["time"].diff()
+            dfcopy = self.df[['time']].copy()
+            dfcopy["time"] = dfcopy["time"] / 1000
+            time_diffs = dfcopy["time"].diff()
 
             # First row will allways be nan after diff()
             unique_intervals = time_diffs.dropna().unique()
@@ -122,9 +124,21 @@ class FileLoader:
 
             if "time" in self.df.columns:
                 self.df["time"] = pd.to_numeric(self.df["time"])
-                self.df["time"] = self.df["time"].apply(
-                    lambda x: x / 1000 if pd.notna(x) and len(str(int(x))) == 13 else x
-                )
+                first_value = self.df["time"].iloc[0]
+                value_type = type(first_value)
+
+                print("First value:", first_value)
+                print("Type of first value:", value_type)
+                # self.df["time"] = (self.df["time"] / 1000).astype(int)
+
+                # self.df['time'] = self.df['time'].apply(
+                #     lambda x: pd.to_datetime(x, unit='ms').timestamp()
+                # )
+                self.df.set_index(pd.DatetimeIndex(self.df["time"]), inplace=True)
+                first_value = self.df["time"].iloc[0]
+                value_type = type(first_value)
+                print("First value:", first_value)
+                print("Type of first value:", value_type)
 
             # Coerce inserts NaN or NaT if it gets a bad row, instead of raising a exception,
             # so its possible to identify excatly which rows are bad
@@ -133,8 +147,9 @@ class FileLoader:
             self.df["close"] = pd.to_numeric(self.df["close"], errors="coerce")
             self.df["low"] = pd.to_numeric(self.df["low"], errors="coerce")
             self.df["high"] = pd.to_numeric(self.df["high"], errors="coerce")
-            self.df.set_index(pd.DatetimeIndex(self.df["time"]), inplace=True)
+            # self.df.set_index(pd.DatetimeIndex(self.df["time"]), inplace=True)
 
+            print(self.df['time'].head(), "head!!!!!!!!!!")
             self.determine_time_interval()
 
         except Exception as e:

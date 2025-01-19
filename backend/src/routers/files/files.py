@@ -82,7 +82,7 @@ async def save_uploaded_file(
 
     file_path = None
     try:
-        file_path = get_file_path(file)
+        file_path = get_file_path(file, "files")
 
         name = Path(file_path).name
         fileValidation = FileValidator(file_path)
