@@ -1,14 +1,18 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
 import pytest
+
 from ..lib.services.BacktesterService import Backtester
+
 
 @pytest.fixture
 def test_data():
-    return pd.DataFrame({
-        'close': [100, 105, 110, 102, 108, 112],  
-        'SMA_10': [101, 104, 109, 103, 107, 111]  
-    })
+    return pd.DataFrame(
+        {
+            'close': [100, 105, 110, 102, 108, 112],
+            'SMA_10': [101, 104, 109, 103, 107, 111],
+        }
+    )
 
 
 def test_build_conditions_buy(test_data):
@@ -21,7 +25,7 @@ def test_build_conditions_buy(test_data):
 
     assert expression == "(SMA_10 < 110)"
 
-    expected_buy = [1, 1, 1, 1, 1, 0]  
+    expected_buy = [1, 1, 1, 1, 1, 0]
     assert bt.df['buy'].tolist() == expected_buy
 
 
@@ -35,7 +39,7 @@ def test_build_conditions_sell(test_data):
 
     assert expression == "(SMA_10 > 110)"
 
-    expected_sell = [0, 0, 0, 0, 0, 1]  
+    expected_sell = [0, 0, 0, 0, 0, 1]
     assert bt.df['buy'].tolist() == expected_sell
 
 
@@ -44,10 +48,12 @@ def drawdown_test_data():
     """
     Create a minimal DataFrame for testing max drawdown calculations.
     """
-    return pd.DataFrame({
-        'close': [100, 120, 90, 110, 95],  
-        'SMA_10': [95, 110, 100, 105, 98],  
-    })
+    return pd.DataFrame(
+        {
+            'close': [100, 120, 90, 110, 95],
+            'SMA_10': [95, 110, 100, 105, 98],
+        }
+    )
 
 
 def test_backtest_max_drawdown(drawdown_test_data):
@@ -55,9 +61,9 @@ def test_backtest_max_drawdown(drawdown_test_data):
     Test the calculation of PnL and max drawdown.
     """
     # Buy on index 0 and 2
-    drawdown_test_data['buy'] = [1, 0, 1, 0, 0]  
+    drawdown_test_data['buy'] = [1, 0, 1, 0, 0]
     # Sell on index 1 and 3
-    drawdown_test_data['sell'] = [0, -1, 0, -1, 0]  
+    drawdown_test_data['sell'] = [0, -1, 0, -1, 0]
 
     bt = Backtester(drawdown_test_data)
     pnl, drawdown = bt.run()
@@ -68,7 +74,7 @@ def test_backtest_max_drawdown(drawdown_test_data):
     pd.set_option('display.max_rows', None)  # Show all rows
     pd.set_option('display.max_columns', None)  # Show all columns
 
-# Now print the entire DataFrame
+    # Now print the entire DataFrame
     print(drawdown_test_data)
 
     pd.reset_option('display.max_rows')
@@ -76,7 +82,6 @@ def test_backtest_max_drawdown(drawdown_test_data):
     # Cumulative PnL at each signal point:
     # Row 1: 0.20 (trade 1 realized)
     # Row 3: 0.20 + 0.2222 = 0.4222 (trade 2 realized)
-
 
     # Drawdown:
     # - After row 1, price drops from 120 to 90.

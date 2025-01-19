@@ -38,7 +38,7 @@ class Backtester:
         self.df['signal'] = self.df['buy'] + self.df['sell']
 
         signal = self.df[self.df['signal'] != 0].copy()
-        
+
         signal['pnl'] = signal['close'].pct_change() * signal['signal'].shift(1)
         # signal['pnl'] = signal['close'].pct_change() * signal['signal']
 
@@ -48,12 +48,17 @@ class Backtester:
         print(signal['pnl'].sum())
 
         signal['drawdown'] = signal['max_cum_pnl'] - signal["cum_pnl"]
-        
+
         print("Signals:\n", self.df[['signal', 'buy', 'sell']])
         print("PnL:\n", signal[['pnl', 'cum_pnl']])
         print("Drawdown:\n", signal[['max_cum_pnl', 'drawdown']])
 
-        return signal['pnl'].sum(), signal['drawdown'].max()
+        pnl_sum = signal['pnl'].sum()
+        max_drawdown = signal['drawdown'].max()
+        pnl_sum_truncated = float(f"{pnl_sum:.4f}")
+        max_drawdown_truncated = float(f"{max_drawdown:.4f}")
+        # return as pct
+        return pnl_sum_truncated * 100, max_drawdown_truncated * 100
 
     def build_conditions(self, side: str, conditions: list):
         """

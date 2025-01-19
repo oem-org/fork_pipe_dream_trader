@@ -18,8 +18,8 @@ export default class TimeseriesService {
 		// Print the type and value of timestamp
 		//console.log('Type of timestamp:', typeof timestamp);
 		//console.log('Value of timestamp:', timestamp);
-		//const modifiedTimestamp = Math.floor(timestamp / 1000);
-
+		let modifiedTimestamp = Math.floor(timestamp / 1000);
+		timestamp = modifiedTimestamp
 		//console.log('Modified Timestamp:', modifiedTimestamp);
 		return timestamp as UTCTimestamp
 	}

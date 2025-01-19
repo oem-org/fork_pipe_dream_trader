@@ -113,6 +113,7 @@ export class PostRelationService<T, R> extends ApiService {
 		} catch (error) {
 			console.log("PostRelationService throwing an error")
 			throw error;
+
 		}
 	}
 }
