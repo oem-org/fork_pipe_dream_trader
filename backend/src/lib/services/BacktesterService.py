@@ -55,8 +55,8 @@ class Backtester:
 
         pnl_sum = signal['pnl'].sum()
         max_drawdown = signal['drawdown'].max()
-        pnl_sum_truncated = float(f"{pnl_sum * 100:.4f}")
-        max_drawdown_truncated = float(f"{max_drawdown *100:.4f}")
+        pnl_sum_truncated = round(pnl_sum * 100, 4)
+        max_drawdown_truncated = round(max_drawdown * 100, 4)
         # return as pct
         return pnl_sum_truncated, max_drawdown_truncated
 
