@@ -139,11 +139,11 @@ export default function StrategyPage() {
                   </div>
                   <div className="flex flex-row">
                     <h5 className="font-semibold">PNL:&nbsp;</h5>
-                    <p>{backtest.pnl}</p>
+                    <p>{backtest.pnl}%</p>
                   </div>
                   <div className="flex flex-row">
                     <h5 className="font-semibold"> Max Drawdown:&nbsp;</h5>
-                    <p>{backtest.max_drawdown}</p>
+                    <p>{backtest.max_drawdown}%</p>
                   </div>
                   <div className="flex flex-row">
                     <h5 className="font-semibold"> Created At:&nbsp;</h5>

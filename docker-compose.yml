@@ -2,13 +2,11 @@
 services:
 
   backend:
-    # image: soma1337/pipe_dream:latest
-    build:
-      context: ./backend
+    image: soma1337/pipe_dream:latest
     volumes:
       - "./backend:/app"
     env_file:
-      - "./backend/testenv"
+      - "./backend/.env-$RTE"
     environment:
       - RTE=$RTE
     depends_on:
@@ -35,12 +33,12 @@ services:
 
 volumes:
   postgres_data:
-  node_modules:
 
 networks:
-  webnet:
-    driver: bridge
-  timescalenet:
-    driver: bridge
   dbnet:
     driver: bridge
+
+
+
+    # build:
+    #   context: ./backend
