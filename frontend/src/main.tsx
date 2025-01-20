@@ -1,7 +1,6 @@
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import StrategyPage from "./pages/strategy-page.tsx";
 import NotFoundPage from "./pages/not-found-page.tsx";

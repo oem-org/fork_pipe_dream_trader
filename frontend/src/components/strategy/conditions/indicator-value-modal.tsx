@@ -1,6 +1,6 @@
 import { LogicalOperator, Side, CreateConditionRequest } from '@/interfaces/Condition'
 import { Button } from '@/components/ui/buttons/button'
-import { useEffect, useState } from 'react'
+import {useState } from 'react'
 import Modal from '@/components/ui/modal'
 import CreateConditionIndicator from './create-condition-indicator'
 import CreateConditionOperator from './create-condition-operator'

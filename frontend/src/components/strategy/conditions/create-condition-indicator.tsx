@@ -15,11 +15,11 @@ export default function CreateConditionIndicator({ setIndicator }: CreateConditi
   const { strategyId } = useStrategyStore();
   const { data: indicatorSettings } = getStrategyIndicatorsQuery(strategyId);
   const [selectedIndicator, setSelectedIndicator] = useState<StrategyIndicator>();
-
   // Connect StrategyIndicator id
   function handleChange(indicator: StrategyIndicator) {
     setSelectedIndicator(indicator)
     setIndicator({ indicator: indicator.dataframe_column, id: indicator.id })
+    console.log(selectedIndicator)
   }
 
   return (

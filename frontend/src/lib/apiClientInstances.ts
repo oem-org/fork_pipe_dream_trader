@@ -7,7 +7,7 @@ import IndicatorRequest from "@/interfaces/requests/UpdateIndicatorRequest"
 import Indicator from "../interfaces/Indicator"
 import { StrategyCondition } from "@/interfaces/StrategyCondition"
 import { File, FileResponse } from "@/interfaces/File"
-import { PostRelationService, PutService, GetService, GetLatestRelationService, GetRelationService, PostService, DeleteRelationService, PutRelationService, GetAllService, DeleteService, GetWithParamsService, GetWithQueryService, GetAllRelationService, } from "./services/ApiService"
+import { PostRelationService, PutService, GetService, GetLatestRelationService,  PostService, DeleteRelationService, PutRelationService, GetAllService, DeleteService, GetWithParamsService, GetWithQueryService, GetAllRelationService, } from "./services/ApiService"
 
 import { StrategyIndicator } from "@/interfaces/StrategyIndicator"
 import { CreateStrategyRequest } from "@/interfaces/requests/CreateStrategyRequest"
