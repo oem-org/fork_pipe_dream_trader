@@ -108,6 +108,9 @@ async def save_uploaded_file(
         if file_path:
             # clean up if validation fails
             os.remove(file_path)
+
+        db.rollback()
+
         raise HTTPException(status_code=500, detail=f"File not saved: {e}")
 
     return {"file_saved": file_path}

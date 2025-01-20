@@ -15,10 +15,19 @@ def test_data():
     )
 
 
+def test_build_conditions_buy_and(test_data):
+    bt = Backtester(test_data)
+
+    buy_conditions = [["SMA_10 < 110"], "&", ["close == 102"]]
+    expression = bt.build_conditions("buy", buy_conditions)
+
+    assert expression == "(SMA_10 < 110) & (close == 102)"
+
+    expected_buy = [0, 0, 0, 1, 0, 0]
+    assert bt.df['buy'].tolist() == expected_buy
+
+
 def test_build_conditions_buy(test_data):
-    """
-    Test the creation of buy conditions.
-    """
     bt = Backtester(test_data)
     buy_conditions = [["SMA_10 < 110"]]
     expression = bt.build_conditions("buy", buy_conditions)
@@ -26,13 +35,11 @@ def test_build_conditions_buy(test_data):
     assert expression == "(SMA_10 < 110)"
 
     expected_buy = [1, 1, 1, 1, 1, 0]
+
     assert bt.df['buy'].tolist() == expected_buy
 
 
 def test_build_conditions_sell(test_data):
-    """
-    Test the creation of buy conditions.
-    """
     bt = Backtester(test_data)
     sell_conditions = [["SMA_10 > 110"]]
     expression = bt.build_conditions("buy", sell_conditions)
@@ -40,6 +47,7 @@ def test_build_conditions_sell(test_data):
     assert expression == "(SMA_10 > 110)"
 
     expected_sell = [0, 0, 0, 0, 0, 1]
+
     assert bt.df['buy'].tolist() == expected_sell
 
 

@@ -10,7 +10,7 @@ case "$RTE" in
         ;;
     test )
         # Security vulnerability in python-jose with no fix-version
-        # pip-audit
+        pip-audit
         # pip-audit || exit 1
         pytest -s -v
         ;;
